@@ -10,7 +10,12 @@ Create and organize your direct adrenaline bubbles.
 - Circle: Go to previus section.
 - Start: Go to livearea.
 
-### Changelog 0.9 ###
+### Changelog 0.91 ###
 - Initial release 'POC'.
 - Added automatic network update. app will now notify you when there's a new update.
 - Support get and view complete list of content of PSPemu.
+
+### Credits ###
+- Adrenaline Bubble Booter By LMAN 'leecherman'
+- eCFW Adrenaline By TheFloW.
+- PBOOT icon and livearea icon By Freakler.

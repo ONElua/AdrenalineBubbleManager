@@ -19,7 +19,7 @@ back = image.load("system/back.png")
 buttonskey = image.load("system/buttons.png",20,20)
 buttonskey2 = image.load("system/buttons2.png",30,20)
 
-dofile("git/update.lua")
+dofile("git/updater.lua")
 dofile("system/exit.lua")
 dofile("system/utils.lua")
 dofile("system/scan.lua")
