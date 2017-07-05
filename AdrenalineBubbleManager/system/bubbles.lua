@@ -9,6 +9,16 @@
 ]]
 
 __NOSTARTDAT, __YESSTARTDAT = "ux0:adrbblbooter/adrbblbooter_nostartdat.suprx", "ux0:adrbblbooter/adrbblbooter.suprx"
+
+-- Adrbblbooter ??
+if not files.exists("ux0:adrbblbooter/bubblesdb") then files.mkdir("ux0:adrbblbooter/bubblesdb") end
+if not files.exists(__NOSTARTDAT) then
+	files.copy("adrbblbooter/adrbblbooter_nostartdat.suprx", "ux0:adrbblbooter/")
+end
+if not files.exists(__YESSTARTDAT) then
+	files.copy("adrbblbooter/adrbblbooter.suprx", "ux0:adrbblbooter/")
+end
+
 bubbles = {}
 
 function bubbles.load()
@@ -43,7 +53,6 @@ function bubbles.load()
 				end
 			end
 			entry.title = info.TITLE or entry.id;
-			--entry.cat = info.CATEGORY or "Unknow";
 		end
 
 		table.insert(bubbles.list, entry);											-- Insert entry in list of bubbles! :)
@@ -69,7 +78,7 @@ function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
 
 	-- Custom PBOOT
 	local work_dir = "ux0:data/lmanbootr/"
-	files.mkdir(work_dir)
+	if not files.exists(work_dir) then files.mkdir(work_dir) end
 
 	files.copy("pboot/DATA.PSP",work_dir)
 	files.copy("pboot/PARAM.SFO",work_dir)
@@ -83,7 +92,7 @@ function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
 	local bubble_title = nil
 	local info_sfo = game.info(src)
 	if info_sfo then
-		bubble_title = osk.init("Titulo de la burbuja", info_sfo.TITLE or "Put here name", 1, 128)
+		bubble_title = osk.init("Bubble's Title", info_sfo.TITLE or "Put here name", 1, 128)
 	end
 	if not bubble_title then bubble_title = "Put here name" end
 
@@ -97,21 +106,10 @@ function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
 
 		files.rename(work_dir.."EBOOT.PBP","PBOOT.PBP")
 		files.move(work_dir.."PBOOT.PBP", dst.path)
-		--print("PBOOT.PBP Done!!!\n")
 
 		--Aqui insertar el nuevo icono y title del pboot en bubbles.list (asi como el bubbles.load)
 		dst.picon = icon;
 		dst.ptitle = bubble_title;
-		--dst.cat = info_sfo.CATEGORY or "Unknow";
-		
-		-- Adrbblbooter ??
-		if not files.exists("ux0:adrbblbooter/bubblesdb/") then files.mkdir("ux0:adrbblbooter/bubblesdb/") end
-		if not files.exists(__NOSTARTDAT) then
-			files.copy("adrbblbooter/adrbblbooter_nostartdat.suprx", __NOSTARTDAT)
-		end
-		if not files.exists(__YESSTARTDAT) then
-			files.copy("adrbblbooter/adrbblbooter.suprx", __YESSTARTDAT)
-		end
 
 		local fp = io.open("ux0:adrbblbooter/bubblesdb/"..id..".txt", "w+");
 		if fp then
@@ -192,19 +190,16 @@ function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
 				
 				-- clean old files
 				files.delete(work_dir)
-				if os.message("Would you like to mod anhoter bubble ?",1) == 0 then
+				if os.message("Would you like to mod another bubble ?",1) == 0 then
 					os.updatedb()
 					os.message("Your PSVita will restart...\nand your database will be update")
 					power.restart()
 				else
 					ForceReset()
 				end
-				--print("Restart! :D\n")
 			end
 		end--fp
 	end
-
-	--print("error\n")
 	-- clean old files
 	files.delete(work_dir)
 end

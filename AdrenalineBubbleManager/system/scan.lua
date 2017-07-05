@@ -1,12 +1,13 @@
 --tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME
 scan = {}
+__PIC = false
 
 function scan.insertCISO(hand)
-	local _type = files.type(hand.path)
+    local _type = files.type(hand.path)
 	if _type == 2 or _type == 3 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 and tmp0.CATEGORY == "UG" then
-			if debug_mode then print("Loading C/ISO %s\n",hand.path) end
+			if debug_mode then init_msg(string.format("Loading C/ISO %s\n",hand.path)) end
 			table.insert(scan.list, {img = game.geticon0(hand.path), title = tmp0.TITLE, path = hand.path, name = hand.name})
 		end
 		tmp0 = nil
@@ -44,7 +45,7 @@ function scan.insertPBP(hand)
 		local tmp0 = game.info(hand.path)
 		if tmp0 then
 			if tmp0.CATEGORY != "PG" then -- Really require this if?
-				if debug_mode then print("Loading PBP %s\n",hand.path) end
+				if debug_mode then init_msg(string.format("Loading PBP %s\n",hand.path)) end
 				table.insert(scan.list, {img = game.geticon0(hand.path), title = tmp0.TITLE, path = hand.path, name = hand.name})
 			end
 		end
@@ -85,10 +86,12 @@ function scan.show()
 	end
 
 	local scr,pic1 = newScroll(scan.list,15),nil
-	if scr.maxim > 0 then
+	if scr.maxim > 0 and __PIC then
 		pic1 = game.getpic1(scan.list[scr.sel].path)
 	end
-
+	
+	buttons.interval(10,10)
+	local xscr = 15
 	while true do
 		buttons.read()
 		if back then back:blit(0,0) end
@@ -101,7 +104,9 @@ function scan.show()
 
 			if buttons.up or buttons.down then
 			if buttons.up then scr:up() else scr:down() end
-				pic1 = game.getpic1(scan.list[scr.sel].path)
+				if __PIC then
+					pic1 = game.getpic1(scan.list[scr.sel].path)
+				end
 			end
 
 			if (buttons.held.l or buttons.analogly < -60) then
@@ -112,7 +117,9 @@ function scan.show()
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				pic1 = game.getpic1(scan.list[scr.sel].path)
+				if __PIC then
+					pic1 = game.getpic1(scan.list[scr.sel].path)
+				end
 			end
 
 			if pic1 then
@@ -135,10 +142,18 @@ function scan.show()
 				scan.list[scr.sel].img:blit(960 - (scan.list[scr.sel].img:getrealw()/2), 70)
 			end
 
-			if buttonskey then buttonskey:blitsprite(930,490,2) end								--[]
-			screen.print(920,495,"Deletes gameid.txt",1,color.white,color.blue, __ARIGHT)
+			if buttonskey then buttonskey:blitsprite(930,470,1) end								--Triangle
+			screen.print(920,470,"On/Off PICs",1,color.white,color.blue, __ARIGHT)
 
-			screen.print(15,523,scan.list[scr.sel].path or scan.list[scr.sel].name, 1, color.white, color.blue)
+			if buttonskey then buttonskey:blitsprite(930,490,2) end								--[]
+			screen.print(920,490,"Deletes gameid.txt",1,color.white,color.blue, __ARIGHT)
+		
+			if screen.textwidth(scan.list[scr.sel].path or scan.list[scr.sel].name) > 940 then
+				xscr = screen.print(xscr, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue,__SLEFT,940)
+			else
+				screen.print(15, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue)
+			end
+			
 
 		else
 			screen.print(480,272,"Not have any PSP Game :( Try again late!", 1, color.white, color.red, __ACENTER)
@@ -152,6 +167,11 @@ function scan.show()
 
 		--Controls
 		if buttons.cross and scr.maxim > 0 then bubbles.selection(scan.list[scr.sel]) end
+		if buttons.triangle and scr.maxim > 0 then
+			__PIC = not __PIC
+			if not __PIC then pic1 = nil
+			else pic1 = game.getpic1(scan.list[scr.sel].path) end
+		end
 
 		if buttons.square then scan.deletes() end
 		
@@ -164,15 +184,24 @@ function scan.deletes()
 
 	local vbuff = screen.toimage()
 
-	local gamesid = {}
+	local gamesid = { }
 	gamesid.list = files.list("ux0:adrbblbooter/bubblesdb/")
-	
+
 	gamesid.len = #gamesid.list
 	if gamesid.len > 0 then
 		table.sort(gamesid.list ,function (a,b) return string.lower(a.name)<string.lower(b.name); end)
 	end
 
-	local scrids = newScroll(gamesid.list, 16)
+	local scrids = newScroll(gamesid.list, 8)
+
+	for i=1, gamesid.len do
+		for line in io.lines(gamesid.list[i].path) do
+			gamesid.list[i].line = line
+			break
+		end--for
+	end
+	
+	local xscr1,xscr2 = 130,130
 	while true do
 
 		buttons.read()
@@ -195,8 +224,19 @@ function scan.deletes()
 				screen.print(480,y,gamesid.list[i].name or "unk",1.0,color.white,color.gray,__ACENTER)
 				y += 23
 			end
-
-			screen.print(480,430,gamesid.list[scrids.sel].path,1,color.white, color.gray, __ACENTER)
+			
+			if screen.textwidth(gamesid.list[scrids.sel].line or "Empty") > 700 then
+				xscr1 = screen.print(xscr1, 400, gamesid.list[scrids.sel].line or "Empty",1,color.white,color.gray,__SLEFT,700)
+			else
+				screen.print(480, 400, gamesid.list[scrids.sel].line or "Empty",1,color.white,color.gray, __ACENTER)
+			end
+			
+			if screen.textwidth(gamesid.list[scrids.sel].path) > 700 then
+				xscr2 = screen.print(xscr2, 435, gamesid.list[scrids.sel].path,1,color.white,color.gray,__SLEFT,700)
+			else
+				screen.print(480, 435, gamesid.list[scrids.sel].path,1,color.white,color.gray, __ACENTER)
+			end
+			
 			screen.print(480,460,"X: Delete txt      |      O: Cancel", 1, color.white, color.blue, __ACENTER)
 
 		else
@@ -208,7 +248,7 @@ function scan.deletes()
 		if buttons.cross and scrids.maxim > 0 then
 			files.delete(gamesid.list[scrids.sel].path)
 			table.remove(gamesid.list, scrids.sel)
-			scrids:set(gamesid.list,16)
+			scrids:set(gamesid.list,8)
 		end
 
 		if buttons.circle then

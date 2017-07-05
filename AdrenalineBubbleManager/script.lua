@@ -13,7 +13,7 @@ buttons.homepopup(0) -- Lock exit to livearea! :)
 color.loadpalette() -- Load palette of colors!
 
 buttons.read()
-debug_mode = true--buttons.held.r;
+if buttons.held.r then debug_mode = true end
 
 back = image.load("system/back.png")
 buttonskey = image.load("system/buttons.png",20,20)

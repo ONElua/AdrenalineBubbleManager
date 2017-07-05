@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changeinfo>
+  <changes app_ver="01.00">
+    <![CDATA[
+- Initial release 'POC'.<br>
+- Added automatic network update. app will now notify you when there's a new update.<br>
+- Support get and view complete list of content of PSPemu.<br>
+- Added option Enable/Disable PIC1.PNG.<br>
+    ]]>
+  </changes>
+</changeinfo>

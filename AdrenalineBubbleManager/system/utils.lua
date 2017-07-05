@@ -1,11 +1,17 @@
 -- Debug utilities :D
-console.init()
-console.clear(color.new(0,0,0,0))
---console.bgcolor(color.new(0,0,0,0))
-function print(...) -- Hook a print to debug with console module :)
-	console.print(string.format(...))
-	console.render()
+debug_print={}
+function init_msg(msg)
+	table.insert(debug_print,msg)
+	back:blit(0,0)
+	local y=5
+	if #debug_print<=26 then I=1 else I=#debug_print-25 end
+	for i=I, #debug_print do
+		screen.print(10,y,debug_print[i],0.9)
+		y+=10
+	end
+	screen.print(475,5,"Debug ON",1,color.white,color.gray,__ARIGHT)
 	screen.flip()
+	os.delay(5)
 end
 
 function files.write(path,data,mode) -- Write a file.

@@ -4,7 +4,9 @@
 	<livearea-background>
 		<image>bg0.png</image>
 	</livearea-background>
-	 
+	<gate>
+ 		<startup-image>startup.png</startup-image>
+	</gate>
 	<frame id="frame2">
 		<liveitem>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
@@ -16,7 +18,7 @@
 	<frame id="frame3">
 		<liveitem>
 			<text align="left" text-align="left" word-wrap="off" ellipsis="on">
-				<str size="26" color="#ffffff" shadow="on">v0.91</str>
+				<str size="26" color="#ffffff" shadow="on">v1.00</str>
 			</text>
 		</liveitem>
 	</frame>
