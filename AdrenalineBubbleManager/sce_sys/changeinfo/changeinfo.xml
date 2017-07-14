@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="02.00">
+    <![CDATA[
+- Adrbblbooter plugin files updated to newest version (v0.4)<br>
+- Added the option to use selected content's pic1 as STARTDAT.PNG if found, otherwise Lman's plugin default STARTDAT.PNG will be used.<br>
+- Now the function Disable Adrbblbooter Bubbles allows to:<br>
+- Eliminate the GAMEID.TXT and corresponding STARTDAT.png files from path "ux0:adrbblbooter/bubblesdb/".<br>
+- Eliminate corresponding lines from ux0:tai/config.txt and reload config.<br>
+- Eliminate the PBOOT.PBP from chosen bubble.<br>
+- Code got cleaned up a bit.<br>
+- Some stetic changes.<br>
+    ]]>
+  </changes>
+ 
   <changes app_ver="01.00">
     <![CDATA[
 - Initial release 'POC'.<br>

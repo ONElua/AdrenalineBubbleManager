@@ -8,16 +8,14 @@
 	
 ]]
 
-__NOSTARTDAT, __YESSTARTDAT = "ux0:adrbblbooter/adrbblbooter_nostartdat.suprx", "ux0:adrbblbooter/adrbblbooter.suprx"
+NOSTARTDAT, YESSTARTDAT = "ux0:adrbblbooter/adrbblbooter_nostartdat.suprx", "ux0:adrbblbooter/adrbblbooter.suprx"
+ADRENALINE = "ux0:adrenaline/adrenaline.suprx"
+--ADRBUBBLESDB = "ux0:adrbblbooter/bubblesdb/"
 
--- Adrbblbooter ??
-if not files.exists("ux0:adrbblbooter/bubblesdb") then files.mkdir("ux0:adrbblbooter/bubblesdb") end
-if not files.exists(__NOSTARTDAT) then
-	files.copy("adrbblbooter/adrbblbooter_nostartdat.suprx", "ux0:adrbblbooter/")
-end
-if not files.exists(__YESSTARTDAT) then
-	files.copy("adrbblbooter/adrbblbooter.suprx", "ux0:adrbblbooter/")
-end
+-- Adrbblbooter v.04??
+if not files.exists(ADRBUBBLESDB) then files.mkdir(ADRBUBBLESDB) end
+files.copy("adrbblbooter/adrbblbooter_nostartdat.suprx", "ux0:adrbblbooter/")
+files.copy("adrbblbooter/adrbblbooter.suprx", "ux0:adrbblbooter/")
 
 bubbles = {}
 
@@ -34,14 +32,13 @@ function bubbles.load()
 			icon = game.geticon0(string.format("%s/eboot.pbp", list[i].path)),		-- Icon of the Game Eboot.
 			picon = game.geticon0(string.format("%s/pboot.pbp", list[i].path)),		-- Icon of the Game PBOOT (Only if exists!)
 			ptitle = nil,															-- Title of the PBOOT (Only if exists!)
-			--cat = "Unknow",
 		}
 
-		if entry.location == "ur0:" then entry.flag = 0; end
+		if entry.location == "ur0:" then entry.flag = 0 end
 
 		if entry.picon then
-			local pinfo = game.info(string.format("%s/pboot.pbp", entry.path));
-			entry.ptitle = pinfo.TITLE;												-- if exists then text else nil :D
+			local pinfo = game.info(string.format("%s/pboot.pbp", entry.path))
+			entry.ptitle = pinfo.TITLE												-- if exists then text else nil :D
 		end
 
 		local info = game.info(string.format("%s/eboot.pbp", entry.path))
@@ -52,21 +49,21 @@ function bubbles.load()
 					entry.clon = true
 				end
 			end
-			entry.title = info.TITLE or entry.id;
+			entry.title = info.TITLE or entry.id
 		end
 
-		table.insert(bubbles.list, entry);											-- Insert entry in list of bubbles! :)
+		table.insert(bubbles.list, entry)											-- Insert entry in list of bubbles! :)
 
 	end
 
 	bubbles.len = #bubbles.list
 	if bubbles.len > 0 then
-		table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id); end)
+		table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 	end
 
 end
 
-function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
+function bubbles.install(src, dst) -- src = objet game to launch - dst = gamebase.
 
 	if files.exists(dst.path.."/PBOOT.PBP") then
 		if os.message("PBOOT.PBP was found\n\nYou want to overwrite ?",1) == 0 then
@@ -80,26 +77,32 @@ function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
 	local work_dir = "ux0:data/lmanbootr/"
 	if not files.exists(work_dir) then files.mkdir(work_dir) end
 
+	-- ICON0
+	local icon = nil
+	if files.type(src.path) == 1 then
+		game.unpack(src.path, work_dir)
+	else
+		icon = game.geticon0(src.path)
+		if icon then image.save(icon, work_dir.."ICON0.PNG") end
+	end
+	if not files.exists(work_dir.."ICON0.PNG") then	files.copy("pboot/ICON0.PNG",work_dir) end
+	if not icon then image.load("pboot/ICON0.PNG") end
+
 	files.copy("pboot/DATA.PSP",work_dir)
 	files.copy("pboot/PARAM.SFO",work_dir)
-	files.copy("pboot/ICON0.PNG",work_dir)
-
-	-- ICON0
-	local icon = game.geticon0(src)
-	if icon then image.save(icon, work_dir.."ICON0.PNG") end
 
 	-- TITLE
-	local bubble_title = nil
-	local info_sfo = game.info(src)
+	local bubble_title,info_sfo = nil, game.info(src.path)
 	if info_sfo then
 		bubble_title = osk.init("Bubble's Title", info_sfo.TITLE or "Put here name", 1, 128)
 	end
-	if not bubble_title then bubble_title = "Put here name" end
+
+	if not bubble_title then bubble_title = src.name end
 
 	-- Set SFO
-	game.setsfo(work_dir.."PARAM.SFO", bubble_title)
+	game.setsfo(work_dir.."PARAM.SFO", "TITLE", tostring(bubble_title), 0)
 
-	-- Pack all in a new PBOOT :DATA
+	-- Pack all in a new PBOOT :D
 	game.pack(work_dir)
 
 	if files.exists(work_dir.."EBOOT.PBP") then
@@ -107,97 +110,92 @@ function bubbles.install(src, dst) -- src = game to launch - dst = gamebase.
 		files.rename(work_dir.."EBOOT.PBP","PBOOT.PBP")
 		files.move(work_dir.."PBOOT.PBP", dst.path)
 
-		--Aqui insertar el nuevo icono y title del pboot en bubbles.list (asi como el bubbles.load)
-		dst.picon = icon;
-		dst.ptitle = bubble_title;
+		--Refresh&Insert
+		bubbles.load()
+		--dst.picon = icon
+		--dst.ptitle = bubble_title
 
-		local fp = io.open("ux0:adrbblbooter/bubblesdb/"..id..".txt", "w+");
+		os.message("Custom PBOOT.PBP Done!!!")
+		local fp = io.open(ADRBUBBLESDB..id..".txt", "w+")
 		if fp then
-			local path2game = src:gsub(src:sub(1,4).."pspemu/", "ms0:/")
+			local path2game = src.path:gsub(src.path:sub(1,4).."pspemu/", "ms0:/")
 
-			fp:write(path2game)
+			fp:write(path2game.."\n")
+			
+			--tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG
+			if info_sfo.CATEGORY == "UG" then
+				if os.message("Would you like to use M33 Driver ??",1) == 1 then
+					fp:write("MARCH33".."\n")
+
+					buttons.read()
+					local vbuff = screen.toimage()
+					while true do
+						buttons.read()
+						if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
+						local title = string.format("Extra Options")
+						local w,h = screen.textwidth(title,1) + 110,115
+						local x,y = 480 - (w/2), 272 - (h/2)
+						draw.fillrect(x, y, w, h, color.new(0x2f,0x2f,0x2f,0xff))
+						screen.print(480, y+5, title,1,color.white,color.black, __ACENTER)
+						screen.print(x+10,y+35,SYMBOL_CROSS.." BOOT.BIN")
+						screen.print(x+10,y+55,SYMBOL_TRIANGLE.." EBOOT.OLD")
+						screen.print(x+10,y+75,SYMBOL_CIRCLE.." Nothing")
+						screen.flip()
+
+						if buttons.released.cross or buttons.released.circle or buttons.released.triangle then
+							break
+						end
+					end--while
+
+					if buttons.released.cross then -- Press X
+						fp:write("BOOT.BIN".."\n")
+					elseif buttons.released.triangle then -- Press △
+						fp:write("EBOOT.OLD".."\n")
+					end
+				end
+			end--CAT
 			fp:close()
 
-			if files.exists("ux0:adrbblbooter/bubblesdb/"..id..".txt") then
-				
-				local plugin = {prxline = 0, sectln = 0}
-				function plugin.check()
-
-					local path = "ux0:tai/config.txt"
-					if not files.exists(path) then path = "ur0:tai/config.txt" end
-	
-					plugin.cfg = {}
-					plugin.state = false
-					if files.exists(path) then
-						local id_sect,i = false, 1
-
-						for line in io.lines(path) do
-
-							table.insert(plugin.cfg,line)
-							
-							if id_sect then
-								if line:gsub('#',''):lower() == __NOSTARTDAT or line:gsub('#',''):lower() == __YESSTARTDAT then
-									plugin.state = true;
-									plugin.prxline = i
-								end
-							end
-							
-							if line:find("*",1) then -- Secction Found
-								if line:sub(2) == id and not plugin.state then
-									id_sect = true;
-									plugin.sectln = i;
-								else
-									id_sect = false;
-								end
-							end
-			
-							i += 1
-						end--for
-					end
-				end
-
-				function plugin.set(state)
-					local __SUPRX = __YESSTARTDAT
-					if os.message("Would you like to disable the STARTDAT image \n\nat game start ??",1) == 1 then
-						__SUPRX = __NOSTARTDAT
-					end
-					if state and not plugin.state then
-						if plugin.sectln != 0 then
-							table.insert(plugin.cfg, plugin.sectln+1, __SUPRX)
-							table.insert(plugin.cfg, plugin.sectln+2, "ux0:adrenaline/adrenaline.suprx")
+			if files.exists(ADRBUBBLESDB..id..".txt") then
+				local SUPRX = NOSTARTDAT
+				if os.message("Would you like to use selected content's PIC1 as STARTDAT ??",1) == 1 then
+					SUPRX = YESSTARTDAT
+					-- PIC1
+					local pic = game.getpic1(src.path)
+					if pic then
+						if pic:getw() != 480 or pic:geth() != 272 then
+							local picscaled = image.copyscale(pic, 480,272)
+							image.save(picscaled, ADRBUBBLESDB..id..".PNG")
 						else
-							table.insert(plugin.cfg, "*"..id)
-							table.insert(plugin.cfg, __SUPRX)
-							table.insert(plugin.cfg, "ux0:adrenaline/adrenaline.suprx")
+							image.save(pic, ADRBUBBLESDB..id..".PNG")
 						end
-						files.write("ux0:tai/config.txt", table.concat(plugin.cfg, '\n'))
-						plugin.state = true
+					else
+						files.copy("adrbblbooter/STARDAT.PNG", ADRBUBBLESDB)
+						if files.exists(ADRBUBBLESDB..id..".PNG") then files.delete(ADRBUBBLESDB..id..".PNG") end
+						files.rename(ADRBUBBLESDB.."STARDAT.PNG",id..".PNG")
+						os.message("No PIC1.PNG was found, you can manually place your\n\n                              "..id..".PNG\n\n                       "..ADRBUBBLESDB)
 					end
-
-					if not state and plugin.state then
-						table.remove(plugin.cfg, plugin.prxline)
-						--if not plugin.cfg[plugin.prxline]:sub(1,4) == "ux0:" then -- no have another prx in the secction...
-							--table.remove(plugin.cfg, plugin.sectln)
-						--end
-						files.write("ux0:tai/config.txt", table.concat(plugin.cfg, '\n'))
-						plugin.state = false
-					end
-
 				end
 
-				plugin.check()
-				plugin.set(true)
-				
-				-- clean old files
-				files.delete(work_dir)
+				--Updata Tai Config
+				--bubbles.tai(id)
+
+				tai.del(id,NOSTARTDAT)
+				tai.del(id,YESSTARTDAT)
+				tai.del(id,ADRENALINE)
+				tai.put(id,SUPRX)
+				tai.put(id,ADRENALINE)
+				tai.sync()
+
 				if os.message("Would you like to mod another bubble ?",1) == 0 then
-					os.updatedb()
-					os.message("Your PSVita will restart...\nand your database will be update")
-					power.restart()
+					-- clean old files
+					files.delete(work_dir)
+					UpdateDB()
 				else
 					ForceReset()
 				end
 			end
+
 		end--fp
 	end
 	-- clean old files
@@ -271,7 +269,7 @@ function bubbles.selection(obj)
 			screen.print(480,460,"X: Select bubble | O: Cancel selection", 1, color.white, color.blue, __ACENTER)
 
 		else
-			screen.print(480,200,"Not have any PSPEmu Game :( Try again late!", 1, color.white, color.red, __ACENTER)
+			screen.print(480,200,"No PSP content was found :( Try again late!", 1, color.white, color.red, __ACENTER)
 		end
 
 		screen.flip()
@@ -281,7 +279,7 @@ function bubbles.selection(obj)
 			if (buttons.down or buttons.held.r or buttons.analogly > 60) then scroll:down() end
 
 			if buttons.cross then
-				bubbles.install(obj.path, bubbles.list[scroll.sel])
+				bubbles.install(obj, bubbles.list[scroll.sel])
 				return true
 			end
 
@@ -292,4 +290,80 @@ function bubbles.selection(obj)
 		end
 
 	end
+end
+
+function bubbles.tai(id)
+	local bubblesman = {
+		cfg = {},					-- Have original state of file.
+		list = {},					-- Handle list of plugins.
+	}
+
+	local path = "ux0:tai/config.txt"
+	if not files.exists(path) then path = "ur0:tai/config.txt" end
+
+	bubblesman.cfg = {} -- Set to Zero
+	bubblesman.list = {} -- Set to Zero
+
+	if files.exists(path) then
+		local id_sect,i = nil, 1
+
+		for line in io.lines(path) do
+
+			table.insert(bubblesman.cfg,line)
+
+			if line:find("*",1) then -- Section Found
+				if line:sub(2) == id then
+					id_sect = id
+					if not bubblesman.list[id_sect] then bubblesman.list[id_sect] = {line = i, suprxline = line, dels=true } end
+					table.insert(bubblesman.list[id_sect], {line = i, suprxline = line, dels=true })
+				else
+					id_sect = nil
+				end
+			else
+
+				if id_sect then
+					local tmp = line:gsub('#',''):lower()
+					if tmp == NOSTARTDAT or tmp == YESSTARTDAT or tmp == ADRENALINE then
+						table.insert(bubblesman.list[id_sect], {line = i, suprxline = line, dels=true })
+					elseif line:sub(1,4) == "ux0:" or line:sub(1,4) == "ur0:" then
+						table.insert(bubblesman.list[id_sect], {line = i, suprxline = line, dels=false })
+					end
+				end
+			end
+
+			i += 1
+		end--for
+	end
+
+	if bubblesman.list[id] then
+		for i=#bubblesman.list[id],1,-1 do
+			table.remove(bubblesman.cfg, bubblesman.list[id][i].line)
+		end
+
+		local _write,countdels = true,0 
+		for i=#bubblesman.list[id],1,-1 do
+			if not bubblesman.list[id][i].dels then
+				countdels += 1
+				if _write then
+					table.insert(bubblesman.cfg, "*"..id)
+					table.insert(bubblesman.cfg, SUPRX)
+					table.insert(bubblesman.cfg, ADRENALINE)
+					_write = false
+				end
+				table.insert(bubblesman.cfg, bubblesman.list[id][i].suprxline)
+			end
+		end--for
+
+		if countdels == 0 then
+			table.insert(bubblesman.cfg, "*"..id)
+			table.insert(bubblesman.cfg, SUPRX)
+			table.insert(bubblesman.cfg, ADRENALINE)
+		end
+	else
+			table.insert(bubblesman.cfg, "*"..id)
+			table.insert(bubblesman.cfg, SUPRX)
+			table.insert(bubblesman.cfg, ADRENALINE)
+	end
+	files.write(path, table.concat(bubblesman.cfg, '\n'))
+
 end

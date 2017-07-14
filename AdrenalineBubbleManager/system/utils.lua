@@ -1,15 +1,27 @@
+SYMBOL_CROSS = string.char(0xe2)..string.char(0x95)..string.char(0xb3)-- "\xE2\x95\xB3"
+SYMBOL_SQUARE = string.char(0xe2)..string.char(0x96)..string.char(0xa1)-- "\xE2\x96\xA1"
+SYMBOL_TRIANGLE = string.char(0xe2)..string.char(0x96)..string.char(0xb3)-- "\xE2\x96\xB3"
+SYMBOL_CIRCLE = string.char(0xe2)..string.char(0x97)..string.char(0x8b)-- "\xE2\x97\x8B"
+
+function UpdateDB()
+	os.delay(100)
+	os.updatedb()
+	os.message("Your PSVita will restart...\nand your database will be update")
+	os.delay(1500)
+	power.restart()
+end
+
 -- Debug utilities :D
 debug_print={}
 function init_msg(msg)
 	table.insert(debug_print,msg)
 	back:blit(0,0)
 	local y=5
-	if #debug_print<=26 then I=1 else I=#debug_print-25 end
+	if #debug_print<=20 then I=1 else I=#debug_print-19 end 
 	for i=I, #debug_print do
-		screen.print(10,y,debug_print[i],0.9)
-		y+=10
+		screen.print(10,y,debug_print[i],1)
+		y+=25
 	end
-	screen.print(475,5,"Debug ON",1,color.white,color.gray,__ARIGHT)
 	screen.flip()
 	os.delay(5)
 end
