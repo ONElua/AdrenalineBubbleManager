@@ -38,8 +38,11 @@ On small popup window (to add corresponding lines to GAMEID.TXT).
 - Added the option to use selected content's pic1 as STARTDAT.PNG if found, otherwise Lman's plugin default STARTDAT.PNG will be used.
 - Now the function Disable Adrbblbooter Bubbles allows to:
 	Eliminate the GAMEID.TXT and corresponding STARTDAT.png files from path "ux0:adrbblbooter/bubblesdb/".
+
 	Eliminate corresponding lines from ux0:tai/config.txt and reload config
+
 	Eliminate the PBOOT.PBP from chosen bubble.
+
 - Code got cleaned up a bit.
 - Some stetic changes.
 
