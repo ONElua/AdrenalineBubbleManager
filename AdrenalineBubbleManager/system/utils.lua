@@ -3,6 +3,13 @@ SYMBOL_SQUARE = string.char(0xe2)..string.char(0x96)..string.char(0xa1)-- "\xE2\
 SYMBOL_TRIANGLE = string.char(0xe2)..string.char(0x96)..string.char(0xb3)-- "\xE2\x96\xB3"
 SYMBOL_CIRCLE = string.char(0xe2)..string.char(0x97)..string.char(0x8b)-- "\xE2\x97\x8B"
 
+function RestartV()
+	os.delay(100)
+	os.message("Your PSVita will restart...")
+	os.delay(1500)
+	power.restart()
+end
+
 function UpdateDB()
 	os.delay(100)
 	os.updatedb()

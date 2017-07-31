@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="02.10">
+    <![CDATA[
+- Now you can press [ ] to install M33 driver from start screen (for iso/cso files only).<br>
+- Added the option to use pic1.png to show as bg0.png, and to set icon.dds to be shown in full bubble (but, to use this feature, te game must have been booted once and changes will revert after a db rebuild).<br>
+- More Code got cleaned up a bit.<br>
+    ]]>
+  </changes>
+
   <changes app_ver="02.00">
     <![CDATA[
 - Adrbblbooter plugin files updated to newest version (v0.4)<br>
