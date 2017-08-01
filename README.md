@@ -32,8 +32,8 @@ Note: This app will allow you to personalize more than one bubble at a time.
 - Circle: Make ICON0.DDS
 
 ### Changelog 2.1 ###
-- Now you can press [] to install M33 driver from start screen (for iso/cso files only).
-- NEW OPTION ICON0.DDS: Added the option to use pic1.png to show as bg0.png, and to set icon.dds to be shown in full bubble (but, to use this feature, te game must have been booted once and changes will revert after a db rebuild).
+- Now you can press [] to **install M33 driver** from start screen (for iso/cso files only).
+- NEW OPTION ICON0.DDS: Added the option to use **pic1.png** to show as **bg0.png**, and to set icon.dds to be shown in full bubble (but, to use this feature, te game must have been booted once and changes will revert after a db rebuild).
 - More Code got cleaned up a bit.
 
 ### Changelog 2.0 ###
@@ -41,11 +41,11 @@ Note: This app will allow you to personalize more than one bubble at a time.
 - Added the option to use selected content's pic1 as STARTDAT.PNG if found, otherwise Lman's plugin default STARTDAT.PNG will be used.
 - Now the function Disable Adrbblbooter Bubbles allows to:
 
-	-- Eliminate the GAMEID.TXT and corresponding STARTDAT.png files from path "ux0:adrbblbooter/bubblesdb/".
+1. Eliminate the GAMEID.TXT and corresponding STARTDAT.png files from path "ux0:adrbblbooter/bubblesdb/".
 
-	-- Eliminate corresponding lines from ux0:tai/config.txt and reload config
+2. Eliminate corresponding lines from ux0:tai/config.txt and reload config
 
-	-- Eliminate the PBOOT.PBP from chosen bubble.
+3. Eliminate the PBOOT.PBP from chosen bubble.
 
 - Code got cleaned up a bit.
 - Some stetic changes.
