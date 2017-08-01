@@ -22,16 +22,14 @@ Note: This app will allow you to personalize more than one bubble at a time.
 ### Controls ###
 - Up/Down: Browse the list of PSP content(HB/ISO/CSO) or Browse the list of bubbles to boot.
 - Cross: Select content and go to bubble selection or select bubble and create your access.
+- Square: Select content to install M33 driver from start screen (for iso/cso files only).
 - Circle: Go to previous section.
 - Triangle: enable/disable view of 'PIC1'.
 - Start: Go to livearea.
 
-Extras.
-- Cross: Add M33 line to GAMEID.txt on screen message.
-On small popup window (to add corresponding lines to GAMEID.TXT).
-- Cross: BOOT.BIN for M33 driver only.
-- Triangle: EBOOT.OLD FOR M33 DRIVER + Prometheus ISO loader.
-- Circle: Cancel.
+### Extras ###
+- Cross: Make PBOOT.PBP
+- Circle: Make ICON0.DDS
 
 ### Changelog 2.1 ###
 - Now you can press [] to install M33 driver from start screen (for iso/cso files only).
@@ -51,6 +49,13 @@ On small popup window (to add corresponding lines to GAMEID.TXT).
 
 - Code got cleaned up a bit.
 - Some stetic changes.
+
+Extras.
+- Cross: Add M33 line to GAMEID.txt on screen message.
+On small popup window (to add corresponding lines to GAMEID.TXT).
+- Cross: BOOT.BIN for M33 driver only.
+- Triangle: EBOOT.OLD FOR M33 DRIVER + Prometheus ISO loader.
+- Circle: Cancel.
 
 ### Changelog 1.0 ###
 - Initial release 'POC'.
