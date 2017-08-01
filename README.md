@@ -34,6 +34,8 @@ Note: This app will allow you to personalize more than one bubble at a time.
     *Resizes the icon.dds to full bubble and sets the  pic1 as bg0 for the chosen bubble. (Changes get reverted with db update)*
   ![header](icon0dds.png)
 
+As an advice, you must create the custom bubble's PBoots first, after that, you can use the option ICON0.DDS for a complete bubble customization.
+
 ### Changelog 2.1 ###
 - Now you can press [] to **install M33 driver** from start screen (for iso/cso files only).
 - NEW OPTION ICON0.DDS: Added the option to use **pic1.png** to show as **bg0.png**, and to set icon.dds to be shown in full bubble (but, to use this feature, te game must have been booted once and changes will revert after a db rebuild).
