@@ -30,6 +30,7 @@ Note: This app will allow you to personalize more than one bubble at a time.
 ## Extras ##
 - Cross: Make PBOOT.PBP
 - Circle: Make ICON0.DDS
+  ![header](icon0dds.png)
 
 ### Changelog 2.1 ###
 - Now you can press [] to **install M33 driver** from start screen (for iso/cso files only).
