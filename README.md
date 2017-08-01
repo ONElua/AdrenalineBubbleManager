@@ -29,7 +29,9 @@ Note: This app will allow you to personalize more than one bubble at a time.
 
 ## Extras ##
 - Cross: Make PBOOT.PBP
+    *Inserts a title and icon0 to be shown in livearea to Adrenaline's pboot.*
 - Circle: Make ICON0.DDS
+    *Resizes the icon.dds to full bubble and sets the  pic1 as bg0 for the chosen bubble. (Changes get reverted with db update)*
   ![header](icon0dds.png)
 
 ### Changelog 2.1 ###
