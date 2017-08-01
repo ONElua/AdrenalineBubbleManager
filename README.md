@@ -27,7 +27,7 @@ Note: This app will allow you to personalize more than one bubble at a time.
 - Triangle: enable/disable view of 'PIC1'.
 - Start: Go to livearea.
 
-### Extras ###
+## Extras ##
 - Cross: Make PBOOT.PBP
 - Circle: Make ICON0.DDS
 
@@ -41,11 +41,11 @@ Note: This app will allow you to personalize more than one bubble at a time.
 - Added the option to use selected content's pic1 as STARTDAT.PNG if found, otherwise Lman's plugin default STARTDAT.PNG will be used.
 - Now the function Disable Adrbblbooter Bubbles allows to:
 
-1. Eliminate the GAMEID.TXT and corresponding STARTDAT.png files from path "ux0:adrbblbooter/bubblesdb/".
+        1. Eliminate the GAMEID.TXT and corresponding STARTDAT.png files from path "ux0:adrbblbooter/bubblesdb/".
 
-2. Eliminate corresponding lines from ux0:tai/config.txt and reload config
+        2. Eliminate corresponding lines from ux0:tai/config.txt and reload config
 
-3. Eliminate the PBOOT.PBP from chosen bubble.
+        3. Eliminate the PBOOT.PBP from chosen bubble.
 
 - Code got cleaned up a bit.
 - Some stetic changes.
