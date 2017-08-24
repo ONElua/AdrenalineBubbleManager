@@ -12,8 +12,10 @@ The initial interface is composed by the list of available PSP content to launch
 Note: This app will allow you to personalize more than one bubble at a time.
 
 ### Changelog 3.0 ###
+- In this version the eboot.pbp generates  while the icon.dds get set, all in one step.
 - Adrbblbooter plugin files updated to newest version (v0.5) Thks LMAN leecherman.
-- Added support for iso/cso/pbp in uma0 (Use a compiled version of Adrenaline that supports uma0 partition ([Adrenaline uma0 commit 0f8e709](https://sites.google.com/site/theleecherman/adrbubblebooter/Adrenaline-0f8e709.rar?attredirects=0)) Thks LMAN
+- Added support for iso/cso/pbp in uma0 (Use a compiled version of Adrenaline that supports uma0 partition ([Adrenaline uma0 commit 0f8e709](https://sites.google.com/site/theleecherman/adrbubblebooter/Adrenaline-0f8e709.rar?attredirects=0)) Thks LMAN.
+- To be able to use adrenaline on the memory card or the msd with sd2vita adapter, adrenaline folder must be moved to ur0, and corresponding lines with especific paths must be added to ur0:tai/config.txt
 - Now options for PLUGINS and STARTDAT.PNG is Enable for default.
 - Added option to Enable/Disable plugins when linking content to a bubble.
 - Added option Edit GAMEID.txt within ABM for Custom Bubbles (no need to restart):
