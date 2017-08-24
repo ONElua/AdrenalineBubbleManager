@@ -1,3 +1,8 @@
+ADRBUBBLESDB =	"ur0:adrbblbooter/bubblesdb/"
+NOSTARTDAT =	"ux0:adrbblbooter/adrbblbooter_nostartdat.suprx"
+ADRBBLBOOTER =	"ur0:adrbblbooter/adrbblbooter.suprx"
+ADRENALINE =	"ur0:adrenaline/adrenaline.suprx"
+
 SYMBOL_CROSS = string.char(0xe2)..string.char(0x95)..string.char(0xb3)-- "\xE2\x95\xB3"
 SYMBOL_SQUARE = string.char(0xe2)..string.char(0x96)..string.char(0xa1)-- "\xE2\x96\xA1"
 SYMBOL_TRIANGLE = string.char(0xe2)..string.char(0x96)..string.char(0xb3)-- "\xE2\x96\xB3"
@@ -6,14 +11,6 @@ SYMBOL_CIRCLE = string.char(0xe2)..string.char(0x97)..string.char(0x8b)-- "\xE2\
 function RestartV()
 	os.delay(50)
 	os.message("Your PSVita will restart...")
-	os.delay(1000)
-	power.restart()
-end
-
-function UpdateDB()
-	os.delay(50)
-	os.updatedb()
-	os.message("Your PSVita will restart...\nand your database will be update")
 	os.delay(1000)
 	power.restart()
 end
@@ -34,11 +31,11 @@ function init_msg(msg)
 end
 
 function files.write(path,data,mode) -- Write a file.
-	local fp = io.open(path, mode or "w+");
+	local fp = io.open(path, mode or "w+")
 	if fp == nil then return end
-	fp:write(data);
-	fp:flush();
-	fp:close();
+	fp:write(data)
+	fp:flush()
+	fp:close()
 end
 
 function files.read(path,mode) -- Read a file.
@@ -95,22 +92,4 @@ function newScroll(a,b,c)
 
 	return obj
 
-end
-
--- Ajust string width w/newline char...
-function wordwrap(text,width,w) 
-	if not w then w = 1.0 end
-	lines = 1                                     
-	out = ""                                       
-	int = ""                                      
-  	for word in string.gmatch(text,"%S+") do       
-    		if screen.textwidth (int.." "..word,w) > width then
-      			out = out..'\n'                            
-     			int = ""                                   
-     			lines = lines + 1                         
-    		end
-  		out = out.." "..word                           
-  		int = int.." "..word                           
-  	end
-  	return out                            
 end

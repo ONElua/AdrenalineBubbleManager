@@ -44,11 +44,11 @@ function tai.parse()
 		for i=1, #tai.raw do
 			local line = tai.raw[i]
 			if line:find("*",1) then -- Secction Found.
-				id_sect = line:sub(2);
+				id_sect = line:sub(2)
 				--print("Section found %s\n", id_sect)
 				if not tai.gameid[id_sect] then tai.gameid[id_sect] = {line = {}, prx = {}} end
 				table.insert(tai.gameid[id_sect].line, i)
-				continue;
+				continue
 			end
 			if id_sect and not line:find("#",1) then -- Is a path and not a comment.
 				--print("[%s]: %s\n", id_sect, line:lower())
@@ -115,10 +115,10 @@ function tai.find(id, path)
 	for i=1, #tai.gameid[id].prx do
 		local x1,x2 = string.find(tai.gameid[id].prx[i].path:lower(), fname, 1, true)
 		if x1 then
-			return i;
+			return i
 		end
 	end
-	return nil;
+	return nil
 end
 
 --[[
@@ -135,15 +135,15 @@ function tai.put(id, path)
 		table.insert(tai.raw, tai.gameid[id].prx[idx].line+1, path)
 		tai.parse() -- Refresh all ids lines etc..
 		--tai.debug()
-		return true;
+		return true
 	else -- New ID new path!
 		table.insert(tai.raw, "*"..id)
 		table.insert(tai.raw, path)
 		tai.parse() -- Refresh all ids lines etc..
 		--tai.debug()
-		return true;
+		return true
 	end
-	return false;
+	return false
 end
 --[[
 	NUMBER tai.del(id, path)
@@ -159,9 +159,9 @@ function tai.del(id, path)
 		end
 		tai.parse() -- Refresh all ids lines etc..
 		--tai.debug()
-		return true;
+		return true
 	end
-	return false;
+	return false
 end
 --[[
 	NIL tai.sync([path])

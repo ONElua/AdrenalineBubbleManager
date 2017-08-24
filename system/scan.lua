@@ -17,16 +17,15 @@ function scan.insertCISO(hand)
 	if _type == 2 or _type == 3 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 and tmp0.CATEGORY == "UG" then
-			if debug_mode then init_msg(string.format("Loading C/ISO %s\n",hand.path)) end
-			table.insert(scan.list, { img = game.geticon0(hand.path), title = tmp0.TITLE or hand.name, path = hand.path,
-						name = hand.name, type=true })
+			init_msg(string.format("Loading C/ISO %s\n",hand.path))
+			table.insert(scan.list, { img = game.geticon0(hand.path), title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, type=true })
 		end
 		tmp0 = nil
 	end
 end
 
 function scan.isos(path)
-	local tmp = files.list(path)   
+	local tmp = files.list(path)
 	if tmp and #tmp > 0 then
 		for i=1, #tmp do
 			if tmp[i].directory then
@@ -34,7 +33,7 @@ function scan.isos(path)
 				if ls and #ls > 0 then
 					for j=1, #ls do
 						local ext = ls[j].ext:upper()
-						if ext == "ISO" or ext == "CSO" then scan.insertCISO(ls[j])	end
+						if ext == "ISO" or ext == "CSO" then scan.insertCISO(ls[j])   end
 					end
 				end
 			else
@@ -52,9 +51,8 @@ function scan.insertPBP(hand)
 	if files.type(hand.path) == 1 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 and tmp0.CATEGORY != "PG" then
-			if debug_mode then init_msg(string.format("Loading PBP %s\n",hand.path)) end
-			table.insert(scan.list, {img = game.geticon0(hand.path), title = tmp0.TITLE, path = hand.path,
-                     name = hand.name, type=false })
+			init_msg(string.format("Loading PBP %s\n",hand.path))
+			table.insert(scan.list, {img = game.geticon0(hand.path), title = tmp0.TITLE, path = hand.path, name = hand.name, type=false })
 		end
 		tmp0 = nil
 	end
@@ -81,6 +79,11 @@ function scan.games()
 	scan.isos("ur0:pspemu/ISO")
 	scan.pbps("ux0:pspemu/PSP/GAME")
 	scan.pbps("ur0:pspemu/PSP/GAME")
+
+	if files.exists("uma0:") then
+		scan.isos("uma0:pspemu/ISO")
+		scan.pbps("uma0:pspemu/PSP/GAME")
+	end
 	scan.len = #scan.list
 	if scan.len > 0 then
 		table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
@@ -94,7 +97,7 @@ function scan.show()
 	buttons.interval(10,10)
 	local xscr = 15
 	while true do
-		buttons.homepopup(0)
+		--buttons.homepopup(0)
 		buttons.read()
 		if back then back:blit(0,0) end
 
@@ -137,7 +140,7 @@ function scan.show()
 					end
 					draw.fillrect(10,y-3,930-w,25,color.red)
 				end
-				screen.print(23,y,scan.list[i].title or scan.list[i].name, 1, color.white, color.blue)				
+				screen.print(23,y,scan.list[i].title or scan.list[i].name, 1, color.white, color.blue)            
 				y += 25
 			end
 
@@ -152,19 +155,7 @@ function scan.show()
 			screen.print(920,470,"On/Off PICs",1,color.white,color.blue, __ARIGHT)
 
 			if buttonskey then buttonskey:blitsprite(930,490,3) end                        --O
-			screen.print(920,490,"Disable AdrBubbles",1,color.white,color.blue, __ARIGHT)
-
-			--Left
-			if scan.list[scr.sel].type then
-				if buttonskey then buttonskey:blitsprite(10,470,0) end                     --X
-				screen.print(40,470,"MODE NORMAL",1,color.white,color.blue, __ALEFT)
-
-				if buttonskey then buttonskey:blitsprite(10,490,2) end                     --[]
-				screen.print(40,490,"MODE MARCH33",1,color.white,color.blue, __ALEFT)
-			else
-				if buttonskey then buttonskey:blitsprite(10,490,0) end                     --X
-				screen.print(40,490,"MODE NORMAL",1,color.white,color.blue, __ALEFT)
-			end
+			screen.print(920,490,"Disable/Edit AdrBubbles",1,color.white,color.blue, __ARIGHT)
 
 			if screen.textwidth(scan.list[scr.sel].path or scan.list[scr.sel].name) > 940 then
 				xscr = screen.print(xscr, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue,__SLEFT,940)
@@ -177,15 +168,15 @@ function scan.show()
 		end
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
-		if buttonskey2 then buttonskey2:blitsprite(400,490,1) end                        --Start
-		screen.print(435,495,"Go to the Livearea",1,color.white,color.blue)
+		if buttonskey2 then buttonskey2:blitsprite(10,490,1) end                        --Start
+		screen.print(40,495,"Go to the Livearea",1,color.white,color.blue)
 
 		screen.flip()
 
 		--Controls
-		if buttons.cross and scr.maxim > 0 then bubbles.selection(scan.list[scr.sel]) buttons.read() end
-		if (buttons.square and scr.maxim > 0) and scan.list[scr.sel].type then
-			bubbles.selection(scan.list[scr.sel],"M33")
+		if buttons.cross and scr.maxim > 0 then
+			if scan.list[scr.sel].type then bubbles.selection(scan.list[scr.sel],true)
+			else bubbles.selection(scan.list[scr.sel],false) end
 			buttons.read()
 		end
 
@@ -195,13 +186,16 @@ function scan.show()
 			else pic1 = game.getpic1(scan.list[scr.sel].path) end
 		end
 
-		if buttons.circle then scan.deletes() end
+		if buttons.circle then
+			kick=true
+				scan.deledit_gameids()
+			kick=false
+		end
+
 	end
 end
 
-ADRBUBBLESDB = "ux0:adrbblbooter/bubblesdb/"
-function scan.deletes()
-	local vbuff = screen.toimage()
+function scan.deledit_gameids()
 
 	local gamesid = {}
 	gamesid.list = files.listfiles(ADRBUBBLESDB)
@@ -242,6 +236,9 @@ function scan.deletes()
 						files.rename(iconpng, "ICON0.dds")
 					end
 				end
+
+				gamesid.list[i].update = false
+
 			end
 		end
 
@@ -250,68 +247,135 @@ function scan.deletes()
 	end
 
 	for i=1, gamesid.len do
+		gamesid.list[i].lines = {}
 		for line in io.lines(gamesid.list[i].path) do
-			gamesid.list[i].line = line
-			break
-		end--for
+			table.insert(gamesid.list[i].lines, line)
+		end
+
+		for j=1,5 do
+			if not gamesid.list[i].lines[j] then
+				gamesid.list[i].lines[j] = "DEFAULT"
+			end
+		end
+
 	end
 
-	local scrids, xscr1 = newScroll(gamesid.list, 7), 130
+	local drivers = { "INFERNO", "MARCH33" }
+	local bins = { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
+	local plugin_startdat = { "ENABLE", "DISABLE" }
+	local selector, optsel, change = 1,2,false
+	local scrids, xscr1, xscr2 = newScroll(gamesid.list, 7), 130, 15
+
 	buttons.interval(10,10)
 	while true do
-
+		--buttons.homepopup(0)
 		buttons.read()
-		if vbuff then vbuff:blit(0,0) end
+		if back then back:blit(0,0) end
+		draw.fillrect(0,0,960,30, 0x64545353) --UP
+		screen.print(480,5, "Edit & Uninstall GAMEID.txt", 1, color.white, color.blue, __ACENTER)
 
 		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
+		draw.gradline(120,310,840,310,color.blue,color.green)
+		draw.gradline(120,312,840,312,color.green,color.blue)
 		draw.rect(120,64,720,416,color.blue)
 
-		screen.print(480,66,"GAMEIDs.TXT ", 1, color.white, color.gray, __ACENTER)
-		screen.print(830,64,"Count: " + gamesid.len, 1, color.red, color.gray, __ARIGHT)
+		screen.print(480,70,"GAMEID.TXT ", 1, color.white, color.gray, __ACENTER)
+		screen.print(830,70,"Count: " + gamesid.len, 1, color.red, color.gray, __ARIGHT)
 
 		if scrids.maxim > 0 then
 
-			if (buttons.up or buttons.held.l or buttons.analogly < -60) then scrids:up() end
-			if (buttons.down or buttons.held.r or buttons.analogly > 60) then scrids:down() end
+			if not change then
+				if (buttons.up or buttons.held.l or buttons.analogly < -60) then scrids:up() end
+				if (buttons.down or buttons.held.r or buttons.analogly > 60) then scrids:down() end
+			else
+				if (buttons.up or buttons.held.l) then optsel-=1 end
+				if (buttons.down or buttons.held.r) then optsel+=1 end
+				if optsel > 5 then optsel = 2 end
+				if optsel < 2 then optsel = 5 end
 
-			screen.print(480, 90, ADRBUBBLESDB,1,color.white,color.gray, __ACENTER)
+				if (buttons.left or buttons.right) then
+					if buttons.left then selector-=1 end
+					if buttons.right then selector+=1 end
+
+					if optsel == 3 then
+						if selector > 3 then selector = 1 end
+						if selector < 1 then selector = 3 end
+					else
+						if selector > 2 then selector = 1 end
+						if selector < 1 then selector = 2 end
+					end
+
+					if optsel == 2 then
+						gamesid.list[scrids.sel].lines[optsel] = drivers[selector]
+					elseif optsel == 3 then
+						gamesid.list[scrids.sel].lines[optsel] = bins[selector]
+					else
+						gamesid.list[scrids.sel].lines[optsel] = plugin_startdat[selector]
+					end
+					gamesid.list[scrids.sel].update = true
+				end
+
+			end
 
 			if gamesid.list[scrids.sel].picon then
 				gamesid.list[scrids.sel].picon:center()
-				gamesid.list[scrids.sel].picon:blit(480, 360)
+				gamesid.list[scrids.sel].picon:blit(200, 170)
 			else
 				if gamesid.list[scrids.sel].dicon then
 					gamesid.list[scrids.sel].dicon:center()
-					gamesid.list[scrids.sel].dicon:blit(480, 360)
+					gamesid.list[scrids.sel].dicon:blit(200, 170)
 				end
 			end
 
-			local x,y = 120,130
+			local y = 120
 			for i=scrids.ini, scrids.lim do
-				if i == scrids.sel then draw.fillrect(x + 10,y-1,700,18,color.green:a(100)) end
+				if i == scrids.sel then draw.fillrect(320,y-1,330,18,color.green:a(100)) end
 				screen.print(480,y,gamesid.list[i].name or "unk",1.0,color.white,color.gray,__ACENTER)
 				y += 23
 			end
 
-			if screen.textwidth(gamesid.list[scrids.sel].line or "Empty") > 700 then
-				xscr1 = screen.print(xscr1, 415, gamesid.list[scrids.sel].line or "Empty",1,color.white,color.gray,__SLEFT,700)
+			--Options txts
+			if screen.textwidth(gamesid.list[scrids.sel].lines[1] or "unk") > 700 then
+				xscr1 = screen.print(xscr1, 320, gamesid.list[scrids.sel].lines[i] or "unk",1,color.white,color.gray,__SLEFT,700)
 			else
-				screen.print(480, 415, gamesid.list[scrids.sel].line or "Empty",1,color.white,color.gray, __ACENTER)
+				screen.print(480, 320, gamesid.list[scrids.sel].lines[1] or "unk",1,color.white,color.gray, __ACENTER)
 			end
+
+			local y1=343
+			for i=2,5 do
+				if change then
+					if i == optsel then draw.fillrect(300,y1-1,350,18,color.green:a(100)) end
+				end
+				screen.print(480, y1, gamesid.list[scrids.sel].lines[i],1,color.white,color.gray, __ACENTER)
+
+				y1+=23
+			end
+
 			if gamesid.list[scrids.sel].dds_png then
 				screen.print(480,438,"dds",1.0,color.green,color.gray,__ACENTER)
 			end
 
-			screen.print(480,460,SYMBOL_CROSS..": Uninstall AdrBubble      |      "..SYMBOL_CIRCLE..": Cancel", 1, color.white, color.blue, __ACENTER)
+			if not change then
+				screen.print(480,460,SYMBOL_CROSS..": Uninstall AdrBubble      |      "..SYMBOL_TRIANGLE..": Edit gameid.txt      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
+			else
+				screen.print(480,460,"<- -> Toggle options      |      "..SYMBOL_TRIANGLE..": Done editing      ", 1, color.white, color.blue, __ACENTER)
+			end
+
+			if screen.textwidth(gamesid.list[scrids.sel].path) > 940 then
+				xscr2 = screen.print(xscr2, 523, gamesid.list[scrids.sel].path,1,color.white,color.blue,__SLEFT,940)
+			else
+				screen.print(15, 523, gamesid.list[scrids.sel].path,1,color.white,color.blue)
+			end
 
 		else
 			screen.print(480,200,"Not have any Files List :( Try again later!", 1, color.white, color.red, __ACENTER)
 		end
+		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		screen.flip()
 
-		if buttons.cross and scrids.maxim > 0 then
-			--Update config.txt
+		if (buttons.cross and not change) and scrids.maxim > 0 then
+
 			local id = gamesid.list[scrids.sel].name:gsub('.txt','')
 			scan.plugman(id)
 
@@ -319,6 +383,10 @@ function scan.deletes()
 			files.delete(gamesid.list[scrids.sel].path)
 			table.remove(gamesid.list, scrids.sel)
 			scrids:set(gamesid.list,7)
+			gamesid.len = #gamesid.list
+
+			--Reload config.txt
+			ForceReload()
 
 			--Delete GAMEID.PNG
 			if files.exists(ADRBUBBLESDB..id..".PNG") then
@@ -326,62 +394,65 @@ function scan.deletes()
 				os.message("Removed "..id..".PNG")
 			end
 
-			--Delete PBOOT ??
+			--Delete PBOOT
 			if files.exists("ux0:pspemu/PSP/GAME/"..id.."/PBOOT.PBP") then
 				files.delete("ux0:pspemu/PSP/GAME/"..id.."/PBOOT.PBP")
-				for i=1,bubbles.len do
-					if id == bubbles.list[i].id then
-						bubbles.list[i].picon = nil
-						bubbles.list[i].ptitle = ""
-						if bubbles.list[i].dds_png then
-							--Set app.db tittle
-							local info_sfo = game.info("ux0:pspemu/PSP/GAME/"..id.."/EBOOT.PBP")
-							if info_sfo and info_sfo.TITLE then
-								os.titledb(info_sfo.TITLE,id)
-							end
-						end
-						bubbles.list[i].dds_png = false
-					end
-				end
-				ForceUpdateDb()
 				os.message("Removed "..id.."/PBOOT.PBP")
-			else
-				local appmeta = string.format("ur0:appmeta/%s/",id)
-				for i=1,bubbles.len do
-					if id == bubbles.list[i].id then
-						bubbles.list[i].picon = nil
-						bubbles.list[i].ptitle = ""
-						if bubbles.list[i].dds_png then
-							--Set app.db tittle
-							local info_sfo = game.info("ux0:pspemu/PSP/GAME/"..id.."/EBOOT.PBP")
-							if info_sfo and info_sfo.TITLE then
-								os.titledb(info_sfo.TITLE,id)
-								ForcePowerReset()
-							end
-							files.delete(appmeta.."/ICON0.dds")
-							files.rename(appmeta.."/_ICON0.dds","ICON0.dds")
-
-							files.delete(appmeta.."/livearea/contents/STARTUP.PNG")
-							files.rename(appmeta.."/livearea/contents/_STARTUP.PNG","STARTUP.PNG")
-
-							if files.exists(appmeta.."/livearea/contents/_BG0.PNG") then
-								files.delete(appmeta.."/livearea/contents/BG0.PNG")
-								files.rename(appmeta.."/livearea/contents/_BG0.PNG","BG0.PNG")
-							end
-						end
-						bubbles.list[i].dds_png = false
-					end
-				end
-				ForceReload()
+				ForcePowerReset()
 			end
 
+			--Delete icon0.dds
+			local appmeta = string.format("ur0:appmeta/%s",id)
+			for i=1,bubbles.len do
+				if id == bubbles.list[i].id then
+					bubbles.list[i].picon = nil
+					bubbles.list[i].ptitle = ""
+					if bubbles.list[i].dds_png then
+						--Set app.db tittle
+						local info_sfo = game.info("ux0:pspemu/PSP/GAME/"..id.."/EBOOT.PBP")
+						if info_sfo and info_sfo.TITLE then
+							os.titledb(info_sfo.TITLE,id)
+							ForcePowerReset()
+						end
+						files.delete(appmeta.."/ICON0.dds")
+						os.message("Removed "..appmeta.."/ICON0.dds")
+						files.rename(appmeta.."/icon0_orig.dds","ICON0.dds")
+
+						files.delete(appmeta.."/livearea/contents/STARTUP.PNG")
+						files.rename(appmeta.."/livearea/contents/startup_orig.png","STARTUP.PNG")
+
+						if files.exists(appmeta.."/livearea/contents/bg0_orig.png") then
+							files.delete(appmeta.."/livearea/contents/BG0.PNG")
+							files.rename(appmeta.."/livearea/contents/bg0_orig.png","BG0.PNG")
+						end
+					end
+					bubbles.list[i].dds_png = false
+				end
+			end--for
+
 			if os.message("Would you like to Disable another GAMEID.txt ? ",1) == 0 then
-				if UpdateDataBase then UpdateDB() end
+				for i=1,gamesid.len do
+					if gamesid.list[i].update then
+						files.write(gamesid.list[i].path, table.concat(gamesid.list[i].lines, '\n'))
+					end
+				end
+				os.delay(15)
 				if PowerReset then RestartV() end
 			end
 		end
 
-		if buttons.circle then
+		if buttons.triangle then
+			change = not change
+			if not change then optsel = 2 end
+		end
+
+		if buttons.circle and not change then
+			for i=1,gamesid.len do
+				if gamesid.list[i].update then
+					files.write(gamesid.list[i].path, table.concat(gamesid.list[i].lines, '\n'))
+				end
+			end
+			os.delay(15)
 			return false
 		end
 
@@ -391,8 +462,8 @@ end
 function scan.plugman(id)
 
 	local plugman = {
-		cfg = {},               -- Have original state of file.
-		list = {},               -- Handle list of plugins.
+		cfg = {},                	-- Have original state of file.
+		list = {},                  -- Handle list of plugins.
 	}
 
 	local path = "ux0:tai/config.txt"
@@ -410,17 +481,17 @@ function scan.plugman(id)
 
 			if line:find("*",1) then -- Section Found
 				if line:sub(2) == id then
-				id_sect = id
-				if not plugman.list[id_sect] then plugman.list[id_sect] = {} end
-				table.insert(plugman.list[id_sect], {line = i, suprxline = line, dels=true })
+					id_sect = id
+					if not plugman.list[id_sect] then plugman.list[id_sect] = {} end
+					table.insert(plugman.list[id_sect], {line = i, suprxline = line, dels=true })
 				else
-				id_sect = nil
+					id_sect = nil
 				end
 			else
 
 				if id_sect then
 					local tmp = line:gsub('#',''):lower()
-					if tmp == NOSTARTDAT or tmp == YESSTARTDAT or tmp == ADRENALINE then
+					if tmp == NOSTARTDAT or tmp == ADRBBLBOOTER or tmp == ADRENALINE then
 						table.insert(plugman.list[id_sect], {line = i, suprxline = line, dels=true })
 					elseif line:sub(1,4) == "ux0:" or line:sub(1,4) == "ur0:" then
 						table.insert(plugman.list[id_sect], {line = i, suprxline = line, dels=false })

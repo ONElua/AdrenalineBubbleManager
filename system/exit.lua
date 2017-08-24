@@ -1,22 +1,19 @@
-UpdateDataBase, ReloadConfigTxt, PowerReset= false,false,false
+ReloadConfigTxt,PowerReset,kick=false,false,false
 
 function ForceReload()
-   ReloadConfigTxt = true
-end
-
-function ForceUpdateDb()
-   UpdateDataBase = true
+	ReloadConfigTxt = true
 end
 
 function ForcePowerReset()
-   PowerReset = true
+	PowerReset = true
 end
 
 local scr_flip = screen.flip
 function screen.flip() -- Hook flip! :D
 	scr_flip()
-	if buttons.released.start then -- buttons.home then -- In any section, if press start go to livearea or updatedb if is needed! :)
-		if UpdateDataBase then UpdateDB() end
+
+	-- In any section, if press start go to livearea or restart vita if is needed! :)
+	if buttons.released.start and not kick then
 		if PowerReset then RestartV() end
 		if ReloadConfigTxt then
 			os.taicfgreload()
