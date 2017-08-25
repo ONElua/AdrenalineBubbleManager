@@ -35,6 +35,12 @@ Remember to change adrbblbooter plugin path for isos already linked on config.tx
 
 ![header](config.png)
 
+It should be:
+
+*GAMEID
+
+ur0:adrbblbooter/adrbblbooter.suprx
+
 ### Changelog 2.1 ###
 - Now you can press [] to **install M33 driver** from start screen (for iso/cso files only).
 - NEW OPTION ICON0.DDS: Added the option to use **pic1.png** to show as **bg0.png**, and to set icon.dds to be shown in full bubble (but, to use this feature, te game must have been booted once and changes will revert after a db rebuild).
