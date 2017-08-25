@@ -268,7 +268,6 @@ function scan.deledit_gameids()
 
 	buttons.interval(10,10)
 	while true do
-		--buttons.homepopup(0)
 		buttons.read()
 		if back then back:blit(0,0) end
 		draw.fillrect(0,0,960,30, 0x64545353) --UP

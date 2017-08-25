@@ -98,8 +98,8 @@ function bubbles.install(src, dst, driver)
 		files.mkdir(appmeta.."/livearea/contents/")
 		--os.exit()
 	end
-	--buttons.homepopup(0)
-	--buttons.read()
+	buttons.homepopup(0)
+	buttons.read()
 
 	files.copy(work_dir.."ICON0.PNG", appmeta)
 	if files.exists(appmeta.."/ICON0.PNG") then
@@ -194,7 +194,6 @@ function bubbles.install(src, dst, driver)
 			buttons.read()
 			local vbuff = screen.toimage()
 			while true do
-				--buttons.homepopup(0)
 				buttons.read()
 				if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
 
@@ -212,18 +211,17 @@ function bubbles.install(src, dst, driver)
 				if buttons.released.cross or buttons.released.circle or buttons.released.triangle then break end
 			end--while
 
-			if buttons.released.cross then         -- Press X
+			if buttons.released.cross then				-- Press X
 				fp:write("INFERNO".."\n")
-			elseif buttons.released.triangle then   -- Press △
+			elseif buttons.released.triangle then		-- Press △
 				fp:write("MARCH33".."\n")
-			elseif buttons.released.circle then      -- Press O
+			elseif buttons.released.circle then			-- Press O
 				fp:write("NP9660".."\n")
 			end
 			buttons.read()--fflush
 
 			--Boot mode bin
 			while true do
-				--buttons.homepopup(0)
 				buttons.read()
 				if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
 
@@ -242,11 +240,11 @@ function bubbles.install(src, dst, driver)
 			end
 
 			-- Press X/△
-			if buttons.released.cross then         -- Press X
+			if buttons.released.cross then         		-- Press X
 				fp:write("EBOOT.BIN".."\n")
-			elseif buttons.released.triangle then   -- Press △
+			elseif buttons.released.triangle then   	-- Press △
 				fp:write("EBOOT.OLD".."\n")
-			elseif buttons.released.circle then      -- Press O
+			elseif buttons.released.circle then      	-- Press O
 				fp:write("BOOT.BIN".."\n")
 			end
 
@@ -311,7 +309,6 @@ function bubbles.selection(obj,driver)
 	local scroll = newScroll(bubbles.list, 16)
 	local xscr = 830 - 144
 	while true do
-		--buttons.homepopup(0)
 		buttons.read()
 		if vbuff then vbuff:blit(0,0) end
 

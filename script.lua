@@ -8,7 +8,7 @@
 	- Gdljjrod (https://twitter.com/gdljjrod).
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
---os.message(files.device("uma0:seplugins"))
+
 game.close()
 buttons.homepopup(0)	-- Lock exit to livearea! :)
 color.loadpalette()		-- Load palette of colors!
