@@ -1,12 +1,18 @@
-ADRBUBBLESDB =	"ur0:adrbblbooter/bubblesdb/"
 NOSTARTDAT =	"ux0:adrbblbooter/adrbblbooter_nostartdat.suprx"
-ADRBBLBOOTER =	"ur0:adrbblbooter/adrbblbooter.suprx"
-ADRENALINE =	"ur0:adrenaline/adrenaline.suprx"
 
-SYMBOL_CROSS = string.char(0xe2)..string.char(0x95)..string.char(0xb3)-- "\xE2\x95\xB3"
-SYMBOL_SQUARE = string.char(0xe2)..string.char(0x96)..string.char(0xa1)-- "\xE2\x96\xA1"
-SYMBOL_TRIANGLE = string.char(0xe2)..string.char(0x96)..string.char(0xb3)-- "\xE2\x96\xB3"
-SYMBOL_CIRCLE = string.char(0xe2)..string.char(0x97)..string.char(0x8b)-- "\xE2\x97\x8B"
+ADRBUBBLESDB =	"ur0:adrbblbooter/bubblesdb/"
+ADRBBLBOOTER =	"ur0:adrbblbooter/adrbblbooter.suprx"
+
+																		--New Adrenaline in ur0??
+ADRENALINE =	"ur0:adrenaline/adrenaline.suprx"
+if not files.exists(ADRENALINE) then
+ADRENALINE =	"ux0:adrenaline/adrenaline.suprx"						--Adrenaline old
+end
+
+SYMBOL_CROSS = string.char(0xe2)..string.char(0x95)..string.char(0xb3)
+SYMBOL_SQUARE = string.char(0xe2)..string.char(0x96)..string.char(0xa1)
+SYMBOL_TRIANGLE = string.char(0xe2)..string.char(0x96)..string.char(0xb3)
+SYMBOL_CIRCLE = string.char(0xe2)..string.char(0x97)..string.char(0x8b)
 
 function RestartV()
 	os.delay(50)

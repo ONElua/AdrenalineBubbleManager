@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="03.01">
+    <![CDATA[
+- If adrenaline folder is found at ur0: then ABM will add corresponding lines to ur0:tai/config.txt, otherwise the lines will be added to ux0:tai/config.txt i adrenaline folder is found at ux0:.<br>
+    ]]>
+  </changes>
+  
   <changes app_ver="03.00">
     <![CDATA[
 - Adrbblbooter plugin files updated to newest version (v0.5) Thks LMAN leecherman.<br>
