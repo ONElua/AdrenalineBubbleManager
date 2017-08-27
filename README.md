@@ -11,8 +11,11 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 The initial interface is composed by the list of available PSP content to launch (HBS/PSX/ISO/CSO), get positioned over the desired content using the D-pad and press X on the desired game to proceed to select the bubble that will launch it, a popup window will show you all the bubbles available to use (PSP GAME), you only have to position yourself on the desired one and press X, to begin the linking process, this app will tell you if there is an installed pboot and if you want to change it and continue, then the app will ask you if the STARTDAT should be disabled, you will also be asked if you want to change the Name the bubble or use that of the content to link, and finally you will be asked to restart the console to update the database.
 Note: This app will allow you to personalize more than one bubble at a time.
 
-### Changelog 3.0 ###
+### Changelog 3.01 ###
 ![header](ABM.png)
+- If adrenaline folder is found at ur0: then ABM will add corresponding lines to ur0:tai/config.txt, otherwise the lines will be added to ux0:tai/config.txt i adrenaline folder is found at ux0:<br>
+
+### Changelog 3.00 ###
 - In this version the eboot.pbp generates  while the icon.dds get set, all in one step.
 - Adrbblbooter plugin files updated to newest version (v0.5) Thks LMAN leecherman.
 - adrbblbooter folder must be moved to ur0, and corresponding lines with especific paths must be added to ur0:tai/config.txt
