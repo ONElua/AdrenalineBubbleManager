@@ -1,5 +1,4 @@
 # AdrenalineBubbleManager
-
 ![header](preview.jpg)
 
 Create and organize your direct adrenaline bubbles.
@@ -7,13 +6,24 @@ Create and organize your direct adrenaline bubbles.
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, and adding the lines Of the plugin to the GAMEID in the config.txt of taihen, also creates the GAMEID.TXT for the plugin, forgetting completely of the tedious and long manual method.
 
-### Instructions ###
-The initial interface is composed by the list of available PSP content to launch (HBS/PSX/ISO/CSO), get positioned over the desired content using the D-pad and press X on the desired game to proceed to select the bubble that will launch it, a popup window will show you all the bubbles available to use (PSP GAME), you only have to position yourself on the desired one and press X, to begin the linking process, this app will tell you if there is an installed pboot and if you want to change it and continue, then the app will ask you if the STARTDAT should be disabled, you will also be asked if you want to change the Name the bubble or use that of the content to link, and finally you will be asked to restart the console to update the database.
-Note: This app will allow you to personalize more than one bubble at a time.
+### Changelog 3.05 ###
+![header](ABM305.png)
+Adrenaline Bubbles Manager has been updated to be able to create bubbles to use with Adrenaline v6 and Lman's recently updated plugin adrbubblebooter without loosing the compatibility with adrenaline v5 and lower versions and corresponding Lman's plugin adrbblbooter for those versions.
+- Added compatibility with Adrenaline v6 and Lmans adrbubblebooter plugin for adrenaline v6.
+- On this version ABM searches for the installed Adrenaline version and adapts to work with found Adrenaline version (either v6 or v5 and lower).
+- Added the option to change the boot.inf driver setup.
+- Added the option to use pic1.png to show as pic0.png and bg0.png, and to set icon0.png from iso/cso/hb to be shown in the bubble and as startup.png (changes will revert after a db rebuild and default Lmans plugin images will be shown).
+- Added the option Bubble Restore to compensate the loss of the iso/cso/hb images from the bubbles after a db rebuild (to use this option ABM opens the selected bubble, but you have to return manually to ABM).
+
+### OLD VERSION (Adrenaline 5.1) ###
 
 ### Changelog 3.01 ###
 ![header](ABM.png)
 - If adrenaline folder is found at ur0: then ABM will add corresponding lines to ur0:tai/config.txt, otherwise the lines will be added to ux0:tai/config.txt i adrenaline folder is found at ux0:<br>
+
+### Instructions ###
+The initial interface is composed by the list of available PSP content to launch (HBS/PSX/ISO/CSO), get positioned over the desired content using the D-pad and press X on the desired game to proceed to select the bubble that will launch it, a popup window will show you all the bubbles available to use (PSP GAME), you only have to position yourself on the desired one and press X, to begin the linking process, this app will tell you if there is an installed pboot and if you want to change it and continue, then the app will ask you if the STARTDAT should be disabled, you will also be asked if you want to change the Name the bubble or use that of the content to link, and finally you will be asked to restart the console to update the database.
+Note: This app will allow you to personalize more than one bubble at a time.
 
 ### Changelog 3.00 ###
 - In this version the eboot.pbp generates  while the icon.dds get set, all in one step.
