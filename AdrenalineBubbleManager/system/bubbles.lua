@@ -24,8 +24,7 @@ function bubbles.install(src, driver)
 
 	local work_dir = "ux0:data/ABMVPK/"
 	if not files.exists(work_dir) then files.mkdir(work_dir) end
-	local work_res = "ux0:data/ABMVPK/"..lastid.."res/"
-	if not files.exists(work_res) then files.mkdir(work_res) end
+	local work_res = "ux0:data/ABMVPK/"..lastid.."/resources/"
 
 	if files.exists(work_dir+lastid) then files.delete(work_dir+lastid) end
 	files.copy("system/pspemuxxx",work_dir)
@@ -42,9 +41,12 @@ function bubbles.install(src, driver)
 	--Resources
 	if files.type(src.path) == 1 then
 		game.unpack(src.path, work_res)
-		if files.exists(work_res.."DATA.PSP") then files.delete(work_res.."DATA.PSP") end
-		if files.exists(work_res.."PARAM.SFO") then files.delete(work_res.."PARAM.SFO") end
-		if files.exists(work_res.."PIC0.PNG") then files.delete(work_res.."PIC0.PNG") end
+		if files.exists(work_res.."DATA.PSP")	then files.delete(work_res.."DATA.PSP")		end
+		if files.exists(work_res.."PARAM.SFO")	then files.delete(work_res.."PARAM.SFO")	end
+		if files.exists(work_res.."PIC0.PNG")	then files.delete(work_res.."PIC0.PNG")		end
+		if files.exists(work_res.."ICON1.PMF")	then files.delete(work_res.."ICON1.PMF")	end
+		if files.exists(work_res.."ICON1.PNG")	then files.delete(work_res.."ICON1.PNG")	end
+		if files.exists(work_res.."SND0.AT3")	then files.delete(work_res.."SND0.AT3")		end
 	else
 		local icon = game.geticon0(src.path)
 		if icon then image.save(icon, work_res.."ICON0.PNG") end
@@ -134,48 +136,16 @@ function bubbles.install(src, driver)
 	files.rename(work_dir.."data/boot.ini","boot.inf")
 
 	--Install Bubble
-	local result = game.installdir(work_dir)
-	if result == 1 then
+	if game.installdir(work_dir) == 1 then
 		os.message("Bubble Installed...Updating resources")
-	-----------------------------------      ur0:appmeta      --------------------------------------------------------------------
-		local appmeta = string.format("ur0:appmeta/%s",lastid)
-
-		if files.exists(work_res.."ICON0.PNG") then
-	
-			files.copy(work_res.."ICON0.PNG", appmeta)
-			if files.exists(appmeta.."/livearea/contents/startup.png") then
-				files.delete(appmeta.."/livearea/contents/startup.png")
-			end
-			files.copy(work_res.."ICON0.PNG", appmeta.."/livearea/contents/")
-			files.rename(appmeta.."/livearea/contents/ICON0.PNG","startup.png")
-
-			ForcePowerReset()
-		end
-
-		if files.exists(work_res.."PIC1.PNG") then
-
-			files.copy(work_res.."PIC1.PNG", appmeta)
-			if files.exists(appmeta.."/PIC0.PNG") then
-				files.delete(appmeta.."/PIC0.PNG")
-			end
-			files.rename(appmeta.."/PIC1.PNG","PIC0.PNG")
-
-			if files.exists(appmeta.."/livearea/contents/BG0.PNG") then
-				files.delete(appmeta.."/livearea/contents/BG0.PNG")
-			end
-			files.copy(work_res.."PIC1.PNG", appmeta.."/livearea/contents/")
-			files.rename(appmeta.."/livearea/contents/PIC1.PNG","BG0.PNG")
-
-			ForcePowerReset()
-		end
-
+		update_resources(lastid, false)
 	else
 		os.message("Sorry, there was an instalation error")
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
 
-	if os.message("Would you like to MOD another Bubble ?",1) == 0 then
+	if os.message("Would you like to Create Another Bubble ?",1) == 0 then
 		if PowerReset then RestartV() end
 	end
 

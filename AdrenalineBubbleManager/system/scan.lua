@@ -219,8 +219,10 @@ function scan.bootinf()
 				if info then
 					local entry = {
 						id = list[i].id,                                             					-- TITLEID of the game.
-						path = string.format("%s/data/boot.inf", list[i].path),							-- Path to the boot.inf
-						pathini = string.format("%s/data/boot.ini", list[i].path),						-- Path to the boot.inf
+						pathdata = string.format("%s/data/", list[i].path),								-- Path to the app/data/
+						pathboot = string.format("%s/data/boot.inf", list[i].path),						-- Path to the boot.inf
+						pathresources = string.format("%s/resources/", list[i].path),					-- Path to the App/resources
+						pathini = string.format("%s/resources/boot.ini", list[i].path),					-- Path to the boot.inf
 						icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..list[i].id)),	--Icon of the Game.
 						pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..list[i].id)),		--Icon of the Game.
 						title = nil,											--nil
@@ -245,7 +247,10 @@ function scan.bootinf()
 
 		for i=1, bubbles.len do
 			bubbles.list[i].lines = {}
-			files.rename(bubbles.list[i].path, "boot.ini")
+			if not files.exists(bubbles.list[i].pathresources) then files.mkdir(bubbles.list[i].pathresources) end
+			files.copy(bubbles.list[i].pathboot, bubbles.list[i].pathresources)
+			if files.exists(bubbles.list[i].pathini) then files.delete(bubbles.list[i].pathini) end
+			files.rename(bubbles.list[i].pathresources.."boot.inf", "boot.ini")
 			for j=1, #boot do
 				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].pathini, boot[j], "DEFAULT"))
 			end
@@ -342,15 +347,16 @@ function scan.bootinf()
 			end
 
 			if not change then
-				screen.print(480,460,SYMBOL_TRIANGLE..": Edit boot.inf      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
+				--screen.print(480,438,SYMBOL_SQUARE..": Bubble's Icons Restore (ALL)", 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460,SYMBOL_CROSS..": Bubble's Icons Restore      |      "..SYMBOL_TRIANGLE..": Edit boot.inf      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
 			else
 				screen.print(480,460,"<- -> Toggle options      |      "..SYMBOL_TRIANGLE..": Done editing      ", 1, color.white, color.blue, __ACENTER)
 			end
 
-			if screen.textwidth(bubbles.list[scrids.sel].path) > 940 then
-				xscr2 = screen.print(xscr2, 523, bubbles.list[scrids.sel].path,1,color.white,color.blue,__SLEFT,940)
+			if screen.textwidth(bubbles.list[scrids.sel].pathboot) > 940 then
+				xscr2 = screen.print(xscr2, 523, bubbles.list[scrids.sel].pathboot,1,color.white,color.blue,__SLEFT,940)
 			else
-				screen.print(15, 523, bubbles.list[scrids.sel].path,1,color.white,color.blue)
+				screen.print(15, 523, bubbles.list[scrids.sel].pathboot,1,color.white,color.blue)
 			end
 
 		else
@@ -360,6 +366,45 @@ function scan.bootinf()
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		screen.flip()
+
+		--[[
+		if buttons.square and scrids.maxim > 0 then
+			for i=1,bubbles.len do
+				game.close()
+				if not files.exists("ur0:appmeta/"..bubbles.list[i].id.."/livearea/contents/") then
+					os.message("We need to open the basegame: "..bubbles.list[i].id.."\n\nPlease return to ABM inmediatelly to continue the process...")
+					game.open(bubbles.list[i].id)
+					os.delay(100)
+					files.mkdir("ur0:appmeta/"..bubbles.list[i].id.."/livearea/contents/")
+					--os.exit()
+					buttons.homepopup(0)
+					buttons.read()
+				end
+			end
+			buttons.homepopup(0)
+			buttons.read()
+			for i=1,bubbles.len do
+				update_resources(bubbles.list[i].id, false)
+				bubbles.list[i].icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..bubbles.list[i].id))
+				bubbles.list[i].pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..bubbles.list[i].id))
+			end
+		end
+		]]
+
+		if buttons.cross and scrids.maxim > 0 then
+			if not files.exists("ur0:appmeta/"..bubbles.list[scrids.sel].id.."/livearea/contents/") then
+				os.message("We need to open the basegame, Please return \n\nto ABM inmediatelly to continue the process...")
+				game.open(bubbles.list[scrids.sel].id)
+				os.delay(100)
+				files.mkdir("ur0:appmeta/"..bubbles.list[scrids.sel].id.."/livearea/contents/")
+				--os.exit()
+			end
+			buttons.homepopup(0)
+			buttons.read()
+			update_resources(bubbles.list[scrids.sel].id, true)
+			bubbles.list[scrids.sel].icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..bubbles.list[scrids.sel].id))
+			bubbles.list[scrids.sel].pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..bubbles.list[scrids.sel].id))
+		end
 
 		if buttons.triangle and scrids.maxim > 0 then
 			change = not change
@@ -374,6 +419,7 @@ function scan.bootinf()
 					end
 				end
 				files.rename(bubbles.list[i].pathini, "boot.inf")
+				files.copy(bubbles.list[i].pathresources.."boot.inf", bubbles.list[i].pathdata)
 			end
 			os.delay(15)
 			return false

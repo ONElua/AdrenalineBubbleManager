@@ -25,20 +25,22 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 icon0 = image.load("system_old/pboot/ICON0.PNG")
 
 dofile("git/updater.lua")
-dofile("commons.lua")
+dofile("resources/commons.lua")
 
-adrnew = true
-if not game.exists("PSPEMUCFW") then
-	os.message("Adrenaline has not been installed...\nOld version ABM is ready")
-	adrnew = false
+adrnew = false
+if game.exists("PSPEMUCFW") and files.exists("ux0:app/PSPEMUCFW") then
+	adrnew = true
+else
+	os.message("Adrenaline v6 has not been installed...\nOld ABM version is ready")
 	--os.exit()
 end
 
-local system = "system"
-if not adrnew then system = "system_old" end
+if buttons.held.l then adrnew = false end
+local system = "system_old"
+if adrnew then system = "system" end
 
 dofile(system.."/exit.lua")
-dofile(system.."/tai.lua")
+dofile("resources/tai.lua")
 dofile(system.."/utils.lua")
 dofile(system.."/scan.lua")
 dofile(system.."/bubbles.lua")

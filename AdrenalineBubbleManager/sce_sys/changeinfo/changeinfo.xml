@@ -3,7 +3,8 @@
   <changes app_ver="03.05">
     <![CDATA[
 - Compatible with Adrenaline v6 and Adrenaline Bubble Booter VPK Edition.<br>
-- Now the cloned PSP bubbles will not show up on ABM's Available PSP content list.
+-On this version ABM searches for the installed Adrenaline version and adapts to work with found Adrenaline version (either v6 or v5 and lower).<br>
+- Now the cloned PSP bubbles will not show up on ABM's Available PSP content list.<br>
     ]]>
   </changes>
   <changes app_ver="03.01">
