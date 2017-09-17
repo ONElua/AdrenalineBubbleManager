@@ -15,6 +15,18 @@ Adrenaline Bubbles Manager has been updated to be able to create bubbles to use 
 - Added the option to use pic1.png to show as pic0.png and bg0.png, and to set icon0.png from iso/cso/hb to be shown in the bubble and as startup.png (changes will revert after a db rebuild and default Lmans plugin images will be shown).
 - Added the option Bubble Restore to compensate the loss of the iso/cso/hb images from the bubbles after a db rebuild (to use this option ABM opens the selected bubble, but you have to return manually to ABM).
 
+### Instructions for the new version: ###
+- At the opening, ABM scans for available PSP content, as usual, then by pressing X, you can select the iso/cso/psp hb to be launched with the bubble to be made.
+- After choosing the PSP content to be launched, a popup message will let you know that the resources (images) for your new bubble are getting ready and another popup will let you know the gameid of your freshly made bubble, after that, you'll be given the driver/loader options which you can change later, the buttons to setup the driver/loader are as follows:
+
+        1. X   INFERNO         /\   MARCH33        O   NP9660.
+- Then the boot setup is as follows:
+
+        2. X   EBOOT.BIN     /\   EBOOT.OLD     O   BOOT.BIN.
+       
+- Then after installing the newly made bubble ABM will ask you if there are more bubbles to be made, if the answer is yes ABM will take you back to the available PSP content list, if you choose no, the ps vita will restart so the changes on the images take effect.
+- Although, the icon/pic changes are not permanent (the icon/pic will go back to Lman's black images after a db rebuild/update), to compensate that, an option to restore the bubbles has been added.
+
 ### OLD VERSION (Adrenaline 5.1) ###
 
 ### Changelog 3.01 ###
