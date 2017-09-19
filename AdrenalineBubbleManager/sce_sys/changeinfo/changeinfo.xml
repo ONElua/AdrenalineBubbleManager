@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="03.06">
+    <![CDATA[
+- Now the resources (images) for the new bubble are converted to 8bits, so dont worry aboud db rebuild.<br>
+- Support for Old ABM version has been removed.<br>
+- Removed restart after creating bubbles.<br>
+- NOTE:<br>
+- If the iso/cso/hb to launch lacks of icon0.png or pic1.png then ABM will use included Lmans images.<br>
+    ]]>
+  </changes>
   <changes app_ver="03.05">
     <![CDATA[
 - Compatible with Adrenaline v6 and Adrenaline Bubble Booter VPK Edition.<br>
--On this version ABM searches for the installed Adrenaline version and adapts to work with found Adrenaline version (either v6 or v5 and lower).<br>
+- On this version ABM searches for the installed Adrenaline version and adapts to work with found Adrenaline version (either v6 or v5 and lower).<br>
 - Now the cloned PSP bubbles will not show up on ABM's Available PSP content list.<br>
     ]]>
   </changes>

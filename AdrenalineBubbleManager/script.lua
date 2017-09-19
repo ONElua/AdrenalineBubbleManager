@@ -22,38 +22,47 @@ buttons.read()
 back = image.load("resources/back.png")
 buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
-icon0 = image.load("system_old/pboot/ICON0.PNG")
 
 dofile("git/updater.lua")
-dofile("resources/commons.lua")
 
-adrnew = false
-if game.exists("PSPEMUCFW") and files.exists("ux0:app/PSPEMUCFW") then
-	adrnew = true
+ADRENALINE = "ux0:app/PSPEMUCFW"
+ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
+
+oncopy = false
+if game.exists("PSPEMUCFW") and files.exists("ux0:app/PSPEMUCFW") and
+	files.exists("ux0:app/PSPEMUCFW/eboot.bin") and files.exists("ux0:app/PSPEMUCFW/eboot.pbp") then
+
+	dofile("system/exit.lua")
+	dofile("system/tai.lua")
+	dofile("system/callbacks.lua")
+
+	tai.load()
+	if not tai.find("KERNEL",ADRENALINEK) then
+		tai.put("KERNEL",ADRENALINEK)
+		tai.sync()
+		ForcePowerReset()
+	end
+
+	if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
+		oncopy = true
+		files.copy("sce_module/", ADRENALINE)
+
+		os.message("AdrBubbleBooter plugin has been installed... \nWe need to restart your PSVita... :)")
+		os.delay(500)
+		power.restart()
+	end
+
+	dofile("system/commons.lua")
+
+	dofile("system/scan.lua")
+	dofile("system/bubbles.lua")
+
+
+	scan.games()
+	scan.show()
+
 else
-	os.message("Adrenaline v6 has not been installed...\nOld ABM version is ready")
-	--os.exit()
+	os.message("Adrenaline v6 has not been installed...")
 end
-
-if buttons.held.l then adrnew = false end
-local system = "system_old"
-if adrnew then system = "system" end
-
-dofile(system.."/exit.lua")
-dofile("resources/tai.lua")
-dofile(system.."/utils.lua")
-dofile(system.."/scan.lua")
-dofile(system.."/bubbles.lua")
-
-tai.load()
-if not tai.find("KERNEL",ADRENALINEK) then
-	tai.put("KERNEL",ADRENALINEK)
-	tai.sync()
-	ForcePowerReset()
-end
-	
-scan.games()
-if not adrnew then bubbles.load() end
-scan.show()
 
 buttons.homepopup(1)	-- Unlock exit to livearea! :)

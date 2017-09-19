@@ -48,6 +48,7 @@ end
 
 function scan.insertPBP(hand)
 	if game.exists(hand.name) then return end                  -- Is oficial PSP game (Bubble), not read :P
+	if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
 	if files.type(hand.path) == 1 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 and tmp0.CATEGORY == "PG" then return end
@@ -159,11 +160,11 @@ function scan.show()
 			end
 
 			--Rigth
-			if buttonskey then buttonskey:blitsprite(930,470,1) end                        --△
-			screen.print(920,470,"On/Off PICs",1,color.white,color.blue, __ARIGHT)
+			if buttonskey then buttonskey:blitsprite(930,490,1) end                        --△
+			screen.print(920,490,"On/Off PICs",1,color.white,color.blue, __ARIGHT)
 
-			if buttonskey then buttonskey:blitsprite(930,490,3) end                        --O
-			screen.print(920,490,"Edit Boot.inf",1,color.white,color.blue, __ARIGHT)
+			if buttonskey then buttonskey:blitsprite(10,470,3) end                        --O
+			screen.print(45,470,"Edit Boot.inf",1,color.white,color.blue)--, __ARIGHT)
 
 			if screen.textwidth(scan.list[scr.sel].path or scan.list[scr.sel].name) > 940 then
 				xscr = screen.print(xscr, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue,__SLEFT,940)
@@ -172,12 +173,14 @@ function scan.show()
 			end
 
 		else
-			screen.print(480,272,"Not have any PSP Game :( Try again later!", 1, color.white, color.red, __ACENTER)
+			screen.print(480,272,"Did not find any PSP Games...", 1, color.white, color.red, __ACENTER)
+			screen.print(480,292,"Please install the iso/cso games in pspemu/ISO", 1, color.white, color.blue, __ACENTER)
+			screen.print(480,312,"and eboot.pbp games in pspemu/PSP/GAME/(MYGAME)", 1, color.white, color.blue, __ACENTER)
 		end
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		if buttonskey2 then buttonskey2:blitsprite(10,490,1) end                        --Start
-		screen.print(40,495,"Go to the Livearea",1,color.white,color.blue)
+		screen.print(45,495,"Go to the Livearea",1,color.white,color.blue)
 
 		screen.flip()
 
@@ -264,7 +267,7 @@ function scan.bootinf()
 		if back then back:blit(0,0) end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
-		screen.print(480,5, "EDIT BOOT.INF", 1, color.white, color.blue, __ACENTER)
+		screen.print(480,5, "EDIT DATA/BOOT.INF", 1, color.white, color.blue, __ACENTER)
 
 		if scrids.maxim > 0 then
 			if bubbles.list[scrids.sel].pic then
@@ -347,8 +350,7 @@ function scan.bootinf()
 			end
 
 			if not change then
-				--screen.print(480,438,SYMBOL_SQUARE..": Bubble's Icons Restore (ALL)", 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460,SYMBOL_CROSS..": Bubble's Icons Restore      |      "..SYMBOL_TRIANGLE..": Edit boot.inf      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_TRIANGLE..": Edit boot.inf      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
 			else
 				screen.print(480,460,"<- -> Toggle options      |      "..SYMBOL_TRIANGLE..": Done editing      ", 1, color.white, color.blue, __ACENTER)
 			end
@@ -360,51 +362,13 @@ function scan.bootinf()
 			end
 
 		else
-			screen.print(480,200,"Not have any Files List :( Try again later!", 1, color.white, color.red, __ACENTER)
+			screen.print(480,200,"You don´t have any bubbles to list :(", 1, color.white, color.red, __ACENTER)
+			screen.print(480,230,"Try again after creating some Bubbles", 1, color.white, color.red, __ACENTER)
 			screen.print(480,460,SYMBOL_CIRCLE..": To go Back", 1, color.white, color.blue, __ACENTER)
 		end
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		screen.flip()
-
-		--[[
-		if buttons.square and scrids.maxim > 0 then
-			for i=1,bubbles.len do
-				game.close()
-				if not files.exists("ur0:appmeta/"..bubbles.list[i].id.."/livearea/contents/") then
-					os.message("We need to open the basegame: "..bubbles.list[i].id.."\n\nPlease return to ABM inmediatelly to continue the process...")
-					game.open(bubbles.list[i].id)
-					os.delay(100)
-					files.mkdir("ur0:appmeta/"..bubbles.list[i].id.."/livearea/contents/")
-					--os.exit()
-					buttons.homepopup(0)
-					buttons.read()
-				end
-			end
-			buttons.homepopup(0)
-			buttons.read()
-			for i=1,bubbles.len do
-				update_resources(bubbles.list[i].id, false)
-				bubbles.list[i].icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..bubbles.list[i].id))
-				bubbles.list[i].pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..bubbles.list[i].id))
-			end
-		end
-		]]
-
-		if buttons.cross and scrids.maxim > 0 then
-			if not files.exists("ur0:appmeta/"..bubbles.list[scrids.sel].id.."/livearea/contents/") then
-				os.message("We need to open the basegame, Please return \n\nto ABM inmediatelly to continue the process...")
-				game.open(bubbles.list[scrids.sel].id)
-				os.delay(100)
-				files.mkdir("ur0:appmeta/"..bubbles.list[scrids.sel].id.."/livearea/contents/")
-				--os.exit()
-			end
-			buttons.homepopup(0)
-			buttons.read()
-			update_resources(bubbles.list[scrids.sel].id, true)
-			bubbles.list[scrids.sel].icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..bubbles.list[scrids.sel].id))
-			bubbles.list[scrids.sel].pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..bubbles.list[scrids.sel].id))
-		end
 
 		if buttons.triangle and scrids.maxim > 0 then
 			change = not change

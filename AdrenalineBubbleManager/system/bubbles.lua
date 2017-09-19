@@ -8,6 +8,8 @@
    
 ]]
 
+bubbles = {}
+
 -- src = objet game to launch
 function bubbles.install(src, driver)
 
@@ -61,6 +63,11 @@ function bubbles.install(src, driver)
 		game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
 	end
 
+	--Resources to 8bits
+	os.message("Converting images to 8bits can take a while\n\n                           Please wait...")
+	image_convert(work_res, work_dir, "ICON0.PNG", "startup.png", 128)
+	image_convert(work_res, work_dir, "PIC1.PNG", "bg0.png", 960)
+
 	---boot.inf
 	val=5
 	if src.path:sub(1,2) != "um" then val=4 end
@@ -91,14 +98,13 @@ function bubbles.install(src, driver)
 				screen.print(480,y+75,SYMBOL_CIRCLE.." NP9660",1,color.white,color.black, __ACENTER)
 			screen.flip()
 
-			--if buttons.released.cross or buttons.released.circle or buttons.released.triangle then break end
 			if buttons.released.cross then mode_driver = "INFERNO" break
 			elseif buttons.released.triangle then mode_driver = "MARCH33" break
 			elseif buttons.released.circle then mode_driver = "NP9660" break end
 		end--while
 
 		buttons.read()--fflush
-		os.delay(2000)
+		os.delay(1500)
 
 		--Boot mode bin
 		while true do
@@ -109,7 +115,7 @@ function bubbles.install(src, driver)
 			local w,h = screen.textwidth(title,1) + 125,130
 			local x,y = 480 - (w/2), 272 - (h/2)
 
-			draw.fillrect(x, y, w, h, color.new(0x2f,0x2f,0x2f,0xff))
+			draw.fillrect(x, y, w, h, color.new(0x4f,0x2f,0x4f,0xff))
 				screen.print(480, y+8, title,1,color.white,color.black, __ACENTER)
 				screen.print(480,y+40,SYMBOL_CROSS.." EBOOT.BIN",1,color.white,color.black, __ACENTER)
 				screen.print(480,y+60,SYMBOL_TRIANGLE.." EBOOT.OLD",1,color.white,color.black, __ACENTER)
@@ -137,16 +143,14 @@ function bubbles.install(src, driver)
 
 	--Install Bubble
 	if game.installdir(work_dir) == 1 then
-		os.message("Bubble Installed...Updating resources")
-		update_resources(lastid, false)
+		files.delete("ux0:app/"..lastid.."/sce_sys_lman/")
+		files.delete("ux0:app/"..lastid.."/sce_sys/PIC1.PNG")
+		os.message("Bubble Installed...")
 	else
 		os.message("Sorry, there was an instalation error")
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
-
-	if os.message("Would you like to Create Another Bubble ?",1) == 0 then
-		if PowerReset then RestartV() end
-	end
+	os.delay(100)
 
 end
