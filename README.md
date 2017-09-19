@@ -8,6 +8,8 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 Adrenaline Bubbles Manager has been updated to be able to create bubbles to use with Adrenaline v6 and Lman's recently updated plugin adrbubblebooter without loosing the compatibility with adrenaline v5 and lower versions and corresponding Lman's plugin adrbblbooter for those versions.
 
+![header](ABM305.png)
+
 ### Instructions for the new version: ###
 - At the opening, ABM scans for available PSP content, as usual, then by pressing X, you can select the iso/cso/psp hb to be launched with the bubble to be made.
 - After choosing the PSP content to be launched, a popup message will let you know that the resources (images) for your new bubble are getting ready and another popup will let you know the gameid of your freshly made bubble, after that, you'll be given the driver/loader options which you can change later, the buttons to setup the driver/loader are as follows:
@@ -20,7 +22,6 @@ Adrenaline Bubbles Manager has been updated to be able to create bubbles to use 
 - Then after installing the newly made bubble ABM will ask you if there are more bubbles to be made, if the answer is yes ABM will take you back to the available PSP content list.
 
 ### Changelog 3.06 ###
-![header](ABM305.png)
 - Now the resources (images) for the new bubble are converted to 8bits, so dont worry aboud db rebuild.<br>
 - Support for Old ABM version has been removed.<br>
 - Removed restart after creating bubbles.<br>
