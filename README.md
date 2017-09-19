@@ -6,14 +6,7 @@ Create and organize your direct adrenaline bubbles.
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, and adding the lines Of the plugin to the GAMEID in the config.txt of taihen, also creates the GAMEID.TXT for the plugin, forgetting completely of the tedious and long manual method.
 
-### Changelog 3.05 ###
-![header](ABM305.png)
 Adrenaline Bubbles Manager has been updated to be able to create bubbles to use with Adrenaline v6 and Lman's recently updated plugin adrbubblebooter without loosing the compatibility with adrenaline v5 and lower versions and corresponding Lman's plugin adrbblbooter for those versions.
-- Added compatibility with Adrenaline v6 and Lmans adrbubblebooter plugin for adrenaline v6.
-- On this version ABM searches for the installed Adrenaline version and adapts to work with found Adrenaline version (either v6 or v5 and lower).
-- Added the option to change the boot.inf driver setup.
-- Added the option to use pic1.png to show as pic0.png and bg0.png, and to set icon0.png from iso/cso/hb to be shown in the bubble and as startup.png (changes will revert after a db rebuild and default Lmans plugin images will be shown).
-- Added the option Bubble Restore to compensate the loss of the iso/cso/hb images from the bubbles after a db rebuild (to use this option ABM opens the selected bubble, but you have to return manually to ABM).
 
 ### Instructions for the new version: ###
 - At the opening, ABM scans for available PSP content, as usual, then by pressing X, you can select the iso/cso/psp hb to be launched with the bubble to be made.
@@ -24,8 +17,23 @@ Adrenaline Bubbles Manager has been updated to be able to create bubbles to use 
 
         2. X   EBOOT.BIN     /\   EBOOT.OLD     O   BOOT.BIN.
        
-- Then after installing the newly made bubble ABM will ask you if there are more bubbles to be made, if the answer is yes ABM will take you back to the available PSP content list, if you choose no, the ps vita will restart so the changes on the images take effect.
-- Although, the icon/pic changes are not permanent (the icon/pic will go back to Lman's black images after a db rebuild/update), to compensate that, an option to restore the bubbles has been added.
+- Then after installing the newly made bubble ABM will ask you if there are more bubbles to be made, if the answer is yes ABM will take you back to the available PSP content list.
+
+### Changelog 3.06 ###
+![header](ABM305.png)
+- Now the resources (images) for the new bubble are converted to 8bits, so dont worry aboud db rebuild.<br>
+- Support for Old ABM version has been removed.<br>
+- Removed restart after creating bubbles.<br>
+- NOTE: If the iso/cso/hb to launch lacks of icon0.png or pic1.png then ABM will use included Lmans images.<br>
+
+### Changelog 3.05 ###
+- Added compatibility with Adrenaline v6 and Lmans adrbubblebooter plugin for adrenaline v6.
+- On this version ABM searches for the installed Adrenaline version and adapts to work with found Adrenaline version (either v6 or v5 and lower).
+- Added the option to change the boot.inf driver setup.
+- Added the option to use pic1.png to show as pic0.png and bg0.png, and to set icon0.png from iso/cso/hb to be shown in the bubble and as startup.png (changes will revert after a db rebuild and default Lmans plugin images will be shown).
+- Added the option Bubble Restore to compensate the loss of the iso/cso/hb images from the bubbles after a db rebuild (to use this option ABM opens the selected bubble, but you have to return manually to ABM).
+- NOTE: if you choose no, the ps vita will restart so the changes on the images take effect.
+- Although, the icon/pic changes are not permanent (the icon/pic will go back to Lman's black images after a db rebuild/update), to - compensate that, an option to restore the bubbles has been added.
 
 ### OLD VERSION (Adrenaline 5.1) ###
 
