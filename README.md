@@ -22,7 +22,7 @@ Adrenaline Bubbles Manager has been updated to be able to create bubbles to use 
 - Then after installing the newly made bubble ABM will ask you if there are more bubbles to be made, if the answer is yes ABM will take you back to the available PSP content list.
 
 ### NOTE: ###
-To use Adrenaline Bubbles Manager (ABM) v3.06 you must have Adrenaline v6 (vpk version) installed and working.
+To use Adrenaline Bubbles Manager (ABM) v3.07 you must have Adrenaline v6 (vpk version) installed and working.
 ABM has nothing to do with game incompatibility or booting errors such as black screen after booting a game or booting to Adrenaline since ABM only installs Lmans plugin and creates the direct access bubbles, for those issues you have to try different driver setup and booter which you can change in ABM by pressing circle and then triangle over the choosen bubble.
 For the rest of it we hope you find ABM usefull
 
