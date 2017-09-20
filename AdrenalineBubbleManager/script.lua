@@ -29,18 +29,22 @@ ADRENALINE = "ux0:app/PSPEMUCFW"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
 
 oncopy = false
+
+dofile("system/exit.lua")
+dofile("system/commons.lua")
+dofile("system/tai.lua")
+dofile("system/callbacks.lua")
+
+if back then back:blit(0,0) end
+screen.flip()
+
 if game.exists("PSPEMUCFW") and files.exists("ux0:app/PSPEMUCFW") and
 	files.exists("ux0:app/PSPEMUCFW/eboot.bin") and files.exists("ux0:app/PSPEMUCFW/eboot.pbp") then
 
-	dofile("system/exit.lua")
-	dofile("system/tai.lua")
-	dofile("system/callbacks.lua")
-
-	tai.load()
+	tai.load("ur0:tai/config.txt")
 	if not tai.find("KERNEL",ADRENALINEK) then
 		tai.put("KERNEL",ADRENALINEK)
 		tai.sync()
-		ForcePowerReset()
 	end
 
 	if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
@@ -52,17 +56,20 @@ if game.exists("PSPEMUCFW") and files.exists("ux0:app/PSPEMUCFW") and
 		power.restart()
 	end
 
-	dofile("system/commons.lua")
-
 	dofile("system/scan.lua")
 	dofile("system/bubbles.lua")
-
 
 	scan.games()
 	scan.show()
 
 else
 	os.message("Adrenaline v6 has not been installed...")
+
+	tai.load("ur0:tai/config.txt")
+	if tai.find("KERNEL",ADRENALINEK) then
+		tai.del("KERNEL",ADRENALINEK)
+		tai.sync()
+	end
 end
 
 buttons.homepopup(1)	-- Unlock exit to livearea! :)

@@ -126,7 +126,6 @@ function image_convert(wres, wdir, img1, img2, w)
 			if w == 960 then imgtmp = "PIC0.PNG" end
 
 			files.write(wdir.."sce_sys/"..imgtmp, image.compress(files.read(wdir.."sce_sys/"..img1)))
-			os.message(imgtmp.." 8 bits")
 			files.write(wdir.."sce_sys/livearea/contents/"..img2, image.compress(files.read(wdir.."sce_sys/livearea/contents/"..img2)))
 
 			files.delete(wdir.."sce_sys/TMP8.PNG")

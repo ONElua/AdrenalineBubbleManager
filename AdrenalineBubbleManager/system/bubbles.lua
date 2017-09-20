@@ -32,7 +32,6 @@ function bubbles.install(src, driver)
 	files.copy("system/pspemuxxx",work_dir)
 	files.rename(work_dir.."pspemuxxx", lastid)
 	work_dir += lastid.."/"
-	os.message("TITLEID: "..lastid)
 
 	local bubble_title,info_sfo = nil, game.info(src.path)
 	if info_sfo then
@@ -145,7 +144,7 @@ function bubbles.install(src, driver)
 	if game.installdir(work_dir) == 1 then
 		files.delete("ux0:app/"..lastid.."/sce_sys_lman/")
 		files.delete("ux0:app/"..lastid.."/sce_sys/PIC1.PNG")
-		os.message("Bubble Installed...")
+		os.message("Bubble Installed: "..lastid)
 	else
 		os.message("Sorry, there was an instalation error")
 	end
