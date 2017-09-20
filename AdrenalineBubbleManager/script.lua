@@ -10,6 +10,8 @@
 ]]
 
 if os.access() == 0 then
+	if back then back:blit(0,0) end
+	screen.flip()
 	os.message("UNSAFE MODE is required for this Homebrew !!!",0)
 	os.exit()
 end

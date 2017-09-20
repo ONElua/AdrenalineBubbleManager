@@ -18,7 +18,7 @@
 	<frame id="frame3">
 		<liveitem>
 			<text align="left" text-align="left" word-wrap="off" ellipsis="on">
-				<str size="25" color="#ffffff" shadow="on">ABM v3.06</str>
+				<str size="23" color="#ffffff" shadow="on">ABM v3.07</str>
 			</text>
 		</liveitem>
 	</frame>
