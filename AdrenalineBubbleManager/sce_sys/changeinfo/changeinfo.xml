@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="03.08">
+    <![CDATA[
+- New option to single or multi uninstall  PSPEMU bubbles.<br>
+- Now the bubble's icons are not stretched and look a lot beter.<br>
+- Now you can do multi-bubble installation.<br>
+- Ps Button can be pushed to exit ABM.<br>
+- Cleaned up the code a bit and more popup messages were removed.<br>
+    ]]>
+  </changes>
   <changes app_ver="03.07">
     <![CDATA[
 - Fixed crash while trying to load some functions.<br>

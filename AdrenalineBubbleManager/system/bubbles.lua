@@ -9,14 +9,57 @@
 ]]
 
 bubbles = {}
+bubbles.len, dels = 0,0
+
+function bubbles.scan()
+
+	local list = game.list(__APP)
+	table.sort(list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
+	local len = #list
+
+	bubbles.list = {}
+	for i=1, len do
+		if files.exists(list[i].path.."/data/boot.inf") then
+			local entry = {
+				id = list[i].id,                                             					-- TITLEID of the game.
+				path = list[i].path,                                             				-- Path of the game.
+				boot = string.format("%s/data/boot.inf", list[i].path),							-- Path to the boot.inf
+				icon = image.load(string.format("%s/icon0.png",	"ur0:appmeta/"..list[i].id)),	--Icon of the Game.
+				pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..list[i].id)),		--Icon of the Game.
+				title = list[i].title,
+				delete = false
+			}
+			if entry.icon then entry.icon:resize(120,120) end
+			if entry.pic then entry.pic:resize(600,352) end
+			table.insert(bubbles.list, entry)                                   				-- Insert entry in list of bubbles! :)
+		end
+	end--for
+
+	bubbles.len = #bubbles.list
+
+	if bubbles.len > 0 then
+		table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
+
+		for i=1, bubbles.len do
+			bubbles.list[i].lines = {}
+			for j=1, #boot do
+				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].boot, boot[j], "DEFAULT"))
+			end
+		end
+	end
+
+end
 
 -- src = objet game to launch
-function bubbles.install(src, driver)
+function bubbles.install(src)
 
 	files.delete("ux0:data/ABMVPK/")
 
-	game.close()
-	os.message("Getting the resources ready for your new bubble")
+	local bubble_title = nil
+	if src.title then
+		bubble_title = osk.init("Bubble's Title", src.title or "Put here name", 1, 128)
+	end
+	if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = src.title or src.name end
 
 	local i=0
 	while game.exists(string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)) do
@@ -25,131 +68,283 @@ function bubbles.install(src, driver)
 	local lastid = string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)
 
 	local work_dir = "ux0:data/ABMVPK/"
-	if not files.exists(work_dir) then files.mkdir(work_dir) end
-	local work_res = "ux0:data/ABMVPK/"..lastid.."/resources/"
+	files.mkdir(work_dir)
 
-	if files.exists(work_dir+lastid) then files.delete(work_dir+lastid) end
-	files.copy("system/pspemuxxx",work_dir)
+	files.delete(work_dir+lastid)
+	files.copy("bubbles/pspemuxxx",work_dir)
 	files.rename(work_dir.."pspemuxxx", lastid)
 	work_dir += lastid.."/"
 
-	local bubble_title,info_sfo = nil, game.info(src.path)
-	if info_sfo then
-		bubble_title = osk.init("Bubble's Title", info_sfo.TITLE or "Put here name", 1, 128)
-	end
-	if not bubble_title then bubble_title = src.name end
+	--Resources to 8bits
+	if back then back:blit(0,0) end
+	draw.fillrect(0,0,960,30, color.green:a(100))
+	screen.print(10,10,"Converting Resources...")
+	screen.flip()
 
-	--Resources
-	if files.type(src.path) == 1 then
-		game.unpack(src.path, work_res)
-		if files.exists(work_res.."DATA.PSP")	then files.delete(work_res.."DATA.PSP")		end
-		if files.exists(work_res.."PARAM.SFO")	then files.delete(work_res.."PARAM.SFO")	end
-		if files.exists(work_res.."PIC0.PNG")	then files.delete(work_res.."PIC0.PNG")		end
-		if files.exists(work_res.."ICON1.PMF")	then files.delete(work_res.."ICON1.PMF")	end
-		if files.exists(work_res.."ICON1.PNG")	then files.delete(work_res.."ICON1.PNG")	end
-		if files.exists(work_res.."SND0.AT3")	then files.delete(work_res.."SND0.AT3")		end
+	if src.img then
+		image.save(image.nostretched(src.img), work_dir.."sce_sys/icon0.png", 1)
+		image.save(src.img, work_dir.."sce_sys/livearea/contents/startup.png", 1)
 	else
-		local icon = game.geticon0(src.path)
-		if icon then image.save(icon, work_res.."ICON0.PNG") end
-		icon = game.getpic1(src.path)
-		if icon then image.save(icon, work_res.."PIC1.PNG") end
+		files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
+		files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
+	end
+
+	local picimg = game.getpic1(src.path)
+	if picimg then
+		image.save(picimg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+		files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
+		files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+		--image.save(picimg, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+	else
+		files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys")
+		files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
 	end
 
 	-- Set SFO & TITLE
-	if files.exists(work_dir.."sce_sys/PARAM.SFO") then
-		game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(bubble_title), 0)
-		game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(bubble_title), 0)
-		game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
-	end
-
-	--Resources to 8bits
-	os.message("Converting images to 8bits can take a while\n\n                           Please wait...")
-	image_convert(work_res, work_dir, "ICON0.PNG", "startup.png", 128)
-	image_convert(work_res, work_dir, "PIC1.PNG", "bg0.png", 960)
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(bubble_title), 0)
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(bubble_title), 0)
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
 
 	---boot.inf
 	val=5
 	if src.path:sub(1,2) != "um" then val=4 end
 	local path2game = src.path:gsub(src.path:sub(1,val).."pspemu/", "ms0:/")
 
-	--Path ISO/CSO/PBP
-	ini.write(work_dir.."data/boot.ini","PATH",path2game)
-
-	local mode_driver = "INFERNO"
-	local mode_execute = "EBOOT.BIN"
-
-	--not psx... only iso/cso/hb/psp psn
-	if driver then
-		buttons.read()
-		local vbuff = screen.toimage()
-		while true do
-			buttons.read()
-			if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
-
-			local title = string.format("Driver Options")
-			local w,h = screen.textwidth(title,1) + 110,115
-			local x,y = 480 - (w/2), 272 - (h/2)
-
-			draw.fillrect(x, y, w, h, color.new(0x2f,0x2f,0x2f,0xff))
-				screen.print(480, y+5, title,1,color.white,color.black, __ACENTER)
-				screen.print(480,y+35,SYMBOL_CROSS.." INFERNO",1,color.white,color.black, __ACENTER)
-				screen.print(480,y+55,SYMBOL_TRIANGLE.." MARCH33",1,color.white,color.black, __ACENTER)
-				screen.print(480,y+75,SYMBOL_CIRCLE.." NP9660",1,color.white,color.black, __ACENTER)
-			screen.flip()
-
-			if buttons.released.cross then mode_driver = "INFERNO" break
-			elseif buttons.released.triangle then mode_driver = "MARCH33" break
-			elseif buttons.released.circle then mode_driver = "NP9660" break end
-		end--while
-
-		buttons.read()--fflush
-		os.delay(1500)
-
-		--Boot mode bin
-		while true do
-			buttons.read()
-			if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
-
-			local title = string.format("Extra Options")
-			local w,h = screen.textwidth(title,1) + 125,130
-			local x,y = 480 - (w/2), 272 - (h/2)
-
-			draw.fillrect(x, y, w, h, color.new(0x4f,0x2f,0x4f,0xff))
-				screen.print(480, y+8, title,1,color.white,color.black, __ACENTER)
-				screen.print(480,y+40,SYMBOL_CROSS.." EBOOT.BIN",1,color.white,color.black, __ACENTER)
-				screen.print(480,y+60,SYMBOL_TRIANGLE.." EBOOT.OLD",1,color.white,color.black, __ACENTER)
-				screen.print(480,y+80,SYMBOL_CIRCLE.." BOOT.BIN",1,color.white,color.black, __ACENTER)
-			screen.flip()
-
-			if buttons.released.cross then mode_execute = "EBOOT.BIN" break
-			elseif buttons.released.triangle then mode_execute = "EBOOT.OLD" break
-			elseif buttons.released.circle then mode_execute = "BOOT.BIN" break end
-		end
-
-	end--driver
-
-	ini.write(work_dir.."data/boot.ini","DRIVER",mode_driver)
-	ini.write(work_dir.."data/boot.ini","EXECUTE",mode_execute)
-
-	--PLUGINS ENABLE (default)
-	ini.write(work_dir.."data/boot.ini","PLUGINS","ENABLE")
-
-	--Update boot.ini to boot.inf
-	if files.exists(work_dir.."data/boot.inf") then
-		files.delete(work_dir.."data/boot.inf")
-	end
-	files.rename(work_dir.."data/boot.ini","boot.inf")
+	--Path ISO/CSO/PBP to Boot.inf
+	ini.write(work_dir.."data/boot.inf","PATH",path2game)
 
 	--Install Bubble
 	if game.installdir(work_dir) == 1 then
-		files.delete("ux0:app/"..lastid.."/sce_sys_lman/")
-		files.delete("ux0:app/"..lastid.."/sce_sys/PIC1.PNG")
-		os.message("Bubble Installed: "..lastid)
+		if src.inst then
+			src.inst = false
+			if toinstall >0 then toinstall-=1 end
+		end
+
+		if not multi or toinstall==0 then os.message("    Bubble Installed:  "..lastid)
+		else
+			if os.message("Bubble Installed:  "..lastid.."\n\n        Continue with Next ??",1) == 0 then
+				nextinst=false
+			end
+		end
+
+		if bubbles.list then
+			local entry = {
+				id = lastid,
+				path = "ux0:app/"..lastid,
+				boot = string.format("ux0:app/%s/data/boot.inf",lastid),
+				icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..lastid)),
+				pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..lastid)),
+				title = bubble_title,
+				delete = false
+			}
+			if entry.icon then entry.icon:resize(120,120) end
+			if entry.pic then entry.pic:resize(600,352) end
+			table.insert(bubbles.list, entry)-- Insert entry in list of bubbles! :)
+
+			bubbles.list[#bubbles.list].lines = {}
+			for j=1, #boot do
+				table.insert(bubbles.list[#bubbles.list].lines, ini.read(bubbles.list[#bubbles.list].boot, boot[j], "DEFAULT"))
+			end
+
+			bubbles.len = #bubbles.list
+			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
+		end
 	else
-		os.message("Sorry, there was an instalation error")
+		os.message("Sorry, There was an Instalation error")
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
-	os.delay(100)
+end
 
+function bubbles.settings()
+
+	local drivers = { "INFERNO", "MARCH33", "NP9660" }
+	local bins =	{ "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
+	local plugins = { "ENABLE", "DISABLE" }
+	local selector, optsel, change = 1,2,false
+	local scrids, xscr1, xscr2 = newScroll(bubbles.list, 7), 130, 15
+	local mark = false
+
+	buttons.interval(10,10)
+	while true do
+		buttons.read()
+
+		if back then back:blit(0,0) end
+
+		draw.fillrect(0,0,960,30, 0x64545353) --UP
+		screen.print(480,5, "EDIT DATA/BOOT.INF", 1, color.white, color.blue, __ACENTER)
+
+		if scrids.maxim > 0 then
+			if bubbles.list[scrids.sel].pic then
+				bubbles.list[scrids.sel].pic:center()
+				bubbles.list[scrids.sel].pic:blit(480,272)
+			end
+		end
+
+		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
+		draw.gradline(120,310,840,310,color.blue,color.green)
+		draw.gradline(120,312,840,312,color.green,color.blue)
+		draw.rect(120,64,720,416,color.blue)
+
+		screen.print(830,70,"Count: " + bubbles.len, 1, color.red, color.gray, __ARIGHT)
+
+		if scrids.maxim > 0 then
+
+			if not change then
+				if (buttons.up or buttons.held.l or buttons.analogly < -60) then scrids:up() end
+				if (buttons.down or buttons.held.r or buttons.analogly > 60) then scrids:down() end
+			else
+				if (buttons.up or buttons.held.l) then optsel-=1 end
+				if (buttons.down or buttons.held.r) then optsel+=1 end
+
+				if optsel > #boot then optsel = 2 end
+				if optsel < 2 then optsel = #boot end
+
+				if (buttons.left or buttons.right) then
+					if buttons.left then selector-=1 end
+					if buttons.right then selector+=1 end
+
+					if optsel == 4 then
+						if selector > 2 then selector = 1 end
+						if selector < 1 then selector = 2 end
+					else
+						if selector > 3 then selector = 1 end
+						if selector < 1 then selector = 3 end
+					end
+
+					if optsel == 2 then
+						bubbles.list[scrids.sel].lines[optsel] = drivers[selector]
+					elseif optsel == 3 then
+						bubbles.list[scrids.sel].lines[optsel] = bins[selector]
+					elseif optsel == 4 then
+						bubbles.list[scrids.sel].lines[optsel] = plugins[selector]
+					end
+					bubbles.list[scrids.sel].update = true
+				end
+
+			end-- not change
+
+			if bubbles.list[scrids.sel].icon then
+				screen.clip(200,170, 120/2)
+					bubbles.list[scrids.sel].icon:center()
+					bubbles.list[scrids.sel].icon:blit(200, 170)
+				screen.clip()
+			end
+
+			local y = 120
+			for i=scrids.ini, scrids.lim do
+				if i == scrids.sel then draw.fillrect(320,y-1,330,18,color.green:a(100)) end
+				screen.print(480,y,bubbles.list[i].id or "unk",1.0,color.white,color.gray,__ACENTER)
+
+				if bubbles.list[i].delete then
+					draw.fillrect(750,y-1,30,18,color.new(255,255,255,100))
+					screen.print(757,y,SYMBOL_CROSS,1.0,color.white,color.red)
+				end
+
+				y += 23
+			end
+
+			--Options txts
+			if screen.textwidth(bubbles.list[scrids.sel].lines[1] or "unk") > 700 then
+				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].lines[i] or "unk",1,color.white,color.gray,__SLEFT,700)
+			else
+				screen.print(480, 320, bubbles.list[scrids.sel].lines[1] or "unk",1,color.white,color.gray, __ACENTER)
+			end
+
+			local y1=343
+			for i=2,#boot do
+				if change then
+					if i == optsel then draw.fillrect(300,y1-1,350,18,color.green:a(100)) end
+				end
+				screen.print(480, y1, bubbles.list[scrids.sel].lines[i],1,color.white,color.gray, __ACENTER)
+
+				y1+=23
+			end
+
+			if not change then
+				screen.print(480,435, "Select/Start (Mark/Unmark All)", 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_SQUARE..": Uninstall ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": Edit boot.inf      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
+			else
+				screen.print(480,460, "<- -> Toggle options      |      "..SYMBOL_TRIANGLE..": Done editing      ", 1, color.white, color.blue, __ACENTER)
+			end
+
+			if screen.textwidth(bubbles.list[scrids.sel].boot) > 940 then
+				xscr2 = screen.print(xscr2, 523, bubbles.list[scrids.sel].boot,1,color.white,color.blue,__SLEFT,940)
+			else
+				screen.print(15, 523, bubbles.list[scrids.sel].boot,1,color.white,color.blue)
+			end
+
+		else
+			screen.print(480,200, "You don´t have any bubbles to list :(", 1, color.white, color.red, __ACENTER)
+			screen.print(480,230, "Try again after creating some Bubbles", 1, color.white, color.red, __ACENTER)
+			screen.print(480,460, SYMBOL_CIRCLE..": To go Back", 1, color.white, color.blue, __ACENTER)
+		end
+		draw.fillrect(0,516,960,30, 0x64545353)--Down
+
+		screen.flip()
+
+		--Controls
+		if buttons.cross and (scrids.maxim >0 and not change ) then game.launch(bubbles.list[scrids.sel].id) end
+
+		if buttons.triangle and scrids.maxim > 0 then
+			change = not change
+			if change then buttons.homepopup(0)
+			else
+				if bubbles.list[scrids.sel].update then
+					for j=1, #boot do
+						ini.write(bubbles.list[scrids.sel].boot, boot[j], bubbles.list[scrids.sel].lines[j])
+					end
+				end
+				buttons.read()
+				buttons.homepopup(1)
+				optsel = 2
+			end
+		end
+
+		if buttons.square and (scrids.maxim > 0 and not change) then
+			buttons.homepopup(0)
+			if dels>=1 then
+				local vbuff = screen.toimage()
+				local tmp,c = dels,0
+				if os.message("You are going to Uninstall "..dels.." Bubble(s) ?",1) == 1 then
+
+					for i=bubbles.len,1,-1 do
+						if bubbles.list[i].delete then
+							if vbuff then vbuff:blit(0,0) end
+							draw.fillrect(120, 285, ( (tmp-c) * 720 )/tmp, 25, color.new(0,255,0))
+							screen.flip()
+							game.delete(bubbles.list[i].id)
+							if not game.exists(bubbles.list[i].id) then
+								table.remove(bubbles.list, i)
+								bubbles.len -= 1
+								scrids:set(bubbles.list, 7)
+								dels-=1
+								c+=1
+							end
+						end
+					end
+
+				end
+			end
+			bubbles.len = #bubbles.list
+			buttons.read()
+			buttons.homepopup(1)
+		end
+
+		if buttons.select and (scrids.maxim > 0 and not change ) then
+			bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
+			if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
+		end
+
+		if buttons.start and (scrids.maxim > 0 and not change) then
+			mark = not mark
+			for i=1,bubbles.len do
+				bubbles.list[i].delete = mark
+				if mark then dels=bubbles.len else dels=0 end
+			end
+		end
+
+		if buttons.circle and not change then return false end
+
+	end
 end

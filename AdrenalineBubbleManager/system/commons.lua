@@ -8,32 +8,18 @@
    
 ]]
 
+boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS" }
+
 SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)
 SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
 SYMBOL_TRIANGLE	= string.char(0xe2)..string.char(0x96)..string.char(0xb3)
 SYMBOL_CIRCLE	= string.char(0xe2)..string.char(0x97)..string.char(0x8b)
 
-function files.write(path,data,mode) -- Write a file.
-	local fp = io.open(path, mode or "w+")
-	if fp == nil then return end
-	fp:write(data)
-	fp:flush()
-	fp:close()
-end
-
-function files.read(path,mode) -- Read a file.
-	local fp = io.open(path, mode or "r")
-	if not fp then return nil end
-	local data = fp:read("*a")
-	fp:close()
-	return data
-end
-
 -- Debug utilities :D
 debug_print={}
 function init_msg(msg)
 	table.insert(debug_print,msg)
-	back:blit(0,0)
+	if back then back:blit(0,0) end
 	local y=5
 	if #debug_print<=20 then I=1 else I=#debug_print-19 end 
 	for i=I, #debug_print do
@@ -92,50 +78,21 @@ function newScroll(a,b,c)
 
 end
 
--- Functions Imgs
---image_convert(work_res, work_dir, "ICON0.PNG", "startup.png", 128,128)
---image_convert(work_res, work_dir, "PIC1.PNG", "bg0.png", 960, 544)
-function image_convert(wres, wdir, img1, img2, w)
-
-	if files.exists(wres..img1) then
-		files.rename(wres..img1, "TMP8.PNG")
-		files.copy(wres.."TMP8.PNG", wdir.."sce_sys/")
-
-		local tmp = image.load(wdir.."sce_sys/TMP8.PNG")
-		if tmp then
-
-			local scalew,scaleh = 128,128
-
-			if img1 == "ICON0.PNG" then
-				if tmp:getrealw() == 144 and tmp:getrealh() == 80 then
-					files.copy(wdir.."sce_sys/TMP8.PNG", wdir.."sce_sys/livearea/contents/")
-					files.rename(wdir.."sce_sys/livearea/contents/TMP8.PNG", "startup.png")
-				end
-			end
-
-			if w == 960 then scalew,scaleh = 960,544 end
-			image.save(tmp:copyscale(scalew,scaleh), wdir.."sce_sys/"..img1)
-
-			
-			if w == 960 then scalew,scaleh = 840,500 end
-			if not files.exists(wdir.."sce_sys/livearea/contents/"..img2) then
-				image.save(tmp:copyscale(scalew,scaleh), wdir.."sce_sys/livearea/contents/"..img2)
-			end
-
-			local imgtmp = img1
-			if w == 960 then imgtmp = "PIC0.PNG" end
-
-			files.write(wdir.."sce_sys/"..imgtmp, image.compress(files.read(wdir.."sce_sys/"..img1)))
-			files.write(wdir.."sce_sys/livearea/contents/"..img2, image.compress(files.read(wdir.."sce_sys/livearea/contents/"..img2)))
-
-			files.delete(wdir.."sce_sys/TMP8.PNG")
+function image.nostretched(img)
+    local w,h = img:getw(), img:geth()
+	if w != 80 or h != 80 then w,h = 108,60
+	else w,h = 90,90 end 
+	img = img:copyscale(w,h)
+	local px,py = 64 - (w/2),64 - (h/2)
+	local c_back = color.new(0,0,0)
+	local sheet = image.new(128, 128, c_back)
+	for y=0,h-1 do
+		for x=0,w-1 do
+			local c = img:pixel(x,y)
+			if c:a() == 0 then c = c_back end
+			sheet:pixel(px+x, py+y, c)
 		end
-
-		files.rename(wres.."TMP8.PNG", img1)
-	else
-		local imgtmp = img1
-		if w == 960 then imgtmp = "PIC0.PNG" end
-		files.copy(wdir.."sce_sys_lman/"..imgtmp, wdir.."sce_sys")
-		files.copy(wdir.."sce_sys_lman/livearea/contents/"..img2, wdir.."sce_sys/livearea/contents/")
 	end
+	return sheet
 end
+
