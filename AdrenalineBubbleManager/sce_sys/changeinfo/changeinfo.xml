@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="03.09">
+    <![CDATA[
+- Added support for iso/cso/pbp in imc0 (Use Vitashell for mount imc0).<br>
+    ]]>
+  </changes>
   <changes app_ver="03.08">
     <![CDATA[
 - New option to single or multi uninstall  PSPEMU bubbles.<br>

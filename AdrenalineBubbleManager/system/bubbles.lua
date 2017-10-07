@@ -107,7 +107,7 @@ function bubbles.install(src)
 
 	---boot.inf
 	val=5
-	if src.path:sub(1,2) != "um" then val=4 end
+	if src.path:sub(1,2) != "um" and src.path:sub(1,2) !="im" then val=4 end
 	local path2game = src.path:gsub(src.path:sub(1,val).."pspemu/", "ms0:/")
 
 	--Path ISO/CSO/PBP to Boot.inf

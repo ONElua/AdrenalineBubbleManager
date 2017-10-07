@@ -24,7 +24,7 @@ function scan.insertCISO(hand)
 			if imgicon and imgicon:getw()>144 then imgicon:resize(140,80) end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name,
-									  type=true, inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
 		end
 		tmp0 = nil
 	end
@@ -73,7 +73,7 @@ function scan.insertPBP(hand)
 			if imgicon and imgicon:getw()>144 then imgicon:resize(140,80) end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE, path = hand.path, name = hand.name,
-									  type=true, inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
 		end
 		tmp0 = nil
 	end
@@ -104,6 +104,10 @@ function scan.games()
 	if files.exists("uma0:") then
 		scan.isos("uma0:pspemu/ISO")
 		scan.pbps("uma0:pspemu/PSP/GAME")
+	end
+	if files.exists("imc0:") then
+		scan.isos("imc0:pspemu/ISO")
+		scan.pbps("imc0:pspemu/PSP/GAME")
 	end
 	scan.len = #scan.list
 	if scan.len > 0 then
