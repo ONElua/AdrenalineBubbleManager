@@ -26,6 +26,10 @@ To use Adrenaline Bubbles Manager (ABM) v3.05 and up you must have Adrenaline v6
 ABM has nothing to do with game incompatibility or booting errors such as black screen after booting a game or booting to Adrenaline since ABM only installs Lmans plugin and creates the direct access bubbles, for those issues you have to try different driver setup and booter which you can change in ABM by pressing circle and then triangle over the choosen bubble.
 For the rest of it we hope you find ABM usefull
 
+### Changelog 3.10 ###
+- Fixed error caused with iso/cso/pbp which didn't have icons... again!!!.<br>
+- Light aesthetic changes for icons when shown in the lists.<br>
+
 ### Changelog 3.09 ###
 - Added support for iso/cso/pbp in imc0 (Use Vitashell for mount imc0).
 Thanks to ([Namikaze Ruisu](https://twitter.com/Vatomalo_)).<br>
