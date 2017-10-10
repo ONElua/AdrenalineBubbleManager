@@ -13,7 +13,7 @@ function screen.flip()
 		local version = UPDATE_PORT:pop()
 		local major = (version >> 0x18) & 0xFF;
 		local minor = (version >> 0x10) & 0xFF;
-		if os.message(string.format("%s%s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."Do you want to update the application?"), 1) == 1 then
+		if os.message(string.format("%s v%s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."     Do you want to update the application?"), 1) == 1 then
 			buttons.homepopup(0)
 			
 			local url = string.format("https://github.com/%s/%s/releases/download/%s/%s", APP_REPO, APP_PROJECT, string.format("%X.%02X",major, minor), APP_PROJECT..".vpk")
@@ -31,7 +31,7 @@ function screen.flip()
 				draw.fillrect(0,520,((written*960)/size),24,color.new(0,255,0))
 				screen.flip()
 				buttons.read()
-				if buttons.circle then	return 0 end --Cancel or Abort
+				if buttons.circle then return 0 end --Cancel or Abort
 				return 1;
 			end
 			local res = http.getfile(url, path)

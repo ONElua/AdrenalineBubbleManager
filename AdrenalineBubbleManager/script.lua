@@ -10,7 +10,7 @@
 ]]
 
 game.close()
-color.loadpalette()		-- Load palette of colors!
+color.loadpalette()
 
 buttons.read()
 back = image.load("resources/back.png")
@@ -43,6 +43,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		oncopy = true
 		files.copy("sce_module/", ADRENALINE)
 
+		os.delay(100)
 		os.message("AdrBubbleBooter plugin has been installed... \nWe need to restart your PSVita... :)")
 		os.delay(500)
 		power.restart()
@@ -60,4 +61,3 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 else
 	os.message("Adrenaline v6 has not been installed...")
 end
-

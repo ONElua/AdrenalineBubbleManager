@@ -20,10 +20,13 @@ function scan.insertCISO(hand)
 		if tmp0 and tmp0.CATEGORY == "UG" then
 			init_msg(string.format("Loading C/ISO %s\n",hand.path))
 
-			local imgicon = game.geticon0(hand.path)
-			if imgicon and imgicon:getw()>144 then imgicon:resize(140,80) end
+			local imgicon,getw = game.geticon0(hand.path),80
+			if imgicon then
+				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144 
+				else getw = imgicon:getw() end
+			end
 
-			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name,
+			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, imgw = getw,
 									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
 		end
 		tmp0 = nil
@@ -69,10 +72,13 @@ function scan.insertPBP(hand)
 		if _insert then
 			init_msg(string.format("Loading PBP %s\n",hand.path))
 
-			local imgicon = game.geticon0(hand.path)
-			if imgicon and imgicon:getw()>144 then imgicon:resize(140,80) end
+			local imgicon,getw = game.geticon0(hand.path),80
+			if imgicon then
+				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144 
+				else getw = imgicon:getw() end
+			end
 
-			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE, path = hand.path, name = hand.name,
+			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE, path = hand.path, name = hand.name, imgw = getw,
 									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
 		end
 		tmp0 = nil
@@ -156,10 +162,10 @@ function scan.show(objedit)
 			--Blit List
 			local y = 45
 			for i=scr.ini,scr.lim do
-				if i==scr.sel then draw.fillrect(5,y-3,930-scan.list[scr.sel].img:getw(),25,color.red) end
+				if i==scr.sel then draw.fillrect(5,y-3,950-scan.list[scr.sel].imgw,25,color.red) end
 
-				if scan.list[i].width > (940-scan.list[i].img:getw()) then
-					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title or scan.list[i].name,1,color.white,color.blue,__SLEFT,940-scan.list[i].img:getw())
+				if scan.list[i].width > (940-scan.list[i].imgw) then
+					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title or scan.list[i].name,1,color.white,color.blue,__SLEFT,940-scan.list[i].imgw)
 				else
 					screen.print(30,y,scan.list[i].title, 1, color.white, color.blue)
 				end
@@ -174,7 +180,10 @@ function scan.show(objedit)
 			--Blit icon0
 			if scan.list[scr.sel].img then
 				scan.list[scr.sel].img:center()
-				scan.list[scr.sel].img:blit(960 - (scan.list[scr.sel].img:getw()/2), 70)
+				scan.list[scr.sel].img:blit(960 - (scan.list[scr.sel].imgw/2), 70)
+			else
+				draw.fillrect(960-80,35, 80, 80, color.white:a(100))
+				draw.rect(960-80,35, 80, 80, color.white)
 			end
 
 			--Right
