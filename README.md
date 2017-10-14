@@ -10,6 +10,9 @@ Adrenaline Bubbles Manager has been updated to be able to create bubbles to use 
 
 ![header](ABM305.png)
 
+## IMPORTANT ##
+Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed or drivers behavior, any issue related with that should be mentioned to theflow or Lman
+
 ### Instructions for the new version: ###
 - At the opening, ABM scans for available PSP content, as usual, then by pressing X, you can select the iso/cso/psp hb to be launched with the bubble to be made.
 - After choosing the PSP content to be launched, a popup message will let you know that the resources (images) for your new bubble are getting ready and another popup will let you know the gameid of your freshly made bubble, after that, you'll be given the driver/loader options which you can change later, the buttons to setup the driver/loader are as follows:
