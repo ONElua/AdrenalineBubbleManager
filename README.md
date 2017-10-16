@@ -13,22 +13,6 @@ Adrenaline Bubbles Manager has been updated to be able to create bubbles to use 
 ## IMPORTANT ##
 **Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed or drivers behavior, any issue related with that should be mentioned to theflow or Lman**
 
-### Instructions for the new version: ###
-- At the opening, ABM scans for available PSP content, as usual, then by pressing X, you can select the iso/cso/psp hb to be launched with the bubble to be made.
-- After choosing the PSP content to be launched, a popup message will let you know that the resources (images) for your new bubble are getting ready and another popup will let you know the gameid of your freshly made bubble, after that, you'll be given the driver/loader options which you can change later, the buttons to setup the driver/loader are as follows:
-
-        1. X   INFERNO         /\   MARCH33        O   NP9660.
-- Then the boot setup is as follows:
-
-        2. X   EBOOT.BIN     /\   EBOOT.OLD     O   BOOT.BIN.
-       
-- Then after installing the newly made bubble ABM will ask you if there are more bubbles to be made, if the answer is yes ABM will take you back to the available PSP content list.
-
-### NOTE: ###
-To use Adrenaline Bubbles Manager (ABM) v3.05 and up you must have Adrenaline v6 (vpk version) installed and working.
-ABM has nothing to do with game incompatibility or booting errors such as black screen after booting a game or booting to Adrenaline since ABM only installs Lmans plugin and creates the direct access bubbles, for those issues you have to try different driver setup and booter which you can change in ABM by pressing circle and then triangle over the choosen bubble.
-For the rest of it we hope you find ABM usefull
-
 ### Changelog 4.00 ###
 - Fixed bug that did not allow to install more than 30 Bubbles.<br>
 - When installing more than 9 Bubbles will open the Custom Keyboard.<br>
@@ -68,6 +52,12 @@ Thanks to ([Namikaze Ruisu](https://twitter.com/Vatomalo_)).<br>
 - Added the option Bubble Restore to compensate the loss of the iso/cso/hb images from the bubbles after a db rebuild (to use this option ABM opens the selected bubble, but you have to return manually to ABM).
 - NOTE: if you choose no, the ps vita will restart so the changes on the images take effect.
 - Although, the icon/pic changes are not permanent (the icon/pic will go back to Lman's black images after a db rebuild/update), to - compensate that, an option to restore the bubbles has been added.
+
+### NOTE: ###
+To use Adrenaline Bubbles Manager (ABM) v3.05 and up you must have Adrenaline v6 (vpk version) installed and working.
+ABM has nothing to do with game incompatibility or booting errors such as black screen after booting a game or booting to Adrenaline since ABM only installs Lmans plugin and creates the direct access bubbles, for those issues you have to try different driver setup and booter which you can change in ABM by pressing circle and then triangle over the choosen bubble.
+For the rest of it we hope you find ABM usefull
+
 
 ### OLD VERSION (Adrenaline 5.1) ###
 
