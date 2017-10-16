@@ -31,7 +31,7 @@ For the rest of it we hope you find ABM usefull
 
 ### Changelog 4.00 ###
 - Fixed bug that did not allow to install more than 30 Bubbles.<br>
-- When installing more than 9 Bubbles will open the Custom Keyboard..<br>
+- When installing more than 9 Bubbles will open the Custom Keyboard.<br>
 - Now you can select the color background in the icon of your Bubble (17 colors available).<br>
 - More popup messages were removed... again!!!.<br>
 
