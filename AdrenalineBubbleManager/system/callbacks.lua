@@ -7,6 +7,7 @@
    Collaborators: BaltaR4 & Wzjk.
    
 ]]
+bubble_id = ""
 
 function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 
@@ -17,7 +18,7 @@ function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 		return 10 -- Ok
 	elseif step == 4 then											-- Promote or install
 		draw.fillrect(0,0,960,30, color.green:a(100))
-		screen.print(10,10,"Installing...")
+		screen.print(10,10,"Installing Bubble: "..bubble_id) 
 		screen.flip()
 	end
 end

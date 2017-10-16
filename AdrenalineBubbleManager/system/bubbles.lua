@@ -9,7 +9,7 @@
 ]]
 
 bubbles = {}
-bubbles.len, dels = 0,0
+bubbles.len, dels, count_osk = 0,0,0
 
 function bubbles.scan()
 
@@ -25,12 +25,10 @@ function bubbles.scan()
 				path = list[i].path,                                             				-- Path of the game.
 				boot = string.format("%s/data/boot.inf", list[i].path),							-- Path to the boot.inf
 				icon = image.load(string.format("%s/icon0.png",	"ur0:appmeta/"..list[i].id)),	--Icon of the Game.
-				pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..list[i].id)),		--Icon of the Game.
 				title = list[i].title,
 				delete = false
 			}
 			if entry.icon then entry.icon:resize(120,120) end
-			if entry.pic then entry.pic:resize(600,352) end
 			table.insert(bubbles.list, entry)                                   				-- Insert entry in list of bubbles! :)
 		end
 	end--for
@@ -45,6 +43,9 @@ function bubbles.scan()
 			for j=1, #boot do
 				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].boot, boot[j], "DEFAULT"))
 			end
+			if back then back:blit(0,0) end
+			screen.print(10,10,bubbles.list[i].id)
+			screen.flip()
 		end
 	end
 
@@ -57,7 +58,12 @@ function bubbles.install(src)
 
 	local bubble_title = nil
 	if src.title then
-		bubble_title = osk.init("Bubble's Title", src.title or "Put here name", 1, 128)
+		if count_osk >= 9 then
+			bubble_title = iosk.init("Bubble's Title", src.title or "Put here name", 128)
+		else
+			bubble_title = osk.init("Bubble's Title", src.title or "Put here name")
+			count_osk += 1
+		end
 	end
 	if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = src.title or src.name end
 
@@ -76,29 +82,31 @@ function bubbles.install(src)
 	work_dir += lastid.."/"
 
 	--Resources to 8bits
-	if back then back:blit(0,0) end
-	draw.fillrect(0,0,960,30, color.green:a(100))
-	screen.print(10,10,"Converting Resources...")
-	screen.flip()
+	buttons.homepopup(0)
+		if back then back:blit(0,0) end
+			draw.fillrect(0,0,960,30, color.green:a(100))
+			screen.print(10,10,"Converting Resources...")
+		screen.flip()
 
-	if src.img then
-		image.save(image.nostretched(src.img), work_dir.."sce_sys/icon0.png", 1)
-		image.save(src.img, work_dir.."sce_sys/livearea/contents/startup.png", 1)
-	else
-		files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
-		files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
-	end
+		if src.img then
+			image.save(image.nostretched(src.img, colors[selcolor]), work_dir.."sce_sys/icon0.png", 1)
+			image.save(src.img, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+		else
+			files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
+			files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
+		end
 
-	local picimg = game.getpic1(src.path)
-	if picimg then
-		image.save(picimg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
-		files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
-		files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
-		--image.save(picimg, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-	else
-		files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys")
-		files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
-	end
+		local picimg = game.getpic1(src.path)
+		if picimg then
+			image.save(picimg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+			files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
+			files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+			--image.save(picimg, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+		else
+			files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys")
+			files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
+		end
+	buttons.homepopup(1)
 
 	-- Set SFO & TITLE
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(bubble_title), 0)
@@ -114,17 +122,16 @@ function bubbles.install(src)
 	ini.write(work_dir.."data/boot.inf","PATH",path2game)
 
 	--Install Bubble
-	if game.installdir(work_dir) == 1 then
+	buttons.homepopup(0)
+		bubble_id = lastid
+		result = game.installdir(work_dir)
+		buttons.read()
+	buttons.homepopup(1)
+
+	if result == 1 then
 		if src.inst then
 			src.inst = false
 			if toinstall >0 then toinstall-=1 end
-		end
-
-		if not multi or toinstall==0 then os.message("    Bubble Installed:  "..lastid)
-		else
-			if os.message("Bubble Installed:  "..lastid.."\n\n        Continue with Next ??",1) == 0 then
-				nextinst=false
-			end
 		end
 
 		if bubbles.list then
@@ -133,12 +140,10 @@ function bubbles.install(src)
 				path = "ux0:app/"..lastid,
 				boot = string.format("ux0:app/%s/data/boot.inf",lastid),
 				icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..lastid)),
-				pic = image.load(string.format("%s/pic0.png", "ur0:appmeta/"..lastid)),
 				title = bubble_title,
 				delete = false
 			}
 			if entry.icon then entry.icon:resize(120,120) end
-			if entry.pic then entry.pic:resize(600,352) end
 			table.insert(bubbles.list, entry)-- Insert entry in list of bubbles! :)
 
 			bubbles.list[#bubbles.list].lines = {}
@@ -161,8 +166,8 @@ function bubbles.settings()
 	local drivers = { "INFERNO", "MARCH33", "NP9660" }
 	local bins =	{ "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
 	local plugins = { "ENABLE", "DISABLE" }
-	local selector, optsel, change = 1,2,false
-	local scrids, xscr1, xscr2 = newScroll(bubbles.list, 7), 130, 15
+	local selector, optsel, change, bmaxim = 1,2,false,9
+	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 130, 15
 	local mark = false
 
 	buttons.interval(10,10)
@@ -173,20 +178,12 @@ function bubbles.settings()
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5, "EDIT DATA/BOOT.INF", 1, color.white, color.blue, __ACENTER)
-
-		if scrids.maxim > 0 then
-			if bubbles.list[scrids.sel].pic then
-				bubbles.list[scrids.sel].pic:center()
-				bubbles.list[scrids.sel].pic:blit(480,272)
-			end
-		end
+		screen.print(950,5,"Count: "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
 		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
-		draw.gradline(120,310,840,310,color.blue,color.green)
-		draw.gradline(120,312,840,312,color.green,color.blue)
+			draw.gradline(120,310,840,310,color.blue,color.green)
+			draw.gradline(120,312,840,312,color.green,color.blue)
 		draw.rect(120,64,720,416,color.blue)
-
-		screen.print(830,70,"Count: " + bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
 		if scrids.maxim > 0 then
 
@@ -225,13 +222,13 @@ function bubbles.settings()
 			end-- not change
 
 			if bubbles.list[scrids.sel].icon then
-				screen.clip(200,170, 120/2)
+				screen.clip(200,135, 120/2)
 					bubbles.list[scrids.sel].icon:center()
-					bubbles.list[scrids.sel].icon:blit(200, 170)
+					bubbles.list[scrids.sel].icon:blit(200,135)
 				screen.clip()
 			end
 
-			local y = 120
+			local y = 75
 			for i=scrids.ini, scrids.lim do
 				if i == scrids.sel then draw.fillrect(320,y-1,330,18,color.green:a(100)) end
 				screen.print(480,y,bubbles.list[i].id or "unk",1.0,color.white,color.gray,__ACENTER)
@@ -294,6 +291,7 @@ function bubbles.settings()
 					for j=1, #boot do
 						ini.write(bubbles.list[scrids.sel].boot, boot[j], bubbles.list[scrids.sel].lines[j])
 					end
+					bubbles.list[scrids.sel].update = false
 				end
 				buttons.read()
 				buttons.homepopup(1)
@@ -302,33 +300,31 @@ function bubbles.settings()
 		end
 
 		if buttons.square and (scrids.maxim > 0 and not change) then
-			buttons.homepopup(0)
 			if dels>=1 then
 				local vbuff = screen.toimage()
 				local tmp,c = dels,0
 				if os.message("You are going to Uninstall "..dels.." Bubble(s) ?",1) == 1 then
-
 					for i=bubbles.len,1,-1 do
 						if bubbles.list[i].delete then
 							if vbuff then vbuff:blit(0,0) end
 							draw.fillrect(120, 285, ( (tmp-c) * 720 )/tmp, 25, color.new(0,255,0))
 							screen.flip()
-							game.delete(bubbles.list[i].id)
-							if not game.exists(bubbles.list[i].id) then
-								table.remove(bubbles.list, i)
-								bubbles.len -= 1
-								scrids:set(bubbles.list, 7)
-								dels-=1
-								c+=1
-							end
+							buttons.homepopup(0)
+								game.delete(bubbles.list[i].id)
+								if not game.exists(bubbles.list[i].id) then
+									table.remove(bubbles.list, i)
+									bubbles.len -= 1
+									scrids:set(bubbles.list, bmaxim)
+									dels-=1
+									c+=1
+								end
+							buttons.read()
+							buttons.homepopup(1)
 						end
 					end
-
 				end
 			end
 			bubbles.len = #bubbles.list
-			buttons.read()
-			buttons.homepopup(1)
 		end
 
 		if buttons.select and (scrids.maxim > 0 and not change ) then
@@ -345,6 +341,5 @@ function bubbles.settings()
 		end
 
 		if buttons.circle and not change then return false end
-
 	end
 end

@@ -10,19 +10,11 @@
 	<frame id="frame2">
 		<liveitem>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
-				<str color="#ffffff" size="34" bold="on" shadow="on">Adrenaline Bubbles Manager</str>
+				<str color="#ffffff" size="34" bold="on" shadow="on">Adrenaline Bubbles Manager v4.00</str>
 			</text>
 		</liveitem>
 	</frame>
 		
-	<frame id="frame3">
-		<liveitem>
-			<text align="left" text-align="left" word-wrap="off" ellipsis="on">
-				<str size="23" color="#ffffff" shadow="on">ABM v3.10</str>
-			</text>
-		</liveitem>
-	</frame>
-
 	<frame id="frame4">
 		<liveitem>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">

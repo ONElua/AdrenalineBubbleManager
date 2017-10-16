@@ -8,7 +8,6 @@
 	- Gdljjrod (https://twitter.com/gdljjrod).
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
-
 game.close()
 color.loadpalette()
 
@@ -49,6 +48,8 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		power.restart()
 	end
 
+	dofile("iosk/utf8.lua")
+	dofile("iosk/iosk.lua")
 	dofile("system/scan.lua")
 	dofile("system/bubbles.lua")
 

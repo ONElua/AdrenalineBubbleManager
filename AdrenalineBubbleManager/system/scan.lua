@@ -10,7 +10,6 @@
 
 --tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
 scan = {}
-__PIC, nextinst, multi = false,true,false
 toinstall = 0
 
 function scan.insertCISO(hand)
@@ -123,7 +122,8 @@ end
 
 function scan.show(objedit)
 
-	local scr,pic1 = newScroll(scan.list,15),nil
+	local __PIC = false
+	local scr,pic1 = newScroll(scan.list,14),nil
 
 	buttons.interval(10,10)
 	local xscr,xscrtitle = 15,30
@@ -186,6 +186,12 @@ function scan.show(objedit)
 				draw.rect(960-80,35, 80, 80, color.white)
 			end
 
+			--Bubbles Colors
+			if colors[selcolor] == color.black then screen.print(960-40,465,"Color Default ("..selcolor..")",1,color.white,color.blue, __ARIGHT)
+			else screen.print(960-40,465,"Bubble Color ("..selcolor..")",1,color.white,color.blue, __ARIGHT) end
+			draw.fillrect(960-30,463,18,18, colors[selcolor])
+			draw.rect(960-30,463,18,18, color.white)
+
 			--Right
 			if buttonskey then buttonskey:blitsprite(930,487,1) end                     --△
 			screen.print(920,490,"On/Off PICs",1,color.white,color.blue, __ARIGHT)
@@ -214,37 +220,24 @@ function scan.show(objedit)
 
 		--Controls
 		if buttons.cross and scr.maxim > 0 then
-			buttons.homepopup(0)
 			if toinstall <= 1 then
 				bubbles.install(scan.list[scr.sel])
 			else
 				local vbuff = screen.toimage()
 				local tmp,c = toinstall,0
-				if os.message("You are going to Install "..toinstall.." Game(s) ?",1) == 1 then
-					nextinst = true
-					for i=1, scr.maxim do
-						if nextinst then
-							if vbuff then vbuff:blit(0,0) end
-							screen.print(480,415,"Bubbles ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
-							draw.rect(0, 437, 960, 20, color.new(25,200,25))
-							draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
-							screen.flip()
-							if scan.list[i].inst then
-								multi = true
-								bubbles.install(scan.list[i])
-								c+=1
-							end
-						else
-							os.delay(10)
-							break
-						end
+				for i=1, scr.maxim do
+					if vbuff then vbuff:blit(0,0) end
+					screen.print(480,415,"Bubbles ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
+					draw.rect(0, 437, 960, 20, color.new(25,200,25))
+					draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
+					screen.flip()
+					if scan.list[i].inst then
+						bubbles.install(scan.list[i])
+						c+=1
 					end
-					os.delay(50)
-					multi=false
 				end
+				os.delay(50)
 			end
-			buttons.read()
-			buttons.homepopup(1)
 		end
 
 		if buttons.triangle and scr.maxim > 0 then
@@ -259,5 +252,12 @@ function scan.show(objedit)
 		end
 
 		if buttons.circle then bubbles.settings() end
+
+		--Bubble Colors 
+		if buttons.right then selcolor += 1 end
+		if buttons.left then selcolor -= 1 end	
+		if selcolor > #colors then selcolor = 1 end
+		if selcolor < 1 then selcolor = #colors end
+
 	end
 end

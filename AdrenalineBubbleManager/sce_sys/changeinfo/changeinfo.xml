@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.00">
+    <![CDATA[
+- Fixed bug that did not allow to install more than 30 Bubbles.<br>
+- When installing more than 9 Bubbles will open the Custom Keyboard..<br>
+- Now you can select the color background in the icon of your Bubble (17 colors available).<br>
+- More popup messages were removed... again!!!.<br>
+    ]]>
+  </changes>
   <changes app_ver="03.10">
     <![CDATA[
 - Fixed error caused with iso/cso/pbp which didn't have icons... again!!!.<br>

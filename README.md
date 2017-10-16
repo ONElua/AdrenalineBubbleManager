@@ -8,7 +8,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 Adrenaline Bubbles Manager has been updated to be able to create bubbles to use with Adrenaline v6 and Lman's recently updated plugin adrbubblebooter without loosing the compatibility with adrenaline v5 and lower versions and corresponding Lman's plugin adrbblbooter for those versions.
 
-![header](ABM305.png)
+![header](ABM400.png)
 
 ## IMPORTANT ##
 Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed or drivers behavior, any issue related with that should be mentioned to theflow or Lman
@@ -28,6 +28,12 @@ Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary l
 To use Adrenaline Bubbles Manager (ABM) v3.05 and up you must have Adrenaline v6 (vpk version) installed and working.
 ABM has nothing to do with game incompatibility or booting errors such as black screen after booting a game or booting to Adrenaline since ABM only installs Lmans plugin and creates the direct access bubbles, for those issues you have to try different driver setup and booter which you can change in ABM by pressing circle and then triangle over the choosen bubble.
 For the rest of it we hope you find ABM usefull
+
+### Changelog 4.00 ###
+- Fixed bug that did not allow to install more than 30 Bubbles.<br>
+- When installing more than 9 Bubbles will open the Custom Keyboard..<br>
+- Now you can select the color background in the icon of your Bubble (17 colors available).<br>
+- More popup messages were removed... again!!!.<br>
 
 ### Changelog 3.10 ###
 - Fixed error caused with iso/cso/pbp which didn't have icons... again!!!.<br>

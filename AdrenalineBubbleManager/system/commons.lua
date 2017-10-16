@@ -15,6 +15,12 @@ SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
 SYMBOL_TRIANGLE	= string.char(0xe2)..string.char(0x96)..string.char(0xb3)
 SYMBOL_CIRCLE	= string.char(0xe2)..string.char(0x97)..string.char(0x8b)
 
+selcolor = 1
+colors = { 	color.black, color.red, color.green, color.blue, color.cyan, color.magenta, color.yellow,
+			color.maroon, color.grass, color.navy, color.turquoise, color.violet, color.olive,
+			color.white, color.gray, color.orange, color.chocolate
+		}
+
 -- Debug utilities :D
 debug_print={}
 function init_msg(msg)
@@ -78,21 +84,19 @@ function newScroll(a,b,c)
 
 end
 
-function image.nostretched(img)
+function image.nostretched(img,cc)
     local w,h = img:getw(), img:geth()
 	if w != 80 or h != 80 then w,h = 108,60
 	else w,h = 90,90 end 
 	img = img:copyscale(w,h)
 	local px,py = 64 - (w/2),64 - (h/2)
-	local c_back = color.new(0,0,0)
-	local sheet = image.new(128, 128, c_back)
+	local sheet = image.new(128, 128, cc)
 	for y=0,h-1 do
 		for x=0,w-1 do
 			local c = img:pixel(x,y)
-			if c:a() == 0 then c = c_back end
+			if c:a() == 0 then c = cc end 
 			sheet:pixel(px+x, py+y, c)
 		end
 	end
 	return sheet
 end
-
