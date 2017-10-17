@@ -6,17 +6,16 @@
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, forgetting completely of the tedious and long manual method.
 
+![header](Bubbles.png)
+
 ## IMPORTANT ##
-**Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed, any issue related with that should be mentioned to Lman or the_flow **
+**Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed, any issue related with that should be mentioned to Lman or the_flow**
 
 ![header](ABM400.png)
 
-### Changelog 4.00 ###
-
-![header](Bubbles.png)
-
 ![header](keyboard.jpg)
 
+### Changelog 4.00 ###
 - Fixed error which didn't allow to install more than 30 bubbles.<br>
 - Now when multi-installing more than 9 bubbles a custom keyboard will open after 10th bubble.<br>
 - Now the PS button will be blocked when Getting Resources and Instaling Bubble.<br>
