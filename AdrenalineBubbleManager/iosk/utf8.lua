@@ -32,7 +32,7 @@ utf8.uc_start = {128, 2048, 4096, 53248, 57344, 65536, 262144, 10488576}
 function utf8.charbytes(s, i)
 	local s = tostring(s)
 	local byte1, byte2, byte3, byte4 = string.byte(s, i, i+4)
-  
+   
 	-- determine bytes needed for character, based on RFC 3629
 	-- UTF8-1
 	if math.range(byte1, 0, 127) then return 1
@@ -68,7 +68,7 @@ function utf8.sub(s, i, j)
 	local s = tostring(s)
 	local j = j or -1
 	if i == nil then return '' end
-	
+   
 	local pos = 1
 	local bytes = string.len(s)
 	local len = 0

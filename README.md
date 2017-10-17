@@ -1,23 +1,27 @@
-# AdrenalineBubbleManager
+# Adrenaline Bubbles Manager
+**Create and organize your direct adrenaline bubbles.**
+
 ![header](preview.jpg)
 
-Create and organize your direct adrenaline bubbles.
-
 ### Description ###
-This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, and adding the lines Of the plugin to the GAMEID in the config.txt of taihen, also creates the GAMEID.TXT for the plugin, forgetting completely of the tedious and long manual method.
+This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, forgetting completely of the tedious and long manual method.
 
-Adrenaline Bubbles Manager has been updated to be able to create bubbles to use with Adrenaline v6 and Lman's recently updated plugin adrbubblebooter without loosing the compatibility with adrenaline v5 and lower versions and corresponding Lman's plugin adrbblbooter for those versions.
+## IMPORTANT ##
+**Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed, any issue related with that should be mentioned to Lman or the_flow **
 
 ![header](ABM400.png)
 
-## IMPORTANT ##
-**Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed or drivers behavior, any issue related with that should be mentioned to theflow or Lman**
-
 ### Changelog 4.00 ###
-- Fixed bug that did not allow to install more than 30 Bubbles.<br>
-- When installing more than 9 Bubbles will open the Custom Keyboard.<br>
-- Now you can select the color background in the icon of your Bubble (17 colors available).<br>
-- More popup messages were removed... again!!!.<br>
+
+![header](Bubbles.png)
+
+![header](keyboard.jpg)
+
+- Fixed error which didn't allow to install more than 30 bubbles.<br>
+- Now when multi-installing more than 9 bubbles a custom keyboard will open after 10th bubble.<br>
+- Now the PS button will be blocked when Getting Resources and Instaling Bubble.<br>
+- Now you can select the bubble background color!!! (17 available colors).<br>
+- Removed more popup messages...again!!!.<br>
 
 ### Changelog 3.10 ###
 - Fixed error caused with iso/cso/pbp which didn't have icons... again!!!.<br>

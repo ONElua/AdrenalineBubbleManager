@@ -187,7 +187,7 @@ function scan.show(objedit)
 			end
 
 			--Bubbles Colors
-			if colors[selcolor] == color.black then screen.print(960-40,465,"Color Default ("..selcolor..")",1,color.white,color.blue, __ARIGHT)
+			if colors[selcolor] == color.black then screen.print(960-40,465,"Default Color ("..selcolor..")",1,color.white,color.blue, __ARIGHT)
 			else screen.print(960-40,465,"Bubble Color ("..selcolor..")",1,color.white,color.blue, __ARIGHT) end
 			draw.fillrect(960-30,463,18,18, colors[selcolor])
 			draw.rect(960-30,463,18,18, color.white)
@@ -236,7 +236,7 @@ function scan.show(objedit)
 						c+=1
 					end
 				end
-				os.delay(50)
+os.delay(50)
 			end
 		end
 

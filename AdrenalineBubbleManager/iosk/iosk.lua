@@ -190,7 +190,7 @@ function iosk.drawUpBar()
 			iosk.tfstate = 1
 		end
 	else
-		local fx = 32 + screen.textwidth(string.sub(text, 1, iosk.textFocus),1)--utf8.sub(text,1,iosk.textFocus),1)
+		local fx = 32 + screen.textwidth(string.sub(text, 1, iosk.textFocus))--utf8.sub(text,1,iosk.textFocus),1)
 		draw.fillrect(fx,iosk.hy + 78,2,22,color.new(30,30,30,iosk.alfa))
 		if iosk.tftimer:time() >= 450 then
 			iosk.tftimer:reset()

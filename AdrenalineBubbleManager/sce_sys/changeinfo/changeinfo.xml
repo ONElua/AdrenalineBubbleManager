@@ -2,10 +2,11 @@
 <changeinfo>
   <changes app_ver="04.00">
     <![CDATA[
-- Fixed bug that did not allow to install more than 30 Bubbles.<br>
-- When installing more than 9 Bubbles will open the Custom Keyboard..<br>
-- Now you can select the color background in the icon of your Bubble (17 colors available).<br>
-- More popup messages were removed... again!!!.<br>
+- Fixed error which didn't allow to install more than 30 bubbles.<br>
+- Now when multi-installing more than 9 bubbles a custom keyboard will open after 10th bubble.<br>
+- Now the PS button will be blocked when Getting Resources and Instaling Bubble.<br>
+- Now you can select the bubble background color!!! (17 available colors).<br>
+- Removed more popup messages...again!!!.<br>
     ]]>
   </changes>
   <changes app_ver="03.10">
