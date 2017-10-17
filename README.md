@@ -21,6 +21,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 - Now the PS button will be blocked when Getting Resources and Instaling Bubble.<br>
 - Now you can select the bubble background color!!! (17 available colors).<br>
 - Removed more popup messages...again!!!.<br>
+- Thanks ZeroZelta and Dovemac for the iosk keyboard and DevDavis for the port a Psvita.<br>
 
 ### Changelog 3.10 ###
 - Fixed error caused with iso/cso/pbp which didn't have icons... again!!!.<br>
