@@ -59,9 +59,9 @@ function bubbles.install(src)
 	local bubble_title = nil
 	if src.title then
 		if count_osk >= 9 then
-			bubble_title = iosk.init("Bubble's Title", src.title or "Put here name", 128)
+			bubble_title = iosk.init(strings.titleosk, src.title or strings.putnameosk, 128)
 		else
-			bubble_title = osk.init("Bubble's Title", src.title or "Put here name")
+			bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk)
 			count_osk += 1
 		end
 	end
@@ -85,11 +85,11 @@ function bubbles.install(src)
 	buttons.homepopup(0)
 		if back then back:blit(0,0) end
 			draw.fillrect(0,0,960,30, color.green:a(100))
-			screen.print(10,10,"Converting Resources...")
+			screen.print(10,10,strings.convert)
 		screen.flip()
 
 		if src.img then
-			image.save(image.nostretched(src.img, colors[selcolor]), work_dir.."sce_sys/icon0.png", 1)
+			image.save(image.nostretched(src.img, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
 			image.save(src.img, work_dir.."sce_sys/livearea/contents/startup.png", 1)
 		else
 			files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
@@ -101,7 +101,6 @@ function bubbles.install(src)
 			image.save(picimg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
 			files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
 			files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
-			--image.save(picimg, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
 		else
 			files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys")
 			files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
@@ -131,6 +130,7 @@ function bubbles.install(src)
 	if result == 1 then
 		if src.inst then
 			src.inst = false
+			src.selcc = 1
 			if toinstall >0 then toinstall-=1 end
 		end
 
@@ -155,7 +155,7 @@ function bubbles.install(src)
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		os.message("Sorry, There was an Instalation error")
+		os.message(strings.errinst)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
@@ -177,8 +177,8 @@ function bubbles.settings()
 		if back then back:blit(0,0) end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
-		screen.print(480,5, "EDIT DATA/BOOT.INF", 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,"Count: "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
+		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
+		screen.print(950,5,strings.count..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
 		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
 			draw.gradline(120,310,840,310,color.blue,color.green)
@@ -231,7 +231,7 @@ function bubbles.settings()
 			local y = 75
 			for i=scrids.ini, scrids.lim do
 				if i == scrids.sel then draw.fillrect(320,y-1,330,18,color.green:a(100)) end
-				screen.print(480,y,bubbles.list[i].id or "unk",1.0,color.white,color.gray,__ACENTER)
+				screen.print(480,y,bubbles.list[i].id or strings.unk,1.0,color.white,color.gray,__ACENTER)
 
 				if bubbles.list[i].delete then
 					draw.fillrect(750,y-1,30,18,color.new(255,255,255,100))
@@ -242,10 +242,10 @@ function bubbles.settings()
 			end
 
 			--Options txts
-			if screen.textwidth(bubbles.list[scrids.sel].lines[1] or "unk") > 700 then
-				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].lines[i] or "unk",1,color.white,color.gray,__SLEFT,700)
+			if screen.textwidth(bubbles.list[scrids.sel].lines[1] or strings.unk) > 700 then
+				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].lines[i] or strings.unk,1,color.white,color.gray,__SLEFT,700)
 			else
-				screen.print(480, 320, bubbles.list[scrids.sel].lines[1] or "unk",1,color.white,color.gray, __ACENTER)
+				screen.print(480, 320, bubbles.list[scrids.sel].lines[1] or strings.unk,1,color.white,color.gray, __ACENTER)
 			end
 
 			local y1=343
@@ -259,10 +259,10 @@ function bubbles.settings()
 			end
 
 			if not change then
-				screen.print(480,435, "Select/Start (Mark/Unmark All)", 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460, SYMBOL_SQUARE..": Uninstall ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": Edit boot.inf      |      "..SYMBOL_CIRCLE..": Back", 1, color.white, color.blue, __ACENTER)
+				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": "..strings.editboot.."      |      "..SYMBOL_CIRCLE..": "..strings.back, 1, color.white, color.blue, __ACENTER)
 			else
-				screen.print(480,460, "<- -> Toggle options      |      "..SYMBOL_TRIANGLE..": Done editing      ", 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, "<- -> "..strings.toggle.."      |      "..SYMBOL_TRIANGLE..": "..strings.doneedit.."      ", 1, color.white, color.blue, __ACENTER)
 			end
 
 			if screen.textwidth(bubbles.list[scrids.sel].boot) > 940 then
@@ -272,9 +272,9 @@ function bubbles.settings()
 			end
 
 		else
-			screen.print(480,200, "You don´t have any bubbles to list :(", 1, color.white, color.red, __ACENTER)
-			screen.print(480,230, "Try again after creating some Bubbles", 1, color.white, color.red, __ACENTER)
-			screen.print(480,460, SYMBOL_CIRCLE..": To go Back", 1, color.white, color.blue, __ACENTER)
+			screen.print(480,200, strings.notbubbles, 1, color.white, color.red, __ACENTER)
+			screen.print(480,230, strings.createbb, 1, color.white, color.red, __ACENTER)
+			screen.print(480,460, SYMBOL_CIRCLE..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
@@ -303,7 +303,8 @@ function bubbles.settings()
 			if dels>=1 then
 				local vbuff = screen.toimage()
 				local tmp,c = dels,0
-				if os.message("You are going to Uninstall "..dels.." Bubble(s) ?",1) == 1 then
+
+				if os.message(strings.uninstallbb..dels,1) == 1 then
 					for i=bubbles.len,1,-1 do
 						if bubbles.list[i].delete then
 							if vbuff then vbuff:blit(0,0) end

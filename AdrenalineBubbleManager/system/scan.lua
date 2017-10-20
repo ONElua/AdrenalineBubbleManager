@@ -17,7 +17,7 @@ function scan.insertCISO(hand)
 	if _type == 2 or _type == 3 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 and tmp0.CATEGORY == "UG" then
-			init_msg(string.format("Loading C/ISO %s\n",hand.path))
+			init_msg(string.format(strings.loadciso.." %s\n",hand.path))
 
 			local imgicon,getw = game.geticon0(hand.path),80
 			if imgicon then
@@ -26,7 +26,7 @@ function scan.insertCISO(hand)
 			end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, imgw = getw,
-									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1 })
 		end
 		tmp0 = nil
 	end
@@ -69,7 +69,7 @@ function scan.insertPBP(hand)
 			end
 		end
 		if _insert then
-			init_msg(string.format("Loading PBP %s\n",hand.path))
+			init_msg(string.format(strings.loadpbp.." %s\n",hand.path))
 
 			local imgicon,getw = game.geticon0(hand.path),80
 			if imgicon then
@@ -78,7 +78,7 @@ function scan.insertPBP(hand)
 			end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE, path = hand.path, name = hand.name, imgw = getw,
-									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name) })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1 })
 		end
 		tmp0 = nil
 	end
@@ -132,8 +132,8 @@ function scan.show(objedit)
 		if back then back:blit(0,0) end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
-		screen.print(480,5,"Available games [ISO/CSO/PBP]", 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,"Count: " + scr.maxim, 1, color.red, color.gray, __ARIGHT)
+		screen.print(480,5,strings.scantitle, 1, color.white, color.blue, __ACENTER)
+		screen.print(950,5,strings.count..scr.maxim, 1, color.red, color.gray, __ARIGHT)
 
 		if scr.maxim > 0 then
 
@@ -187,21 +187,24 @@ function scan.show(objedit)
 			end
 
 			--Bubbles Colors
-			if colors[selcolor] == color.black then screen.print(960-40,465,"Default Color ("..selcolor..")",1,color.white,color.blue, __ARIGHT)
-			else screen.print(960-40,465,"Bubble Color ("..selcolor..")",1,color.white,color.blue, __ARIGHT) end
-			draw.fillrect(960-30,463,18,18, colors[selcolor])
+			if scan.list[scr.sel].selcc == 1 then
+				screen.print(960-40,465,strings.defcolor.." ("..scan.list[scr.sel].selcc..")",1,color.white,color.blue, __ARIGHT)
+			else
+				screen.print(960-40,465,strings.bbcolor.." ("..scan.list[scr.sel].selcc..")",1,color.white,color.blue, __ARIGHT)
+			end
+			draw.fillrect(960-30,463,18,18, colors[scan.list[scr.sel].selcc])
 			draw.rect(960-30,463,18,18, color.white)
 
 			--Right
 			if buttonskey then buttonskey:blitsprite(930,487,1) end                     --△
-			screen.print(920,490,"On/Off PICs",1,color.white,color.blue, __ARIGHT)
+			screen.print(920,490,strings.pics,1,color.white,color.blue, __ARIGHT)
 
 			--Left
 			if buttonskey then buttonskey:blitsprite(15,463,2) end                     --[]
-			screen.print(45,465,"Mark/Unmark Game",1,color.white,color.blue)
+			screen.print(45,465,strings.markgame,1,color.white,color.blue)
 
 			if buttonskey then buttonskey:blitsprite(15,487,3) end						--O
-			screen.print(45,490,"Bubbles Settings",1,color.white,color.blue)
+			screen.print(45,490,strings.bsettings,1,color.white,color.blue)
 
 			if scan.list[scr.sel].width > 940 then
 				xscr = screen.print(xscr, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue,__SLEFT,940)
@@ -210,9 +213,9 @@ function scan.show(objedit)
 			end
 
 		else
-			screen.print(480,272,"Did not find any PSP Games...", 1, color.white, color.red, __ACENTER)
-			screen.print(480,292,"Please install the iso/cso games in pspemu/ISO", 1, color.white, color.blue, __ACENTER)
-			screen.print(480,312,"and eboot.pbp games in pspemu/PSP/GAME/(MYGAME)", 1, color.white, color.blue, __ACENTER)
+			screen.print(480,272,strings.notpsp, 1, color.white, color.red, __ACENTER)
+			screen.print(480,292,strings.installgames, 1, color.white, color.blue, __ACENTER)
+			screen.print(480,312,strings.installgames2, 1, color.white, color.blue, __ACENTER)
 		end
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
@@ -227,7 +230,7 @@ function scan.show(objedit)
 				local tmp,c = toinstall,0
 				for i=1, scr.maxim do
 					if vbuff then vbuff:blit(0,0) end
-					screen.print(480,415,"Bubbles ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
+					screen.print(480,415,strings.bubbles.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
 					draw.rect(0, 437, 960, 20, color.new(25,200,25))
 					draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
 					screen.flip()
@@ -236,7 +239,7 @@ function scan.show(objedit)
 						c+=1
 					end
 				end
-os.delay(50)
+				os.delay(50)
 			end
 		end
 
@@ -253,11 +256,11 @@ os.delay(50)
 
 		if buttons.circle then bubbles.settings() end
 
-		--Bubble Colors 
-		if buttons.right then selcolor += 1 end
-		if buttons.left then selcolor -= 1 end	
-		if selcolor > #colors then selcolor = 1 end
-		if selcolor < 1 then selcolor = #colors end
+		--Bubbles Color
+		if buttons.right then scan.list[scr.sel].selcc += 1 end
+		if buttons.left then scan.list[scr.sel].selcc -= 1 end	
+		if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
+		if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
 
 	end
 end

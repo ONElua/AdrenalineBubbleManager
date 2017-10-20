@@ -16,7 +16,10 @@ SYMBOL_TRIANGLE	= string.char(0xe2)..string.char(0x96)..string.char(0xb3)
 SYMBOL_CIRCLE	= string.char(0xe2)..string.char(0x97)..string.char(0x8b)
 
 selcolor = 1
-colors = { 	color.black, color.red, color.green, color.blue, color.cyan, color.gray, color.magenta, color.yellow,
+colors = { 	
+			color.black,		-- <--- dont modify this color (defect color)...
+			--you can add more colors :D
+			color.red, color.green, color.blue, color.cyan, color.gray, color.magenta, color.yellow,
 			color.maroon, color.grass, color.navy, color.turquoise, color.violet, color.olive,
 			color.white, color.orange, color.chocolate
 		}

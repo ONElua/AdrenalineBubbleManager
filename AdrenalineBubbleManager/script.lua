@@ -8,6 +8,7 @@
 	- Gdljjrod (https://twitter.com/gdljjrod).
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
+
 game.close()
 color.loadpalette()
 
@@ -15,11 +16,16 @@ buttons.read()
 back = image.load("resources/back.png")
 buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
+local pathABM = "ux0:data/ABM/"
+files.mkdir(pathABM)
+if files.exists(pathABM.."font.ttf") then font.setdefault(pathABM.."font.ttf") end
+if files.exists(pathABM.."lang.lua") then dofile(pathABM.."lang.lua")
+else files.copy("system/lang.lua",pathABM) dofile("system/lang.lua") end
 
 if os.access() == 0 then
 	if back then back:blit(0,0) end
 	screen.flip()
-	os.message("UNSAFE MODE is required for this Homebrew !!!",0)
+	os.message(strings.unsafe,0)
 	os.exit()
 end
 
@@ -43,7 +49,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		files.copy("sce_module/", ADRENALINE)
 
 		os.delay(100)
-		os.message("AdrBubbleBooter plugin has been installed... \nWe need to restart your PSVita... :)")
+		os.message(strings.adrinst)
 		os.delay(500)
 		power.restart()
 	end
@@ -60,5 +66,5 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	scan.show()
 
 else
-	os.message("Adrenaline v6 has not been installed...")
+	os.message(strings.notadr)
 end
