@@ -16,16 +16,27 @@ buttons.read()
 back = image.load("resources/back.png")
 buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
+box = image.load("resources/box.png")
+
 local pathABM = "ux0:data/ABM/"
 files.mkdir(pathABM)
+
+--font.ttf
 if files.exists(pathABM.."font.ttf") then font.setdefault(pathABM.."font.ttf") end
-if files.exists(pathABM.."lang.lua") then dofile(pathABM.."lang.lua")
+
+--lang.lua
+if files.exists(pathABM.."lang.lua") then
+	dofile(pathABM.."lang.lua")
+	local cont = 0
+	for key,value in pairs(strings) do cont += 1 end
+	if cont < 40 then files.copy("system/lang.lua",pathABM) dofile("system/lang.lua") end
 else files.copy("system/lang.lua",pathABM) dofile("system/lang.lua") end
 
+dofile("system/commons.lua")
 if os.access() == 0 then
 	if back then back:blit(0,0) end
 	screen.flip()
-	os.message(strings.unsafe,0)
+	custom_msg(strings.unsafe,0)
 	os.exit()
 end
 
@@ -35,7 +46,6 @@ ADRENALINE = "ux0:app/PSPEMUCFW"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
 oncopy = false
 
-dofile("system/commons.lua")
 dofile("system/callbacks.lua")
 
 if back then back:blit(0,0) end
@@ -49,7 +59,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		files.copy("sce_module/", ADRENALINE)
 
 		os.delay(100)
-		os.message(strings.adrinst)
+		custom_msg(strings.adrinst,0)
 		os.delay(500)
 		power.restart()
 	end
@@ -66,5 +76,5 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	scan.show()
 
 else
-	os.message(strings.notadr)
+	custom_msg(strings.notadr,0)
 end

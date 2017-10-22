@@ -10,7 +10,7 @@
 	<frame id="frame2">
 		<liveitem>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
-				<str color="#ffffff" size="34" bold="on" shadow="on">Adrenaline Bubbles Manager v4.01</str>
+				<str color="#ffffff" size="34" bold="on" shadow="on">Adrenaline Bubbles Manager v4.02</str>
 			</text>
 		</liveitem>
 	</frame>

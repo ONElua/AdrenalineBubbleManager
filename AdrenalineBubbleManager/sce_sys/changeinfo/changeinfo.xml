@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.02">
+    <![CDATA[
+- Fixed empty iso/cso/pbp list error.<br>
+- Now you can select to resize the games icons to show in Full Bubble or keep the original psp looks (no stretched icons).<br>
+- Press L or R to switch between full or no stretched icons for your bubbles.<br>
+- The script lang.lua got modified, so please update your translation.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.01">
     <![CDATA[
 - Support to load your own font.ttf (Must be placed in ux0:data/ABM/font.ttf).<br>
@@ -31,7 +39,7 @@
   <changes app_ver="03.08">
     <![CDATA[
 - New option to single or multi uninstall  PSPEMU bubbles.<br>
-- Now the bubble's icons are not stretched and look a lot beter.<br>
+- Now the bubble's icons are not stretched and look a lot better.<br>
 - Now you can do multi-bubble installation.<br>
 - Ps Button can be pushed to exit ABM.<br>
 - Cleaned up the code a bit and more popup messages were removed.<br>

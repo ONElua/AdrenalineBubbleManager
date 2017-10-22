@@ -89,7 +89,11 @@ function bubbles.install(src)
 		screen.flip()
 
 		if src.img then
-			image.save(image.nostretched(src.img, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
+			if src.nostretched then
+				image.save(src.img:copyscale(128,128),work_dir.."sce_sys/icon0.png", 1)
+			else
+				image.save(image.nostretched(src.img, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
+			end
 			image.save(src.img, work_dir.."sce_sys/livearea/contents/startup.png", 1)
 		else
 			files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
@@ -129,7 +133,7 @@ function bubbles.install(src)
 
 	if result == 1 then
 		if src.inst then
-			src.inst = false
+			src.inst,src.nostretched = false,false
 			src.selcc = 1
 			if toinstall >0 then toinstall-=1 end
 		end
@@ -155,7 +159,7 @@ function bubbles.install(src)
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		os.message(strings.errinst)
+		custom_msg(strings.errinst,0)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
@@ -303,8 +307,7 @@ function bubbles.settings()
 			if dels>=1 then
 				local vbuff = screen.toimage()
 				local tmp,c = dels,0
-
-				if os.message(strings.uninstallbb..dels,1) == 1 then
+				if custom_msg(strings.uninstallbb..dels,1) == true then
 					for i=bubbles.len,1,-1 do
 						if bubbles.list[i].delete then
 							if vbuff then vbuff:blit(0,0) end

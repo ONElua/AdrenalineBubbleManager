@@ -50,7 +50,6 @@ function newScroll(a,b,c)
 
 	function obj:set(tab,mxn,modemintomin) -- Set a obj scroll
 		obj.ini,obj.sel,obj.lim,obj.maxim,obj.minim = 1,1,1,1,1
-		--os.message(tostring(type(tab)))
 		if(type(tab)=="number")then
 			if tab > mxn then obj.lim=mxn else obj.lim=tab end
 			obj.maxim = tab
@@ -104,3 +103,66 @@ function image.nostretched(img,cc)
 	return sheet
 end
 
+function custom_msg(printtext,mode)
+	local buff = screen.toimage()
+	if box then box:center() end
+
+	for i=0,102,6 do
+
+		if buff then buff:blit(0,0) end
+		if box then
+			box:scale(i)
+			box:blit(960/2,544/2)
+		end
+
+		screen.flip()
+	end
+
+	xtext = 480 - (screen.textwidth(printtext)/2)
+	xopt1 = 360 - (screen.textwidth(strings.option1_msg)/2)
+	xopt2 = 600 - (screen.textwidth(strings.option2_msg)/2)
+
+	buttons.read()
+	local result = false
+	while true do
+		buttons.read()
+		if buff then buff:blit(0,0) end
+		if box then	box:blit(480,272) end
+
+		screen.print(480,165, strings.title_msg, 1, color.white, color.gray, __ACENTER)
+		screen.print(xtext,200, printtext,1, color.gray)
+
+		if mode == 0 then
+			screen.print(xopt1+120,360, SYMBOL_CROSS.." : "..strings.option_msg,1.02, color.gray)
+		else
+			screen.print(xopt1,360, SYMBOL_CROSS.." : "..strings.option1_msg,1.02, color.gray)
+			screen.print(xopt2,360, SYMBOL_CIRCLE.." : "..strings.option2_msg,1.02, color.gray)
+		end
+
+		screen.flip()
+
+		if buttons.released.cross and mode != 2 then-- Accept
+			result = true
+			break
+		end
+
+		if buttons.released.circle and mode != 0 then-- Cancel
+			result = false
+			break
+		end
+	end
+
+	for i=102,0,-6 do
+
+		if buff then buff:blit(0,0) end
+		if box then
+			box:scale(i)
+			box:blit(960/2,544/2)
+		end
+
+		screen.flip()
+	end
+
+	if result then return true else return false end
+
+end

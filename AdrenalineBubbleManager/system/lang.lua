@@ -34,6 +34,12 @@ createbb =		"Try again after creating some Bubbles",
 togoback =		"To go Back",
 uninstallbb =	"You are going to Uninstall Bubble(s) : ",
 
+--custom message
+title_msg =		"System Message",
+option_msg =	"OK",
+option1_msg =	"Yes",
+option2_msg =	"No",
+
 --scan.lua
 scantitle =		"Available games [ISO/CSO/PBP]",
 
@@ -41,6 +47,9 @@ scantitle =		"Available games [ISO/CSO/PBP]",
 loadciso =		"Loading C/ISO",
 loadpbp =		"Loading PBP",
 --debug
+
+fullbbicon =	"Full Bubble",
+nostretched =	"No Stretched",
 
 defcolor =		"Default Color",
 bbcolor =		"Bubble Color",

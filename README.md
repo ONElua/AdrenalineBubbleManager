@@ -15,6 +15,12 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.02 ###
+- Fixed empty iso/cso/pbp list error.<br>
+- Now you can select to resize the games icons to show in Full Bubble or keep the original psp looks (no stretched icons).<br>
+- Press L or R to switch between full or no stretched icons for your bubbles.<br>
+- The script lang.lua got modified, so please update your translation.<br>
+
 ### Changelog 4.01 ###
 - Support to load your own font.ttf (Must be placed in ux0:data/ABM/font.ttf).<br>
 - Now you can translate ABM, you have to translate only the texts in quotation marks of the "system/lang.lua" script found in ABM and place the translation in ux0:data/ABM/lang.lua).<br>

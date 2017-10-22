@@ -21,12 +21,12 @@ function scan.insertCISO(hand)
 
 			local imgicon,getw = game.geticon0(hand.path),80
 			if imgicon then
-				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144 
+				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144
 				else getw = imgicon:getw() end
 			end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, imgw = getw,
-									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1 })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false })
 		end
 		tmp0 = nil
 	end
@@ -73,12 +73,12 @@ function scan.insertPBP(hand)
 
 			local imgicon,getw = game.geticon0(hand.path),80
 			if imgicon then
-				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144 
+				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144
 				else getw = imgicon:getw() end
 			end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE, path = hand.path, name = hand.name, imgw = getw,
-									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1 })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false })
 		end
 		tmp0 = nil
 	end
@@ -144,8 +144,8 @@ function scan.show(objedit)
 				end
 			end
 
-			if (buttons.held.l or buttons.analogly < -60) then scr:up()   end
-			if (buttons.held.r or buttons.analogly > 60) then  scr:down() end
+			if buttons.analogly < -60 then scr:up()   end
+			if buttons.analogly > 60 then  scr:down() end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
 				if __PIC then
@@ -162,7 +162,7 @@ function scan.show(objedit)
 			--Blit List
 			local y = 45
 			for i=scr.ini,scr.lim do
-				if i==scr.sel then draw.fillrect(5,y-3,950-scan.list[scr.sel].imgw,25,color.red) end
+				if i==scr.sel then draw.fillrect(5,y-3,945-scan.list[scr.sel].imgw,25,color.red) end
 
 				if scan.list[i].width > (940-scan.list[i].imgw) then
 					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title or scan.list[i].name,1,color.white,color.blue,__SLEFT,940-scan.list[i].imgw)
@@ -179,11 +179,29 @@ function scan.show(objedit)
 
 			--Blit icon0
 			if scan.list[scr.sel].img then
-				scan.list[scr.sel].img:center()
-				scan.list[scr.sel].img:blit(960 - (scan.list[scr.sel].imgw/2), 70)
+				--Full bbl icon
+				if scan.list[scr.sel].nostretched then
+					screen.clip(960-45, 75, 40)
+						scan.list[scr.sel].img:center()
+						scan.list[scr.sel].img:blit(960-45, 75)
+					screen.clip()
+				else
+					scan.list[scr.sel].img:center()
+					scan.list[scr.sel].img:blit(960 - (scan.list[scr.sel].imgw/2), 70)
+				end
 			else
-				draw.fillrect(960-80,35, 80, 80, color.white:a(100))
-				draw.rect(960-80,35, 80, 80, color.white)
+				if scan.list[scr.sel].nostretched then
+					draw.gradcircle(960-45,75,45, color.white:a(100),color.white:a(100))
+				else
+					draw.fillrect(960-80,35, 80, 80, color.white:a(100))
+					draw.rect(960-80,35, 80, 80, color.white)
+				end
+			end
+
+			if scan.list[scr.sel].nostretched then
+				screen.print(955,120,strings.fullbbicon,1,color.white,color.blue,__ARIGHT)
+			else
+				screen.print(955,120,strings.nostretched,1,color.white,color.blue,__ARIGHT)
 			end
 
 			--Bubbles Colors
@@ -256,11 +274,17 @@ function scan.show(objedit)
 
 		if buttons.circle then bubbles.settings() end
 
+		if buttons.r or buttons.l and scr.maxim > 0 then
+			scan.list[scr.sel].nostretched = not scan.list[scr.sel].nostretched
+		end
+
 		--Bubbles Color
-		if buttons.right then scan.list[scr.sel].selcc += 1 end
-		if buttons.left then scan.list[scr.sel].selcc -= 1 end	
-		if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
-		if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
+		if buttons.right and scr.maxim > 0 then scan.list[scr.sel].selcc += 1 end
+		if buttons.left and scr.maxim > 0 then scan.list[scr.sel].selcc -= 1 end
+		if scr.maxim > 0 then
+			if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
+			if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
+		end
 
 	end
 end
