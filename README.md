@@ -15,6 +15,19 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.03 ###
+- Fixed error with Homebrews with odd icons, forcing the img to 8bits.<br>
+- Fixed empty iso/cso/pbp list error (Press R) again!!!.<br>
+** Changes thanks to 1upus: **
+- Autodetect System language and loads translation if found.<br>
+- Translations moved to resources/lang and renamed to .txt<br>
+- Use english_us.txt as default translation.<br>
+- Automatic creation of translation sample on ux0:data/ABM/lang/english_us.txt.<br>
+- Loading translation from ux0:data/ABM/lang/%language%.txt (if exists).<br>
+- Loading custom ttf font from ux0:data/ABM/resources/%language%.ttf (if exists)
+- Some missed strings added to langpack (updater, custom message etc.).<br>
+- Some lua scripts and translation optimization.<br>
+
 ### Changelog 4.02 ###
 - Fixed empty iso/cso/pbp list error.<br>
 - Now you can select to resize the games icons to show in Full Bubble or keep the original psp looks (no stretched icons).<br>
