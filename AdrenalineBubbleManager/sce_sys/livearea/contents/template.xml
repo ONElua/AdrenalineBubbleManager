@@ -9,7 +9,6 @@
 	</gate>
 	<frame id="frame2">
 		<liveitem>
-			<lang>en</lang>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
 				<str color="#ffffff" size="30" bold="on" shadow="on">Adrenaline Bubbles Manager</str>
 			</text>
@@ -24,22 +23,20 @@
 
 	<frame id="frame3">
 		<liveitem>
-			<lang>en</lang>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="22" shadow="on">Version 4.02</str>
+				<str size="22" shadow="on">Version 4.03</str>
 			</text>
 		</liveitem>
 		<liveitem>
 			<lang>ru</lang>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="22" shadow="on">Версия 4.02</str>
+				<str size="22" shadow="on">Версия 4.03</str>
 			</text>
 		</liveitem>
 		</frame>
 	
 	<frame id="frame4">
 		<liveitem>
-			<lang>en</lang>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
 				<str size="20" bold="on" shadow="on">®2017 Team ONElua - ONElua.x10.mx</str>
 			</text>
