@@ -18,7 +18,7 @@ function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 		return 10 -- Ok
 	elseif step == 4 then											-- Promote or install
 		draw.fillrect(0,0,960,30, color.green:a(100))
-		screen.print(10,10,strings.instbb..bubble_id) 
+		screen.print(10,10,strings.instbb.." "..bubble_id) 
 		screen.flip()
 	end
 end
@@ -30,7 +30,7 @@ function onCopyFiles(size,written,file)
 		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 
 		screen.print(925,10,math.floor((written*100)/size).." %",1.0,color.white, color.black, __ARIGHT)
-		screen.print(10,10,strings.file..tostring(file))
+		screen.print(10,10,strings.file.." "..tostring(file))
 
 		screen.flip()
 	end

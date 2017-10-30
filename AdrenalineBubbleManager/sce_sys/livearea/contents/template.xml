@@ -9,16 +9,45 @@
 	</gate>
 	<frame id="frame2">
 		<liveitem>
+			<lang>en</lang>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
-				<str color="#ffffff" size="34" bold="on" shadow="on">Adrenaline Bubbles Manager v4.02</str>
+				<str color="#ffffff" size="30" bold="on" shadow="on">Adrenaline Bubbles Manager</str>
+			</text>
+		</liveitem>
+		<liveitem>
+			<lang>ru</lang>
+			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
+				<str color="#ffffff" size="30" bold="on" shadow="on">Менеджер пузырей для Adrenaline</str>
 			</text>
 		</liveitem>
 	</frame>
-		
+
+	<frame id="frame3">
+		<liveitem>
+			<lang>en</lang>
+			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
+				<str size="22" shadow="on">Version 4.02</str>
+			</text>
+		</liveitem>
+		<liveitem>
+			<lang>ru</lang>
+			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
+				<str size="22" shadow="on">Версия 4.02</str>
+			</text>
+		</liveitem>
+		</frame>
+	
 	<frame id="frame4">
 		<liveitem>
+			<lang>en</lang>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="21" bold="on" shadow="on">®2017 Team ONElua - ONElua.x10.mx</str>
+				<str size="20" bold="on" shadow="on">®2017 Team ONElua - ONElua.x10.mx</str>
+			</text>
+		</liveitem>
+		<liveitem>
+			<lang>ru</lang>
+			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
+				<str size="20" bold="on" shadow="on">®2017 Команда ONElua - ONElua.x10.mx</str>
 			</text>
 		</liveitem>
 	</frame>

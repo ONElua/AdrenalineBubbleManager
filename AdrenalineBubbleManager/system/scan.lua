@@ -16,17 +16,19 @@ function scan.insertCISO(hand)
 	local _type = files.type(hand.path)
 	if _type == 2 or _type == 3 then
 		local tmp0 = game.info(hand.path)
-		if tmp0 and tmp0.CATEGORY == "UG" then
-			init_msg(string.format(strings.loadciso.." %s\n",hand.path))
+		if tmp0 then
+			if tmp0.CATEGORY == "UG" or tmp0.CATEGORY == "PG" then
+				init_msg(string.format(strings.loadciso.." %s\n",hand.path))
 
-			local imgicon,getw = game.geticon0(hand.path),80
-			if imgicon then
-				if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144
-				else getw = imgicon:getw() end
-			end
+				local imgicon,getw = game.geticon0(hand.path),80
+				if imgicon then
+					if imgicon:getw()>144 then imgicon:resize(144,80) getw = 144
+					else getw = imgicon:getw() end
+				end
 
-			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, imgw = getw,
+				table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, imgw = getw,
 									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false })
+			end
 		end
 		tmp0 = nil
 	end
@@ -133,7 +135,7 @@ function scan.show(objedit)
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5,strings.scantitle, 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,strings.count..scr.maxim, 1, color.red, color.gray, __ARIGHT)
+		screen.print(950,5,strings.count.." "..scr.maxim, 1, color.red, color.gray, __ARIGHT)
 
 		if scr.maxim > 0 then
 
@@ -274,7 +276,7 @@ function scan.show(objedit)
 
 		if buttons.circle then bubbles.settings() end
 
-		if buttons.r or buttons.l and scr.maxim > 0 then
+		if (buttons.r or buttons.l) and scr.maxim > 0 then
 			scan.list[scr.sel].nostretched = not scan.list[scr.sel].nostretched
 		end
 

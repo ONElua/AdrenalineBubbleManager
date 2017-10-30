@@ -1,0 +1,86 @@
+--Русификатор для AdrenalineBubbleManager 4.02 by lupus
+
+--Texts (редактировать только текст, заключённый в кавычки " ")
+strings = {
+
+--script.lua
+unsafe =        "Необходимо активировать UNSAFE MODE для Homebrew!!!",
+adrinst =       "Плагин AdrBubbleBooter установлен. \nТребуется выполнить перезагрузку PS Vita... :)",
+notadr =        "Adrenaline v6 не обнаружен...",
+
+--callbacks.lua
+instbb =        "Создание пузыря:",
+file =          "Файл:",
+
+--bubbles.lua
+btitle =        "МЕНЮ НАСТРОЕК DATA/BOOT.INF",
+count =	        "Всего:",
+
+--osk
+titleosk =      "Название пузыря",
+putnameosk =    "Введите название",
+
+--osk
+convert =       "Конвертирование ресурсов...",
+errinst =       "В процессе установки произошла ошибка.",
+unk =           "UNK",
+
+marks =         "Select/Start (Выделить/Выделить все)",
+uninstall =     "Удалить",
+editboot =      "Редактировать boot.inf",
+back =          "Назад",
+toggle =        "Изменить значение",
+doneedit =      "Применить",
+notbubbles =    "Данные не найдены.",
+createbb =      "Создайте пузырь и повторите попытку.",
+togoback =      "Назад",
+uninstallbb =   "Будет удалено пузырей:",
+
+--custom message
+title_msg =     "Системное сообщение",
+option_msg =    "Ок",
+option1_msg =   "Применить",
+option2_msg =   "Отмена",
+
+--scan.lua
+scantitle =     "Доступные игры [ISO/CSO/PBP]",
+
+--debug
+loadciso =      "Загрузка C/ISO",
+loadpbp =       "Загрузка PBP",
+--debug
+
+fullbbicon =    "Иконка:\nРастянуть",
+nostretched =   "Иконка:\nОригинал",
+
+defcolor =      "Фоновый цвет пузыря",
+bbcolor =       "Фоновый цвет пузыря",
+pics =          "Просмотр оформления",
+markgame =      "Выделить/снять выделение",
+bsettings =     "Настройки пузырей",
+
+notpsp =        "Не найдено ни одной PSP игры...",
+installgames =  "Поместите образы iso/cso в папку pspemu/ISO",
+installgames2 = "Игры формата eboot.pbp - в pspemu/PSP/GAME/(MYGAME)",
+
+--bar progress
+bubbles =       "Пузыри",
+
+--updater
+update_msg1 =   "доступен для загрузки.",
+update_msg2 =   "Обновить приложение?",
+downupdate =    "Загрузка обновления...",
+size_msg =      "Размер",
+written_msg =   "Загружено",
+speed_msg =     "Скорость",
+percent_msg =   "Прогресс",
+kbs_msg =       "Кб/с",
+
+--updater\script.lua  ! not supported, reserved for future releases
+--error_args =    "Ошибка передачи аргумента!",
+--unsafe_test =   "Проверка безопаснсти содержимого vpk!",
+--unpack_vpk =    "Распаковка vpk...",
+--perc_total =    "Общий прогресс:",
+--installing =    "Установка...",
+
+}
