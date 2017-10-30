@@ -18,7 +18,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 ### Changelog 4.03 ###
 - Fixed error with Homebrews with odd icons, forcing the img to 8bits.<br>
 - Fixed empty iso/cso/pbp list error (Press R) again!!!.<br>
-** Changes thanks to 1upus: **
+**Changes thanks to 1upus:**
 - Autodetect System language and loads translation if found.<br>
 - Translations moved to resources/lang and renamed to .txt<br>
 - Use english_us.txt as default translation.<br>
