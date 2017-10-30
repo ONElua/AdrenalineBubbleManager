@@ -182,7 +182,7 @@ function bubbles.settings()
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,strings.count..bubbles.len, 1, color.red, color.gray, __ARIGHT)
+		screen.print(950,5,strings.count.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
 		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
 			draw.gradline(120,310,840,310,color.blue,color.green)
@@ -307,7 +307,7 @@ function bubbles.settings()
 			if dels>=1 then
 				local vbuff = screen.toimage()
 				local tmp,c = dels,0
-				if custom_msg(strings.uninstallbb..dels,1) == true then
+				if custom_msg(strings.uninstallbb.." "..dels,1) == true then
 					for i=bubbles.len,1,-1 do
 						if bubbles.list[i].delete then
 							if vbuff then vbuff:blit(0,0) end

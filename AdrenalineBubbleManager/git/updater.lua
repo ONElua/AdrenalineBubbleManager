@@ -13,7 +13,7 @@ function screen.flip()
 		local version = UPDATE_PORT:pop()
 		local major = (version >> 0x18) & 0xFF;
 		local minor = (version >> 0x10) & 0xFF;
-		if os.message(string.format("%s v%s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."     Do you want to update the application?"), 1) == 1 then
+		if custom_msg(string.format("\n%s v%s", APP_PROJECT, string.format("%X.%02X",major, minor).." "..strings.update_msg1.."\n\n"..strings.update_msg2), 1) == 1 then
 			buttons.homepopup(0)
 			
 			local url = string.format("https://github.com/%s/%s/releases/download/%s/%s", APP_REPO, APP_PROJECT, string.format("%X.%02X",major, minor), APP_PROJECT..".vpk")
@@ -25,9 +25,9 @@ function screen.flip()
 			local onNetGetFileOld = onNetGetFile
 			function onNetGetFile(size,written,speed)
 				if back then back:blit(0,0) end
-				screen.print(10,10,"Downloading Update...")
-				screen.print(10,30,"Size: "..tostring(size).." Written: "..tostring(written).." Speed: "..tostring(speed).."Kb/s")
-				screen.print(10,50,"Porcent: "..math.floor((written*100)/size).."%")
+				screen.print(10,10,strings.downupdate)
+				screen.print(10,30,strings.size_msg..": "..tostring(size).." "..strings.written_msg..": "..tostring(written).." "..strings.speed_msg.." "..tostring(speed)..strings.kbs_msg)
+				screen.print(10,50,strings.percent_msg..": "..math.floor((written*100)/size).."%")
 				draw.fillrect(0,520,((written*960)/size),24,color.new(0,255,0))
 				screen.flip()
 				buttons.read()

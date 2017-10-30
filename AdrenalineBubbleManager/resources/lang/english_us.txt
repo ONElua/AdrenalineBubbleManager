@@ -7,12 +7,12 @@ adrinst =		"AdrBubbleBooter plugin has been installed... \nWe need to restart yo
 notadr =		"Adrenaline v6 has not been installed...",
 
 --callbacks.lua
-instbb =		"Installing Bubble: ",
-file =			"File: ",
+instbb =		"Installing Bubble:",
+file =			"File:",
 
 --bubbles.lua
 btitle =		"EDIT DATA/BOOT.INF",
-count =			"Count: ",
+count =			"Count:",
 
 --osk
 titleosk =		"Bubble's Title",
@@ -63,5 +63,22 @@ installgames2 =	"and eboot.pbp games in pspemu/PSP/GAME/(MYGAME)",
 
 --bar progress
 bubbles =		"Bubbles",
+
+--updater.lua
+update_msg1 =   "is now available.",
+update_msg2 =   "Do you want to update the application?",
+downupdate =    "Downloading Update...",
+size_msg =      "Size",
+written_msg =   "Written",
+speed_msg =     "Speed",
+percent_msg =   "Percent",
+kbs_msg =       "Kb/s",
+
+--updater\script.lua  ! not supported, reserved for future releases
+--error_args =    "Error args lost!",
+--unsafe_test =   "Search in vpk, Unsafe or Dangerous files!",
+--unpack_vpk =    "Unpack vpk...",
+--perc_total =    "Percent Total:",
+--installing =    "Installing...",
 
 }
