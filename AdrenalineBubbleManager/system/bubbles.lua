@@ -13,7 +13,8 @@ bubbles.len, dels, count_osk = 0,0,0
 
 function bubbles.scan()
 
-	local list = game.list(__APP)
+	--id, type, version, dev, path, title
+	local list = game.list(__GAME_LIST_APP)
 	table.sort(list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 	local len = #list
 
@@ -61,7 +62,7 @@ function bubbles.install(src)
 		if count_osk >= 9 then
 			bubble_title = iosk.init(strings.titleosk, src.title or strings.putnameosk, 128)
 		else
-			bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk)
+			bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk, 512, __DEFAULT, __TEXT)
 			count_osk += 1
 		end
 	end

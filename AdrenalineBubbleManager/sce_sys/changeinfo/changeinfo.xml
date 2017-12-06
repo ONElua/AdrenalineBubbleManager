@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.04">
+    <![CDATA[
+- Added japanese letters support for game titles with Sony's OSK.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.03">
     <![CDATA[
 - Fixed error with Homebrews with odd icons, forcing the img to 8bits.<br>
