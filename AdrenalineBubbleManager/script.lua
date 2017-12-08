@@ -12,8 +12,6 @@
 game.close()
 color.loadpalette()
 
-buttons.read()
-
 -- Set ux0 folder path
 local pathABM = "ux0:data/ABM/"
 files.mkdir(pathABM)
@@ -21,7 +19,7 @@ files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."resources/")
 
 -- Loading custom GFX from ux0:data/ABM/resources if exist
- -- Background image must be (960x554 png or jpg image. Priority to back.png)
+-- Background image must be (960x554 png or jpg image. Priority to back.png)
 if files.exists(pathABM.."resources/back.png") then back = image.load(pathABM.."resources/back.png")
 	elseif files.exists(pathABM.."resources/back.jpg") then back = image.load(pathABM.."resources/back.jpg")
 		else back = image.load("resources/back.png")
@@ -36,8 +34,8 @@ buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
 
 -- Loading language file
--- reading system language
 __LANG = os.language()
+__STRINGS		= 52
 -- reading lang strings from ux0:data/ABM/ if exist
 if files.exists(pathABM.."lang/"..__LANG..".txt") then dofile(pathABM.."lang/"..__LANG..".txt")
 else 
@@ -46,7 +44,7 @@ else
 		dofile("resources/lang/"..__LANG..".txt")
 		local cont = 0
 		for key,value in pairs(strings) do cont += 1 end
-		if cont < 48 then files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
+		if cont < __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
 -- reading default lang strings if no one translations founded
 	else files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
 end

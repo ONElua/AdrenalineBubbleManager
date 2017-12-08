@@ -16,21 +16,19 @@ function bubbles.scan()
 	--id, type, version, dev, path, title
 	local list = game.list(__GAME_LIST_APP)
 	table.sort(list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
-	local len = #list
 
 	bubbles.list = {}
-	for i=1, len do
+	for i=1, #list do
 		if files.exists(list[i].path.."/data/boot.inf") then
 			local entry = {
-				id = list[i].id,                                             					-- TITLEID of the game.
-				path = list[i].path,                                             				-- Path of the game.
-				boot = string.format("%s/data/boot.inf", list[i].path),							-- Path to the boot.inf
-				icon = image.load(string.format("%s/icon0.png",	"ur0:appmeta/"..list[i].id)),	--Icon of the Game.
-				title = list[i].title,
+				id = list[i].id,                           			-- GAMEID of the game.
+				path = list[i].path,                           		-- Path of the game.
+				boot = list[i].path.."/data/boot.inf",				-- Path to the boot.inf
+				imgp = "ur0:appmeta/"..list[i].id.."/icon0.png",	--Path to icon0 of the game.
+				title =	list[i].title,								-- TITLEID of the game.
 				delete = false
 			}
-			if entry.icon then entry.icon:resize(120,120) end
-			table.insert(bubbles.list, entry)                                   				-- Insert entry in list of bubbles! :)
+			table.insert(bubbles.list, entry)                  		-- Insert entry in list of bubbles! :)
 		end
 	end--for
 
@@ -39,6 +37,7 @@ function bubbles.scan()
 	if bubbles.len > 0 then
 		table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 
+		--Read data/boot.inf
 		for i=1, bubbles.len do
 			bubbles.list[i].lines = {}
 			for j=1, #boot do
@@ -62,7 +61,7 @@ function bubbles.install(src)
 		if count_osk >= 9 then
 			bubble_title = iosk.init(strings.titleosk, src.title or strings.putnameosk, 128)
 		else
-			bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk, 512, __DEFAULT, __TEXT)
+			bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk, 128, __DEFAULT, __TEXT)
 			count_osk += 1
 		end
 	end
@@ -144,11 +143,10 @@ function bubbles.install(src)
 				id = lastid,
 				path = "ux0:app/"..lastid,
 				boot = string.format("ux0:app/%s/data/boot.inf",lastid),
-				icon = image.load(string.format("%s/icon0.png", "ur0:appmeta/"..lastid)),
+				imgp = "ur0:appmeta/"..lastid.."/icon0.png",
 				title = bubble_title,
 				delete = false
 			}
-			if entry.icon then entry.icon:resize(120,120) end
 			table.insert(bubbles.list, entry)-- Insert entry in list of bubbles! :)
 
 			bubbles.list[#bubbles.list].lines = {}
@@ -176,6 +174,7 @@ function bubbles.settings()
 	local mark = false
 
 	buttons.interval(10,10)
+	local preview = nil
 	while true do
 		buttons.read()
 
@@ -193,8 +192,13 @@ function bubbles.settings()
 		if scrids.maxim > 0 then
 
 			if not change then
-				if (buttons.up or buttons.held.l or buttons.analogly < -60) then scrids:up() end
-				if (buttons.down or buttons.held.r or buttons.analogly > 60) then scrids:down() end
+				if (buttons.up or buttons.held.l or buttons.analogly < -60) then
+					if scrids:up() then preview = nil end
+				end
+				if (buttons.down or buttons.held.r or buttons.analogly > 60) then
+					if scrids:down() then preview = nil end
+				end
+			--edit
 			else
 				if (buttons.up or buttons.held.l) then optsel-=1 end
 				if (buttons.down or buttons.held.r) then optsel+=1 end
@@ -226,16 +230,18 @@ function bubbles.settings()
 
 			end-- not change
 
-			if bubbles.list[scrids.sel].icon then
-				screen.clip(200,135, 120/2)
-					bubbles.list[scrids.sel].icon:center()
-					bubbles.list[scrids.sel].icon:blit(200,135)
-				screen.clip()
-			end
-
 			local y = 75
 			for i=scrids.ini, scrids.lim do
-				if i == scrids.sel then draw.fillrect(320,y-1,330,18,color.green:a(100)) end
+				if i == scrids.sel then
+					draw.fillrect(320,y-1,330,18,color.green:a(100))
+					if not preview then
+						preview = image.load(bubbles.list[scrids.sel].imgp)
+						if preview then
+							preview:resize(120,120)
+							preview:setfilter(__LINEAR, __LINEAR)
+						end
+					end
+				end
 				screen.print(480,y,bubbles.list[i].id or strings.unk,1.0,color.white,color.gray,__ACENTER)
 
 				if bubbles.list[i].delete then
@@ -244,6 +250,13 @@ function bubbles.settings()
 				end
 
 				y += 23
+			end
+			
+			if preview then
+				screen.clip(200,135, 120/2)
+					preview:center()
+					preview:blit(200,135)
+				screen.clip()
 			end
 
 			--Options txts

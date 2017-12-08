@@ -27,7 +27,7 @@ function scan.insertCISO(hand)
 				end
 
 				table.insert(scan.list, { img = imgicon, title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, imgw = getw,
-									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false, mtime = hand.mtime })
 			end
 		end
 		tmp0 = nil
@@ -80,7 +80,7 @@ function scan.insertPBP(hand)
 			end
 
 			table.insert(scan.list, { img = imgicon, title = tmp0.TITLE, path = hand.path, name = hand.name, imgw = getw,
-									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false })
+									  inst=false, width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false, mtime = hand.mtime })
 		end
 		tmp0 = nil
 	end
@@ -125,10 +125,11 @@ end
 function scan.show(objedit)
 
 	local __PIC = false
-	local scr,pic1 = newScroll(scan.list,14),nil
+	local scr,pic1 = newScroll(scan.list,12),nil
 
 	buttons.interval(10,10)
 	local xscr,xscrtitle = 15,30
+	local sort = true
 	while true do
 		buttons.read()
 		if back then back:blit(0,0) end
@@ -220,6 +221,9 @@ function scan.show(objedit)
 			screen.print(920,490,strings.pics,1,color.white,color.blue, __ARIGHT)
 
 			--Left
+			if buttonskey then buttonskey2:blitsprite(10,438,1) end                     --Start
+			screen.print(45,440,strings.press_start,1,color.white,color.blue)
+
 			if buttonskey then buttonskey:blitsprite(15,463,2) end                     --[]
 			screen.print(45,465,strings.markgame,1,color.white,color.blue)
 
@@ -272,6 +276,21 @@ function scan.show(objedit)
 		if buttons.square and scr.maxim > 0 then
 			scan.list[scr.sel].inst = not scan.list[scr.sel].inst
 			if scan.list[scr.sel].inst then toinstall+=1 else toinstall-=1 end
+		end
+
+		if buttons.select and scr.maxim > 0 then
+			if sort then
+				table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
+				sort = not sort
+			else
+				table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+				sort = not sort
+			end
+			scr:set(scan.list,14)
+		end
+
+		if buttons.start then
+			os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select)
 		end
 
 		if buttons.circle then bubbles.settings() end

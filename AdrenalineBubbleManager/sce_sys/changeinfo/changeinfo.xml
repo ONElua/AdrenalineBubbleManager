@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.05">
+    <![CDATA[
+- Now you can Sort your iso/cso/pbp by Title or by Date of Modification pressing SELECT.<br>
+- Pressing START in the iso/cso/pbp list will display the basic controls.<br>
+- Now the Bubble icons in the "EDIT DATA/BOOT.INF" section are loaded "on the fly".<br>
+- Please update your translations...New lines were added.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.04">
     <![CDATA[
 - Added japanese letters support for game titles with Sony's OSK.<br>

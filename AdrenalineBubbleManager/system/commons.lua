@@ -65,16 +65,18 @@ function newScroll(a,b,c)
 	end
 
 	function obj:up()
-		if obj.sel>obj.ini then obj.sel=obj.sel-1
+		if obj.sel>obj.ini then obj.sel=obj.sel-1 return true
 		elseif obj.ini-1>=obj.minim then
 			obj.ini,obj.sel,obj.lim=obj.ini-1,obj.sel-1,obj.lim-1
+			return true
 		end
 	end
 
 	function obj:down()
-		if obj.sel<obj.lim then obj.sel=obj.sel+1
+		if obj.sel<obj.lim then obj.sel=obj.sel+1 return true
 		elseif obj.lim+1<=obj.maxim then
 			obj.ini,obj.sel,obj.lim=obj.ini+1,obj.sel+1,obj.lim+1
+			return true
 		end
 	end
 

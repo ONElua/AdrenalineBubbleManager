@@ -15,6 +15,12 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.05 ###
+- Now you can Sort your iso/cso/pbp by Title or by Date of Modification pressing SELECT.<br>
+- Pressing START in the iso/cso/pbp list will display the basic controls.<br>
+- Now the Bubble icons in the "EDIT DATA/BOOT.INF" section are loaded "on the fly".<br>
+- Please update your translations...New lines were added.<br>
+
 ### Changelog 4.04 ###
 - Added japanese letters support for game titles with Sony's OSK.<br>
 

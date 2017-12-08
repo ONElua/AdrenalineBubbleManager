@@ -1,5 +1,3 @@
---Русификатор для AdrenalineBubbleManager 4.02 by lupus
-
 --Texts (редактировать только текст, заключённый в кавычки " ")
 strings = {
 
@@ -15,16 +13,6 @@ file =          "Файл:",
 --bubbles.lua
 btitle =        "МЕНЮ НАСТРОЕК DATA/BOOT.INF",
 count =	        "Всего:",
-
---osk
-titleosk =      "Название пузыря",
-putnameosk =    "Введите название",
-
---osk
-convert =       "Конвертирование ресурсов...",
-errinst =       "В процессе установки произошла ошибка.",
-unk =           "UNK",
-
 marks =         "Select/Start (Выделить/Выделить все)",
 uninstall =     "Удалить",
 editboot =      "Редактировать boot.inf",
@@ -36,6 +24,19 @@ createbb =      "Создайте пузырь и повторите попыт�
 togoback =      "Назад",
 uninstallbb =   "Будет удалено пузырей:",
 
+--osk
+titleosk =      "Название пузыря",
+putnameosk =    "Введите название",
+
+--Process
+convert =       "Конвертирование ресурсов...",
+errinst =       "В процессе установки произошла ошибка.",
+unk =           "UNK",
+
+--debug
+loadciso =      "Загрузка C/ISO",
+loadpbp =       "Загрузка PBP",
+
 --custom message
 title_msg =     "Системное сообщение",
 option_msg =    "Ок",
@@ -44,43 +45,39 @@ option2_msg =   "Отмена",
 
 --scan.lua
 scantitle =     "Доступные игры [ISO/CSO/PBP]",
-
---debug
-loadciso =      "Загрузка C/ISO",
-loadpbp =       "Загрузка PBP",
---debug
-
 fullbbicon =    "Иконка:\nРастянуть",
 nostretched =   "Иконка:\nОригинал",
-
 defcolor =      "Фоновый цвет пузыря",
 bbcolor =       "Фоновый цвет пузыря",
 pics =          "Просмотр оформления",
 markgame =      "Выделить/снять выделение",
 bsettings =     "Настройки пузырей",
-
 notpsp =        "Не найдено ни одной PSP игры...",
 installgames =  "Поместите образы iso/cso в папку pspemu/ISO",
 installgames2 = "Игры формата eboot.pbp - в pspemu/PSP/GAME/(MYGAME)",
+press_lr =		"Press L/R to switch between full/no stretched icons.",
+press_select =	"Press SELECT to sort by title/date of modification.",
+press_lright =	"Press Left/Right to change the color of each bubble.",
+press_start =	"Press START for help.",
 
 --bar progress
 bubbles =       "Пузыри",
 
---updater
-update_msg1 =   "доступен для загрузки.",
-update_msg2 =   "Обновить приложение?",
-downupdate =    "Загрузка обновления...",
-size_msg =      "Размер",
-written_msg =   "Загружено",
-speed_msg =     "Скорость",
-percent_msg =   "Прогресс",
-kbs_msg =       "Кб/с",
+--updater.lua
+update_msg1 =   "is now available.",
+update_msg2 =   "Do you want to update the application?",
+downupdate =    "Downloading Update...",
+size_msg =      "Size",
+written_msg =   "Written",
+speed_msg =     "Speed",
+percent_msg =   "Percent",
+kbs_msg =       "Kb/s",
 
 --updater\script.lua  ! not supported, reserved for future releases
---error_args =    "Ошибка передачи аргумента!",
---unsafe_test =   "Проверка безопаснсти содержимого vpk!",
---unpack_vpk =    "Распаковка vpk...",
---perc_total =    "Общий прогресс:",
---installing =    "Установка...",
+--error_args =    "Error args lost!",
+--unsafe_test =   "Search in vpk, Unsafe or Dangerous files!",
+--unpack_vpk =    "Unpack vpk...",
+--perc_total =    "Percent Total:",
+--installing =    "Installing...",
 
 }

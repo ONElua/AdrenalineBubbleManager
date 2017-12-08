@@ -1,0 +1,83 @@
+--Texts (only text in " ")
+strings = {
+
+--script.lua
+unsafe =		"MODO UNSAFE es requerido para usar este Homebrew !!!",
+adrinst =		"El plugin AdrBubbleBooter ha sido instalado... \nNecesitamos reiniciar tu PSVita... :)",
+notadr =		"Adrenaline v6 no instalada...",
+
+--callbacks.lua
+instbb =		"Instalando Burbuja: ",
+file =			"Archivo: ",
+
+--bubbles.lua
+btitle =		"Ajustes de Burbujas",
+count =			"Total: ",
+marks =			"Select/Start (Marcar/Desmarcar TODO)",
+uninstall =		"Desinstalar",
+editboot =		"Editar boot.inf",
+back =			"Regresar",
+toggle =		"Opciones",
+doneedit =		"Terminar Edición",
+notbubbles =	"No hay burbujas :(",
+createbb =		"Inténtalo de nuevo después de crear algunas burbujas.",
+togoback =		"Volver Atrás",
+uninstallbb =	"Vas a Desinstalar Burbuja(s) : ",
+
+--osk
+titleosk =		"Título de la Burbuja",
+putnameosk =	"Coloca aquí el nombre",
+
+--Process
+convert =		"Convirtiendo Recursos...",
+errinst =		"Lo siento, Hubo un error en la instalación",
+unk =			"UNK",
+
+--debug
+loadciso =		"Cargando C/ISO",
+loadpbp =		"Cargando PBP",
+
+--custom message
+title_msg =		"Mensaje de Sistema",
+option_msg =	"Ok",
+option1_msg =	"Si",
+option2_msg =	"No",
+
+--scan.lua
+scantitle =		"Juegos Disponibles [ISO/CSO/PBP]",
+fullbbicon =	"Full Bubble",
+nostretched =	"No Stretched",
+defcolor =		"Color PRE",
+bbcolor =		"Color Burbuja",
+pics =			"Mostrar/No Mostrar PICs",
+markgame =		"Marcar/Desmarcar Juego",
+bsettings =		"Configuración de Burbujas",
+notpsp =		"No hay juegos de PSP...",
+installgames =	"Instala los juegos iso/cso en pspemu/ISO",
+installgames2 =	"y juegos eboot.pbp en pspemu/PSP/GAME/(MYGAME)",
+press_lr =		"Presiona L/R Burbuja Completa/Stretched.",
+press_select =	"Presiona SELECT para ordenar por Título/Fecha Modificación.",
+press_lright =	"Presiona Izq/Der para cambiar el color de cada Burbuja.",
+press_start =	"Presiona START para mostrar la ayuda.",
+
+--bar progress
+bubbles =		"Burbujas",
+
+--updater.lua
+update_msg1 =   "is now available.",
+update_msg2 =   "Do you want to update the application?",
+downupdate =    "Downloading Update...",
+size_msg =      "Size",
+written_msg =   "Written",
+speed_msg =     "Speed",
+percent_msg =   "Percent",
+kbs_msg =       "Kb/s",
+
+--updater\script.lua  ! not supported, reserved for future releases
+--error_args =    "Error args lost!",
+--unsafe_test =   "Search in vpk, Unsafe or Dangerous files!",
+--unpack_vpk =    "Unpack vpk...",
+--perc_total =    "Percent Total:",
+--installing =    "Installing...",
+
+}
