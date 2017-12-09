@@ -1,0 +1,83 @@
+--Texts (only text in " ")
+strings = {
+
+--script.lua
+unsafe =		"La modalità NON SICURA è necessaria per utilizzare questo Homebrew !!!",
+adrinst =		"È stato installato il plugin AdrBubbleBooter... \nHai bisogno di riavviare la tua PSVita... :)",
+notadr =		"Adrenaline v6 non installato...",
+
+--callbacks.lua
+instbb =		"Bolle Installate: ",
+file =			"File: ",
+
+--bubbles.lua
+btitle =		"Impostazioni delle Bolle",
+count =			"Totale: ",
+marks =			"Select/Start (Seleziona/Deseleziona TUTTO)",
+uninstall =		"Disinstallazione",
+editboot =		"Editare boot.inf",
+back =			"Indietro",
+toggle =		"Opzioni",
+doneedit =		"Modifica effettuata con successo",
+notbubbles =	"Non hai nessuna bolla nella lista :(",
+createbb =		"Riprova dopo aver creato alcune bolle.",
+togoback =		"Torna Indietro",
+uninstallbb =	"Stai per disinstallare delle bolle : ",
+
+--osk
+titleosk =		"Titolo della Bolla",
+putnameosk =	"Inserisci qui il nome",
+
+--Process
+convert =		"Conversione delle risorse in corso...",
+errinst =		"Siamo spiacenti, c'è stato un errore di installazione",
+unk =			"UNK",
+
+--debug
+loadciso =		"Caricamento C/ISO",
+loadpbp =		"Caricamento PBP",
+
+--custom message
+title_msg =		"Messaggio di Sistema",
+option_msg =	"Ok",
+option1_msg =	"Si",
+option2_msg =	"No",
+
+--scan.lua
+scantitle =		"Giochi Disponibili [ISO/CSO/PBP]",
+fullbbicon =	"Bolle complete",
+nostretched =	"No allungato",
+defcolor =		"Colore Predefinito",
+bbcolor =		"Colore Bolla",
+pics =			"On/Off PICs",
+markgame =		"Seleziona/Deseleziona Gioco",
+bsettings =		"Impostazioni delle bolle",
+notpsp =		"Nessun gioco PSP trovato...",
+installgames =	"Si prega di installare il gioco iso/cso in pspemu/ISO",
+installgames2 =	"e i giochi eboot.pbp in pspemu/PSP/GAME/(MYGAME)",
+press_lr =		"Premere L/R per passare alle icone complete/non allungate.",
+press_select =	"Premere SELECT per ordinare per titolo/data di modifica.",
+press_lright =	"Premere Destra/Sinistra per cambiare il colore di ogni Bolla.",
+press_start =	"Premere START per visualizzare l'aiuto.",
+
+--bar progress
+bubbles =		"Bolle",
+
+--updater.lua
+update_msg1 =   "adesso è disponibile.",
+update_msg2 =   "Vuoi aggiornare l'applicazione?",
+downupdate =    "Scaricamento dell'aggiornamento in corso...",
+size_msg =      "Dimensione",
+written_msg =   "Scrittura",
+speed_msg =     "Velocità",
+percent_msg =   "Percentuale",
+kbs_msg =       "Kb/s",
+
+--updater\script.lua  ! not supported, reserved for future releases
+--error_args =    "Errore args lost!",
+--unsafe_test =   "Cerca nei file vpk, Non Sicuri o Pericolosi!",
+--unpack_vpk =    "Spacchettamento vpk...",
+--perc_total =    "Percentuale Totale:",
+--installing =    "Installazione...",
+
+}
