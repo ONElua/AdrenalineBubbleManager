@@ -55,8 +55,8 @@ end
 function bubbles.install(src)
 
 	files.delete("ux0:data/ABMVPK/")
+	local bubble_title,timg = nil,nil
 
-	local bubble_title = nil
 	if src.title then
 		if count_osk >= 9 then
 			bubble_title = iosk.init(strings.titleosk, src.title or strings.putnameosk, 128)
@@ -84,25 +84,26 @@ function bubbles.install(src)
 	--Resources to 8bits
 	buttons.homepopup(0)
 		if back then back:blit(0,0) end
-			draw.fillrect(0,0,960,30, color.green:a(100))
+			draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 			screen.print(10,10,strings.convert)
 		screen.flip()
 
-		if src.img then
+		timg = game.geticon0(src.path)
+		if timg then
 			if src.nostretched then
-				image.save(src.img:copyscale(128,128),work_dir.."sce_sys/icon0.png", 1)
+				image.save(timg:copyscale(128,128),work_dir.."sce_sys/icon0.png", 1)
 			else
-				image.save(image.nostretched(src.img, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
+				image.save(image.nostretched(timg, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
 			end
-			image.save(src.img, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+			image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
 		else
 			files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
 			files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
 		end
 
-		local picimg = game.getpic1(src.path)
-		if picimg then
-			image.save(picimg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+		timg = game.getpic1(src.path)
+		if timg then
+			image.save(timg:copyscale(__DISPLAYW,544), work_dir.."sce_sys/pic0.png", 1)
 			files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
 			files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
 		else
@@ -169,33 +170,33 @@ function bubbles.settings()
 	local drivers = { "INFERNO", "MARCH33", "NP9660" }
 	local bins =	{ "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
 	local plugins = { "ENABLE", "DISABLE" }
+
 	local selector, optsel, change, bmaxim = 1,2,false,9
 	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 130, 15
-	local mark = false
+	local mark,preview = false,nil
 
 	buttons.interval(10,10)
-	local preview = nil
 	while true do
 		buttons.read()
 
 		if back then back:blit(0,0) end
 
-		draw.fillrect(0,0,960,30, 0x64545353) --UP
+		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,strings.count.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
 		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
 			draw.gradline(120,310,840,310,color.blue,color.green)
-			draw.gradline(120,312,840,312,color.green,color.blue)
+			draw.gradline(120,311,840,311,color.green,color.blue)
 		draw.rect(120,64,720,416,color.blue)
 
 		if scrids.maxim > 0 then
 
 			if not change then
-				if (buttons.up or buttons.held.l or buttons.analogly < -60) then
+				if (buttons.up or buttons.analogly < -60) then
 					if scrids:up() then preview = nil end
 				end
-				if (buttons.down or buttons.held.r or buttons.analogly > 60) then
+				if (buttons.down or buttons.analogly > 60) then
 					if scrids:down() then preview = nil end
 				end
 			--edit
@@ -294,7 +295,7 @@ function bubbles.settings()
 			screen.print(480,230, strings.createbb, 1, color.white, color.red, __ACENTER)
 			screen.print(480,460, SYMBOL_CIRCLE..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
-		draw.fillrect(0,516,960,30, 0x64545353)--Down
+		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
 
 		screen.flip()
 

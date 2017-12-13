@@ -17,8 +17,9 @@ function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 		os.delay(100)
 		return 10 -- Ok
 	elseif step == 4 then											-- Promote or install
-		draw.fillrect(0,0,960,30, color.green:a(100))
-		screen.print(10,10,strings.instbb.." "..bubble_id) 
+		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+		screen.print(10,10,strings.instbb.." "..bubble_id)
+		
 		screen.flip()
 	end
 end

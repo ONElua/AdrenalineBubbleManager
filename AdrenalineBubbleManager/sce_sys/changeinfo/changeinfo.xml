@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.06">
+    <![CDATA[
+- Now the icons in iso/cso/pbp list are loaded "on the fly".<br>
+    ]]>
+  </changes>
   <changes app_ver="04.05">
     <![CDATA[
 - Now you can Sort your iso/cso/pbp by Title or by Date of Modification pressing SELECT.<br>
