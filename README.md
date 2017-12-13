@@ -15,6 +15,9 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.06 ###
+- Now the icons in iso/cso/pbp list are loaded "on the fly".<br>
+
 ### Changelog 4.05 ###
 - Now you can Sort your iso/cso/pbp by Title or by Date of Modification pressing SELECT.<br>
 - Pressing START in the iso/cso/pbp list will display the basic controls.<br>
