@@ -15,6 +15,10 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.07 ###
+- Now the iso/cso/pbp list shows the installed content, if the game is installed as a bubble already the title will be highlighted green.<br>
+- Now you can choose between list sorting by Installed, Title or Modification Date.<br>
+
 ### Changelog 4.06 ###
 - Now the icons in iso/cso/pbp list are loaded "on the fly".<br>
 
