@@ -59,6 +59,9 @@ press_lr =		"L/R - выбор типа иконки пузыря",
 press_select =	"SELECT - сортировка по имени/дате",
 press_lright =	"Влево/вправо - изменение фонового цвета пузыря.",
 press_start =	"START - помощь.",
+sorttitle =		"By Title",
+sortmtime =		"By MTime",
+sortnoinst =	"By Installed",
 
 --bar progress
 bubbles =       "Пузыри",

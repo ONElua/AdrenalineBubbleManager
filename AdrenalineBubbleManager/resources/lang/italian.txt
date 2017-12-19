@@ -59,6 +59,9 @@ press_lr =		"Premere L/R per passare alle icone complete/non allungate.",
 press_select =	"Premere SELECT per ordinare per titolo/data di modifica.",
 press_lright =	"Premere Destra/Sinistra per cambiare il colore di ogni Bolla.",
 press_start =	"Premere START per visualizzare l'aiuto.",
+sorttitle =		"By Title",
+sortmtime =		"By MTime",
+sortnoinst =	"By Installed",
 
 --bar progress
 bubbles =		"Bolle",

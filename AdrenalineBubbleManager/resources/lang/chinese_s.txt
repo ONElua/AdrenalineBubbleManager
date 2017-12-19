@@ -1,0 +1,86 @@
+--Texts (only text in " ")
+strings = {
+
+--script.lua
+unsafe =		"此软件需要开启不安全模式(unsafe mode)!!!",
+adrinst =		"AdrBubbleBooter 插件已安装... \n需要重启PSVita... :)",
+notadr =		"Adrenaline v6 尚未安装...",
+
+--callbacks.lua
+instbb =		"安装气泡中:",
+file =			"文档:",
+
+--bubbles.lua
+btitle =		"编辑 DATA/BOOT.INF",
+count =			"数量:",
+marks =			"Select/Start (选择/全选)",
+uninstall =		"卸载",
+editboot =		"编辑 boot.inf",
+back =			"返回",
+toggle =		"切换选项",
+doneedit =		"完成编辑",
+notbubbles =	"未有可列出的气泡 :(",
+createbb =		"请在创建气泡后重试",
+togoback =		"返回",
+uninstallbb =	"将卸载的气泡数量: ",
+
+--osk
+titleosk =		"气泡标题",
+putnameosk =	"在此输入名称",
+
+--Process
+convert =		"转换资源中...",
+errinst =		"抱歉，出现安装错误",
+unk =			"未知",
+
+--debug
+loadciso =		"加载 C/ISO 中",
+loadpbp =		"加载 PBP 中",
+
+--custom message
+title_msg =		"系统信息",
+option_msg =	"OK",
+option1_msg =	"是",
+option2_msg =	"否",
+
+--scan.lua
+scantitle =		"可用的游戏 [ISO/CSO/PBP]",
+fullbbicon =	"完整气泡",
+nostretched =	"无拉伸",
+defcolor =		"默认颜色",
+bbcolor =		"气泡颜色",
+pics =			"开/关 PICs",
+markgame =		"选择/取消选择 游戏",
+bsettings =		"配置已安装的气泡",
+notpsp =		"未发现PSP游戏...",
+installgames =	"请在pspemu/ISO中放置 iso/cso 游戏",
+installgames2 =	"eboot.pbp 游戏放置于 pspemu/PSP/GAME/(MYGAME)中",
+press_lr =		"按 L/R 切换_完整气泡/无拉伸_图标.",
+press_select =	"按 Select 切换排序方式(标题/修改日期).",
+press_lright =	"按 左/右 切换气泡颜色.",
+press_start =	"按 START 显示帮助.",
+sorttitle =		"By Title",
+sortmtime =		"By MTime",
+sortnoinst =	"By Installed",
+
+--bar progress
+bubbles =		"气泡",
+
+--updater.lua
+update_msg1 =   "现在可用.",
+update_msg2 =   "要更新此应用么?",
+downupdate =    "下载更新文档中...",
+size_msg =      "大小",
+written_msg =   "已写入",
+speed_msg =     "速度",
+percent_msg =   "percent",
+kbs_msg =       "Kb/s",
+
+--updater\script.lua  ! not supported, reserved for future releases
+--error_args =    "错误 参数丢失!",
+--unsafe_test =   "检查VPK, 不安全和危险文件!",
+--unpack_vpk =    "解包VPK...",
+--perc_total =    "总进度:",
+--installing =    "安装中...",
+
+}

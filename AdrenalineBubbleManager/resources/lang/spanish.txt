@@ -59,6 +59,9 @@ press_lr =		"Presiona L/R Burbuja Completa/Stretched.",
 press_select =	"Presiona SELECT para ordenar por Título/Fecha Modificación.",
 press_lright =	"Presiona Izq/Der para cambiar el color de cada Burbuja.",
 press_start =	"Presiona START para mostrar la ayuda.",
+sorttitle =		"Título",
+sortmtime =		"Fecha",
+sortnoinst =	"Instalados",
 
 --bar progress
 bubbles =		"Burbujas",

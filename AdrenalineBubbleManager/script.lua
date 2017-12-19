@@ -35,7 +35,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 
 -- Loading language file
 __LANG = os.language()
-__STRINGS		= 52
+__STRINGS		= 55
 -- reading lang strings from ux0:data/ABM/ if exist
 if files.exists(pathABM.."lang/"..__LANG..".txt") then dofile(pathABM.."lang/"..__LANG..".txt")
 else 
@@ -89,6 +89,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 
 	dofile("iosk/utf8.lua")
 	dofile("iosk/iosk.lua")
+	dofile("system/stars.lua")
 	dofile("system/scan.lua")
 	dofile("system/bubbles.lua")
 

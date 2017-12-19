@@ -12,6 +12,23 @@
 scan = {}
 toinstall,pic1 = 0,nil
 
+function insert(tmp_sfo,obj)
+	---check path vs bubbles
+	local val,install,state=5,"a",false
+	if obj.path:sub(1,2) != "um" and obj.path:sub(1,2) !="im" then val=4 end
+	local path2game = obj.path:gsub(obj.path:sub(1,val).."pspemu/", "ms0:/")
+
+	for i=1,bubbles.len do
+		if path2game:lower() == bubbles.list[i].iso:lower() then
+			install,state = "b",true
+			break
+		end
+	end
+	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path, name = obj.name, inst=false, icon=true, install=install, state = state,
+				path2game = path2game:lower(), width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = 1, nostretched=false, mtime = obj.mtime })
+
+end
+
 function scan.insertCISO(hand)
 	local _type = files.type(hand.path)
 	if _type == 2 or _type == 3 then
@@ -19,9 +36,7 @@ function scan.insertCISO(hand)
 		if tmp0 then
 			if tmp0.CATEGORY == "UG" or tmp0.CATEGORY == "PG" then
 				init_msg(string.format(strings.loadciso.." %s\n",hand.path))
-
-				table.insert(scan.list, { title = tmp0.TITLE or hand.name, path = hand.path, name = hand.name, inst=false,
-										width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false, mtime = hand.mtime })
+				insert(tmp0,hand)
 			end
 		end
 		tmp0 = nil
@@ -70,9 +85,7 @@ function scan.insertPBP(hand)
 		end
 		if _insert then
 			init_msg(string.format(strings.loadpbp.." %s\n",hand.path))
-
-			table.insert(scan.list, { title = tmp0.TITLE, path = hand.path, name = hand.name, inst=false,
-									width = screen.textwidth(tmp0.TITLE or hand.name), selcc = 1, nostretched=false, mtime = hand.mtime })
+			insert(tmp0,hand)
 		end
 		tmp0 = nil
 	end
@@ -110,7 +123,7 @@ function scan.games()
 	end
 	scan.len = #scan.list
 	if scan.len > 0 then
-		table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+		table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
 	end
 end
 
@@ -127,13 +140,14 @@ function scan.show(objedit)
 	local __PIC = false
 	local scr,icon0 = newScroll(scan.list,12),nil
 
-	buttons.interval(10,10)
-	local xscr,xscrtitle,sort = 15,30,true
+	buttons.interval(12,5)
+	local xscr,xscrtitle,sort = 15,30,2
 	while true do
 		buttons.read()
 		
 		if pic1 then pic1:blit(__DISPLAYW/2, 544/2)
 		elseif back then back:blit(0,0) end
+		if math.minmax(tonumber(os.date("%d%m")),2312,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
 		screen.print(480,5,strings.scantitle, 1, color.white, color.blue, __ACENTER)
@@ -144,23 +158,29 @@ function scan.show(objedit)
 			--Blit List
 			local y = 45
 			for i=scr.ini,scr.lim do
+
+				if scan.list[i].state then ccolor = color.green:a(180) else ccolor = color.white end
+
 				if i==scr.sel then
 					draw.fillrect(5,y-3,__DISPLAYW-144-10,25,color.red)
 					if not icon0 then
-						icon0 = game.geticon0(scan.list[scr.sel].path)
-						if icon0 then
-							if icon0:getw()>144 then
-								icon0:resize(144,80)
+						if scan.list[scr.sel].icon then
+							icon0 = game.geticon0(scan.list[scr.sel].path)
+							if icon0 then
+								if icon0:getw()>144 then icon0:resize(144,80) end
+								icon0:center()
 								icon0:setfilter(__LINEAR, __LINEAR)
+							else
+								scan.list[scr.sel].icon = false
 							end
 						end
 					end
 				end
 
 				if scan.list[i].width > (__DISPLAYW-144-25) then
-					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title or scan.list[i].name,1,color.white,color.blue,__SLEFT,__DISPLAYW-144-25)
+					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title,1,ccolor,color.gray,__SLEFT,__DISPLAYW-144-25)
 				else
-					screen.print(30,y,scan.list[i].title, 1, color.white, color.blue)
+					screen.print(30,y,scan.list[i].title, 1, ccolor, color.gray)
 				end
 
 				if scan.list[i].inst then
@@ -175,11 +195,9 @@ function scan.show(objedit)
 				--Full bbl icon
 				if scan.list[scr.sel].nostretched then
 					screen.clip(__DISPLAYW-45, 75, 40)
-						icon0:center()
 						icon0:blit(__DISPLAYW-45, 75)
 					screen.clip()
 				else
-					icon0:center()
 					icon0:blit(__DISPLAYW - (icon0:getw()/2), 70)
 				end
 			else
@@ -195,6 +213,15 @@ function scan.show(objedit)
 				screen.print(955,120,strings.fullbbicon,1,color.white,color.blue,__ARIGHT)
 			else
 				screen.print(955,120,strings.nostretched,1,color.white,color.blue,__ARIGHT)
+			end
+			screen.print(955,140,"<- L/R ->",1,color.white,color.blue,__ARIGHT)
+			
+			if sort==0 then
+				screen.print(955,160,strings.sorttitle,1,color.white,color.blue,__ARIGHT)
+			elseif sort==1 then
+				screen.print(955,160,strings.sortmtime,1,color.white,color.blue,__ARIGHT)
+			else
+				screen.print(955,160,strings.sortnoinst,1,color.white,color.blue,__ARIGHT)
 			end
 
 			--Bubbles Colors
@@ -302,12 +329,15 @@ function scan.show(objedit)
 			--Sort
 			if buttons.select then
 				icon0=nil
-				if sort then
+				if sort==0 then
 					table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
-					sort = not sort
+					sort = 1
+				elseif sort==1 then
+					table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
+					sort = 2
 				else
 					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
-					sort = not sort
+					sort = 0
 				end
 				scr:set(scan.list,12)
 			end	

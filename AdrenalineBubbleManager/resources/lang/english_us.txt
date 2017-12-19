@@ -59,6 +59,9 @@ press_lr =		"Press L/R to switch between full/no stretched icons.",
 press_select =	"Press Select to sort by title/date of modification.",
 press_lright =	"Press Left/Right to change the color of each bubble.",
 press_start =	"Press START for help.",
+sorttitle =		"By Title",
+sortmtime =		"By MTime",
+sortnoinst =	"By Installed",
 
 --bar progress
 bubbles =		"Bubbles",

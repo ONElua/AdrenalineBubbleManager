@@ -26,7 +26,7 @@ function bubbles.scan()
 				boot = list[i].path.."/data/boot.inf",				-- Path to the boot.inf
 				imgp = "ur0:appmeta/"..list[i].id.."/icon0.png",	--Path to icon0 of the game.
 				title =	list[i].title,								-- TITLEID of the game.
-				delete = false
+				delete = false,
 			}
 			table.insert(bubbles.list, entry)                  		-- Insert entry in list of bubbles! :)
 		end
@@ -41,11 +41,9 @@ function bubbles.scan()
 		for i=1, bubbles.len do
 			bubbles.list[i].lines = {}
 			for j=1, #boot do
+				if j==1 then bubbles.list[i].iso = ini.read(bubbles.list[i].boot, boot[j], "DEFAULT") end
 				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].boot, boot[j], "DEFAULT"))
 			end
-			if back then back:blit(0,0) end
-			screen.print(10,10,bubbles.list[i].id)
-			screen.flip()
 		end
 	end
 
@@ -118,7 +116,7 @@ function bubbles.install(src)
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
 
 	---boot.inf
-	val=5
+	local val=5
 	if src.path:sub(1,2) != "um" and src.path:sub(1,2) !="im" then val=4 end
 	local path2game = src.path:gsub(src.path:sub(1,val).."pspemu/", "ms0:/")
 
@@ -133,6 +131,7 @@ function bubbles.install(src)
 	buttons.homepopup(1)
 
 	if result == 1 then
+		src.install,src.state = "b",true
 		if src.inst then
 			src.inst,src.nostretched = false,false
 			src.selcc = 1
@@ -154,6 +153,7 @@ function bubbles.install(src)
 			for j=1, #boot do
 				table.insert(bubbles.list[#bubbles.list].lines, ini.read(bubbles.list[#bubbles.list].boot, boot[j], "DEFAULT"))
 			end
+			bubbles.list[#bubbles.list].iso = path2game:lower()
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
@@ -175,11 +175,12 @@ function bubbles.settings()
 	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 130, 15
 	local mark,preview = false,nil
 
-	buttons.interval(10,10)
+	buttons.interval(12,5)
 	while true do
 		buttons.read()
 
 		if back then back:blit(0,0) end
+		if math.minmax(tonumber(os.date("%d%m")),2312,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
@@ -331,11 +332,21 @@ function bubbles.settings()
 							buttons.homepopup(0)
 								game.delete(bubbles.list[i].id)
 								if not game.exists(bubbles.list[i].id) then
+									preview = nil
+									--Update
+									for j=1,scan.len do
+										if bubbles.list[i].iso:lower() == scan.list[j].path2game:lower() then
+											scan.list[j].install,scan.list[j].state = "a",false
+											break
+										end
+									end
+
 									table.remove(bubbles.list, i)
 									bubbles.len -= 1
 									scrids:set(bubbles.list, bmaxim)
 									dels-=1
 									c+=1
+
 								end
 							buttons.read()
 							buttons.homepopup(1)
