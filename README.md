@@ -1,7 +1,7 @@
 # Adrenaline Bubbles Manager
 **Create and organize your direct adrenaline bubbles.**
 
-![header](preview.jpg)
+![header](preview.png)
 
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, forgetting completely of the tedious and long manual method.
