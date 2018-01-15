@@ -49,7 +49,7 @@ fullbbicon =	"Full Bubble",
 nostretched =	"No Stretched",
 defcolor =		"Color PRE",
 bbcolor =		"Color Burbuja",
-pics =			"Mostrar/No Mostrar PICs",
+pics =			"Presiona Triangulo para Mostrar/No Mostrar PICs",
 markgame =		"Marcar/Desmarcar Juego",
 bsettings =		"Configuración de Burbujas",
 notpsp =		"No hay juegos de PSP...",
@@ -58,29 +58,14 @@ installgames2 =	"y juegos eboot.pbp en pspemu/PSP/GAME/(MYGAME)",
 press_lr =		"Presiona L/R Burbuja Completa/Stretched.",
 press_select =	"Presiona SELECT para ordenar por\nInstalados/Título/Fecha Modificación.",
 press_lright =	"Presiona Izq/Der para cambiar el color de cada Burbuja.",
-press_start =	"Presiona START para mostrar la ayuda.",
+press_cross =	"Presiona X para crear tus Burbujas.",
+press_start =	"Mostrar la ayuda",
+sort =			"Ordenados por",
 sorttitle =		"Título",
 sortmtime =		"Fecha",
 sortnoinst =	"Instalados",
 
 --bar progress
 bubbles =		"Burbujas",
-
---updater.lua
-update_msg1 =   "is now available.",
-update_msg2 =   "Do you want to update the application?",
-downupdate =    "Downloading Update...",
-size_msg =      "Size",
-written_msg =   "Written",
-speed_msg =     "Speed",
-percent_msg =   "Percent",
-kbs_msg =       "Kb/s",
-
---updater\script.lua  ! not supported, reserved for future releases
---error_args =    "Error args lost!",
---unsafe_test =   "Search in vpk, Unsafe or Dangerous files!",
---unpack_vpk =    "Unpack vpk...",
---perc_total =    "Percent Total:",
---installing =    "Installing...",
 
 }

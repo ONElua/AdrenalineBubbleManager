@@ -8,6 +8,53 @@
    
 ]]
 
+game.close()
+color.loadpalette()
+
+-- Set ux0 folder path
+local pathABM = "ux0:data/ABM/"
+files.mkdir(pathABM)
+files.mkdir(pathABM.."lang/")
+files.mkdir(pathABM.."resources/")
+
+-- Background image must be (960x554 png or jpg image. Priority to back.png)
+if files.exists(pathABM.."resources/back.png") then back = image.load(pathABM.."resources/back.png")
+	elseif files.exists(pathABM.."resources/back.jpg") then back = image.load(pathABM.."resources/back.jpg")
+		else back = image.load("resources/back.png")
+end
+
+-- Popup message background (must be 706x274 png image)
+if files.exists(pathABM.."resources/box.png") then box = image.load(pathABM.."resources/box.png")
+else box = image.load("resources/box.png") end
+
+-- Loading default GFX from app folder
+buttonskey = image.load("resources/buttons.png",20,20)
+buttonskey2 = image.load("resources/buttons2.png",30,20)
+
+-- Loading language file
+__LANG = os.language()
+__STRINGS		= 49
+
+-- reading lang strings from ux0:data/ABM/ if exist
+if files.exists(pathABM.."lang/"..__LANG..".txt") then dofile(pathABM.."lang/"..__LANG..".txt")
+	local cont = 0
+	for key,value in pairs(strings) do cont += 1 end
+	if cont != __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
+else 
+-- reading lang strings fom app folder if exist
+	if files.exists("resources/lang/"..__LANG..".txt") then
+		dofile("resources/lang/"..__LANG..".txt")
+		local cont = 0
+		for key,value in pairs(strings) do cont += 1 end
+		if cont != __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
+-- reading default lang strings if no one translations founded
+	else files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
+end
+if not files.exists(pathABM.."lang/english_us.txt") then files.copy("resources/lang/english_us.txt",pathABM.."lang/") end
+
+-- Loading custom ttf font if exits
+if files.exists(pathABM.."/resources/"..__LANG..".ttf") then font.setdefault(pathABM.."/resources/"..__LANG..".ttf") end
+
 boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS" }
 
 SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)

@@ -27,7 +27,7 @@ function screen.flip()
 				if back then back:blit(0,0) end
 				screen.print(10,10,"Downloading Update...")
 				screen.print(10,30,"Size: "..tostring(size).." Written: "..tostring(written).." Speed: "..tostring(speed).."Kb/s")
-				screen.print(10,50,"Porcent: "..math.floor((written*100)/size).."%")
+				screen.print(10,50,"Percent: "..math.floor((written*100)/size).."%")
 				draw.fillrect(0,520,((written*960)/size),24,color.new(0,255,0))
 				screen.flip()
 				buttons.read()

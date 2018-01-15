@@ -9,7 +9,7 @@
 ]]
 
 bubbles = {}
-bubbles.len, dels, count_osk = 0,0,0
+bubbles.len, dels = 0,0
 
 function bubbles.scan()
 
@@ -56,12 +56,7 @@ function bubbles.install(src)
 	local bubble_title,timg = nil,nil
 
 	if src.title then
-		if count_osk >= 9 then
-			bubble_title = iosk.init(strings.titleosk, src.title or strings.putnameosk, 128)
-		else
-			bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk, 128, __DEFAULT, __TEXT)
-			count_osk += 1
-		end
+		bubble_title = osk.init(strings.titleosk, src.title or strings.putnameosk, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 	end
 	if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = src.title or src.name end
 
@@ -193,45 +188,6 @@ function bubbles.settings()
 
 		if scrids.maxim > 0 then
 
-			if not change then
-				if (buttons.up or buttons.analogly < -60) then
-					if scrids:up() then preview = nil end
-				end
-				if (buttons.down or buttons.analogly > 60) then
-					if scrids:down() then preview = nil end
-				end
-			--edit
-			else
-				if (buttons.up or buttons.held.l) then optsel-=1 end
-				if (buttons.down or buttons.held.r) then optsel+=1 end
-
-				if optsel > #boot then optsel = 2 end
-				if optsel < 2 then optsel = #boot end
-
-				if (buttons.left or buttons.right) then
-					if buttons.left then selector-=1 end
-					if buttons.right then selector+=1 end
-
-					if optsel == 4 then
-						if selector > 2 then selector = 1 end
-						if selector < 1 then selector = 2 end
-					else
-						if selector > 3 then selector = 1 end
-						if selector < 1 then selector = 3 end
-					end
-
-					if optsel == 2 then
-						bubbles.list[scrids.sel].lines[optsel] = drivers[selector]
-					elseif optsel == 3 then
-						bubbles.list[scrids.sel].lines[optsel] = bins[selector]
-					elseif optsel == 4 then
-						bubbles.list[scrids.sel].lines[optsel] = plugins[selector]
-					end
-					bubbles.list[scrids.sel].update = true
-				end
-
-			end-- not change
-
 			local y = 75
 			for i=scrids.ini, scrids.lim do
 				if i == scrids.sel then
@@ -240,7 +196,7 @@ function bubbles.settings()
 						preview = image.load(bubbles.list[scrids.sel].imgp)
 						if preview then
 							preview:resize(120,120)
-							preview:setfilter(__LINEAR, __LINEAR)
+							preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 						end
 					end
 				end
@@ -301,73 +257,120 @@ function bubbles.settings()
 		screen.flip()
 
 		--Controls
-		if buttons.cross and (scrids.maxim >0 and not change ) then game.launch(bubbles.list[scrids.sel].id) end
+		if scrids.maxim > 0 then
 
-		if buttons.triangle and scrids.maxim > 0 then
-			change = not change
-			if change then buttons.homepopup(0)
-			else
-				if bubbles.list[scrids.sel].update then
-					for j=1, #boot do
-						ini.write(bubbles.list[scrids.sel].boot, boot[j], bubbles.list[scrids.sel].lines[j])
+			if buttons.triangle then
+				change = not change
+				if change then buttons.homepopup(0)
+				else
+					if bubbles.list[scrids.sel].update then
+						for j=1, #boot do
+							ini.write(bubbles.list[scrids.sel].boot, boot[j], bubbles.list[scrids.sel].lines[j])
+						end
+						bubbles.list[scrids.sel].update = false
 					end
-					bubbles.list[scrids.sel].update = false
+					buttons.read()
+					buttons.homepopup(1)
+					optsel = 2
 				end
-				buttons.read()
-				buttons.homepopup(1)
-				optsel = 2
 			end
-		end
 
-		if buttons.square and (scrids.maxim > 0 and not change) then
-			if dels>=1 then
-				local vbuff = screen.toimage()
-				local tmp,c = dels,0
-				if custom_msg(strings.uninstallbb.." "..dels,1) == true then
-					for i=bubbles.len,1,-1 do
-						if bubbles.list[i].delete then
-							if vbuff then vbuff:blit(0,0) end
-							draw.fillrect(120, 285, ( (tmp-c) * 720 )/tmp, 25, color.new(0,255,0))
-							screen.flip()
-							buttons.homepopup(0)
-								game.delete(bubbles.list[i].id)
-								if not game.exists(bubbles.list[i].id) then
-									preview = nil
-									--Update
-									for j=1,scan.len do
-										if bubbles.list[i].iso:lower() == scan.list[j].path2game:lower() then
-											scan.list[j].install,scan.list[j].state = "a",false
-											break
-										end
+			if not change then
+
+				if (buttons.up or buttons.analogly < -60) then
+					if scrids:up() then preview = nil end
+				end
+				if (buttons.down or buttons.analogly > 60) then
+					if scrids:down() then preview = nil end
+				end
+
+				if buttons.cross then game.launch(bubbles.list[scrids.sel].id) end
+
+				if buttons.square then
+					if dels>=1 then
+						local vbuff = screen.toimage()
+						local tmp,c = dels,0
+						if custom_msg(strings.uninstallbb.." "..dels,1) == true then
+
+							for i=bubbles.len,1,-1 do
+								if bubbles.list[i].delete then
+									if vbuff then vbuff:blit(0,0) end
+									draw.fillrect(120, 285, ( (tmp-c) * 720 )/tmp, 25, color.new(0,255,0))
+									screen.flip()
+									buttons.homepopup(0)
+									game.delete(bubbles.list[i].id)
+									if not game.exists(bubbles.list[i].id) then
+										preview = nil
+										table.remove(bubbles.list, i)
+										bubbles.len -= 1
+										scrids:set(bubbles.list, bmaxim)
+										dels-=1
+										c+=1
 									end
-
-									table.remove(bubbles.list, i)
-									bubbles.len -= 1
-									scrids:set(bubbles.list, bmaxim)
-									dels-=1
-									c+=1
-
+									buttons.read()
+									buttons.homepopup(1)
 								end
-							buttons.read()
-							buttons.homepopup(1)
+							end--for
+
+							--Update
+							for i=1,scan.len do
+								scan.list[i].install,scan.list[i].state = "a",false
+								for j=1,bubbles.len do
+									if scan.list[i].path2game:lower() == bubbles.list[j].iso:lower() then
+										scan.list[i].install,scan.list[i].state = "b",true
+										break
+									end
+								end
+							end
 						end
 					end
+					bubbles.len = #bubbles.list
 				end
-			end
-			bubbles.len = #bubbles.list
-		end
 
-		if buttons.select and (scrids.maxim > 0 and not change ) then
-			bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
-			if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
-		end
+				if buttons.select then
+					bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
+					if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
+				end
 
-		if buttons.start and (scrids.maxim > 0 and not change) then
-			mark = not mark
-			for i=1,bubbles.len do
-				bubbles.list[i].delete = mark
-				if mark then dels=bubbles.len else dels=0 end
-			end
+				if buttons.start then
+					mark = not mark
+					for i=1,bubbles.len do
+						bubbles.list[i].delete = mark
+						if mark then dels=bubbles.len else dels=0 end
+					end
+				end
+				
+			--edit
+			else
+				if (buttons.up or buttons.held.l) then optsel-=1 end
+				if (buttons.down or buttons.held.r) then optsel+=1 end
+
+				if optsel > #boot then optsel = 2 end
+				if optsel < 2 then optsel = #boot end
+
+				if (buttons.left or buttons.right) then
+					if buttons.left then selector-=1 end
+					if buttons.right then selector+=1 end
+
+					if optsel == 4 then
+						if selector > 2 then selector = 1 end
+						if selector < 1 then selector = 2 end
+					else
+						if selector > 3 then selector = 1 end
+						if selector < 1 then selector = 3 end
+					end
+
+					if optsel == 2 then
+						bubbles.list[scrids.sel].lines[optsel] = drivers[selector]
+					elseif optsel == 3 then
+						bubbles.list[scrids.sel].lines[optsel] = bins[selector]
+					elseif optsel == 4 then
+						bubbles.list[scrids.sel].lines[optsel] = plugins[selector]
+					end
+					bubbles.list[scrids.sel].update = true
+				end
+			end--not change
+
 		end
 
 		if buttons.circle and not change then return false end

@@ -10,7 +10,8 @@
 
 --tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
 scan = {}
-toinstall,pic1 = 0,nil
+toinstall = 0
+local pic1 = nil
 
 function insert(tmp_sfo,obj)
 	---check path vs bubbles
@@ -141,7 +142,7 @@ function scan.show(objedit)
 	local scr,icon0 = newScroll(scan.list,12),nil
 
 	buttons.interval(12,5)
-	local xscr,xscrtitle,sort = 15,30,2
+	local xscr,xscrtitle,sort,xprint = 15,30,2,5
 	while true do
 		buttons.read()
 		
@@ -151,25 +152,25 @@ function scan.show(objedit)
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
 		screen.print(480,5,strings.scantitle, 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,strings.count.." "..scr.maxim, 1, color.red, color.gray, __ARIGHT)
+		screen.print(950,5,strings.count.." "..scr.maxim, 1, color.red, color.shine, __ARIGHT)
 
 		if scr.maxim > 0 then
 
 			--Blit List
-			local y = 45
+			local y = 33
 			for i=scr.ini,scr.lim do
 
 				if scan.list[i].state then ccolor = color.green:a(180) else ccolor = color.white end
 
 				if i==scr.sel then
-					draw.fillrect(5,y-3,__DISPLAYW-144-10,25,color.red)
+					draw.fillrect(5,y-3,__DISPLAYW-144-15,25,color.red)
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
 							if icon0 then
 								if icon0:getw()>144 then icon0:resize(144,80) end
 								icon0:center()
-								icon0:setfilter(__LINEAR, __LINEAR)
+								icon0:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 							else
 								scan.list[scr.sel].icon = false
 							end
@@ -177,10 +178,10 @@ function scan.show(objedit)
 					end
 				end
 
-				if scan.list[i].width > (__DISPLAYW-144-25) then
-					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title,1,ccolor,color.gray,__SLEFT,__DISPLAYW-144-25)
+				if scan.list[i].width > (__DISPLAYW-144-30) then
+					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title,1,ccolor,color.shine,__SLEFT,__DISPLAYW-144-30)
 				else
-					screen.print(30,y,scan.list[i].title, 1, ccolor, color.gray)
+					screen.print(30,y,scan.list[i].title, 1, ccolor, color.shine)
 				end
 
 				if scan.list[i].inst then
@@ -214,38 +215,34 @@ function scan.show(objedit)
 			else
 				screen.print(955,120,strings.nostretched,1,color.white,color.blue,__ARIGHT)
 			end
-			screen.print(955,140,"<- L/R ->",1,color.white,color.blue,__ARIGHT)
 			
+			screen.print(955,155,strings.sort,1,color.white,color.blue,__ARIGHT)
 			if sort==0 then
-				screen.print(955,160,strings.sorttitle,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,175,strings.sorttitle,1,color.white,color.blue,__ARIGHT)
 			elseif sort==1 then
-				screen.print(955,160,strings.sortmtime,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,175,strings.sortmtime,1,color.white,color.blue,__ARIGHT)
 			else
-				screen.print(955,160,strings.sortnoinst,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,175,strings.sortnoinst,1,color.white,color.blue,__ARIGHT)
 			end
 
-			--Bubbles Colors
+			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
-				screen.print(__DISPLAYW-40,465,"<- "..strings.defcolor.." ("..scan.list[scr.sel].selcc..") ->",1,color.white,color.blue, __ARIGHT)
+				xprint = screen.print(20,465,"<- "..strings.defcolor.." ("..scan.list[scr.sel].selcc..") ->",1,color.white,color.blue, __ALEFT)
 			else
-				screen.print(__DISPLAYW-40,465,"<- "..strings.bbcolor.." ("..scan.list[scr.sel].selcc..") ->",1,color.white,color.blue, __ARIGHT)
+				xprint = screen.print(20,465,"<- "..strings.bbcolor.." ("..scan.list[scr.sel].selcc..") ->",1,color.white,color.blue, __ALEFT)
 			end
-			draw.fillrect(__DISPLAYW-30,463,18,18, colors[scan.list[scr.sel].selcc])
-			draw.rect(__DISPLAYW-30,463,18,18, color.white)
+			draw.fillrect(xprint + 30,463,18,18, colors[scan.list[scr.sel].selcc])
+			draw.rect(xprint + 30,463,18,18, color.white)
 
-			--ARight
-			if buttonskey then buttonskey:blitsprite(930,487,1) end                     --△
-			screen.print(920,490,strings.pics,1,color.white,color.blue, __ARIGHT)
+			if buttonskey then buttonskey:blitsprite(15,487,2) end                     		--[]
+			screen.print(45,490,strings.markgame,1,color.white,color.blue)
 
-			--ALeft
-			if buttonskey then buttonskey2:blitsprite(10,438,1) end                     --Start
-			screen.print(45,440,strings.press_start,1,color.white,color.blue)
+			--Right Options
+			if buttonskey then buttonskey2:blitsprite(925,463,1) end                   		--Start
+			screen.print(920,465,strings.press_start,1,color.white,color.blue,__ARIGHT)
 
-			if buttonskey then buttonskey:blitsprite(15,463,2) end                     --[]
-			screen.print(45,465,strings.markgame,1,color.white,color.blue)
-
-			if buttonskey then buttonskey:blitsprite(15,487,3) end						--O
-			screen.print(45,490,strings.bsettings,1,color.white,color.blue)
+			if buttonskey then buttonskey:blitsprite(935,487,3) end							--O
+			screen.print(920,490,strings.bsettings,1,color.white,color.blue,__ARIGHT)
 
 			if scan.list[scr.sel].width > 940 then
 				xscr = screen.print(xscr, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue,__SLEFT,940)
@@ -254,7 +251,7 @@ function scan.show(objedit)
 			end
 
 		else
-			screen.print(480,272,strings.notpsp, 1, color.white, color.red, __ACENTER)
+			screen.print(480,252,strings.notpsp, 1, color.white, color.red, __ACENTER)
 			screen.print(480,292,strings.installgames, 1, color.white, color.blue, __ACENTER)
 			screen.print(480,312,strings.installgames2, 1, color.white, color.blue, __ACENTER)
 		end
@@ -290,7 +287,7 @@ function scan.show(objedit)
 			end
 
 			--Install
-			if buttons.cross and scr.maxim > 0 then
+			if buttons.cross then
 				if toinstall <= 1 then
 					bubbles.install(scan.list[scr.sel])
 				else
@@ -320,7 +317,7 @@ function scan.show(objedit)
 				else load_pic1(scan.list[scr.sel].path) end
 			end
 				
-			--Mark
+			--Mark/Unmark
 			if buttons.square then
 				scan.list[scr.sel].inst = not scan.list[scr.sel].inst
 				if scan.list[scr.sel].inst then toinstall+=1 else toinstall-=1 end
@@ -354,10 +351,9 @@ function scan.show(objedit)
 			if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
 			if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
 
-		end
-
-		if buttons.start then
-			os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select)
+			if buttons.start then
+				os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross)
+			end
 		end
 
 		if buttons.circle then bubbles.settings() end

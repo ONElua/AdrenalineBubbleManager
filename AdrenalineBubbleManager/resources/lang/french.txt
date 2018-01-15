@@ -49,7 +49,7 @@ fullbbicon =	"Bulle pleine",
 nostretched =	"Bulle coupée",
 defcolor =		"Couleur par défaut",
 bbcolor =		"Couleur de la bulle",
-pics =			"Afficher l'image PIC0",
+pics =			"--> Triangle pour Afficher l'image PIC0",
 markgame =		"Sélectionner/désélectionner un jeu",
 bsettings =		"Paramètres des bulles",
 notpsp =		"Pas de jeux PSP trouvé...",
@@ -58,29 +58,14 @@ installgames2 =	"ou un jeu au format eboot.pbp dans pspemu/PSP/GAME/(MYGAME)",
 press_lr =		"\n--> L ou R pour switcher entre la bulle pleine ou coupée.",
 press_select =	"--> Select pour classer par\nInstalled/Titre/Date de modification.",
 press_lright =	"--> Gauche ou Droite pour changer la couleur de la bulle.",
+press_cross =	"Press X to create your Bubbles.",
 press_start =	"Aide",
-sorttitle =		"By Title",
-sortmtime =		"By MTime",
-sortnoinst =	"By Installed",
+sort =			"Sort by",
+sorttitle =		"Title",
+sortmtime =		"MTime",
+sortnoinst =	"Installed",
 
 --bar progress
 bubbles =		"Bulles",
-
---updater.lua
-update_msg1 =   "est disponible.",
-update_msg2 =   "Voulez-vous mettre à jour l'application ?",
-downupdate =    "Téléchargement de la mise à jour en cours...",
-size_msg =      "Taille: ",
-written_msg =   "Réçu: ",
-speed_msg =     "Vitesse: ",
-percent_msg =   "Chargement: ",
-kbs_msg =       "Kb/s",
-
---updater\script.lua  ! non supporté, réservé pour les prochaines versions
---error_args =    "Arguments d'erreur perdus !",
---unsafe_test =   "Recherche de fichier malvaillant ou dangereux dans le vpk !",
---unpack_vpk =    "Décompression du fichier vpk...",
---perc_total =    "Pourcentage Total:",
---installing =    "Installation...",
 
 }
