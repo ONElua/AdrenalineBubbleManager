@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.08">
+    <![CDATA[
+- Fix error when opening the OSK more than 10 times, thanks to The_Flow!.<br>
+- Update eboot.bin to ONELuavita V4R0.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.07">
     <![CDATA[
 - Now the iso/cso/pbp list shows the installed content, if the game is installed as a bubble already the title will be highlighted green.<br>
