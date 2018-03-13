@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.09">
+    <![CDATA[
+- Support for 3.65 (Thanks to Lecheerman).<br>
+- Fix automatic network update (Add TLS v1.2 Support).<br>
+- Updated to the latest version of ONElua.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.08">
     <![CDATA[
 - Fix error when opening the OSK more than 10 times, thanks to The_Flow!.<br>

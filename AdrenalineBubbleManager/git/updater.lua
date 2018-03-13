@@ -10,9 +10,11 @@ local scr_flip = screen.flip
 function screen.flip()
 	scr_flip()
 	if UPDATE_PORT:available() > 0 then
+
 		local version = UPDATE_PORT:pop()
 		local major = (version >> 0x18) & 0xFF;
 		local minor = (version >> 0x10) & 0xFF;
+
 		if os.message(string.format("%s v%s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."     Do you want to update the application?"), 1) == 1 then
 			buttons.homepopup(0)
 			if back then back:blit(0,0) end
@@ -34,12 +36,12 @@ function screen.flip()
 				if buttons.circle then return 0 end --Cancel or Abort
 				return 1;
 			end
-			local res = http.getfile(url, path)
+			local res = http.download(url, path)
 			if res then -- Success!
 				files.mkdir("ux0:/data/1luapkg")
 				files.copy("eboot.bin","ux0:/data/1luapkg")
-				files.copy("updater/script.lua","ux0:/data/1luapkg/")
-				files.copy("updater/param.sfo","ux0:/data/1luapkg/sce_sys/")
+				files.copy("git/updater/script.lua","ux0:/data/1luapkg/")
+				files.copy("git/updater/param.sfo","ux0:/data/1luapkg/sce_sys/")
 				game.installdir("ux0:/data/1luapkg")
 				files.delete("ux0:/data/1luapkg")
 				game.launch(string.format("ONEUPDATE&%s&%s",os.titleid(),path)) -- Goto installer extern!

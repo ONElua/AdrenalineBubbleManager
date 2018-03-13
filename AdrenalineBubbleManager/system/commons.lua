@@ -215,3 +215,12 @@ function custom_msg(printtext,mode)
 	if result then return true else return false end
 
 end
+
+function files.read(path,mode)
+	local fp = io.open(path, mode or "r")
+	if not fp then return nil end
+
+	local data = fp:read("*a")
+	fp:close()
+	return data
+end

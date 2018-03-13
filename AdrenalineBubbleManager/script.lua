@@ -24,12 +24,13 @@ end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
+ADRENALINEU = ADRENALINE.."/sce_module/adrenaline_user.suprx"
 oncopy = false
 
 dofile("system/callbacks.lua")
 
-if back then back:blit(0,0) end
-screen.flip()
+--Show splash ...
+splash.new("resources/splash.png")
 
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
@@ -38,7 +39,29 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		oncopy = true
 		files.copy("sce_module/", ADRENALINE)
 
-		os.delay(100)
+	else
+		if not files.exists(ADRENALINEK) then
+			oncopy = true
+			files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
+		else
+			if os.crc32(files.read(ADRENALINEK) ) != 0xA5989C79 then
+				oncopy = true
+				files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
+			end
+		end
+
+		if not files.exists(ADRENALINEU) then
+			oncopy = true
+			files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
+		else
+			if os.crc32(files.read(ADRENALINEU)) != 0x759B33A9 then
+				oncopy = true
+				files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
+			end
+		end
+	end
+
+	if oncopy then
 		custom_msg(strings.adrinst,0)
 		os.delay(500)
 		power.restart()
