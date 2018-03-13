@@ -15,6 +15,11 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.09 ###
+- Support for 3.65 CFW (Thanks to Lecheerman).<br>
+- Fix automatic network update (Add TLS v1.2 Support).<br>
+- Updated to the latest version of ONElua.<br>
+
 ### Changelog 4.08 ###
 - Fix error when opening the OSK more than 10 times, thanks to The_Flow!.<br>
 - Update eboot.bin to ONELuavita V4R0.<br>
