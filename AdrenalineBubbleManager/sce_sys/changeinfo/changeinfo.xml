@@ -2,7 +2,7 @@
 <changeinfo>
   <changes app_ver="04.09">
     <![CDATA[
-- Support for 3.65 (Thanks to Lecheerman).<br>
+- Support for 3.65 CFW (Thanks to Lecheerman).<br>
 - Fix automatic network update (Add TLS v1.2 Support).<br>
 - Updated to the latest version of ONElua.<br>
     ]]>
