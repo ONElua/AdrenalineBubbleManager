@@ -175,7 +175,7 @@ function bubbles.settings()
 		buttons.read()
 
 		if back then back:blit(0,0) end
-		if math.minmax(tonumber(os.date("%d%m")),2312,2512)== tonumber(os.date("%d%m")) then stars.render() end
+		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
@@ -236,7 +236,7 @@ function bubbles.settings()
 
 			if not change then
 				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": "..strings.editboot.."      |      "..SYMBOL_CIRCLE..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": "..strings.editboot.."      |      "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
 			else
 				screen.print(480,460, "<- -> "..strings.toggle.."      |      "..SYMBOL_TRIANGLE..": "..strings.doneedit.."      ", 1, color.white, color.blue, __ACENTER)
 			end
@@ -284,7 +284,7 @@ function bubbles.settings()
 					if scrids:down() then preview = nil end
 				end
 
-				if buttons.cross then game.launch(bubbles.list[scrids.sel].id) end
+				if buttons[accept] then game.launch(bubbles.list[scrids.sel].id) end
 
 				if buttons.square then
 					if dels>=1 then
@@ -373,6 +373,6 @@ function bubbles.settings()
 
 		end
 
-		if buttons.circle and not change then return false end
+		if buttons[cancel] and not change then return false end
 	end
 end

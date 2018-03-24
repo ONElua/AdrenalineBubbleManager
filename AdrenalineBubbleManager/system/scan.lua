@@ -124,7 +124,14 @@ function scan.games()
 	end
 	scan.len = #scan.list
 	if scan.len > 0 then
-		table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
+		if __SORT==1 then
+			table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
+		elseif __SORT==2 then
+			table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
+		else
+			table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+		end
+
 	end
 end
 
@@ -142,13 +149,13 @@ function scan.show(objedit)
 	local scr,icon0 = newScroll(scan.list,12),nil
 
 	buttons.interval(12,5)
-	local xscr,xscrtitle,sort,xprint = 15,30,2,5
+	local xscr,xscrtitle,xprint = 15,30,5
 	while true do
 		buttons.read()
 		
 		if pic1 then pic1:blit(__DISPLAYW/2, 544/2)
 		elseif back then back:blit(0,0) end
-		if math.minmax(tonumber(os.date("%d%m")),2312,2512)== tonumber(os.date("%d%m")) then stars.render() end
+		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
 		screen.print(480,5,strings.scantitle, 1, color.white, color.blue, __ACENTER)
@@ -217,9 +224,9 @@ function scan.show(objedit)
 			end
 			
 			screen.print(955,155,strings.sort,1,color.white,color.blue,__ARIGHT)
-			if sort==0 then
+			if __SORT==0 then
 				screen.print(955,175,strings.sorttitle,1,color.white,color.blue,__ARIGHT)
-			elseif sort==1 then
+			elseif __SORT==1 then
 				screen.print(955,175,strings.sortmtime,1,color.white,color.blue,__ARIGHT)
 			else
 				screen.print(955,175,strings.sortnoinst,1,color.white,color.blue,__ARIGHT)
@@ -241,7 +248,11 @@ function scan.show(objedit)
 			if buttonskey then buttonskey2:blitsprite(925,463,1) end                   		--Start
 			screen.print(920,465,strings.press_start,1,color.white,color.blue,__ARIGHT)
 
-			if buttonskey then buttonskey:blitsprite(935,487,3) end							--O
+			if accept_x == 1 then
+				if buttonskey then buttonskey:blitsprite(935,487,3) end							--O
+			else
+				if buttonskey then buttonskey:blitsprite(935,487,0) end							--X
+			end
 			screen.print(920,490,strings.bsettings,1,color.white,color.blue,__ARIGHT)
 
 			if scan.list[scr.sel].width > 940 then
@@ -287,7 +298,7 @@ function scan.show(objedit)
 			end
 
 			--Install
-			if buttons.cross then
+			if buttons[accept] then
 				if toinstall <= 1 then
 					bubbles.install(scan.list[scr.sel])
 				else
@@ -326,17 +337,18 @@ function scan.show(objedit)
 			--Sort
 			if buttons.select then
 				icon0=nil
-				if sort==0 then
+				if __SORT==0 then
 					table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
-					sort = 1
-				elseif sort==1 then
+					__SORT = 1
+				elseif __SORT==1 then
 					table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
-					sort = 2
+					__SORT = 2
 				else
 					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
-					sort = 0
+					__SORT = 0
 				end
 				scr:set(scan.list,12)
+				write_config()
 			end	
 				
 			--Full/Stretched
@@ -352,11 +364,11 @@ function scan.show(objedit)
 			if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
 
 			if buttons.start then
-				os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross)
+				os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press)
 			end
 		end
 
-		if buttons.circle then bubbles.settings() end
+		if buttons[cancel] then bubbles.settings() end
 
 	end
 

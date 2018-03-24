@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.10">
+    <![CDATA[
+- Buttons X and O reassigned only when using ABM (only if required).<br>
+- Fix list sorting, now ABM shows last preset option everytime.<br>
+- Fix snowfall animation.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.09">
     <![CDATA[
 - Support for 3.65 CFW (Thanks to Lecheerman).<br>

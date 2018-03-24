@@ -13,6 +13,7 @@ color.loadpalette()
 
 -- Set ux0 folder path
 local pathABM = "ux0:data/ABM/"
+__PATHINI		= "ux0:data/ABM/config.ini"
 files.mkdir(pathABM)
 files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."resources/")
@@ -33,24 +34,26 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 
 -- Loading language file
 __LANG = os.language()
-__STRINGS		= 49
+__STRINGS		= 50
 
--- reading lang strings from ux0:data/ABM/ if exist
-if files.exists(pathABM.."lang/"..__LANG..".txt") then dofile(pathABM.."lang/"..__LANG..".txt")
-	local cont = 0
-	for key,value in pairs(strings) do cont += 1 end
-	if cont != __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
-else 
--- reading lang strings fom app folder if exist
-	if files.exists("resources/lang/"..__LANG..".txt") then
-		dofile("resources/lang/"..__LANG..".txt")
-		local cont = 0
-		for key,value in pairs(strings) do cont += 1 end
-		if cont != __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
--- reading default lang strings if no one translations founded
-	else files.copy("resources/lang/english_us.txt",pathABM.."lang/") dofile("resources/lang/english_us.txt") end
+if not files.exists(pathABM.."lang/english_us.txt") then files.copy("resources/lang/english_us.txt",pathABM.."lang/")
+else
+	dofile(pathABM.."lang/english_us.txt")
+	local cont_strings = 0
+	for key,value in pairs(strings) do cont_strings += 1 end
+--os.message(cont_strings)
+	if cont_strings < __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") end
 end
-if not files.exists(pathABM.."lang/english_us.txt") then files.copy("resources/lang/english_us.txt",pathABM.."lang/") end
+
+if files.exists(pathABM.."lang/"..__LANG..".txt") then
+	dofile(pathABM.."lang/"..__LANG..".txt")
+	local cont_strings = 0
+	for key,value in pairs(strings) do cont_strings += 1 end
+	if cont_strings < __STRINGS then dofile("resources/lang/english_us.txt") end
+else
+	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt")
+	else dofile("resources/lang/english_us.txt") end
+end
 
 -- Loading custom ttf font if exits
 if files.exists(pathABM.."/resources/"..__LANG..".ttf") then font.setdefault(pathABM.."/resources/"..__LANG..".ttf") end
@@ -61,6 +64,19 @@ SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)
 SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
 SYMBOL_TRIANGLE	= string.char(0xe2)..string.char(0x96)..string.char(0xb3)
 SYMBOL_CIRCLE	= string.char(0xe2)..string.char(0x97)..string.char(0x8b)
+
+accept,cancel = "cross","circle"
+accept_x = 1
+SYMBOL_BACK = SYMBOL_CIRCLE
+SYMBOL_BACK2 = SYMBOL_CROSS
+strings.press = strings.press_cross
+if buttons.assign()==0 then
+	accept,cancel = "circle","cross"
+	accept_x = 0
+	SYMBOL_BACK = SYMBOL_CROSS
+	SYMBOL_BACK2 = SYMBOL_CIRCLE
+	strings.press = strings.press_circle
+end
 
 selcolor = 1
 colors = { 	
@@ -84,6 +100,12 @@ function init_msg(msg)
 	end
 	screen.flip()
 	os.delay(5)
+end
+
+__SORT = tonumber(ini.read(__PATHINI,"sort","sort","2"))
+
+function write_config()
+	ini.write(__PATHINI,"sort","sort",__SORT)
 end
 
 --[[
