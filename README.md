@@ -15,6 +15,11 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.10 ###
+- Buttons X and O reassigned only when using ABM (only if required).<br>
+- Fix list sorting, now ABM shows last preset option everytime.<br>
+- Fix snowfall animation.<br>
+
 ### Changelog 4.09 ###
 - Support for 3.65 CFW (Thanks to Lecheerman).<br>
 - Fix automatic network update (Add TLS v1.2 Support).<br>
