@@ -15,6 +15,12 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](keyboard.jpg)
 
+### Changelog 4.11 ###
+- Added drop down submenu when pressing START.<br>
+- Added option to choose a favorite color (Will be saved).<br>
+- Added option to show the sorted list according to preferences.<br>
+- Double tap when submenu is open for help.<br>
+
 ### Changelog 4.10 ###
 - Buttons X and O reassigned only when using ABM (only if required).<br>
 - Fix list sorting, now ABM shows last preset option everytime.<br>
