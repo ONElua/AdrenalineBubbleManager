@@ -12,7 +12,7 @@ game.close()
 color.loadpalette()
 
 -- Set ux0 folder path
-local pathABM = "ux0:data/ABM/"
+local pathABM 	= "ux0:data/ABM/"
 __PATHINI		= "ux0:data/ABM/config.ini"
 files.mkdir(pathABM)
 files.mkdir(pathABM.."lang/")
@@ -34,7 +34,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 
 -- Loading language file
 __LANG = os.language()
-__STRINGS		= 50
+__STRINGS		= 55
 
 if not files.exists(pathABM.."lang/english_us.txt") then files.copy("resources/lang/english_us.txt",pathABM.."lang/")
 else
@@ -78,7 +78,6 @@ if buttons.assign()==0 then
 	strings.press = strings.press_circle
 end
 
-selcolor = 1
 colors = { 	
 			color.black,		-- <--- dont modify this color (defect color)...
 			--you can add more colors :D
@@ -103,10 +102,7 @@ function init_msg(msg)
 end
 
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","2"))
-
-function write_config()
-	ini.write(__PATHINI,"sort","sort",__SORT)
-end
+__COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
 
 --[[
 	## Library Scroll ##
@@ -245,4 +241,11 @@ function files.read(path,mode)
 	local data = fp:read("*a")
 	fp:close()
 	return data
+end
+
+function isTouched(x,y,sx,sy)
+	if math.minmax(touch.front[1].x,x,x+sx)==touch.front[1].x and math.minmax(touch.front[1].y,y,y+sy)==touch.front[1].y then
+		return true
+	end
+	return false
 end
