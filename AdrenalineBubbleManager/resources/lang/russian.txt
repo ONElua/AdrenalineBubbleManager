@@ -60,11 +60,18 @@ press_select =	"SELECT - сортировка по\nInstalled/имени/дат�
 press_lright =	"Влево/вправо - изменение фонового цвета пузыря.",
 press_cross =	"Press X to create your Bubbles.",
 press_circle =	"Press O to create your Bubbles.",
+touchme =		"Double tap",
 press_start =	"Помощь",
 sort =			"Sort by",
 sorttitle =		"Title",
 sortmtime =		"MTime",
 sortnoinst =	"Installed",
+
+--submenu
+warning =		"The changes will take effect once you press start",
+def_sort =		"Default Sort",
+def_color =		"Default Color",
+save =			"Extra Settings",
 
 --bar progress
 bubbles =       "Пузыри",

@@ -60,11 +60,18 @@ press_select =	"Presiona SELECT para ordenar por\nInstalados/Título/Fecha Modif
 press_lright =	"Presiona Izq/Der para cambiar el color de cada Burbuja.",
 press_cross =	"Presiona X para crear tus Burbujas.",
 press_circle =	"Presiona O para crear tus Burbujas.",
+touchme =		"Doble tap",
 press_start =	"Mostrar la ayuda",
 sort =			"Ordenados por",
 sorttitle =		"Título",
 sortmtime =		"Fecha",
 sortnoinst =	"Instalados",
+
+--submenu
+warning =		"Los cambios tomarán efecto al presionar start",
+def_sort =		"Orden de lista",
+def_color =		"Color a usar",
+save =			"Opciones Extra",
 
 --bar progress
 bubbles =		"Burbujas",
