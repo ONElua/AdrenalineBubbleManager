@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="04.11">
+    <![CDATA[
+- Added drop down submenu when pressing START.<br>
+- Added option to choose a favorite color (Will be saved).<br>
+- Added option to show the sorted list according to preferences.<br>
+- Double tap when submenu is open for help.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.10">
     <![CDATA[
 - Buttons X and O reassigned only when using ABM (only if required).<br>

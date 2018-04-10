@@ -11,7 +11,8 @@
 --tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
 scan = {}
 toinstall = 0
-local pic1 = nil
+local pic1,icon0 = nil,nil
+local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions.
 
 function insert(tmp_sfo,obj)
 	---check path vs bubbles
@@ -26,7 +27,7 @@ function insert(tmp_sfo,obj)
 		end
 	end
 	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path, name = obj.name, inst=false, icon=true, install=install, state = state,
-				path2game = path2game:lower(), width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = 1, nostretched=false, mtime = obj.mtime })
+				path2game = path2game:lower(), width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime })
 
 end
 
@@ -146,12 +147,13 @@ end
 function scan.show(objedit)
 
 	local __PIC = false
-	local scr,icon0 = newScroll(scan.list,12),nil
+	local scr = newScroll(scan.list,12)
 
 	buttons.interval(12,5)
 	local xscr,xscrtitle,xprint = 15,30,5
 	while true do
 		buttons.read()
+			touch.read()
 		
 		if pic1 then pic1:blit(__DISPLAYW/2, 544/2)
 		elseif back then back:blit(0,0) end
@@ -246,12 +248,12 @@ function scan.show(objedit)
 
 			--Right Options
 			if buttonskey then buttonskey2:blitsprite(925,463,1) end                   		--Start
-			screen.print(920,465,strings.press_start,1,color.white,color.blue,__ARIGHT)
+			screen.print(920,465,strings.save,1,color.white,color.blue,__ARIGHT)
 
 			if accept_x == 1 then
-				if buttonskey then buttonskey:blitsprite(935,487,3) end							--O
+				if buttonskey then buttonskey:blitsprite(935,487,3) end						--O
 			else
-				if buttonskey then buttonskey:blitsprite(935,487,0) end							--X
+				if buttonskey then buttonskey:blitsprite(935,487,0) end						--X
 			end
 			screen.print(920,490,strings.bsettings,1,color.white,color.blue,__ARIGHT)
 
@@ -268,10 +270,12 @@ function scan.show(objedit)
 		end
 		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
 
+		submenu_abm.run(scr)
+
 		screen.flip()
 
 		--Controls
-		if scr.maxim > 0 then
+		if scr.maxim > 0 and submenu_abm.h == -submenu_abm.y then
 
 			if buttons.up or buttons.analogly<-60 then 
 				if scr:up() then
@@ -348,7 +352,6 @@ function scan.show(objedit)
 					__SORT = 0
 				end
 				scr:set(scan.list,12)
-				write_config()
 			end	
 				
 			--Full/Stretched
@@ -357,19 +360,177 @@ function scan.show(objedit)
 			end
 
 			--Bubbles Color
-			if buttons.right then scan.list[scr.sel].selcc += 1 end
-			if buttons.left then scan.list[scr.sel].selcc -= 1 end	
+			if buttons.right or buttons.left then
 
-			if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
-			if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
+				if buttons.right then scan.list[scr.sel].selcc += 1 end
+				if buttons.left then scan.list[scr.sel].selcc -= 1 end
+			
+				if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
+				if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
 
-			if buttons.start then
-				os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press)
 			end
+
 		end
 
-		if buttons[cancel] then bubbles.settings() end
+		if buttons[cancel] and submenu_abm.h == -submenu_abm.y then bubbles.settings() end
 
 	end
 
+end
+
+--------------------------SubMenuContextual
+_sort, _color = __SORT, __COLOR
+sort_type, _save = "", false
+ 
+local yf = 280
+submenu_abm = { -- Creamos un objeto menu contextual
+    h = yf,					-- Height of menu
+    w = 960,				-- Width of menu
+    x = 0,					-- X origin of menu
+    y = -yf,				-- Y origin of menu
+    open = false,			-- Is open the menu?
+    close = true,
+    speed = 10,				-- Speed of Effect Open/Close.
+    ctrl = "start",
+    scroll = newScroll(),	-- Scroll of menu options.
+}
+
+function submenu_abm.wakefunct()
+
+	if _sort == 1 then sort_type = strings.sortmtime
+		elseif _sort == 2 then sort_type = strings.sortnoinst
+			else sort_type = strings.sorttitle end
+
+	submenu_abm.options = { 	-- Handle Option Text and Option Function
+		{ text = strings.def_sort,	funct = sort_callback },
+		{ text = strings.def_color,	funct = color_callback },
+    }
+	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
+end
+
+submenu_abm.wakefunct()
+
+function submenu_abm.run(obj)
+
+	if buttons[submenu_abm.ctrl] then
+		submenu_abm.close = not submenu_abm.close
+		
+		if submenu_abm.close and _save then
+			__SORT = _sort
+
+			icon0=nil
+			if __SORT==1 then
+				table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
+			elseif __SORT==2 then
+				table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
+			else
+				table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+			end
+			obj:set(scan.list,12)
+			ini.write(__PATHINI,"sort","sort",_sort)
+		end
+
+		if submenu_abm.close and _save then
+			for i=1,scan.len do
+				scan.list[i].selcc =  _color
+			end
+			ini.write(__PATHINI,"color","color",_color)
+		end
+		_save = false
+	end
+
+	submenu_abm.draw(obj)
+
+end
+
+function submenu_abm.draw(obj)
+
+    if not submenu_abm.close and submenu_abm.y < 0 then
+        submenu_abm.y += submenu_abm.speed
+    elseif submenu_abm.close and submenu_abm.y > -submenu_abm.h then
+        submenu_abm.y -= submenu_abm.speed
+    end
+
+	if submenu_abm.y > -submenu_abm.h then
+		draw.fillrect(submenu_abm.x, submenu_abm.y, submenu_abm.w, submenu_abm.h, color.black:a(210))
+	end
+
+    if submenu_abm.y >= 0 then
+
+        submenu_abm.open = true
+ 
+		--Buttons
+		if buttons.up then submenu_abm.scroll:up() end
+		if buttons.down then submenu_abm.scroll:down() end
+		
+		if isTouched(0,0,960,544) and touch.front[1].released then--pressed then
+			if clicked then
+				clicked = false
+				if crono:time() <= 300 then -- Double click and in time to Go.
+					-- Your action here.
+					os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross)
+				end
+			else
+				-- Your action here.
+				clicked = true
+				crono:reset()
+				crono:start()
+			end
+		end
+
+		if crono:time() > 300 then -- First click, but long time to double click...
+			clicked = false
+		end
+
+		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 1 then
+
+			if buttons.right then _sort +=1 end
+			if buttons.left then _sort -=1 end
+
+			if _sort > 2 then _sort = 0 end
+			if _sort < 0 then _sort = 2 end
+
+			_save = true
+			submenu_abm.wakefunct()
+
+		end
+
+		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 2 then
+
+			if buttons.right then _color +=1 end
+			if buttons.left then _color -=1 end
+
+			if _color > #colors then _color = 1 end
+			if _color < 1 then _color = #colors end
+
+			_save = true
+		end
+
+		screen.print(480, 5, strings.save, 1, color.white, color.blue, __ACENTER)
+		screen.print(480, 35, strings.warning, 1, color.white, color.red, __ACENTER)
+
+		local h = submenu_abm.h - 190
+        for i=submenu_abm.scroll.ini,submenu_abm.scroll.lim do
+
+			if i==submenu_abm.scroll.sel then sel_color = color.green else sel_color = color.white end
+
+			screen.print(250, h, submenu_abm.options[i].text, 1, sel_color, color.blue, __ALEFT)
+			if i==1 then
+				screen.print(710, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+			end
+
+			h += 35
+        end
+
+		draw.fillrect(690, h-35,18,18, colors[_color])
+		draw.rect(690,h-35,18,18, color.white)
+
+		screen.print(5, 220, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
+
+		draw.gradline(0,yf,960,yf,color.blue,color.green)
+		draw.gradline(0,yf+1,960,yf+1,color.green,color.blue)
+
+    else
+        submenu_abm.open = false
+    end
 end

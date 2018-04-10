@@ -10,6 +10,7 @@
 
 bubbles = {}
 bubbles.len, dels = 0,0
+local crono2, click = timer.new(), false -- Timer and Oldstate to click actions.
 
 function bubbles.scan()
 
@@ -129,7 +130,7 @@ function bubbles.install(src)
 		src.install,src.state = "b",true
 		if src.inst then
 			src.inst,src.nostretched = false,false
-			src.selcc = 1
+			src.selcc = __COLOR
 			if toinstall >0 then toinstall-=1 end
 		end
 
@@ -173,6 +174,7 @@ function bubbles.settings()
 	buttons.interval(12,5)
 	while true do
 		buttons.read()
+			touch.read()
 
 		if back then back:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
@@ -236,7 +238,7 @@ function bubbles.settings()
 
 			if not change then
 				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": "..strings.editboot.."      |      "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": "..strings.editboot.."      |      "..SYMBOL_CIRCLE..": "..strings.back, 1, color.white, color.blue, __ACENTER)
 			else
 				screen.print(480,460, "<- -> "..strings.toggle.."      |      "..SYMBOL_TRIANGLE..": "..strings.doneedit.."      ", 1, color.white, color.blue, __ACENTER)
 			end
@@ -284,7 +286,9 @@ function bubbles.settings()
 					if scrids:down() then preview = nil end
 				end
 
-				if buttons[accept] then game.launch(bubbles.list[scrids.sel].id) end
+				if buttons[accept] then
+					game.launch(bubbles.list[scrids.sel].id)
+				end
 
 				if buttons.square then
 					if dels>=1 then
@@ -339,7 +343,26 @@ function bubbles.settings()
 						if mark then dels=bubbles.len else dels=0 end
 					end
 				end
-				
+
+				if isTouched(155,90,240,175) and touch.front[1].released then--pressed then
+					if click then
+						click = false
+						if crono2:time() <= 300 then -- Double click and in time to Go.
+							-- Your action here.
+							game.launch(bubbles.list[scrids.sel].id)
+						end
+					else
+						-- Your action here.
+						click = true
+						crono2:reset()
+						crono2:start()
+					end
+				end
+
+				if crono2:time() > 300 then -- First click, but long time to double click...
+					click = false
+				end
+
 			--edit
 			else
 				if (buttons.up or buttons.held.l) then optsel-=1 end
@@ -368,7 +391,7 @@ function bubbles.settings()
 						bubbles.list[scrids.sel].lines[optsel] = plugins[selector]
 					end
 					bubbles.list[scrids.sel].update = true
-				end
+				end	
 			end--not change
 
 		end

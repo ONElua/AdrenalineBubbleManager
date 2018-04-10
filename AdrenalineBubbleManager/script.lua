@@ -9,7 +9,12 @@
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
 
+--Show splash ...
+splash.zoom("resources/splash.png")
+
 dofile("system/commons.lua")
+dofile("system/callbacks.lua")
+
 if os.access() == 0 then
 	if back then back:blit(0,0) end
 	screen.flip()
@@ -26,11 +31,6 @@ ADRENALINE = "ux0:app/PSPEMUCFW"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
 ADRENALINEU = ADRENALINE.."/sce_module/adrenaline_user.suprx"
 oncopy = false
-
-dofile("system/callbacks.lua")
-
---Show splash ...
-splash.new("resources/splash.png")
 
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
