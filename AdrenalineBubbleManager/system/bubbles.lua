@@ -77,13 +77,25 @@ function bubbles.install(src)
 
 	--Resources to 8bits
 	buttons.homepopup(0)
+
 		if back then back:blit(0,0) end
-			draw.fillrect(0,0,__DISPLAYW,30, color.shine)
-			screen.print(10,10,strings.convert)
-		screen.flip()
+
+		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+		screen.print(10,10,strings.convert)
+		screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
 
 		timg = game.geticon0(src.path)
+		
 		if timg then
+			timg:resize(252,151)
+			timg:center()
+			timg:blit(480,272)
+		end
+		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+		screen.flip()
+
+		if timg then
+			timg:reset()
 			if src.nostretched then
 				image.save(timg:copyscale(128,128),work_dir.."sce_sys/icon0.png", 1)
 			else
@@ -96,7 +108,21 @@ function bubbles.install(src)
 		end
 
 		timg = game.getpic1(src.path)
+
+		if back then back:blit(0,0) end
+			draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+			screen.print(10,10,strings.convert)
+			screen.print(950,10,"PIC0.PNG",1, color.white, color.blue, __ARIGHT)
+		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 		if timg then
+			timg:resize(252,151)
+			timg:center()
+			timg:blit(480,272)
+		end
+		screen.flip()
+
+		if timg then
+			timg:reset()
 			image.save(timg:copyscale(__DISPLAYW,544), work_dir.."sce_sys/pic0.png", 1)
 			files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
 			files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
@@ -183,10 +209,10 @@ function bubbles.settings()
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,strings.count.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
-		draw.fillrect(120,64,720,416,color.new(105,105,105,230))
-			draw.gradline(120,310,840,310,color.blue,color.green)
-			draw.gradline(120,311,840,311,color.green,color.blue)
-		draw.rect(120,64,720,416,color.blue)
+		draw.fillrect(80,60,800,420,color.new(105,105,105,230))
+			draw.gradline(80,310,880,310,color.blue,color.green)
+			draw.gradline(80,311,880,311,color.green,color.blue)
+		draw.rect(80,60,800,420,color.blue)
 
 		if scrids.maxim > 0 then
 
@@ -238,7 +264,7 @@ function bubbles.settings()
 
 			if not change then
 				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )      |      "..SYMBOL_TRIANGLE..": "..strings.editboot.."      |      "..SYMBOL_CIRCLE..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )   |   "..SYMBOL_TRIANGLE..": "..strings.editboot.." | "..SYMBOL_BACK2..": "..strings.inject.."   |   "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
 			else
 				screen.print(480,460, "<- -> "..strings.toggle.."      |      "..SYMBOL_TRIANGLE..": "..strings.doneedit.."      ", 1, color.white, color.blue, __ACENTER)
 			end
@@ -252,7 +278,7 @@ function bubbles.settings()
 		else
 			screen.print(480,200, strings.notbubbles, 1, color.white, color.red, __ACENTER)
 			screen.print(480,230, strings.createbb, 1, color.white, color.red, __ACENTER)
-			screen.print(480,460, SYMBOL_CIRCLE..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
+			screen.print(480,460, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
 		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
 
@@ -287,7 +313,8 @@ function bubbles.settings()
 				end
 
 				if buttons[accept] then
-					game.launch(bubbles.list[scrids.sel].id)
+					bubbles.redit(bubbles.list[scrids.sel])
+					preview = nil
 				end
 
 				if buttons.square then
@@ -397,5 +424,248 @@ function bubbles.settings()
 		end
 
 		if buttons[cancel] and not change then return false end
+
 	end
+end
+
+function bubbles.redit(obj)
+
+	local tmp = files.listdirs("ux0:ABM/")
+
+	if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
+	else tmp = {} end
+
+	local resources = { 
+		{ name = "ICON0.PNG", 	 w = 128,	h = 128,	dest = "/sce_sys/icon0.png",						restore = "/sce_sys/" },
+		{ name = "STARTUP.PNG",  w = 262,	h = 125,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },
+		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png",							restore = "/sce_sys/" },
+		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
+		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
+	}
+	local preview, find_png, inside, backl = nil,false,false,{}
+
+	local scrids, newpath = newScroll(tmp, 10),""
+	buttons.interval(12,5)
+	while true do
+		buttons.read()
+
+		if back then back:blit(0,0) end
+		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
+
+		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
+		screen.print(480,5, strings.redit, 1, color.white, color.blue, __ACENTER)
+		screen.print(950,5, strings.count.." "..scrids.maxim, 1, color.red, color.gray, __ARIGHT)
+
+		if scrids.maxim > 0 then
+
+			local y = 70
+			for i=scrids.ini, scrids.lim do
+
+				if i == scrids.sel then
+					draw.fillrect(0,y-3,690,25,color.green:a(100))
+
+					if not preview then
+						if tmp[i].ext and tmp[i].ext:upper() == "PNG" then
+							preview = image.load(tmp[i].path)
+							if preview then
+								preview:resize(252,151)
+								preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+							end
+						end
+					end
+
+				end
+				screen.print(20,y,tmp[i].name,1.0,color.white,color.gray,__ALEFT)
+
+				y += 35
+			end
+			
+			if preview then
+				preview:blit(700,84)
+			end
+
+			--Options txts
+			
+			if inside and find_png then
+				screen.print(20,520,strings.reinstall,1.0,color.white,color.blue,__ALEFT)
+			end
+
+		else
+			screen.print(480,230, strings.notresources, 1, color.white, color.red, __ACENTER)
+		end
+		
+		if inside then
+			screen.print(480,490, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
+		else
+			screen.print(480,520, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
+		end
+
+		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
+
+		screen.flip()
+
+		--Controls
+		if scrids.maxim > 0 then
+
+			if (buttons.up or buttons.analogly < -60) then
+				if scrids:up() then preview = nil end
+			end
+
+			if (buttons.down or buttons.analogly > 60) then
+				if scrids:down() then preview = nil end
+			end
+
+			if buttons[accept] and tmp[scrids.sel].directory then
+				table.insert(backl, {maxim = scrids.maxim, ini = scrids.ini, sel = scrids.sel, lim = scrids.lim })
+				inside = true
+				newpath = "ux0:ABM/"..tmp[scrids.sel].name
+				local png = files.listfiles(newpath)
+				if png then
+					table.sort(png,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
+					if #png > 0 then
+						tmp = {}
+						for i=1,#png do
+							if png[i].ext:upper() == "PNG" or png[i].ext:upper() == "XML" then
+								for j=1,#resources do
+									if png[i].name:upper() == resources[j].name then
+										table.insert(tmp, { name = png[i].name, path = png[i].path, ext = png[i].ext, directory = png[i].directory or false })
+										find_png = true
+									end
+								end
+								
+							end
+						end
+						scrids = newScroll(tmp, 10)
+					end
+				end
+			end
+
+			if buttons[cancel] then
+				if inside then
+					newpath = files.nofile(newpath)
+					tmp = files.listdirs(newpath)
+
+					if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
+					else tmp = {} end
+
+					preview, find_png, inside, backlist = nil,false,false,{}
+					scrids:set(tmp,10)
+					if #backl>0 then
+						if scrids.maxim == backl[#backl].maxim then
+							scrids.ini = backl[#backl].ini
+							scrids.lim = backl[#backl].lim
+							scrids.sel = backl[#backl].sel
+						end
+						backl[#backl] = nil
+					end
+
+				else
+					buttons.read() break
+				end
+			end
+
+			if buttons.start and find_png and inside then--hacer la reinstalación
+				local img = nil
+				local path_tmp = ("ux0:data/vpk_abm/")
+				files.delete(path_tmp)
+				files.mkdir(path_tmp)
+				for i=1,#resources do
+					for j=1,#tmp do
+
+						if tmp[j].name:upper() == resources[i].name then
+
+							--Resources to 8bits
+							buttons.homepopup(0)
+
+								if back then back:blit(0,0) end
+
+								if i < 5 then
+
+									img = image.load(tmp[j].path)
+									
+									if img then
+										img:resize(252,151)
+										img:center()
+										img:blit(480,272)
+									end
+
+									draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+									screen.print(10,10,strings.convert)
+									screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
+									
+									if img then
+
+										files.copy(obj.path..resources[i].dest, path_tmp)--backup
+
+										img:reset()
+										if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+											image.save(img:copyscale(resources[i].w, resources[i].h), obj.path..resources[i].dest, 1)
+										else
+											image.save(img, obj.path..resources[i].dest, 1)
+										end
+									end
+								else
+									files.copy(obj.path..resources[i].dest, path_tmp)--backup
+									files.copy(tmp[j].path, obj.path..resources[i].dest)
+								end
+
+								screen.flip()
+							buttons.homepopup(1)
+						
+						end
+
+					end
+				end--for
+				buttons.homepopup(1)
+
+
+				--Install Bubble
+				buttons.homepopup(0)
+					files.copy(obj.path.."/sce_sys/package/",path_tmp)--backup
+					files.copy("ur0:shell/db/app.db",path_tmp)
+					bubble_id = obj.id
+					result = game.installdir(obj.path)
+					if result != 1 then
+						--Restore
+						files.copy(path_tmp.."app.db", "ur0:shell/db/")
+						files.copy(path_tmp.."package/",obj.path.."/sce_sys/")
+						for i=1,#resources do
+							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
+						end
+						custom_msg(strings.errinst,0)
+					end
+					buttons.read()--flush
+					files.delete(path_tmp)
+				buttons.homepopup(1)
+
+				buttons.read() break
+			end
+
+		else
+
+			if buttons[cancel] and inside then
+				newpath = files.nofile(newpath)
+				tmp = files.listdirs(newpath)
+
+				if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
+				else tmp = {} end
+
+				preview, find_png, inside, backlist = nil,false,false,{}
+				scrids:set(tmp,12)
+				if #backl>0 then
+					if scrids.maxim == backl[#backl].maxim then
+						scrids.ini = backl[#backl].ini
+						scrids.lim = backl[#backl].lim
+						scrids.sel = backl[#backl].sel
+					end
+					backl[#backl] = nil
+				end
+			end
+
+			if buttons.released[cancel] and not inside then buttons.read() break end
+
+		end--maxim>0
+
+	end--while
+
 end

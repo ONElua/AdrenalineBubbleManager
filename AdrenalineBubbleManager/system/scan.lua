@@ -172,7 +172,7 @@ function scan.show(objedit)
 				if scan.list[i].state then ccolor = color.green:a(180) else ccolor = color.white end
 
 				if i==scr.sel then
-					draw.fillrect(5,y-3,__DISPLAYW-144-15,25,color.red)
+					draw.fillrect(5,y-3,__DISPLAYW-144-15,25,color.shine)
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
@@ -379,10 +379,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-_sort, _color = __SORT, __COLOR
-sort_type, _save = "", false
- 
-local yf = 280
+local yf, _save = 280,false
 submenu_abm = { -- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -396,14 +393,11 @@ submenu_abm = { -- Creamos un objeto menu contextual
 }
 
 function submenu_abm.wakefunct()
-
-	if _sort == 1 then sort_type = strings.sortmtime
-		elseif _sort == 2 then sort_type = strings.sortnoinst
-			else sort_type = strings.sorttitle end
-
 	submenu_abm.options = { 	-- Handle Option Text and Option Function
-		{ text = strings.def_sort,	funct = sort_callback },
-		{ text = strings.def_color,	funct = color_callback },
+		{ text = strings.def_sort },
+		{ text = strings.def_color },
+		{ text = strings.update },
+		{ text = strings.checkadr },
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -427,14 +421,16 @@ function submenu_abm.run(obj)
 				table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
 			end
 			obj:set(scan.list,12)
-			ini.write(__PATHINI,"sort","sort",_sort)
-		end
-
-		if submenu_abm.close and _save then
+			ini.write(__PATHINI,"sort","sort",_sort)--Save __SORT
+			
 			for i=1,scan.len do
 				scan.list[i].selcc =  _color
 			end
-			ini.write(__PATHINI,"color","color",_color)
+			ini.write(__PATHINI,"color","color",_color)--Save __COLOR
+			
+			ini.write(__PATHINI,"update","update",__UPDATE)--Save __UPDATE
+
+			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)--Save __CHECKADR
 		end
 		_save = false
 	end
@@ -471,7 +467,6 @@ function submenu_abm.draw(obj)
 					os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross)
 				end
 			else
-				-- Your action here.
 				clicked = true
 				crono:reset()
 				crono:start()
@@ -482,7 +477,7 @@ function submenu_abm.draw(obj)
 			clicked = false
 		end
 
-		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 1 then
+		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 1 then--Sort
 
 			if buttons.right then _sort +=1 end
 			if buttons.left then _sort -=1 end
@@ -491,11 +486,13 @@ function submenu_abm.draw(obj)
 			if _sort < 0 then _sort = 2 end
 
 			_save = true
-			submenu_abm.wakefunct()
-
+			--submenu_abm.wakefunct()
+			if _sort == 1 then sort_type = strings.sortmtime
+				elseif _sort == 2 then sort_type = strings.sortnoinst
+					else sort_type = strings.sorttitle end
 		end
 
-		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 2 then
+		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 2 then--Color
 
 			if buttons.right then _color +=1 end
 			if buttons.left then _color -=1 end
@@ -506,26 +503,49 @@ function submenu_abm.draw(obj)
 			_save = true
 		end
 
-		screen.print(480, 5, strings.save, 1, color.white, color.blue, __ACENTER)
-		screen.print(480, 35, strings.warning, 1, color.white, color.red, __ACENTER)
+		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 3 then--Update
+			if __UPDATE == 1 then __UPDATE = 0 else __UPDATE = 1 end
+			_save = true
 
-		local h = submenu_abm.h - 190
+			if __UPDATE == 1 then _update = strings.option1_msg
+			else _update = strings.option2_msg end
+		end
+
+		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 4 then--CheckAdrenaline
+			if __CHECKADR == 1 then __CHECKADR = 0 else __CHECKADR = 1 end
+			_save = true
+
+			if __CHECKADR == 1 then _adr = strings.option1_msg
+			else _adr = strings.option2_msg end
+		end
+
+		screen.print(480, 5, strings.save, 1, color.white, color.blue, __ACENTER)
+		screen.print(480, 32, strings.warning, 1, color.white, color.red, __ACENTER)
+
+		local h = 75
         for i=submenu_abm.scroll.ini,submenu_abm.scroll.lim do
 
-			if i==submenu_abm.scroll.sel then sel_color = color.green else sel_color = color.white end
-
-			screen.print(250, h, submenu_abm.options[i].text, 1, sel_color, color.blue, __ALEFT)
-			if i==1 then
-				screen.print(710, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+			if i==submenu_abm.scroll.sel then
+				draw.fillrect(5,h-3, 960-5,25,color.shine)
+				sel_color = color.green else sel_color = color.white
 			end
 
-			h += 35
+			screen.print(230, h, submenu_abm.options[i].text, 1, sel_color, color.blue, __ALEFT)
+			if i==1 then
+				screen.print(690, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==3 then
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==4 then
+				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+			end
+
+			h += 30
         end
 
-		draw.fillrect(690, h-35,18,18, colors[_color])
-		draw.rect(690,h-35,18,18, color.white)
+		draw.fillrect(670, 106,18,18, colors[_color])
+		draw.rect(670,106,18,18, color.white)
 
-		screen.print(5, 220, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
+		screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
 
 		draw.gradline(0,yf,960,yf,color.blue,color.green)
 		draw.gradline(0,yf+1,960,yf+1,color.green,color.blue)

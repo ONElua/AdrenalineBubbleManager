@@ -22,44 +22,61 @@ if os.access() == 0 then
 	os.exit()
 end
 
-local wstrength = wlan.strength()
-if wstrength then
-	if wstrength > 55 then dofile("git/updater.lua") end
+if __UPDATE then
+	local wstrength = wlan.strength()
+	if wstrength then
+		if wstrength > 55 then dofile("git/updater.lua") end
+	end
 end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
 ADRENALINEU = ADRENALINE.."/sce_module/adrenaline_user.suprx"
+ADRENALINEV = ADRENALINE.."/sce_module/adrenaline_vsh.suprx"
 oncopy = false
 
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
 
-	if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
-		oncopy = true
-		files.copy("sce_module/", ADRENALINE)
-
-	else
-		if not files.exists(ADRENALINEK) then
+	if __CHECKADR then
+		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
 			oncopy = true
-			files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
+			files.copy("sce_module/", ADRENALINE)
+
 		else
-			if os.crc32(files.read(ADRENALINEK) ) != 0xA5989C79 then
+
+			if not files.exists(ADRENALINEK) then
 				oncopy = true
 				files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
+			else
+				if os.crc32(files.read(ADRENALINEK) ) != 0xA5989C79 then
+					oncopy = true
+					files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
+				end
+			end
+
+			if not files.exists(ADRENALINEU) then
+				oncopy = true
+				files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
+			else
+				if os.crc32(files.read(ADRENALINEU)) != 0x759B33A9 then
+					oncopy = true
+					files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
+				end
+			end
+
+			if not files.exists(ADRENALINEV) then
+				oncopy = true
+				files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
+			else
+				if os.crc32(files.read(ADRENALINEV)) != 0xBE8BAAE9 then
+					oncopy = true
+					files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
+				end
 			end
 		end
 
-		if not files.exists(ADRENALINEU) then
-			oncopy = true
-			files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
-		else
-			if os.crc32(files.read(ADRENALINEU)) != 0x759B33A9 then
-				oncopy = true
-				files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
-			end
-		end
-	end
+	end--__CHECKADR
 
 	if oncopy then
 		custom_msg(strings.adrinst,0)

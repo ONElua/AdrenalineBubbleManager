@@ -14,6 +14,8 @@ color.loadpalette()
 -- Set ux0 folder path
 local pathABM 	= "ux0:data/ABM/"
 __PATHINI		= "ux0:data/ABM/config.ini"
+__PATH_LANG		= "ux0:data/ABM/lang/"
+
 files.mkdir(pathABM)
 files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."resources/")
@@ -34,25 +36,26 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 
 -- Loading language file
 __LANG = os.language()
-__STRINGS		= 55
 
-if not files.exists(pathABM.."lang/english_us.txt") then files.copy("resources/lang/english_us.txt",pathABM.."lang/")
+__STRINGS		= 61
+
+dofile("resources/lang/english_us.txt")
+if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
 else
-	dofile(pathABM.."lang/english_us.txt")
+	dofile(__PATH_LANG.."english_us.txt")
 	local cont_strings = 0
 	for key,value in pairs(strings) do cont_strings += 1 end
 --os.message(cont_strings)
-	if cont_strings < __STRINGS then files.copy("resources/lang/english_us.txt",pathABM.."lang/") end
+	if cont_strings < __STRINGS then files.copy("resources/lang/english_us.txt",__PATH_LANG) end
 end
 
-if files.exists(pathABM.."lang/"..__LANG..".txt") then
-	dofile(pathABM.."lang/"..__LANG..".txt")
+if files.exists(__PATH_LANG..__LANG..".txt") then
+	dofile(__PATH_LANG..__LANG..".txt")
 	local cont_strings = 0
 	for key,value in pairs(strings) do cont_strings += 1 end
 	if cont_strings < __STRINGS then dofile("resources/lang/english_us.txt") end
 else
-	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt")
-	else dofile("resources/lang/english_us.txt") end
+	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
 end
 
 -- Loading custom ttf font if exits
@@ -91,7 +94,7 @@ debug_print={}
 function init_msg(msg)
 	table.insert(debug_print,msg)
 	if back then back:blit(0,0) end
-	local y=5
+	local y=30
 	if #debug_print<=20 then I=1 else I=#debug_print-19 end 
 	for i=I, #debug_print do
 		screen.print(10,y,debug_print[i],1)
@@ -103,6 +106,20 @@ end
 
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","2"))
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
+__UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
+__CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
+
+_sort, _color = __SORT, __COLOR
+
+if _sort == 1 then sort_type = strings.sortmtime
+	elseif _sort == 2 then sort_type = strings.sortnoinst
+		else sort_type = strings.sorttitle end
+
+if __UPDATE == 1 then _update = strings.option1_msg
+	else _update = strings.option2_msg end
+
+if __CHECKADR == 1 then _adr = strings.option1_msg
+	else _adr = strings.option2_msg end
 
 --[[
 	## Library Scroll ##
@@ -200,10 +217,10 @@ function custom_msg(printtext,mode)
 		screen.print(xtext,200, printtext,1, color.gray)
 
 		if mode == 0 then
-			screen.print(xopt1+120,360, SYMBOL_CROSS.." : "..strings.option_msg,1.02, color.gray)
+			screen.print(xopt1+120,363, SYMBOL_CROSS.." : "..strings.option_msg,1.02, color.gray)
 		else
-			screen.print(xopt1,360, SYMBOL_CROSS.." : "..strings.option1_msg,1.02, color.gray)
-			screen.print(xopt2,360, SYMBOL_CIRCLE.." : "..strings.option2_msg,1.02, color.gray)
+			screen.print(xopt1,363, SYMBOL_CROSS.." : "..strings.option1_msg,1.02, color.gray)
+			screen.print(xopt2,363, SYMBOL_CIRCLE.." : "..strings.option2_msg,1.02, color.gray)
 		end
 
 		screen.flip()
