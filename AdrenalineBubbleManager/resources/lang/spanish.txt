@@ -23,6 +23,12 @@ notbubbles =	"No hay burbujas :(",
 createbb =		"Inténtalo de nuevo después de crear algunas burbujas.",
 togoback =		"Volver Atrás",
 uninstallbb =	"Vas a Desinstalar Burbuja(s) : ",
+inject =		"Inyectar imgs",
+
+--bubles.redit
+redit =			"Injector de imagenes",
+reinstall =		"Presiona START para injectar las imagenes",
+notresources =	"Nada para mostrar",
 
 --osk
 titleosk =		"Título de la Burbuja",
@@ -71,7 +77,9 @@ sortnoinst =	"Instalados",
 warning =		"Los cambios tomarán efecto al presionar start",
 def_sort =		"Orden de lista",
 def_color =		"Color a usar",
-save =			"Opciones Extra",
+save =			"Opciones Extras",
+update =		"Actualización ABM",
+checkadr =		"Revisar Adrenaline",
 
 --bar progress
 bubbles =		"Burbujas",

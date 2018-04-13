@@ -23,6 +23,12 @@ notbubbles =	"Vous avez aucune bulle installée  :(",
 createbb =		"Réessayer après installation d'une bulle en appuyant sur X sur un jeu",
 togoback =		"Retour",
 uninstallbb =	"Voulez-vous vraiment désinstaller la bulle, nombre de  bulle: ",
+inject =		"Inject imgs",
+
+--bubles.redit
+redit =			"Bubble Resources Loader",
+reinstall =		"Press START to load all images to the bubble",
+notresources =	"Nothing to show",
 
 --osk
 titleosk =		"Nom de la bulle",
@@ -72,6 +78,8 @@ warning =		"The changes will take effect once you press start",
 def_sort =		"Default Sort",
 def_color =		"Default Color",
 save =			"Extra Settings",
+update =		"ABM Update",
+checkadr =		"Check Adrenaline",
 
 --bar progress
 bubbles =		"Bulles",

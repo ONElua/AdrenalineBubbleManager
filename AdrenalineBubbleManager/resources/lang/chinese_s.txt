@@ -23,6 +23,12 @@ notbubbles =	"未有可列出的气泡 :(",
 createbb =		"请在创建气泡后重试",
 togoback =		"返回",
 uninstallbb =	"将卸载的气泡数量: ",
+inject =		"Inject imgs",
+
+--bubles.redit
+redit =			"Bubble Resources Loader",
+reinstall =		"Press START to load all images to the bubble",
+notresources =	"Nothing to show",
 
 --osk
 titleosk =		"气泡标题",
@@ -72,6 +78,8 @@ warning =		"The changes will take effect once you press start",
 def_sort =		"Default Sort",
 def_color =		"Default Color",
 save =			"Extra Settings",
+update =		"ABM Update",
+checkadr =		"Check Adrenaline",
 
 --bar progress
 bubbles =		"气泡",
