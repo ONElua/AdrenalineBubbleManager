@@ -264,7 +264,7 @@ function bubbles.settings()
 
 			if not change then
 				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )   |   "..SYMBOL_TRIANGLE..": "..strings.editboot.." | "..SYMBOL_BACK2..": "..strings.inject.."   |   "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )   |   "..SYMBOL_TRIANGLE..": "..strings.editboot.."   |   "..SYMBOL_BACK2..": "..strings.inject.."   |   "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
 			else
 				screen.print(480,460, "<- -> "..strings.toggle.."      |      "..SYMBOL_TRIANGLE..": "..strings.doneedit.."      ", 1, color.white, color.blue, __ACENTER)
 			end
