@@ -1,7 +1,7 @@
 # Adrenaline Bubbles Manager
 **Create and organize your direct adrenaline bubbles.**
 
-![header](preview.png)
+![header](ContentSelection.png)
 
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, forgetting completely of the tedious and long manual method.
@@ -11,8 +11,8 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 4.11.###<br>
-### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1.###<br>
+### Adrenaline Bubbles Manager Current Version: 4.11 ###
+### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1 ###
 
 ### Instructions ###
 1. **Install Adrenaline v6.1**
@@ -50,6 +50,8 @@ This option allows you to set some preferences as default for ABM such as:
 - Adrenaline version check.<br>
 	This option disables/enables ABM to check the Adrenaline version you have installed in your ps vita. 
 
+![header](ExtraSettings.png)
+
 ### NOTE: ###
 **If your Adrenaline.vpk gets updated online to a higher version used by ABM, then you'll have to disable this option
 to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime you open ABM.**
@@ -62,6 +64,8 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
 	Cahanges the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
 	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
+
+![header](BubbleEdit.png)
 
 *Uninstall Bubbles*
 - Press select (single) or start (all) to select bubbles you wish to uninstall.
@@ -79,6 +83,8 @@ To use this feature you have to follow the instructions below:<br>
 - bg0.png			840x500<br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
 3. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
+
+![header](PreviewsImgs.png)
 
 ### NOTE: ###
 Make sure the images are renamed as mentioned above and to be in png format, also make sure the images are resized to corresponding sizes mentioned avobe (if your images sizes are close to specs they will work too).<br>
