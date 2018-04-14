@@ -46,7 +46,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 This option allows you to set some preferences as default for ABM such as:
 - Set sort list of your iso/cso/pbp.<br>
 - Select the default color for your bubbles.<br>
-- Enable/Deisable ABM updates.<br>
+- Enable/Disable ABM updates.<br>
 - Adrenaline version check.<br>
 	This option disables/enables ABM to check the Adrenaline version you have installed in your ps vita. 
 
@@ -62,7 +62,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 
 **Triangle:** Allows to edit the configuration file boot.inf<br>
 	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
-	Cahanges the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
+	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
 	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
 
 ![header](BubbleEdit.png)
