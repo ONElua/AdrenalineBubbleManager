@@ -15,14 +15,14 @@ Adrenaline Bubbles Manager Current Version: 4.11.<br>
 Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1.<br>
 
 ### Instructions ###
-1. Install Adrenaline v6.1  
+1. **Install Adrenaline v6.1**
 Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it just once, it is highly recommended to add the following line below the kernel line in ur0:tai/config.txt.<br>
-*KERNEL
+*KERNEL<br>
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
-### Changelog ###
+### Changelog 5.00 ###
 - Added submenu for Extra Setting.<br>
 - Added hability to inject images to ABM bubbles.<br>
 
@@ -30,7 +30,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 **Adrenaline Bubbles Manager does recognize the accept/cancel buttons According to console region.**
 
-*Creating Bubbles:*
+*Creating Bubbles*
 
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
@@ -62,16 +62,16 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 - Press select (single) or start (all) to select bubbles you wish to uninstall.
 - Square: To uninstall the selected bubbles.
 
-*Insert Images:*
+*Insert Images*
 
 This option allows you to Insert your desired images to the selected bubble, this will improve the looks of your bubbles in Livearea.
 
 To use this feature you have to follow the instructions below:<br>
 1. Download or create the images to insert, those images to use have to be renamed and resized to:<br>
-- icon0.png		128x128<br>
-- startup.png		262x125<br>   
-- pic0.png		960x544<br>   
-- bg0.png		840x500<br>
+- icon0.png			128x128<br>
+- startup.png			262x125<br>   
+- pic0.png			960x544<br>   
+- bg0.png			840x500<br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
 3. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
 
