@@ -172,7 +172,7 @@ function scan.show(objedit)
 				if scan.list[i].state then ccolor = color.green:a(180) else ccolor = color.white end
 
 				if i==scr.sel then
-					draw.fillrect(5,y-3,__DISPLAYW-144-15,25,color.shine)
+					draw.fillrect(5,y-3,__DISPLAYW-144-15,25,color.blue:a(160))
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)

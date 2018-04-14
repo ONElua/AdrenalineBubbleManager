@@ -7,6 +7,7 @@ adrinst =		"El plugin AdrBubbleBooter ha sido instalado... \nNecesitamos reinici
 notadr =		"Adrenaline v6 no instalada...",
 
 --callbacks.lua
+updatebb =		"Actualizando Burbuja: ",
 instbb =		"Instalando Burbuja: ",
 file =			"Archivo: ",
 
@@ -26,8 +27,8 @@ uninstallbb =	"Vas a Desinstalar Burbuja(s) : ",
 inject =		"Inyectar imgs",
 
 --bubles.redit
-redit =			"Injector de imagenes",
-reinstall =		"Presiona START para injectar las imagenes",
+redit =			"Inyector de imagenes",
+reinstall =		"Presiona START para inyectar las imagenes",
 notresources =	"Nada para mostrar",
 
 --osk

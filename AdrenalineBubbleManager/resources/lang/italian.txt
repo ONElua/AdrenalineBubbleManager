@@ -7,6 +7,7 @@ adrinst =		"È stato installato il plugin AdrBubbleBooter... \nHai bisogno di ri
 notadr =		"Adrenaline v6 non installato...",
 
 --callbacks.lua
+updatebb =		"Updating Bubble Images: ",
 instbb =		"Bolle Installate: ",
 file =			"File: ",
 

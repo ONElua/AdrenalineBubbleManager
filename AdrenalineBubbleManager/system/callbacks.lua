@@ -7,7 +7,7 @@
    Collaborators: BaltaR4 & Wzjk.
    
 ]]
-bubble_id = ""
+bubble_id, reinstall = "",false
 
 function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 
@@ -18,8 +18,12 @@ function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 		return 10 -- Ok
 	elseif step == 4 then											-- Promote or install
 		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
-		screen.print(10,10,strings.instbb.." "..bubble_id)
-		
+		if reinstall then
+			screen.print(10,10,strings.updatebb.." "..bubble_id)
+		else
+			screen.print(10,10,strings.instbb.." "..bubble_id)
+		end
+
 		screen.flip()
 	end
 end

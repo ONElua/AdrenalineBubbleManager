@@ -37,7 +37,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 61
+__STRINGS		= 62
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -60,8 +60,6 @@ end
 
 -- Loading custom ttf font if exits
 if files.exists(pathABM.."/resources/"..__LANG..".ttf") then font.setdefault(pathABM.."/resources/"..__LANG..".ttf") end
-
-boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS" }
 
 SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)
 SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)

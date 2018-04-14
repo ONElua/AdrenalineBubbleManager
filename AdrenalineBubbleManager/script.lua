@@ -22,7 +22,7 @@ if os.access() == 0 then
 	os.exit()
 end
 
-if __UPDATE == 1 then
+if __UPDATE then
 	local wstrength = wlan.strength()
 	if wstrength then
 		if wstrength > 55 then dofile("git/updater.lua") end
@@ -38,7 +38,7 @@ oncopy = false
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
 
-	if __CHECKADR == 1 then
+	if __CHECKADR then
 		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
 			oncopy = true
 			files.copy("sce_module/", ADRENALINE)

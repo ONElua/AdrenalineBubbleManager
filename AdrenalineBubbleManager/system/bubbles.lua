@@ -11,6 +11,7 @@
 bubbles = {}
 bubbles.len, dels = 0,0
 local crono2, click = timer.new(), false -- Timer and Oldstate to click actions.
+boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS" }
 
 function bubbles.scan()
 
@@ -209,10 +210,10 @@ function bubbles.settings()
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,strings.count.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
-		draw.fillrect(80,60,800,420,color.new(105,105,105,230))
-			draw.gradline(80,310,880,310,color.blue,color.green)
-			draw.gradline(80,311,880,311,color.green,color.blue)
-		draw.rect(80,60,800,420,color.blue)
+		draw.fillrect(70,60,820,420,color.new(105,105,105,230))
+			draw.gradline(70,310,890,310,color.blue,color.green)
+			draw.gradline(70,311,890,311,color.green,color.blue)
+		draw.rect(70,60,820,420,color.blue)
 
 		if scrids.maxim > 0 then
 
@@ -444,7 +445,7 @@ function bubbles.redit(obj)
 	}
 	local preview, find_png, inside, backl = nil,false,false,{}
 
-	local scrids, newpath = newScroll(tmp, 10),""
+	local scrids, newpath = newScroll(tmp, 10),"ux0:ABM/"
 	buttons.interval(12,5)
 	while true do
 		buttons.read()
@@ -458,7 +459,8 @@ function bubbles.redit(obj)
 
 		if scrids.maxim > 0 then
 
-			local y = 70
+			screen.print(15,35, newpath, 1, color.white,color.blue)
+			local y = 75
 			for i=scrids.ini, scrids.lim do
 
 				if i == scrids.sel then
@@ -475,9 +477,9 @@ function bubbles.redit(obj)
 					end
 
 				end
-				screen.print(20,y,tmp[i].name,1.0,color.white,color.gray,__ALEFT)
+				screen.print(20,y,tmp[i].name,1.0,color.white,color.blue,__ALEFT)
 
-				y += 35
+				y += 32
 			end
 			
 			if preview then
@@ -487,7 +489,7 @@ function bubbles.redit(obj)
 			--Options txts
 			
 			if inside and find_png then
-				screen.print(20,520,strings.reinstall,1.0,color.white,color.blue,__ALEFT)
+				screen.print(480,523,strings.reinstall,1.0,color.green,color.gray,__ACENTER)
 			end
 
 		else
@@ -497,7 +499,7 @@ function bubbles.redit(obj)
 		if inside then
 			screen.print(480,490, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		else
-			screen.print(480,520, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
+			screen.print(480,523, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
 
 		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
@@ -592,7 +594,8 @@ function bubbles.redit(obj)
 									draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 									screen.print(10,10,strings.convert)
 									screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
-									
+									screen.flip()
+
 									if img then
 
 										files.copy(obj.path..resources[i].dest, path_tmp)--backup
@@ -608,8 +611,6 @@ function bubbles.redit(obj)
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup
 									files.copy(tmp[j].path, obj.path..resources[i].dest)
 								end
-
-								screen.flip()
 							buttons.homepopup(1)
 						
 						end
@@ -623,7 +624,7 @@ function bubbles.redit(obj)
 				buttons.homepopup(0)
 					files.copy(obj.path.."/sce_sys/package/",path_tmp)--backup
 					files.copy("ur0:shell/db/app.db",path_tmp)
-					bubble_id = obj.id
+					bubble_id,reinstall = obj.id,true
 					result = game.installdir(obj.path)
 					if result != 1 then
 						--Restore
@@ -636,6 +637,7 @@ function bubbles.redit(obj)
 					end
 					buttons.read()--flush
 					files.delete(path_tmp)
+					reinstall = false
 				buttons.homepopup(1)
 
 				buttons.read() break
@@ -651,7 +653,7 @@ function bubbles.redit(obj)
 				else tmp = {} end
 
 				preview, find_png, inside, backlist = nil,false,false,{}
-				scrids:set(tmp,12)
+				scrids:set(tmp,10)
 				if #backl>0 then
 					if scrids.maxim == backl[#backl].maxim then
 						scrids.ini = backl[#backl].ini

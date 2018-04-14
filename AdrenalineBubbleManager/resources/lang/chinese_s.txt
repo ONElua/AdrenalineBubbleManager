@@ -7,6 +7,7 @@ adrinst =		"AdrBubbleBooter 插件已安装... \n需要重启PSVita... :)",
 notadr =		"Adrenaline v6 尚未安装...",
 
 --callbacks.lua
+updatebb =		"Updating Bubble Images: ",
 instbb =		"安装气泡中:",
 file =			"文档:",
 
