@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.00">
+    <![CDATA[
+- Added submenu for Extra Setting.<br>
+- Added hability to inject images to ABM bubbles.<br>
+    ]]>
+  </changes>
   <changes app_ver="04.11">
     <![CDATA[
 - Added drop down submenu when pressing START.<br>
