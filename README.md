@@ -6,13 +6,13 @@
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, forgetting completely of the tedious and long manual method.
 
-![header](Bubbles.png)
-
 ## IMPORTANT ##
 **Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed, any issue related with that should be mentioned to Lman or the_flow**
 
-Adrenaline Bubbles Manager Current Version: 4.11.<br>
-Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1.<br>
+![header](Bubbles.png)
+
+### Adrenaline Bubbles Manager Current Version: 4.11.###<br>
+### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1.###<br>
 
 ### Instructions ###
 1. **Install Adrenaline v6.1**
@@ -30,8 +30,11 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 **Adrenaline Bubbles Manager does recognize the accept/cancel buttons According to console region.**
 
+## iso/cso/pbp content selection screen ##
+
 *Creating Bubbles*
 
+- **L/R:** To switch the way the bubble will look like in Livearea (original icon look/stretched icon look)<br>
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
 - **Start:** Open Extra Settings menu (set default bubble color, sort list, Adrenaline version check, Adrenaline Bubbles Manager version check).<br>
@@ -41,7 +44,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 *Extra Settings*
 
 This option allows you to set some preferences as default for ABM such as:
-- She sort list of your iso/cso/pbp.<br>
+- Set sort list of your iso/cso/pbp.<br>
 - Select the default color for your bubbles.<br>
 - Enable/Deisable ABM updates.<br>
 - Adrenaline version check.<br>
@@ -50,6 +53,8 @@ This option allows you to set some preferences as default for ABM such as:
 ### NOTE: ###
 **If your Adrenaline.vpk gets updated online to a higher version used by ABM, then you'll have to disable this option
 to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime you open ABM.**
+
+## Bubble edit screen ##
 
 *Editing Bubbles*
 
@@ -76,8 +81,7 @@ To use this feature you have to follow the instructions below:<br>
 3. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
 
 ### NOTE: ###
-Make sure the images are renamed as mentioned above and to be in png format, also make sure the images are resized to corresponding sizes mentioned avobe
-(if your images sizes are close to specs they will work too).
+Make sure the images are renamed as mentioned above and to be in png format, also make sure the images are resized to corresponding sizes mentioned avobe (if your images sizes are close to specs they will work too).<br>
 You can add your own template.xml file. (Make sure the images names are the same to images linked in the template.xml).
 
 To insert new images to any selected bubble, when you are in the Edit Bubble menu:<br>
@@ -94,7 +98,7 @@ After choosing a folder, when you can see the images previews:<br>
 ### Credits ###
 - eCFW Adrenaline By TheFloW.
 - Adrenaline Bubble Booter By LMAN 'leecherman'
-- PBOOT icon and livearea icon By Freakler.
+- startup.png By Freakler.
 - Testers @_Falaschi_, @baltazarregala4.
 - Some graphics By WZ-JK.
 
