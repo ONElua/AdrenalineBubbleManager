@@ -11,7 +11,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 4.11 ###
+### Adrenaline Bubbles Manager Current Version: 5.00 ###
 ### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1 ###
 
 ### Instructions ###
