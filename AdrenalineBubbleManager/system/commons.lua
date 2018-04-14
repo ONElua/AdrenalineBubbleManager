@@ -16,6 +16,7 @@ local pathABM 	= "ux0:data/ABM/"
 __PATHINI		= "ux0:data/ABM/config.ini"
 __PATH_LANG		= "ux0:data/ABM/lang/"
 
+files.mkdir("ux0:ABM/")
 files.mkdir(pathABM)
 files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."resources/")
