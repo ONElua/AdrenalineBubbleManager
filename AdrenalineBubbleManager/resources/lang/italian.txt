@@ -7,7 +7,7 @@ adrinst =		"È stato installato il plugin AdrBubbleBooter... \nHai bisogno di ri
 notadr =		"Adrenaline v6 non installato...",
 
 --callbacks.lua
-updatebb =		"Updating Bubble Images: ",
+updatebb =		"Aggiornamento dell'immagine della bolla: ",
 instbb =		"Bolle Installate: ",
 file =			"File: ",
 
@@ -24,12 +24,12 @@ notbubbles =	"Non hai nessuna bolla nella lista :(",
 createbb =		"Riprova dopo aver creato alcune bolle.",
 togoback =		"Torna Indietro",
 uninstallbb =	"Stai per disinstallare delle bolle : ",
-inject =		"Inject imgs",
+inject =		"Inietta immmagini",
 
 --bubles.redit
 redit =			"Bubble Resources Loader",
-reinstall =		"Press START to load all images to the bubble",
-notresources =	"Nothing to show",
+reinstall =		"Premere START per caricare tutte le immagini per la bolla",
+notresources =	"Niente da mostrare",
 
 --osk
 titleosk =		"Titolo della Bolla",
@@ -65,22 +65,22 @@ installgames2 =	"e i giochi eboot.pbp in pspemu/PSP/GAME/(MYGAME)",
 press_lr =		"Premere L/R per passare alle icone complete/non allungate.",
 press_select =	"Premere SELECT per ordinare per\nInstalled/Titolo/Data di modifica.",
 press_lright =	"Premere Destra/Sinistra per cambiare il colore di ogni Bolla.",
-press_cross =	"Press X to create your Bubbles.",
-press_circle =	"Press O to create your Bubbles.",
-touchme =		"Double tap",
+press_cross =	"Premere X per creare la tua Bolla.",
+press_circle =	"Premere O per creare le tue Bolle.",
+touchme =		"Tocca due volte",
 press_start =	"Visualizzare l'aiuto: ",
-sort =			"Sort by",
-sorttitle =		"Title",
+sort =			"Ordina per",
+sorttitle =		"Titolo",
 sortmtime =		"MTime",
-sortnoinst =	"Installed",
+sortnoinst =	"Installato",
 
 --submenu
-warning =		"The changes will take effect once you press start",
-def_sort =		"Default Sort",
-def_color =		"Default Color",
-save =			"Extra Settings",
-update =		"ABM Update",
-checkadr =		"Check Adrenaline",
+warning =		"Le modifiche avranno effetto una volta che si preme start",
+def_sort =		"Ordinamento predefinito",
+def_color =		"Colore predefinito",
+save =			"Impostazioni EXTRA",
+update =		"Aggiorna ABM",
+checkadr =		"Verifica Adrenaline",
 
 --bar progress
 bubbles =		"Bolle",
