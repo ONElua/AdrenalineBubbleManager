@@ -12,6 +12,7 @@
 --Show splash ...
 splash.zoom("resources/splash.png")
 
+dofile("crc.lua")
 dofile("system/commons.lua")
 dofile("system/callbacks.lua")
 
@@ -30,6 +31,7 @@ if __UPDATE == 1 then
 end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
+ADRENALINEB = ADRENALINE.."/sce_module/adrbubblebooter.suprx"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
 ADRENALINEU = ADRENALINE.."/sce_module/adrenaline_user.suprx"
 ADRENALINEV = ADRENALINE.."/sce_module/adrenaline_vsh.suprx"
@@ -39,17 +41,27 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
 
 	if __CHECKADR == 1 then
-		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
+		if not files.exists(ADRENALINEB) then
 			oncopy = true
 			files.copy("sce_module/", ADRENALINE)
 
 		else
 
+			if not files.exists(ADRENALINEB) then
+				oncopy = true
+				files.copy("sce_module/adrbubblebooter.suprx", ADRENALINE.."/sce_module/")
+			else
+				if os.crc32(files.read(ADRENALINEB) ) != __CRCADRBOOTER then
+					oncopy = true
+					files.copy("sce_module/adrbubblebooter.suprx", ADRENALINE.."/sce_module/")
+				end
+			end
+
 			if not files.exists(ADRENALINEK) then
 				oncopy = true
 				files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
 			else
-				if os.crc32(files.read(ADRENALINEK) ) != 0xA5989C79 then
+				if os.crc32(files.read(ADRENALINEK) ) != __CRCKERNEL then
 					oncopy = true
 					files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
 				end
@@ -59,7 +71,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 				oncopy = true
 				files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
 			else
-				if os.crc32(files.read(ADRENALINEU)) != 0x759B33A9 then
+				if os.crc32(files.read(ADRENALINEU)) != __CRCUSER then
 					oncopy = true
 					files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
 				end
@@ -69,7 +81,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 				oncopy = true
 				files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
 			else
-				if os.crc32(files.read(ADRENALINEV)) != 0xBE8BAAE9 then
+				if os.crc32(files.read(ADRENALINEV)) != __CRCVSH then
 					oncopy = true
 					files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
 				end

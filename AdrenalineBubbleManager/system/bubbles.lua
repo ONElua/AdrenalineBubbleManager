@@ -11,7 +11,7 @@
 bubbles = {}
 bubbles.len, dels = 0,0
 local crono2, click = timer.new(), false -- Timer and Oldstate to click actions.
-boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS" }
+boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS", "NPDRMFREE" }
 
 function bubbles.scan()
 
@@ -190,9 +190,10 @@ end
 
 function bubbles.settings()
 
-	local drivers = { "INFERNO", "MARCH33", "NP9660" }
-	local bins =	{ "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
-	local plugins = { "ENABLE", "DISABLE" }
+	local drivers   = { "INFERNO", "MARCH33", "NP9660" }
+	local bins      = { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
+	local plugins   = { "ENABLE", "DISABLE" }
+	local npdrmfree = { "ENABLE", "DISABLE" }
 
 	local selector, optsel, change, bmaxim = 1,2,false,9
 	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 130, 15
@@ -403,7 +404,7 @@ function bubbles.settings()
 					if buttons.left then selector-=1 end
 					if buttons.right then selector+=1 end
 
-					if optsel == 4 then
+					if optsel == 4 or optsel == 5 then
 						if selector > 2 then selector = 1 end
 						if selector < 1 then selector = 2 end
 					else
@@ -417,6 +418,8 @@ function bubbles.settings()
 						bubbles.list[scrids.sel].lines[optsel] = bins[selector]
 					elseif optsel == 4 then
 						bubbles.list[scrids.sel].lines[optsel] = plugins[selector]
+					elseif optsel == 5 then
+						bubbles.list[scrids.sel].lines[optsel] = npdrmfree[selector]
 					end
 					bubbles.list[scrids.sel].update = true
 				end	

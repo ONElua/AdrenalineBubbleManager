@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.01">
+    <![CDATA[
+- Compatible with Adrenaline v6.3 thanks to Lman.<br>
+- Added ux0:data/ABM/crc.ini to detect the CRC32 of the skprx modules.<br>
+- Added npdrmfree enable/disable option to ABM bubble edit screen.<br>
+    ]]>
   <changes app_ver="05.00">
     <![CDATA[
 - Added submenu for Extra Setting.<br>

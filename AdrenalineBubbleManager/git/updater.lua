@@ -15,7 +15,7 @@ function screen.flip()
 		local major = (version >> 0x18) & 0xFF;
 		local minor = (version >> 0x10) & 0xFF;
 
-		if os.message(string.format("%s v%s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."     Do you want to update the application?"), 1) == 1 then
+		if os.message(string.format("%s v %s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."     Do you want to update the application?"), 1) == 1 then
 			buttons.homepopup(0)
 			if back then back:blit(0,0) end
 			local url = string.format("https://github.com/%s/%s/releases/download/%s/%s", APP_REPO, APP_PROJECT, string.format("%X.%02X",major, minor), APP_PROJECT..".vpk")
