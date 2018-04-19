@@ -11,16 +11,23 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 5.00 ###
-### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.1 ###
+### Adrenaline Bubbles Manager Current Version: 5.01 ###
+### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.3 ###
 
 ### Instructions ###
-1. **Install Adrenaline v6.1**
+1. **Install Adrenaline v6.3**
 Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it just once, it is highly recommended to add the following line below the kernel line in ur0:tai/config.txt.<br>
 *KERNEL<br>
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.01 ###
+- Compatible with Adrenaline v6.3 thanks to Lman.<br>
+- Added npdrmfree enable/disable option to ABM bubble edit screen.<br>
+- Added ux0:data/ABM/crc.ini to detect the CRC32 of the skprx modules.<br>
+
+**NOTE:** With lman plugins update, now every bubble saves its own adrenaline configs if you like to disable adrenaline boot screen you have to do that for every bubble.<br>
 
 ### Changelog 5.00 ###
 - Added submenu for Extra Setting.<br>
@@ -64,6 +71,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
 	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
 	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
+	Disable/Enable npdrmfree: "ENABLE", "DISABLE"<br>
 
 ![header](BubbleEdit.png)
 
