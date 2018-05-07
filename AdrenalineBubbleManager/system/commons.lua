@@ -27,6 +27,18 @@ if files.exists(pathABM.."resources/back.png") then back = image.load(pathABM.."
 		else back = image.load("resources/back.png")
 end
 
+-- Background2 image must be (960x554 png or jpg image. Priority to back2.png)
+if files.exists(pathABM.."resources/back1.png") then back1 = image.load(pathABM.."resources/back1.png")
+	elseif files.exists(pathABM.."resources/back1.jpg") then back1 = image.load(pathABM.."resources/back1.jpg")
+		else back1 = image.load("resources/back1.png")
+end
+
+-- Background2 image must be (960x554 png or jpg image. Priority to back2.png)
+if files.exists(pathABM.."resources/back2.png") then back2 = image.load(pathABM.."resources/back2.png")
+	elseif files.exists(pathABM.."resources/back2.jpg") then back2 = image.load(pathABM.."resources/back2.jpg")
+		else back2 = image.load("resources/back2.png")
+end
+
 -- Popup message background (must be 706x274 png image)
 if files.exists(pathABM.."resources/box.png") then box = image.load(pathABM.."resources/box.png")
 else box = image.load("resources/box.png") end
@@ -92,7 +104,7 @@ colors = {
 debug_print={}
 function init_msg(msg)
 	table.insert(debug_print,msg)
-	if back then back:blit(0,0) end
+	if back2 then back2:blit(0,0) end
 	local y=30
 	if #debug_print<=20 then I=1 else I=#debug_print-19 end 
 	for i=I, #debug_print do

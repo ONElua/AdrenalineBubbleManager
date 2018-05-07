@@ -156,7 +156,7 @@ function scan.show(objedit)
 			touch.read()
 		
 		if pic1 then pic1:blit(__DISPLAYW/2, 544/2)
-		elseif back then back:blit(0,0) end
+		elseif back1 then back1:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
@@ -169,10 +169,10 @@ function scan.show(objedit)
 			local y = 33
 			for i=scr.ini,scr.lim do
 
-				if scan.list[i].state then ccolor = color.green:a(180) else ccolor = color.white end
+				if scan.list[i].state then ccolor = color.green:a(200) else ccolor = color.white end
 
 				if i==scr.sel then
-					draw.fillrect(5,y-3,__DISPLAYW-144-15,25,color.blue:a(160))
+					draw.fillrect(0,y-3,__DISPLAYW-144-15,25,color.blue:a(160))
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
@@ -208,7 +208,8 @@ function scan.show(objedit)
 						icon0:blit(__DISPLAYW-45, 75)
 					screen.clip()
 				else
-					icon0:blit(__DISPLAYW - (icon0:getw()/2), 70)
+					--icon0:blit(__DISPLAYW - (icon0:getw()/2), 70)
+					icon0:blit(885, 73)
 				end
 			else
 				if scan.list[scr.sel].nostretched then

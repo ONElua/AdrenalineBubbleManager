@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.02">
+    <![CDATA[
+- Fixed data.inf error.<br>
+- Added config.bin on each bubble (adrenaline boot screen disabled).<br>
+- New graphics by Wz-Jk.<br>
+    ]]>
   <changes app_ver="05.01">
     <![CDATA[
 - Compatible with Adrenaline v6.3 thanks to Lman.<br>

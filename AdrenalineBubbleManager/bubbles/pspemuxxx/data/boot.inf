@@ -5,9 +5,9 @@ DRIVER=INFERNO
 #=================================================
 EXECUTE=EBOOT.BIN
 #=================================================
-PLUGINS=DEFAULT
+PLUGINS=ENABLE
 #=================================================
-NPDRMFREE=DEFAULT
+NPDRMFREE=ENABLE
 #=================================================
 # PATH      : ISO\CSO\PBP file
 # DRIVER    : INFERNO, MARCH33, NP9660

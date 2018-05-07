@@ -79,7 +79,7 @@ function bubbles.install(src)
 	--Resources to 8bits
 	buttons.homepopup(0)
 
-		if back then back:blit(0,0) end
+		if back2 then back2:blit(0,0) end
 
 		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 		screen.print(10,10,strings.convert)
@@ -110,7 +110,7 @@ function bubbles.install(src)
 
 		timg = game.getpic1(src.path)
 
-		if back then back:blit(0,0) end
+		if back2 then back2:blit(0,0) end
 			draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 			screen.print(10,10,strings.convert)
 			screen.print(950,10,"PIC0.PNG",1, color.white, color.blue, __ARIGHT)
@@ -204,7 +204,7 @@ function bubbles.settings()
 		buttons.read()
 			touch.read()
 
-		if back then back:blit(0,0) end
+		if back2 then back2:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
@@ -453,7 +453,7 @@ function bubbles.redit(obj)
 	while true do
 		buttons.read()
 
-		if back then back:blit(0,0) end
+		if back2 then back2:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
@@ -582,7 +582,7 @@ function bubbles.redit(obj)
 							--Resources to 8bits
 							buttons.homepopup(0)
 
-								if back then back:blit(0,0) end
+								if back2 then back2:blit(0,0) end
 
 								if i < 5 then
 

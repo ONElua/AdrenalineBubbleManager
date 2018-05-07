@@ -17,12 +17,13 @@ dofile("system/commons.lua")
 dofile("system/callbacks.lua")
 
 if os.access() == 0 then
-	if back then back:blit(0,0) end
+	if back2 then back2:blit(0,0) end
 	screen.flip()
 	custom_msg(strings.unsafe,0)
 	os.exit()
 end
 
+dofile("git/shared.lua")
 if __UPDATE == 1 then
 	local wstrength = wlan.strength()
 	if wstrength then

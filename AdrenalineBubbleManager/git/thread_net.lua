@@ -1,4 +1,4 @@
-dofile("git/shared.lua")
+--dofile("git/shared.lua")
 
 UPDATE_PORT = channel.new("UPDATE_PORT")
 
