@@ -84,7 +84,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 - Press select (single) or start (all) to select bubbles you wish to uninstall.
 - Square: To uninstall the selected bubbles.
 
-*Insert Images*
+## Insert Images ##
 
 This option allows you to Insert your desired images to the selected bubble, this will improve the looks of your bubbles in Livearea.
 
