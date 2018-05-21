@@ -73,6 +73,10 @@ sort =			"Ordenados por",
 sorttitle =		"Título",
 sortmtime =		"Fecha",
 sortnoinst =	"Instalados",
+category =		"Categoría",
+set =			"Set",
+setimgs =		"Set Imgs",
+showpic =		"PIC",
 
 --submenu
 warning =		"Los cambios tomarán efecto al presionar start",

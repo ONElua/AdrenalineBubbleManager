@@ -13,6 +13,8 @@ scan = {}
 toinstall = 0
 local pic1,icon0 = nil,nil
 local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions.
+local __PIC = false
+local tmp_sort = __SORT
 
 function insert(tmp_sfo,obj)
 	---check path vs bubbles
@@ -27,7 +29,8 @@ function insert(tmp_sfo,obj)
 		end
 	end
 	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path, name = obj.name, inst=false, icon=true, install=install, state = state,
-				path2game = path2game:lower(), width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime })
+				path2game = path2game:lower(), width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,
+				type =	tmp_sfo.CATEGORY or "UNK"	})
 
 end
 
@@ -125,41 +128,42 @@ function scan.games()
 	end
 	scan.len = #scan.list
 	if scan.len > 0 then
-		if __SORT==1 then
+		if __SORT==0 then
+			table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+		elseif __SORT==1 then
 			table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
 		elseif __SORT==2 then
 			table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
-		else
-			table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+		elseif __SORT==3 then
+			table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
 		end
-
 	end
 end
 
-function load_pic1(tmp_path)
-	pic1 = game.getpic1(tmp_path)
+function load_pic1(tmp_path, flag)
+	if flag then pic1=image.load(tmp_path)
+	else pic1 = game.getpic1(tmp_path) end
 	if pic1 then
-		pic1:resize(__DISPLAYW,488)
+		pic1:resize(960,488)
 		pic1:center()
 	end
 end
 
 function scan.show(objedit)
 
-	local __PIC = false
-	local scr = newScroll(scan.list,12)
+	local scr = newScroll(scan.list,14)
 
 	buttons.interval(12,5)
-	local xscr,xscrtitle,xprint = 15,30,5
+	local xscr,xscrtitle,xprint = 15,20,5
 	while true do
 		buttons.read()
 			touch.read()
 		
-		if pic1 then pic1:blit(__DISPLAYW/2, 544/2)
+		if pic1 then pic1:blit(960/2, 544/2, 175)
 		elseif back1 then back1:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
-		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
+		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5,strings.scantitle, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,strings.count.." "..scr.maxim, 1, color.red, color.shine, __ARIGHT)
 
@@ -172,7 +176,7 @@ function scan.show(objedit)
 				if scan.list[i].state then ccolor = color.green:a(200) else ccolor = color.white end
 
 				if i==scr.sel then
-					draw.fillrect(0,y-3,__DISPLAYW-144-15,25,color.blue:a(160))
+					draw.fillrect(3,y-3,960-144-15,25,color.blue:a(160))
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
@@ -187,10 +191,10 @@ function scan.show(objedit)
 					end
 				end
 
-				if scan.list[i].width > (__DISPLAYW-144-30) then
-					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title,1,ccolor,color.shine,__SLEFT,__DISPLAYW-144-30)
+				if scan.list[i].width > (960-144-30) then
+					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-30)
 				else
-					screen.print(30,y,scan.list[i].title, 1, ccolor, color.shine)
+					screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
 				end
 
 				if scan.list[i].inst then
@@ -204,19 +208,19 @@ function scan.show(objedit)
 			if icon0 then
 				--Full bbl icon
 				if scan.list[scr.sel].nostretched then
-					screen.clip(__DISPLAYW-45, 75, 40)
-						icon0:blit(__DISPLAYW-45, 75)
+					screen.clip(960-45, 75, 40)
+						icon0:blit(960-45, 75)
 					screen.clip()
 				else
-					--icon0:blit(__DISPLAYW - (icon0:getw()/2), 70)
+					--icon0:blit(960 - (icon0:getw()/2), 70)
 					icon0:blit(885, 73)
 				end
 			else
 				if scan.list[scr.sel].nostretched then
-					draw.gradcircle(__DISPLAYW-45,75,45, color.white:a(100),color.white:a(100))
+					draw.gradcircle(960-45,75,45, color.white:a(100),color.white:a(100))
 				else
-					draw.fillrect(__DISPLAYW-80,35, 80, 80, color.white:a(100))
-					draw.rect(__DISPLAYW-80,35, 80, 80, color.white)
+					draw.fillrect(960-80,35, 80, 80, color.white:a(100))
+					draw.rect(960-80,35, 80, 80, color.white)
 				end
 			end
 
@@ -231,8 +235,20 @@ function scan.show(objedit)
 				screen.print(955,175,strings.sorttitle,1,color.white,color.blue,__ARIGHT)
 			elseif __SORT==1 then
 				screen.print(955,175,strings.sortmtime,1,color.white,color.blue,__ARIGHT)
-			else
+			elseif __SORT==2 then
 				screen.print(955,175,strings.sortnoinst,1,color.white,color.blue,__ARIGHT)
+			elseif __SORT==3 then
+				screen.print(955,175,strings.category,1,color.white,color.blue,__ARIGHT)
+			end
+
+			if __SET == 0 then
+				screen.print(955,210,setpack.." "..strings.set,1,color.white,color.blue,__ARIGHT)
+			else
+				screen.print(955,210,setpack,1,color.white,color.blue,__ARIGHT)
+			end
+
+			if __PIC then
+				screen.print(955,235,strings.showpic,1,color.white,color.blue,__ARIGHT)
 			end
 
 			--Left Options
@@ -269,7 +285,7 @@ function scan.show(objedit)
 			screen.print(480,292,strings.installgames, 1, color.white, color.blue, __ACENTER)
 			screen.print(480,312,strings.installgames2, 1, color.white, color.blue, __ACENTER)
 		end
-		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
+		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		submenu_abm.run(scr)
 
@@ -281,7 +297,7 @@ function scan.show(objedit)
 			if buttons.up or buttons.analogly<-60 then 
 				if scr:up() then
 					icon0=nil
-					if __PIC then
+					if __PIC and __SET == 0 then
 						load_pic1(scan.list[scr.sel].path)
 					end
 				end
@@ -290,14 +306,14 @@ function scan.show(objedit)
 			if buttons.down or buttons.analogly>60 then
 				if scr:down() then
 					icon0=nil
-					if __PIC then
+					if __PIC and __SET == 0 then
 						load_pic1(scan.list[scr.sel].path)
 					end
 				end
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				if __PIC then
+				if __PIC and __SET == 0 then
 					load_pic1(scan.list[scr.sel].path)
 				end
 			end
@@ -313,8 +329,8 @@ function scan.show(objedit)
 
 						if vbuff then vbuff:blit(0,0) end
 							screen.print(480,395,strings.bubbles.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
-							draw.rect(0, 417, __DISPLAYW, 20, color.new(25,200,25))
-							draw.fillrect(0,417, ((c+1)*__DISPLAYW)/tmp,20,color.new(0,255,0))
+							draw.rect(0, 417, 960, 20, color.new(25,200,25))
+							draw.fillrect(0,417, ((c+1)*960)/tmp,20,color.new(0,255,0))
 						screen.flip()
 
 						if scan.list[i].inst then
@@ -329,8 +345,12 @@ function scan.show(objedit)
 			--PIC
 			if buttons.triangle then
 				__PIC = not __PIC
-				if not __PIC then pic1 = nil
-				else load_pic1(scan.list[scr.sel].path) end
+				if __PIC then 
+					if __SET == 0 then load_pic1(scan.list[scr.sel].path)
+					else load_pic1(__PATHSETS.."Set"..__SET.."/BG0.PNG", true) end
+				else
+					pic1 = nil
+				end
 			end
 				
 			--Mark/Unmark
@@ -348,13 +368,16 @@ function scan.show(objedit)
 				elseif __SORT==1 then
 					table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
 					__SORT = 2
-				else
+				elseif __SORT==2 then
+					table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
+					__SORT = 3
+				elseif __SORT==3 then
 					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
 					__SORT = 0
 				end
-				scr:set(scan.list,12)
+				scr:set(scan.list,14)
 			end	
-				
+
 			--Full/Stretched
 			if (buttons.r or buttons.l) then
 				scan.list[scr.sel].nostretched = not scan.list[scr.sel].nostretched
@@ -395,6 +418,7 @@ submenu_abm = { -- Creamos un objeto menu contextual
 
 function submenu_abm.wakefunct()
 	submenu_abm.options = { 	-- Handle Option Text and Option Function
+		{ text = strings.setimgs },
 		{ text = strings.def_sort },
 		{ text = strings.def_color },
 		{ text = strings.update },
@@ -409,19 +433,24 @@ function submenu_abm.run(obj)
 
 	if buttons[submenu_abm.ctrl] then
 		submenu_abm.close = not submenu_abm.close
-		
+		__PIC,pic1 = false,nil
 		if submenu_abm.close and _save then
 			__SORT = _sort
 
-			icon0=nil
-			if __SORT==1 then
-				table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
-			elseif __SORT==2 then
-				table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
-			else
-				table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+			if tmp_sort != _sort then
+				icon0=nil
+				if __SORT==0 then
+					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
+				elseif __SORT==1 then
+					table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
+				elseif __SORT==2 then
+					table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
+				elseif __SORT==3 then
+					table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
+				end
+
+				obj:set(scan.list,14)
 			end
-			obj:set(scan.list,12)
 			ini.write(__PATHINI,"sort","sort",_sort)--Save __SORT
 			
 			for i=1,scan.len do
@@ -432,6 +461,9 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"update","update",__UPDATE)--Save __UPDATE
 
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)--Save __CHECKADR
+
+			ini.write(__PATHINI,"resources","set",__SET)--Save __SET
+
 		end
 		_save = false
 	end
@@ -455,6 +487,7 @@ function submenu_abm.draw(obj)
     if submenu_abm.y >= 0 then
 
         submenu_abm.open = true
+		tmp_sort = __SORT
  
 		--Buttons
 		if buttons.up then submenu_abm.scroll:up() end
@@ -478,46 +511,53 @@ function submenu_abm.draw(obj)
 			clicked = false
 		end
 
-		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 1 then--Sort
+		if (buttons.left or buttons.right) then
+			
+			if submenu_abm.scroll.sel == 1 then--Set Packs
 
-			if buttons.right then _sort +=1 end
-			if buttons.left then _sort -=1 end
+				if buttons.right then __SET +=1 end
+				if buttons.left then __SET -=1 end
 
-			if _sort > 2 then _sort = 0 end
-			if _sort < 0 then _sort = 2 end
+				if __SET > 5 then __SET = 0 end
+				if __SET < 0 then __SET = 5 end
 
+				if __SET == 0 then setpack = strings.option2_msg
+				else setpack = strings.set..__SET end
+
+			elseif submenu_abm.scroll.sel == 2 then--Sort
+
+				if buttons.right then _sort +=1 end
+				if buttons.left then _sort -=1 end
+
+				if _sort > 3 then _sort = 0 end
+				if _sort < 0 then _sort = 3 end
+
+				if _sort == 0 then sort_type = strings.sorttitle
+					elseif _sort == 1 then sort_type = strings.sortmtime
+						elseif _sort == 2 then sort_type = strings.sortnoinst
+							elseif _sort == 3 then sort_type = strings.category end
+
+			elseif submenu_abm.scroll.sel == 3 then--Color
+
+				if buttons.right then _color +=1 end
+				if buttons.left then _color -=1 end
+
+				if _color > #colors then _color = 1 end
+				if _color < 1 then _color = #colors end
+
+			elseif submenu_abm.scroll.sel == 4 then--Update
+				if __UPDATE == 1 then __UPDATE = 0 else __UPDATE = 1 end
+
+				if __UPDATE == 1 then _update = strings.option1_msg
+				else _update = strings.option2_msg end
+
+			elseif submenu_abm.scroll.sel == 5 then--CheckAdrenaline
+				if __CHECKADR == 1 then __CHECKADR = 0 else __CHECKADR = 1 end
+
+				if __CHECKADR == 1 then _adr = strings.option1_msg
+				else _adr = strings.option2_msg end
+			end
 			_save = true
-			--submenu_abm.wakefunct()
-			if _sort == 1 then sort_type = strings.sortmtime
-				elseif _sort == 2 then sort_type = strings.sortnoinst
-					else sort_type = strings.sorttitle end
-		end
-
-		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 2 then--Color
-
-			if buttons.right then _color +=1 end
-			if buttons.left then _color -=1 end
-
-			if _color > #colors then _color = 1 end
-			if _color < 1 then _color = #colors end
-
-			_save = true
-		end
-
-		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 3 then--Update
-			if __UPDATE == 1 then __UPDATE = 0 else __UPDATE = 1 end
-			_save = true
-
-			if __UPDATE == 1 then _update = strings.option1_msg
-			else _update = strings.option2_msg end
-		end
-
-		if (buttons.left or buttons.right) and submenu_abm.scroll.sel == 4 then--CheckAdrenaline
-			if __CHECKADR == 1 then __CHECKADR = 0 else __CHECKADR = 1 end
-			_save = true
-
-			if __CHECKADR == 1 then _adr = strings.option1_msg
-			else _adr = strings.option2_msg end
 		end
 
 		screen.print(480, 5, strings.save, 1, color.white, color.blue, __ACENTER)
@@ -533,18 +573,20 @@ function submenu_abm.draw(obj)
 
 			screen.print(230, h, submenu_abm.options[i].text, 1, sel_color, color.blue, __ALEFT)
 			if i==1 then
+				screen.print(690, h, setpack, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==2 then
 				screen.print(690, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==3 then
-				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+				draw.fillrect(670, h,18,18, colors[_color])--106
+				draw.rect(670,h,18,18, color.white)
 			elseif i==4 then
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==5 then
 				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
 			end
 
-			h += 30
+			h += 27
         end
-
-		draw.fillrect(670, 106,18,18, colors[_color])
-		draw.rect(670,106,18,18, color.white)
 
 		screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
 

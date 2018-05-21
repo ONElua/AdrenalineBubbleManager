@@ -16,7 +16,9 @@ local pathABM 	= "ux0:data/ABM/"
 __PATHINI		= "ux0:data/ABM/config.ini"
 __PATH_LANG		= "ux0:data/ABM/lang/"
 
-files.mkdir("ux0:ABM/")
+__PATHSETS = "ux0:ABM/"
+files.mkdir(__PATHSETS)
+
 files.mkdir(pathABM)
 files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."resources/")
@@ -50,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 62
+__STRINGS		= 66
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -59,14 +61,14 @@ else
 	local cont_strings = 0
 	for key,value in pairs(strings) do cont_strings += 1 end
 --os.message(cont_strings)
-	if cont_strings < __STRINGS then files.copy("resources/lang/english_us.txt",__PATH_LANG) end
+	if cont_strings != __STRINGS then files.copy("resources/lang/english_us.txt",__PATH_LANG) end
 end
 
 if files.exists(__PATH_LANG..__LANG..".txt") then
 	dofile(__PATH_LANG..__LANG..".txt")
 	local cont_strings = 0
 	for key,value in pairs(strings) do cont_strings += 1 end
-	if cont_strings < __STRINGS then dofile("resources/lang/english_us.txt") end
+	if cont_strings != __STRINGS then dofile("resources/lang/english_us.txt") end
 else
 	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
 end
@@ -119,6 +121,7 @@ __SORT = tonumber(ini.read(__PATHINI,"sort","sort","2"))
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
 __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
+__SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 
 _sort, _color = __SORT, __COLOR
 
@@ -131,6 +134,9 @@ if __UPDATE == 1 then _update = strings.option1_msg
 
 if __CHECKADR == 1 then _adr = strings.option1_msg
 	else _adr = strings.option2_msg end
+
+if __SET == 0 then setpack = strings.option2_msg
+	else setpack = strings.set..__SET end
 
 --[[
 	## Library Scroll ##
@@ -228,24 +234,25 @@ function custom_msg(printtext,mode)
 		screen.print(xtext,200, printtext,1, color.gray)
 
 		if mode == 0 then
-			screen.print(xopt1+120,363, SYMBOL_CROSS.." : "..strings.option_msg,1.02, color.gray)
+			screen.print(xopt1+120,363, SYMBOL_BACK2.." : "..strings.option_msg,1.02, color.gray)
 		else
-			screen.print(xopt1,363, SYMBOL_CROSS.." : "..strings.option1_msg,1.02, color.gray)
-			screen.print(xopt2,363, SYMBOL_CIRCLE.." : "..strings.option2_msg,1.02, color.gray)
+			screen.print(xopt1,363, SYMBOL_BACK2.." : "..strings.option1_msg,1.02, color.gray)
+			screen.print(xopt2,363, SYMBOL_BACK.." : "..strings.option2_msg,1.02, color.gray)
 		end
 
 		screen.flip()
 
-		if buttons.released.cross and mode != 2 then-- Accept
+		if buttons[accept] and mode != 2 then-- Accept
 			result = true
 			break
 		end
 
-		if buttons.released.circle and mode != 0 then-- Cancel
+		if buttons[cancel] and mode != 0 then-- Cancel
 			result = false
 			break
 		end
 	end
+	buttons.read()
 
 	for i=102,0,-6 do
 

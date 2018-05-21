@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.03">
+    <![CDATA[
+- New option to set default pic0 and bg0 images and your own xml file for your bubbles (up to 5 sets provided by you: ux0:ABM/Set1 to ux0:ABM/Set5).<br>
+- New option to sort: Category.<br>
+    ]]>
   <changes app_ver="05.02">
     <![CDATA[
 - Fixed data.inf error.<br>

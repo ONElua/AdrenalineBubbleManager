@@ -43,8 +43,8 @@ function bubbles.scan()
 		for i=1, bubbles.len do
 			bubbles.list[i].lines = {}
 			for j=1, #boot do
-				if j==1 then bubbles.list[i].iso = ini.read(bubbles.list[i].boot, boot[j], "DEFAULT") end
-				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].boot, boot[j], "DEFAULT"))
+				if j==1 then bubbles.list[i].iso = ini.read(bubbles.list[i].boot, boot[j], "ENABLE") end
+				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].boot, boot[j], "ENABLE"))
 			end
 		end
 	end
@@ -79,20 +79,19 @@ function bubbles.install(src)
 	--Resources to 8bits
 	buttons.homepopup(0)
 
-		if back2 then back2:blit(0,0) end
+		------------------------------icon0 & startup
+		timg = game.geticon0(src.path)
 
-		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+		if back2 then back2:blit(0,0) end
+		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,strings.convert)
 		screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
 
-		timg = game.geticon0(src.path)
-		
 		if timg then
 			timg:resize(252,151)
 			timg:center()
 			timg:blit(480,272)
 		end
-		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 		screen.flip()
 
 		if timg then
@@ -108,28 +107,90 @@ function bubbles.install(src)
 			files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
 		end
 
-		timg = game.getpic1(src.path)
+		------------------------------pic0 & bg0
+		if __SET == 0 then
+			timg = game.getpic1(src.path)
 
-		if back2 then back2:blit(0,0) end
-			draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+			if back2 then back2:blit(0,0) end
+			draw.fillrect(0,0,960,30, color.shine)
 			screen.print(10,10,strings.convert)
-			screen.print(950,10,"PIC0.PNG",1, color.white, color.blue, __ARIGHT)
-		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
-		if timg then
-			timg:resize(252,151)
-			timg:center()
-			timg:blit(480,272)
-		end
-		screen.flip()
+			screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
 
-		if timg then
-			timg:reset()
-			image.save(timg:copyscale(__DISPLAYW,544), work_dir.."sce_sys/pic0.png", 1)
-			files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
-			files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+			if timg then
+				timg:resize(252,151)
+				timg:center()
+				timg:blit(480,272)
+			end
+			screen.flip()
+
+			if timg then
+				timg:reset()
+				image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+				files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
+				files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+			else
+				files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
+				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
+			end
 		else
-			files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys")
-			files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
+			--"PIC0.PNG", 	 w = 960,	h = 544
+			timg = image.load(__PATHSETS.."Set"..__SET.."/PIC0.PNG") or game.getpic1(src.path)
+			
+			if back2 then back2:blit(0,0) end
+			draw.fillrect(0,0,960,30, color.shine)
+			screen.print(10,10,strings.convert)
+			screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
+
+			if timg then
+				timg:resize(252,151)
+				timg:center()
+				timg:blit(480,272)
+			end
+			screen.flip()
+
+			if timg then
+				timg:reset()
+				if timg:getrealw() != 960 or timg:getrealh() != 544 then
+					image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+				else
+					image.save(timg,  work_dir.."sce_sys/pic0.png", 1)
+				end
+			else
+				files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
+			end
+
+			--"BG0.PNG", 	 w = 840,	h = 500
+			local bg0 = image.load(__PATHSETS.."Set"..__SET.."/BG0.PNG")
+			if not bg0 then
+				if timg then bg0 = timg end
+			end
+
+			if back2 then back2:blit(0,0) end
+			draw.fillrect(0,0,960,30, color.shine)
+			screen.print(10,10,strings.convert)
+			screen.print(950,10,"BG0.PNG",1, color.white, color.blue, __ARIGHT)
+
+			if bg0 then
+				bg0:resize(252,151)
+				bg0:center()
+				bg0:blit(480,272)
+			end
+			screen.flip()
+
+			if bg0 then
+				bg0:reset()
+				if bg0:getrealw() != 840 or bg0:getrealh() != 500 then
+					image.save(bg0:copyscale(840,500), work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+				else
+					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+				end
+			else
+				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
+			end
+
+			if files.exists(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML") then
+				files.copy(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
+			end
 		end
 	buttons.homepopup(1)
 
@@ -207,7 +268,7 @@ function bubbles.settings()
 		if back2 then back2:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
-		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
+		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,strings.count.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
@@ -282,7 +343,7 @@ function bubbles.settings()
 			screen.print(480,230, strings.createbb, 1, color.white, color.red, __ACENTER)
 			screen.print(480,460, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
-		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
+		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		screen.flip()
 
@@ -328,7 +389,7 @@ function bubbles.settings()
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
-									draw.fillrect(120, 285, ( (tmp-c) * 720 )/tmp, 25, color.new(0,255,0))
+									draw.fillrect(70, 285, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
 									screen.flip()
 									buttons.homepopup(0)
 									game.delete(bubbles.list[i].id)
@@ -456,7 +517,7 @@ function bubbles.redit(obj)
 		if back2 then back2:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
-		draw.fillrect(0,0,__DISPLAYW,30, 0x64545353) --UP
+		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5, strings.redit, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5, strings.count.." "..scrids.maxim, 1, color.red, color.gray, __ARIGHT)
 
@@ -505,7 +566,7 @@ function bubbles.redit(obj)
 			screen.print(480,523, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
 
-		draw.fillrect(0,516,__DISPLAYW,30, 0x64545353)--Down
+		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
 		screen.flip()
 
@@ -594,7 +655,7 @@ function bubbles.redit(obj)
 										img:blit(480,272)
 									end
 
-									draw.fillrect(0,0,__DISPLAYW,30, color.shine)
+									draw.fillrect(0,0,960,30, color.shine)
 									screen.print(10,10,strings.convert)
 									screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
 									screen.flip()

@@ -73,6 +73,10 @@ sort =			"Triér par",
 sorttitle =		"Titre",
 sortmtime =		"Date de modification",
 sortnoinst =	"Installer",
+category =		"Category",
+set =			"Set",
+setimgs =		"Set Imgs",
+showpic =		"PIC",
 
 --submenu
 warning =		"Appuyez sur START pour valider les changements.",
