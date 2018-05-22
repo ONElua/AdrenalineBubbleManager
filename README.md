@@ -11,7 +11,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 5.02 ###
+### Adrenaline Bubbles Manager Current Version: 5.03 ###
 ### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.3 ###
 
 ### Instructions ###
@@ -21,6 +21,10 @@ Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it j
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.03 ###
+- New option to set default pic0 and bg0 images and your own xml file for your bubbles (up to 5 sets provided by you: ux0:ABM/Set1 to ux0:ABM/Set5).<br>
+- New option to sort: Category.<br>
 
 ### Changelog 5.02 ###
 - Fixed data.inf error.<br>
@@ -84,7 +88,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 - Press select (single) or start (all) to select bubbles you wish to uninstall.
 - Square: To uninstall the selected bubbles.
 
-## Insert Images ##
+*Insert Images*
 
 This option allows you to Insert your desired images to the selected bubble, this will improve the looks of your bubbles in Livearea.
 
