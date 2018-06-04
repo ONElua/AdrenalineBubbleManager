@@ -75,11 +75,12 @@ sortmtime =		"Fecha",
 sortnoinst =	"Instalados",
 category =		"Categoría",
 set =			"Set",
-setimgs =		"Set Imgs",
 showpic =		"PIC",
 
 --submenu
 warning =		"Los cambios tomarán efecto al presionar start",
+setimgs =		"Set Imgs",
+convert8 =		"Conversión 8bits",
 def_sort =		"Orden de lista",
 def_color =		"Color a usar",
 save =			"Opciones Extras",

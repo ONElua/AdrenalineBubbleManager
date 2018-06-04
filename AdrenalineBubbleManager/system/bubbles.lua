@@ -134,7 +134,12 @@ function bubbles.install(src)
 			end
 		else
 			--"PIC0.PNG", 	 w = 960,	h = 544
-			timg = image.load(__PATHSETS.."Set"..__SET.."/PIC0.PNG") or game.getpic1(src.path)
+
+			local setimg = false
+			timg = image.load(__PATHSETS.."Set"..__SET.."/PIC0.PNG")
+
+			if timg then setimg = true
+			else timg = game.getpic1(src.path) end
 			
 			if back2 then back2:blit(0,0) end
 			draw.fillrect(0,0,960,30, color.shine)
@@ -150,19 +155,29 @@ function bubbles.install(src)
 
 			if timg then
 				timg:reset()
-				if timg:getrealw() != 960 or timg:getrealh() != 544 then
-					image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+				if timg:getrealw() != 960 or timg:getrealh() != 544 then timg=timg:copyscale(960,544) end
+
+				if __8PNG == 1 then
+					image.save(timg, work_dir.."sce_sys/pic0.png", 1)
 				else
-					image.save(timg,  work_dir.."sce_sys/pic0.png", 1)
+					if setimg then
+						files.copy(__PATHSETS.."Set"..__SET.."/PIC0.PNG", work_dir.."sce_sys/")
+					else
+						image.save(timg, work_dir.."sce_sys/pic0.png", 1)
+					end
 				end
+
 			else
 				files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
 			end
 
 			--"BG0.PNG", 	 w = 840,	h = 500
+			setimg = false
 			local bg0 = image.load(__PATHSETS.."Set"..__SET.."/BG0.PNG")
 			if not bg0 then
 				if timg then bg0 = timg end
+			else
+				setimg = true
 			end
 
 			if back2 then back2:blit(0,0) end
@@ -179,18 +194,27 @@ function bubbles.install(src)
 
 			if bg0 then
 				bg0:reset()
-				if bg0:getrealw() != 840 or bg0:getrealh() != 500 then
-					image.save(bg0:copyscale(840,500), work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-				else
+				if bg0:getrealw() != 840 or bg0:getrealh() != 500 then bg0 = bg0:copyscale(840,500) end
+
+				if __8PNG == 1 then
 					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+				else
+					if setimg then
+						files.copy(__PATHSETS.."Set"..__SET.."/BG0.PNG", work_dir.."sce_sys/livearea/contents/")
+					else
+						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+					end
 				end
+
 			else
 				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
 			end
 
+			--TEMPLATE:XML
 			if files.exists(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML") then
 				files.copy(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
 			end
+
 		end
 	buttons.homepopup(1)
 
@@ -243,7 +267,8 @@ function bubbles.install(src)
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		custom_msg(strings.errinst,0)
+		--custom_msg(strings.errinst,0)
+		os.message(strings.errinst)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
@@ -300,11 +325,19 @@ function bubbles.settings()
 
 				y += 23
 			end
-			
+
+			--Bar Scroll
+			local ybar,h=70, (bmaxim*24)-2
+			draw.fillrect(660, ybar-2, 8, h, color.shine)
+			if scrids.maxim >= bmaxim then -- Draw Scroll Bar
+				local pos_height = math.max(h/scrids.maxim, bmaxim)
+				draw.fillrect(660, ybar-2 + ((h-pos_height)/(scrids.maxim-1))*(scrids.sel-1), 8, pos_height, color.new(0,255,0))
+			end
+
 			if preview then
-				screen.clip(200,135, 120/2)
+				screen.clip(200,165, 120/2)
 					preview:center()
-					preview:blit(200,135)
+					preview:blit(200,165)
 				screen.clip()
 			end
 
@@ -384,7 +417,8 @@ function bubbles.settings()
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						if custom_msg(strings.uninstallbb.." "..dels,1) == true then
+						--if custom_msg(strings.uninstallbb.." "..dels,1) == true then
+						if os.message(strings.uninstallbb.." "..dels,1) == 1 then
 
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
@@ -550,8 +584,6 @@ function bubbles.redit(obj)
 				preview:blit(700,84)
 			end
 
-			--Options txts
-			
 			if inside and find_png then
 				screen.print(480,523,strings.reinstall,1.0,color.green,color.gray,__ACENTER)
 			end
@@ -697,7 +729,8 @@ function bubbles.redit(obj)
 						for i=1,#resources do
 							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
 						end
-						custom_msg(strings.errinst,0)
+						--custom_msg(strings.errinst,0)
+						os.message(strings.errinst)
 					end
 					buttons.read()--flush
 					files.delete(path_tmp)

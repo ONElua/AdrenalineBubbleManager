@@ -151,7 +151,8 @@ end
 
 function scan.show(objedit)
 
-	local scr = newScroll(scan.list,14)
+	local maximg = 14
+	local scr = newScroll(scan.list,maximg)
 
 	buttons.interval(12,5)
 	local xscr,xscrtitle,xprint = 15,20,5
@@ -176,7 +177,7 @@ function scan.show(objedit)
 				if scan.list[i].state then ccolor = color.green:a(200) else ccolor = color.white end
 
 				if i==scr.sel then
-					draw.fillrect(3,y-3,960-144-15,25,color.blue:a(160))
+					draw.fillrect(3,y-3,960-144-28,25,color.blue:a(160))
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
@@ -202,6 +203,14 @@ function scan.show(objedit)
 				end
 
 				y += 25
+			end
+
+			--Bar Scroll
+			local ybar,h=30, (maximg*26)-3
+			draw.fillrect(795, ybar-2, 8, h, color.shine)
+			if scr.maxim >= maximg then -- Draw Scroll Bar
+				local pos_height = math.max(h/scr.maxim, maximg)
+				draw.fillrect(795, ybar-2 + ((h-pos_height)/(scr.maxim-1))*(scr.sel-1), 8, pos_height, color.new(0,255,0))
 			end
 
 			--Blit icon0
@@ -375,7 +384,7 @@ function scan.show(objedit)
 					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
 					__SORT = 0
 				end
-				scr:set(scan.list,14)
+				scr:set(scan.list,maximg)
 			end	
 
 			--Full/Stretched
@@ -418,6 +427,7 @@ submenu_abm = { -- Creamos un objeto menu contextual
 
 function submenu_abm.wakefunct()
 	submenu_abm.options = { 	-- Handle Option Text and Option Function
+		{ text = strings.convert8 },
 		{ text = strings.setimgs },
 		{ text = strings.def_sort },
 		{ text = strings.def_color },
@@ -449,7 +459,7 @@ function submenu_abm.run(obj)
 					table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
 				end
 
-				obj:set(scan.list,14)
+				obj:set(scan.list,maximg)
 			end
 			ini.write(__PATHINI,"sort","sort",_sort)--Save __SORT
 			
@@ -463,6 +473,8 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)--Save __CHECKADR
 
 			ini.write(__PATHINI,"resources","set",__SET)--Save __SET
+
+			ini.write(__PATHINI,"convert","8bits",__8PNG)--Save __8PNG
 
 		end
 		_save = false
@@ -512,8 +524,15 @@ function submenu_abm.draw(obj)
 		end
 
 		if (buttons.left or buttons.right) then
-			
-			if submenu_abm.scroll.sel == 1 then--Set Packs
+
+			if submenu_abm.scroll.sel == 1 then--Set 8bits
+
+				if __8PNG == 1 then __8PNG = 0 else __8PNG = 1 end
+
+				if __8PNG == 1 then _png = strings.option1_msg
+				else _png = strings.option2_msg end
+
+			elseif submenu_abm.scroll.sel == 2 then--Set Packs
 
 				if buttons.right then __SET +=1 end
 				if buttons.left then __SET -=1 end
@@ -524,7 +543,7 @@ function submenu_abm.draw(obj)
 				if __SET == 0 then setpack = strings.option2_msg
 				else setpack = strings.set..__SET end
 
-			elseif submenu_abm.scroll.sel == 2 then--Sort
+			elseif submenu_abm.scroll.sel == 3 then--Sort
 
 				if buttons.right then _sort +=1 end
 				if buttons.left then _sort -=1 end
@@ -537,7 +556,7 @@ function submenu_abm.draw(obj)
 						elseif _sort == 2 then sort_type = strings.sortnoinst
 							elseif _sort == 3 then sort_type = strings.category end
 
-			elseif submenu_abm.scroll.sel == 3 then--Color
+			elseif submenu_abm.scroll.sel == 4 then--Color
 
 				if buttons.right then _color +=1 end
 				if buttons.left then _color -=1 end
@@ -545,13 +564,13 @@ function submenu_abm.draw(obj)
 				if _color > #colors then _color = 1 end
 				if _color < 1 then _color = #colors end
 
-			elseif submenu_abm.scroll.sel == 4 then--Update
+			elseif submenu_abm.scroll.sel == 5 then--Update
 				if __UPDATE == 1 then __UPDATE = 0 else __UPDATE = 1 end
 
 				if __UPDATE == 1 then _update = strings.option1_msg
 				else _update = strings.option2_msg end
 
-			elseif submenu_abm.scroll.sel == 5 then--CheckAdrenaline
+			elseif submenu_abm.scroll.sel == 6 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR = 0 else __CHECKADR = 1 end
 
 				if __CHECKADR == 1 then _adr = strings.option1_msg
@@ -573,22 +592,24 @@ function submenu_abm.draw(obj)
 
 			screen.print(230, h, submenu_abm.options[i].text, 1, sel_color, color.blue, __ALEFT)
 			if i==1 then
-				screen.print(690, h, setpack, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _png, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==2 then
-				screen.print(690, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, setpack, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==3 then
+				screen.print(690, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==4 then
 				draw.fillrect(670, h,18,18, colors[_color])--106
 				draw.rect(670,h,18,18, color.white)
-			elseif i==4 then
-				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==5 then
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==6 then
 				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 27
         end
 
-		screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
+		--screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
 
 		draw.gradline(0,yf,960,yf,color.blue,color.green)
 		draw.gradline(0,yf+1,960,yf+1,color.green,color.blue)

@@ -75,11 +75,12 @@ sortmtime =		"MTime",
 sortnoinst =	"Installed",
 category =		"Category",
 set =			"Set",
-setimgs =		"Set Imgs",
 showpic =		"PIC",
 
 --submenu
 warning =		"The changes will take effect once you press start",
+setimgs =		"Set Imgs",
+convert8 =		"Convert 8bits",
 def_sort =		"Default Sort",
 def_color =		"Default Color",
 save =			"Extra Settings",

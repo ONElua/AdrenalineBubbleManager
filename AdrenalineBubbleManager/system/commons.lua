@@ -52,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 66
+__STRINGS		= 67
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -122,6 +122,7 @@ __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
 __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
+__8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 
 _sort, _color = __SORT, __COLOR
 
@@ -137,6 +138,9 @@ if __CHECKADR == 1 then _adr = strings.option1_msg
 
 if __SET == 0 then setpack = strings.option2_msg
 	else setpack = strings.set..__SET end
+
+if __8PNG == 1 then _png = strings.option1_msg
+	else _png = strings.option2_msg end
 
 --[[
 	## Library Scroll ##
