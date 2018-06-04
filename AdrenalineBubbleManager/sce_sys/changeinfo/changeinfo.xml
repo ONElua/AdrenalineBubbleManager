@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.04">
+    <![CDATA[
+- Now you can disable the 8bit image conversion when using one of your image sets.<br>
+- *NOTE: You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Enter the submenu to change this settings with START.<br>
+- Some changes in the list of Inject Imgs.<br>
+    ]]>
   <changes app_ver="05.03">
     <![CDATA[
 - New option to set default pic0 and bg0 images and your own xml file for your bubbles (up to 5 sets provided by you: ux0:ABM/Set1 to ux0:ABM/Set5).<br>

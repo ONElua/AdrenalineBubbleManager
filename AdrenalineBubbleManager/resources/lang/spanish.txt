@@ -30,6 +30,7 @@ inject =		"Inyectar imgs",
 redit =			"Inyector de imagenes",
 reinstall =		"Presiona START para inyectar las imagenes",
 notresources =	"Nada para mostrar",
+editbubbles =	"Burbuja a Editar:",
 
 --osk
 titleosk =		"Título de la Burbuja",

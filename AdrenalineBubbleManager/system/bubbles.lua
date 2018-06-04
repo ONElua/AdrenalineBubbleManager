@@ -543,7 +543,8 @@ function bubbles.redit(obj)
 	}
 	local preview, find_png, inside, backl = nil,false,false,{}
 
-	local scrids, newpath = newScroll(tmp, 10),"ux0:ABM/"
+	local maximset = 10
+	local scrids, newpath = newScroll(tmp, maximset),"ux0:ABM/"
 	buttons.interval(12,5)
 	while true do
 		buttons.read()
@@ -562,7 +563,7 @@ function bubbles.redit(obj)
 			for i=scrids.ini, scrids.lim do
 
 				if i == scrids.sel then
-					draw.fillrect(0,y-3,690,25,color.green:a(100))
+					draw.fillrect(14,y-3,682,25,color.green:a(100))
 
 					if not preview then
 						if tmp[i].ext and tmp[i].ext:upper() == "PNG" then
@@ -579,10 +580,22 @@ function bubbles.redit(obj)
 
 				y += 32
 			end
-			
+
+			--Bar Scroll
+			local ybar, h = 70, (maximset*32)-2
+			draw.fillrect(3, ybar-2, 8, h, color.shine)
+			if scrids.maxim >= maximset then -- Draw Scroll Bar
+				local pos_height = math.max(h/scrids.maxim, maximset)
+				draw.fillrect(3, ybar-2 + ((h-pos_height)/(scrids.maxim-1))*(scrids.sel-1), 8, pos_height, color.new(0,255,0))
+			end
+
 			if preview then
 				preview:blit(700,84)
 			end
+
+			screen.print(15,400, strings.editbubbles, 1, color.white, color.blue, __ALEFT)
+			screen.print(15,425, obj.id, 1, color.white, color.blue, __ALEFT)
+			screen.print(15,450, obj.title, 1, color.white, color.blue, __ALEFT)
 
 			if inside and find_png then
 				screen.print(480,523,strings.reinstall,1.0,color.green,color.gray,__ACENTER)
@@ -591,7 +604,7 @@ function bubbles.redit(obj)
 		else
 			screen.print(480,230, strings.notresources, 1, color.white, color.red, __ACENTER)
 		end
-		
+
 		if inside then
 			screen.print(480,490, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		else
@@ -633,7 +646,8 @@ function bubbles.redit(obj)
 								
 							end
 						end
-						scrids = newScroll(tmp, 10)
+						maximset = 5
+						scrids = newScroll(tmp, maximset)
 					end
 				end
 			end
@@ -647,7 +661,8 @@ function bubbles.redit(obj)
 					else tmp = {} end
 
 					preview, find_png, inside, backlist = nil,false,false,{}
-					scrids:set(tmp,10)
+					maximset = 10
+					scrids:set(tmp,maximset)
 					if #backl>0 then
 						if scrids.maxim == backl[#backl].maxim then
 							scrids.ini = backl[#backl].ini
@@ -750,7 +765,7 @@ function bubbles.redit(obj)
 				else tmp = {} end
 
 				preview, find_png, inside, backlist = nil,false,false,{}
-				scrids:set(tmp,10)
+				scrids:set(tmp,maximset)
 				if #backl>0 then
 					if scrids.maxim == backl[#backl].maxim then
 						scrids.ini = backl[#backl].ini

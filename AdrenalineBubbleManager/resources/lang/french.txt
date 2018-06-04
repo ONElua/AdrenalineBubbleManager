@@ -30,6 +30,7 @@ inject =		"Injecter l'images",
 redit =			"Paramètre de changement de l'image de la bulle",
 reinstall =		"Appuyez sur START pour charger toutes les images à la bulle",
 notresources =	"Rien à afficher",
+editbubbles =	"Bubble to edit",
 
 --osk
 titleosk =		"Nom de la bulle",

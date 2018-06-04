@@ -30,6 +30,7 @@ inject =		"Inject imgs",
 redit =			"Bubble Resources Loader",
 reinstall =		"Press START to load all images to the bubble",
 notresources =	"Nothing to show",
+editbubbles =	"Bubble to edit",
 
 --osk
 titleosk =		"Bubble's Title",
@@ -37,7 +38,7 @@ putnameosk =	"Put here name",
 
 --Process
 convert =		"Converting Resources...",
-errinst =		"Sorry, There was an Instalation error",
+errinst =		"Sorry, There was an Installation error",
 unk =			"UNK",
 
 --debug

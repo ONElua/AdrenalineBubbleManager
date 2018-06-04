@@ -30,6 +30,7 @@ inject =		"Inietta immmagini",
 redit =			"Bubble Resources Loader",
 reinstall =		"Premere START per caricare tutte le immagini per la bolla",
 notresources =	"Niente da mostrare",
+editbubbles =	"Bubble to edit",
 
 --osk
 titleosk =		"Titolo della Bolla",
