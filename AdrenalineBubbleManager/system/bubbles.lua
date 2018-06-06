@@ -155,12 +155,18 @@ function bubbles.install(src)
 
 			if timg then
 				timg:reset()
-				if timg:getrealw() != 960 or timg:getrealh() != 544 then timg=timg:copyscale(960,544) end
+				local scale = false
+				if timg:getrealw() != 960 or timg:getrealh() != 544 then
+					timg=timg:copyscale(960,544)
+					scale = true
+				end
 
 				if __8PNG == 1 then
 					image.save(timg, work_dir.."sce_sys/pic0.png", 1)
 				else
-					if setimg then
+					if scale then
+						image.save(timg, work_dir.."sce_sys/pic0.png", 1)
+					elseif setimg then
 						files.copy(__PATHSETS.."Set"..__SET.."/PIC0.PNG", work_dir.."sce_sys/")
 					else
 						image.save(timg, work_dir.."sce_sys/pic0.png", 1)
@@ -194,8 +200,25 @@ function bubbles.install(src)
 
 			if bg0 then
 				bg0:reset()
-				if bg0:getrealw() != 840 or bg0:getrealh() != 500 then bg0 = bg0:copyscale(840,500) end
+				local scale = false
+				if bg0:getrealw() != 840 or bg0:getrealh() != 500 then
+					bg0 = bg0:copyscale(840,500)
+					scale = true
+				end
 
+				if __8PNG == 1 then
+					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+				else
+					if scale then
+						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+					elseif setimg then
+						files.copy(__PATHSETS.."Set"..__SET.."/BG0.PNG", work_dir.."sce_sys/livearea/contents/")
+					else
+						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+					end
+				end
+				
+				--[[
 				if __8PNG == 1 then
 					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
 				else
@@ -205,6 +228,7 @@ function bubbles.install(src)
 						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
 					end
 				end
+				]]
 
 			else
 				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
