@@ -695,7 +695,6 @@ function bubbles.redit(obj)
 								if i < 5 then
 
 									img = image.load(tmp[j].path)
-									
 									if img then
 										img:resize(252,151)
 										img:center()
@@ -708,24 +707,32 @@ function bubbles.redit(obj)
 									screen.flip()
 
 									if img then
-
 										files.copy(obj.path..resources[i].dest, path_tmp)--backup
-
 										img:reset()
+
+										local scale = false
 										if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
-											image.save(img:copyscale(resources[i].w, resources[i].h), obj.path..resources[i].dest, 1)
-										else
+											img=img:copyscale(resources[i].w, resources[i].h)
+											scale = true
+										end
+
+										if __8PNG == 1 then
 											image.save(img, obj.path..resources[i].dest, 1)
+										else
+											if scale then
+												image.save(img, obj.path..resources[i].dest, 1)
+											else
+												files.copy(tmp[j].path, obj.path..resources[i].restore)
+											end
 										end
 									end
+
 								else
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup
 									files.copy(tmp[j].path, obj.path..resources[i].dest)
 								end
 							buttons.homepopup(1)
-						
 						end
-
 					end
 				end--for
 				buttons.homepopup(1)

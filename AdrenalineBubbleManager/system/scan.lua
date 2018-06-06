@@ -609,7 +609,7 @@ function submenu_abm.draw(obj)
 			h += 27
         end
 
-		--screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
+		screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
 
 		draw.gradline(0,yf,960,yf,color.blue,color.green)
 		draw.gradline(0,yf+1,960,yf+1,color.green,color.blue)
