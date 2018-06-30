@@ -52,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 68
+__STRINGS		= 70
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -287,4 +287,96 @@ function isTouched(x,y,sx,sy)
 		return true
 	end
 	return false
+end
+
+-- Convert 4 bytes (32 bit) string to number int...
+function str2int(str)
+	local b1, b2, b3, b4 = string.byte(str, 1, 4)
+	return (b4 << 24) + (b3 << 16) + (b2 << 8) + b1
+end
+
+-- Convert Number (32bit) to a string 4 bytes...
+function int2str(data)
+	return string.char((data)&0xff)..string.char(((data)>>8)&0xff)..string.char(((data)>>16)&0xff)..string.char(((data)>>24)&0xff)
+end
+
+function bootinf2bootbin(obj)
+
+	local partitions = { "ux0:", "uma0:", "ur0:", "imc0:" }
+	local path2game, _find = "", false
+	local drivers = { "ENABLE", "INFERN0", "MARCH", "NP9660" }		--0,0, 1,2
+	local bins = { "ENABLE", "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN" }	--0,0 1,2
+
+	---Searching game in partitions
+	local path_game = ini.read(obj.path.."/data/boot.inf", "PATH", "ENABLE")
+	path2game, _find = "", false
+	for j=1, #partitions do
+		path2game = path_game:gsub("ms0:/", partitions[j].."pspemu/")
+		if files.exists(path2game) then _find=true break end
+	end
+
+	local driver = ini.read(obj.path.."/data/boot.inf", "DRIVER", "ENABLE")
+	local bin = ini.read(obj.path.."/data/boot.inf", "EXECUTE", "ENABLE")
+
+	--Fill boot.bin
+	if _find then
+
+		files.copy("bubbles/pspemuxxx/data/boot.bin", obj.path.."/data/")
+
+		local fp = io.open(obj.path.."/data/boot.bin", "r+")
+		if fp then
+			local number = 0
+							
+			--Driver
+			fp:seek("set",0x04)
+			for j=1,#drivers do
+				if driver:upper() == drivers[j] then
+					if j == 1 then number = 0 else number = j - 2 end
+					break
+				end
+			end
+			fp:write(int2str(number))
+
+			number = 0
+
+			--Execute
+			fp:seek("set",0x08)
+			for j=1,#bins do
+				if bin:upper() == bins[j] then
+					if j == 1 then number = 0 else number = j - 2 end
+					break
+				end
+			end
+			fp:write(int2str(number))
+
+			--Customized
+			fp:seek("set",0x0C)
+			fp:write(int2str(0))
+
+			--Path2game
+			fp:seek("set",0x20)
+			local fill = 256 - #path2game
+			for j=1,fill do
+				path2game = path2game..string.char(00)
+			end
+			fp:write(path2game)
+
+			--Close
+			fp:close()
+
+		end--fp
+	end--find
+
+end
+
+function message_wait(message)
+	local mge = (message or strings.wait)
+	local titlew = string.format(mge)
+	local w,h = screen.textwidth(titlew,1) + 30,70
+	local x,y = 480 - (w/2), 272 - (h/2)
+
+	draw.fillrect(x,y,w,h,color.shine)
+	draw.rect(x,y,w,h,color.white)
+		screen.print(480,y+13, titlew,1,color.white,color.black,__ACENTER)
+	screen.flip()
 end

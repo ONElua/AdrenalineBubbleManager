@@ -114,74 +114,14 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 					message_wait(strings.upd_bubbles..list[i].id)
 					os.delay(50)
 
-					local path_game = ini.read(list[i].path.."/data/boot.inf", "PATH", "ENABLE")
-
-					---searching game in partitions ux0
-					local partitions = { "ux0:", "uma0:", "ur0:", "imc0:", }
-					local path2game, _find = "", false
-					for j=1, #partitions do
-						path2game = path_game:gsub("ms0:/", partitions[j].."pspemu/")
-						if files.exists(path2game) then _find=true break end
-					end
-
-					local drivers = { "ENABLE", "INFERN0", "MARCH", "NP9660", }--0,0, 1,2
-					local bins = { "ENABLE", "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN", }--0,0 1,2
-					
-					local driver = ini.read(list[i].path.."/data/boot.inf", "DRIVER", "ENABLE")
-					local bin = ini.read(list[i].path.."/data/boot.inf", "EXECUTE", "ENABLE")
-
-					--Fill boot.bin
-					if _find then
-
-						files.copy("bubbles/pspemuxxx/data/boot.bin",list[i].path.."/data/")
-
-						local fp = io.open(list[i].path.."/data/boot.bin", "r+")
-						if fp then
-							local number = 0
-							
-							--Driver
-							fp:seek("set",0x04)
-							for y=1,#drivers do
-								if driver:upper() == drivers[y] then
-									if y == 1 then number = 0 else number = y - 2 end
-									break
-								end
-							end
-							fp:write(int2str(number))
-
-							--Execute
-							fp:seek("set",0x08)
-							number = 0
-							for y=1,#bins do
-								if bin:upper() == bins[y] then
-									if y == 1 then number = 0 else number = y - 2 end
-									break
-								end
-							end
-							fp:write(int2str(number))
-
-							--Customized
-							fp:seek("set",0x0C)
-							fp:write(int2str(0))
-
-							--Path 2 game
-							fp:seek("set",0x20)
-							local fill = 256 - #path2game
-							for y=1,fill do
-								path2game = path2game..string.char(00)
-							end
-							fp:write(path2game)
-
-							--Close
-							fp:close()
-
-						end--fp
-					end--find
+					bootinf2bootbin(list[i])
 
 				end
 			end
+
 		end--for
 		power.restart()
+		os.delay(500)
 	end
 
 	dofile("system/stars.lua")

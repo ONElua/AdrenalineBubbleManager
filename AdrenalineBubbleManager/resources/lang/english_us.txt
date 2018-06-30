@@ -5,6 +5,8 @@ strings = {
 unsafe =		"UNSAFE MODE is required for this Homebrew !!!",
 adrinst =		"AdrBubbleBooter plugin has been installed... \nWe need to restart your PS Vita... :)",
 notadr =		"Adrenaline v6 has not been installed...",
+wait =			"Please wait...",
+upd_bubbles =	"Updating Bubble: ",
 
 --callbacks.lua
 updatebb =		"Updating Bubble Images: ",

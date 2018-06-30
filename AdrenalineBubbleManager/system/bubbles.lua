@@ -11,7 +11,6 @@
 bubbles = {}
 bubbles.len, dels = 0,0
 local crono2, click = timer.new(), false -- Timer and Oldstate to click actions.
-boot = { "PATH", "DRIVER", "EXECUTE", "PLUGINS", "NPDRMFREE" }
 
 function bubbles.scan()
 
@@ -21,15 +20,19 @@ function bubbles.scan()
 
 	bubbles.list = {}
 	for i=1, #list do
-		if files.exists(list[i].path.."/data/boot.inf") then
+		if files.exists(list[i].path.."/data/boot.inf") or files.exists(list[i].path.."/data/boot.bin") then
+
 			local entry = {
 				id = list[i].id,                           			-- GAMEID of the game.
 				path = list[i].path,                           		-- Path of the game.
-				boot = list[i].path.."/data/boot.inf",				-- Path to the boot.inf
-				imgp = "ur0:appmeta/"..list[i].id.."/icon0.png",	--Path to icon0 of the game.
+				boot = list[i].path.."/data/boot.bin",				-- Path to the boot.bin
+				imgp = "ur0:appmeta/"..list[i].id.."/icon0.png",	-- Path to icon0 of the game.
 				title =	list[i].title,								-- TITLEID of the game.
 				delete = false,
 			}
+
+			if not files.exists(list[i].path.."/data/boot.bin") then bootinf2bootbin(list[i]) end
+
 			table.insert(bubbles.list, entry)                  		-- Insert entry in list of bubbles! :)
 		end
 	end--for
@@ -39,13 +42,37 @@ function bubbles.scan()
 	if bubbles.len > 0 then
 		table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 
-		--Read data/boot.inf
+		--Read data/boot.bin
 		for i=1, bubbles.len do
 			bubbles.list[i].lines = {}
-			for j=1, #boot do
-				if j==1 then bubbles.list[i].iso = ini.read(bubbles.list[i].boot, boot[j], "ENABLE") end
-				table.insert(bubbles.list[i].lines, ini.read(bubbles.list[i].boot, boot[j], "ENABLE"))
-			end
+			local fp = io.open(bubbles.list[i].boot,"r")
+			if fp then
+				--Driver
+				fp:seek("set",0x04)
+				local driver = str2int(fp:read(4))
+				if driver < 0 or driver > 2 then driver = 0 end
+				table.insert(bubbles.list[i].lines, driver)
+
+				--Execute
+				fp:seek("set",0x08)
+				local modebin = str2int(fp:read(4))
+				if modebin < 0 or modebin > 2 then modebin = 0 end
+				table.insert(bubbles.list[i].lines, modebin)
+
+				--Customized
+				fp:seek("set",0x0C)
+				local custom = str2int(fp:read(4))
+				if custom < 0 or custom > 1 then custom = 0 end
+				table.insert(bubbles.list[i].lines, custom)
+
+				--Path
+				fp:seek("set",0x20)
+				bubbles.list[i].iso = fp:read()
+
+				--Close
+				fp:close()
+
+			end--fp
 		end
 	end
 
@@ -217,24 +244,12 @@ function bubbles.install(src)
 						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
 					end
 				end
-				
-				--[[
-				if __8PNG == 1 then
-					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-				else
-					if setimg then
-						files.copy(__PATHSETS.."Set"..__SET.."/BG0.PNG", work_dir.."sce_sys/livearea/contents/")
-					else
-						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-					end
-				end
-				]]
 
 			else
 				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
 			end
 
-			--TEMPLATE:XML
+			--TEMPLATE.XML
 			if files.exists(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML") then
 				files.copy(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
 			end
@@ -247,13 +262,22 @@ function bubbles.install(src)
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(bubble_title), 0)
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
 
-	---boot.inf
-	local val=5
-	if src.path:sub(1,2) != "um" and src.path:sub(1,2) !="im" then val=4 end
-	local path2game = src.path:gsub(src.path:sub(1,val).."pspemu/", "ms0:/")
+	-- Path ISO/CSO/PBP to BOOT.BIN
+	local fp = io.open(work_dir.."data/boot.bin", "r+")
+	if fp then
+		local path2game = src.path
+		local fill = 256 - #src.path
+		for j=1,fill do
+			path2game = path2game..string.char(00)
+		end
 
-	--Path ISO/CSO/PBP to Boot.inf
-	ini.write(work_dir.."data/boot.inf","PATH",path2game)
+		fp:seek("set",0x20)
+		fp:write(path2game)
+
+		--Close
+		fp:close()
+
+	end--fp
 
 	--Install Bubble
 	buttons.homepopup(0)
@@ -274,24 +298,26 @@ function bubbles.install(src)
 			local entry = {
 				id = lastid,
 				path = "ux0:app/"..lastid,
-				boot = string.format("ux0:app/%s/data/boot.inf",lastid),
+				boot = "ux0:app/"..lastid.."/boot.bin",
 				imgp = "ur0:appmeta/"..lastid.."/icon0.png",
 				title = bubble_title,
 				delete = false
 			}
 			table.insert(bubbles.list, entry)-- Insert entry in list of bubbles! :)
 
+			--Path2Game
+			bubbles.list[#bubbles.list].iso = src.path:lower()
+
+			--Driver&Execute&Customized
 			bubbles.list[#bubbles.list].lines = {}
-			for j=1, #boot do
-				table.insert(bubbles.list[#bubbles.list].lines, ini.read(bubbles.list[#bubbles.list].boot, boot[j], "DEFAULT"))
-			end
-			bubbles.list[#bubbles.list].iso = path2game:lower()
+			table.insert(bubbles.list[#bubbles.list].lines, 0)
+			table.insert(bubbles.list[#bubbles.list].lines, 0)
+			table.insert(bubbles.list[#bubbles.list].lines, 0)
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		--custom_msg(strings.errinst,0)
 		os.message(strings.errinst)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
@@ -302,11 +328,10 @@ function bubbles.settings()
 
 	local drivers   = { "INFERNO", "MARCH33", "NP9660" }
 	local bins      = { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
-	local plugins   = { "ENABLE", "DISABLE" }
-	local npdrmfree = { "ENABLE", "DISABLE" }
+	local enables   = { "NO", "YES" }
 
-	local selector, optsel, change, bmaxim = 1,2,false,9
-	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 130, 15
+	local selector, optsel, change, bmaxim = 1,1,false,9
+	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 110, 15
 	local mark,preview = false,nil
 
 	buttons.interval(12,5)
@@ -366,21 +391,22 @@ function bubbles.settings()
 			end
 
 			--Options txts
-			if screen.textwidth(bubbles.list[scrids.sel].lines[1] or strings.unk) > 700 then
-				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].lines[i] or strings.unk,1,color.white,color.gray,__SLEFT,700)
+			if screen.textwidth(bubbles.list[scrids.sel].iso or strings.unk) > 780 then
+				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].iso or strings.unk,1,color.white,color.gray,__SLEFT,780)
 			else
-				screen.print(480, 320, bubbles.list[scrids.sel].lines[1] or strings.unk,1,color.white,color.gray, __ACENTER)
+				screen.print(480, 320, bubbles.list[scrids.sel].iso or strings.unk,1,color.white,color.gray, __ACENTER)
 			end
 
 			local y1=343
-			for i=2,#boot do
+			for i=1,3 do
 				if change then
 					if i == optsel then draw.fillrect(300,y1-1,350,18,color.green:a(100)) end
 				end
-				screen.print(480, y1, bubbles.list[scrids.sel].lines[i],1,color.white,color.gray, __ACENTER)
-
 				y1+=23
 			end
+			screen.print(480, 343, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ACENTER)
+			screen.print(480, 366, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ACENTER)
+			screen.print(480, 389, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ACENTER)
 
 			if not change then
 				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
@@ -412,14 +438,20 @@ function bubbles.settings()
 				if change then buttons.homepopup(0)
 				else
 					if bubbles.list[scrids.sel].update then
-						for j=1, #boot do
-							ini.write(bubbles.list[scrids.sel].boot, boot[j], bubbles.list[scrids.sel].lines[j])
+						local fp = io.open(bubbles.list[scrids.sel].boot, "r+")
+						if fp then
+							local offset = 0x04
+							for i=1,3 do
+								fp:seek("set", offset * i)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
+							end
+							fp:close()
+							bubbles.list[scrids.sel].update = false
 						end
-						bubbles.list[scrids.sel].update = false
 					end
 					buttons.read()
 					buttons.homepopup(1)
-					optsel = 2
+					optsel = 1
 				end
 			end
 
@@ -433,7 +465,7 @@ function bubbles.settings()
 				end
 
 				if buttons[accept] then
-					bubbles.redit(bubbles.list[scrids.sel])
+					bubbles.edit(bubbles.list[scrids.sel])
 					preview = nil
 				end
 
@@ -441,7 +473,6 @@ function bubbles.settings()
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						--if custom_msg(strings.uninstallbb.." "..dels,1) == true then
 						if os.message(strings.uninstallbb.." "..dels,1) == 1 then
 
 							for i=bubbles.len,1,-1 do
@@ -468,7 +499,7 @@ function bubbles.settings()
 							for i=1,scan.len do
 								scan.list[i].install,scan.list[i].state = "a",false
 								for j=1,bubbles.len do
-									if scan.list[i].path2game:lower() == bubbles.list[j].iso:lower() then
+									if scan.list[i].path:lower() == bubbles.list[j].iso:lower() then
 										scan.list[i].install,scan.list[i].state = "b",true
 										break
 									end
@@ -516,14 +547,14 @@ function bubbles.settings()
 				if (buttons.up or buttons.held.l) then optsel-=1 end
 				if (buttons.down or buttons.held.r) then optsel+=1 end
 
-				if optsel > #boot then optsel = 2 end
-				if optsel < 2 then optsel = #boot end
+				if optsel > 3 then optsel = 1 end
+				if optsel < 1 then optsel = 3 end
 
 				if (buttons.left or buttons.right) then
 					if buttons.left then selector-=1 end
 					if buttons.right then selector+=1 end
 
-					if optsel == 4 or optsel == 5 then
+					if optsel == 3 then
 						if selector > 2 then selector = 1 end
 						if selector < 1 then selector = 2 end
 					else
@@ -531,15 +562,7 @@ function bubbles.settings()
 						if selector < 1 then selector = 3 end
 					end
 
-					if optsel == 2 then
-						bubbles.list[scrids.sel].lines[optsel] = drivers[selector]
-					elseif optsel == 3 then
-						bubbles.list[scrids.sel].lines[optsel] = bins[selector]
-					elseif optsel == 4 then
-						bubbles.list[scrids.sel].lines[optsel] = plugins[selector]
-					elseif optsel == 5 then
-						bubbles.list[scrids.sel].lines[optsel] = npdrmfree[selector]
-					end
+					bubbles.list[scrids.sel].lines[optsel] = selector - 1
 					bubbles.list[scrids.sel].update = true
 				end	
 			end--not change
@@ -551,7 +574,7 @@ function bubbles.settings()
 	end
 end
 
-function bubbles.redit(obj)
+function bubbles.edit(obj)
 
 	local tmp = files.listdirs("ux0:ABM/")
 
@@ -775,7 +798,6 @@ function bubbles.redit(obj)
 						for i=1,#resources do
 							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
 						end
-						--custom_msg(strings.errinst,0)
 						os.message(strings.errinst)
 					end
 					buttons.read()--flush

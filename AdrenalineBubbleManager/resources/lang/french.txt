@@ -5,6 +5,8 @@ strings = {
 unsafe =		"Cet homebrew requiert que le mode UNSAFE soit activé!!!",
 adrinst =		"Le plugin AdrBubbleBooter a été installé... \nUn redémarrage est requis...",
 notadr =		"Adrenaline v6 n'a pas été installé...",
+wait =			"Please wait...",
+upd_bubbles =	"Updating Bubble: ",
 
 --callbacks.lua
 updatebb =		"Updating bubble images: ",

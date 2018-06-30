@@ -5,6 +5,8 @@ strings = {
 unsafe =		"MODO UNSAFE es requerido para usar este Homebrew !!!",
 adrinst =		"El plugin AdrBubbleBooter ha sido instalado... \nNecesitamos reiniciar tu PSVita... :)",
 notadr =		"Adrenaline v6 no instalada...",
+wait =			"Por Favor Espere...",
+upd_bubbles =	"Actualizando Burbuja: ",
 
 --callbacks.lua
 updatebb =		"Actualizando Burbuja: ",

@@ -17,20 +17,17 @@ local __PIC = false
 local tmp_sort = __SORT
 
 function insert(tmp_sfo,obj)
-	---check path vs bubbles
-	local val,install,state=5,"a",false
-	if obj.path:sub(1,2) != "um" and obj.path:sub(1,2) !="im" then val=4 end
-	local path2game = obj.path:gsub(obj.path:sub(1,val).."pspemu/", "ms0:/")
+
+	local install,state="a",false
 
 	for i=1,bubbles.len do
-		if path2game:lower() == bubbles.list[i].iso:lower() then
+		if obj.path:lower() == bubbles.list[i].iso:lower() then
 			install,state = "b",true
 			break
 		end
 	end
-	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path, name = obj.name, inst=false, icon=true, install=install, state = state,
-				path2game = path2game:lower(), width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,
-				type =	tmp_sfo.CATEGORY or "UNK"	})
+	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true, install = install, state = state,
+				width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,	type =	tmp_sfo.CATEGORY or "UNK"	})
 
 end
 

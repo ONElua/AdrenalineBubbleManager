@@ -5,6 +5,8 @@ strings = {
 unsafe =		"此软件需要开启不安全模式(unsafe mode)!!!",
 adrinst =		"AdrBubbleBooter 插件已安装... \n需要重启PSVita... :)",
 notadr =		"Adrenaline v6 尚未安装...",
+wait =			"Please wait...",
+upd_bubbles =	"Updating Bubble: ",
 
 --callbacks.lua
 updatebb =		"Updating Bubble Images: ",

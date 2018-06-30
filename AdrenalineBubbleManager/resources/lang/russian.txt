@@ -5,6 +5,8 @@ strings = {
 unsafe =        "Необходимо активировать UNSAFE MODE для Homebrew!!!",
 adrinst =       "Плагин AdrBubbleBooter установлен. \nТребуется выполнить перезагрузку PS Vita... :)",
 notadr =        "Adrenaline v6 не обнаружен...",
+wait =			"Please wait...",
+upd_bubbles =	"Updating Bubble: ",
 
 --callbacks.lua
 updatebb =		"Updating Bubble Images: ",
