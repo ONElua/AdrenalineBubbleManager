@@ -31,10 +31,21 @@ function bubbles.scan()
 				delete = false,
 			}
 
-			if not files.exists(list[i].path.."/data/boot.bin") then bootinf2bootbin(list[i]) end
+			if files.exists(list[i].path.."/data/boot.bin") then
+				--checking magic
+				local fp = io.open(list[i].path.."/data/boot.bin","r")
+				if fp then
+					local magic = str2int(fp:read(4))
+					fp:close()
+					if magic == 0x00424241 then	table.insert(bubbles.list, entry) end	-- Insert entry in list of bubbles! :)
+				end
 
-			table.insert(bubbles.list, entry)                  		-- Insert entry in list of bubbles! :)
+			else
+				bootinf2bootbin(list[i])
+				table.insert(bubbles.list, entry) 										-- Insert entry in list of bubbles! :)
+			end
 		end
+
 	end--for
 
 	bubbles.len = #bubbles.list
