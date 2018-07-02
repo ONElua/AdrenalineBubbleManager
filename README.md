@@ -16,7 +16,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 ### Adrenaline Version v6.4 ###
 
 ### Instructions ###
-1. **Install Adrenaline v6.3**
+1. **Install Adrenaline v6.4**
 Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it just once, it is highly recommended to add the following line below the kernel line in ur0:tai/config.txt.<br>
 *KERNEL<br>
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
