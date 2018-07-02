@@ -37,12 +37,12 @@ function bubbles.scan()
 				if fp then
 					local magic = str2int(fp:read(4))
 					fp:close()
-					if magic == 0x00424241 then	table.insert(bubbles.list, entry) end	-- Insert entry in list of bubbles! :)
+					if magic == 0x00424241 then	table.insert(bubbles.list, entry) end
 				end
 
 			else
-				bootinf2bootbin(list[i])
-				table.insert(bubbles.list, entry) 										-- Insert entry in list of bubbles! :)
+				AutoMakeBootBin(list[i])
+				if files.exists(list[i].path.."/data/boot.bin") then table.insert(bubbles.list, entry) end
 			end
 		end
 
@@ -80,6 +80,7 @@ function bubbles.scan()
 				fp:seek("set",0x20)
 				bubbles.list[i].iso = fp:read()
 
+				if files.exists(bubbles.list[i].iso) then bubbles.list[i].exist = true end
 				--Close
 				fp:close()
 
@@ -337,6 +338,7 @@ end
 
 function bubbles.settings()
 
+	local options_edit = { "DRIVER:", "EXECUTE:", "CUSTOMIZED:" }
 	local drivers   = { "INFERNO", "MARCH33", "NP9660" }
 	local bins      = { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
 	local enables   = { "NO", "YES" }
@@ -402,22 +404,25 @@ function bubbles.settings()
 			end
 
 			--Options txts
-			if screen.textwidth(bubbles.list[scrids.sel].iso or strings.unk) > 780 then
-				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].iso or strings.unk,1,color.white,color.gray,__SLEFT,780)
+			if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
+
+			if screen.textwidth(bubbles.list[scrids.sel].iso or strings.unk) > 765 then
+				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].iso or strings.unk,1,ccolor,color.gray,__SLEFT,765)
 			else
-				screen.print(480, 320, bubbles.list[scrids.sel].iso or strings.unk,1,color.white,color.gray, __ACENTER)
+				screen.print(480, 320, bubbles.list[scrids.sel].iso or strings.unk,1,ccolor,color.gray, __ACENTER)
 			end
 
-			local y1=343
+			local y1=346
 			for i=1,3 do
 				if change then
-					if i == optsel then draw.fillrect(300,y1-1,350,18,color.green:a(100)) end
+					if i == optsel then draw.fillrect(240,y1-1,480,18,color.green:a(100)) end
 				end
+				screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
 				y1+=23
 			end
-			screen.print(480, 343, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ACENTER)
-			screen.print(480, 366, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ACENTER)
-			screen.print(480, 389, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ACENTER)
+			screen.print(680, 346, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
+			screen.print(680, 369, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
+			screen.print(680, 392, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
 
 			if not change then
 				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)

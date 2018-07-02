@@ -300,7 +300,7 @@ function int2str(data)
 	return string.char((data)&0xff)..string.char(((data)>>8)&0xff)..string.char(((data)>>16)&0xff)..string.char(((data)>>24)&0xff)
 end
 
-function bootinf2bootbin(obj)
+function AutoMakeBootBin(obj)
 
 	local partitions = { "ux0:", "uma0:", "ur0:", "imc0:" }
 	local path2game, _find = "", false
@@ -309,63 +309,65 @@ function bootinf2bootbin(obj)
 
 	---Searching game in partitions
 	local path_game = ini.read(obj.path.."/data/boot.inf", "PATH", "ENABLE")
-	path2game, _find = "", false
-	for j=1, #partitions do
-		path2game = path_game:gsub("ms0:/", partitions[j].."pspemu/")
-		if files.exists(path2game) then _find=true break end
+
+	if path_game == "ENABLE" then path_game = "ms0:/nogame"
+	else
+		for j=1, #partitions do
+			path2game = path_game:gsub("ms0:/", partitions[j].."pspemu/")
+			if files.exists(path2game) then _find=true break end
+		end
 	end
 
+	if not _find then path2game = path_game:gsub("ms0:/", "ux0:pspemu/") end
+	
 	local driver = ini.read(obj.path.."/data/boot.inf", "DRIVER", "ENABLE")
 	local bin = ini.read(obj.path.."/data/boot.inf", "EXECUTE", "ENABLE")
 
 	--Fill boot.bin
-	if _find then
+	files.copy("bubbles/pspemuxxx/data/boot.bin", obj.path.."/data/")
 
-		files.copy("bubbles/pspemuxxx/data/boot.bin", obj.path.."/data/")
-
-		local fp = io.open(obj.path.."/data/boot.bin", "r+")
-		if fp then
-			local number = 0
+	local fp = io.open(obj.path.."/data/boot.bin", "r+")
+	if fp then
+		local number = 0
 							
-			--Driver
-			fp:seek("set",0x04)
-			for j=1,#drivers do
-				if driver:upper() == drivers[j] then
-					if j == 1 then number = 0 else number = j - 2 end
-					break
-				end
+		--Driver
+		fp:seek("set",0x04)
+		for j=1,#drivers do
+			if driver:upper() == drivers[j] then
+				if j == 1 then number = 0 else number = j - 2 end
+				break
 			end
-			fp:write(int2str(number))
+		end
+		fp:write(int2str(number))
 
-			number = 0
+		number = 0
 
-			--Execute
-			fp:seek("set",0x08)
-			for j=1,#bins do
-				if bin:upper() == bins[j] then
-					if j == 1 then number = 0 else number = j - 2 end
-					break
-				end
+		--Execute
+		fp:seek("set",0x08)
+		for j=1,#bins do
+			if bin:upper() == bins[j] then
+				if j == 1 then number = 0 else number = j - 2 end
+				break
 			end
-			fp:write(int2str(number))
+		end
+		fp:write(int2str(number))
 
-			--Customized
-			fp:seek("set",0x0C)
-			fp:write(int2str(0))
+		--Customized
+		fp:seek("set",0x0C)
+		fp:write(int2str(0))
 
-			--Path2game
-			fp:seek("set",0x20)
-			local fill = 256 - #path2game
-			for j=1,fill do
-				path2game = path2game..string.char(00)
-			end
-			fp:write(path2game)
+		--Path2game
+		fp:seek("set",0x20)
+		local fill = 256 - #path2game
+		for j=1,fill do
+			path2game = path2game..string.char(00)
+		end
+		fp:write(path2game)
 
-			--Close
-			fp:close()
+		--Close
+		fp:close()
 
-		end--fp
-	end--find
+	end--fp
 
 end
 

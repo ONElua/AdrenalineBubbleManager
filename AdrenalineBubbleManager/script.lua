@@ -36,6 +36,7 @@ ADRENALINEB = ADRENALINE.."/sce_module/adrbubblebooter.suprx"
 ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
 ADRENALINEU = ADRENALINE.."/sce_module/adrenaline_user.suprx"
 ADRENALINEV = ADRENALINE.."/sce_module/adrenaline_vsh.suprx"
+ADRENALINEC = ADRENALINE.."/sce_module/bootconv.suprx"
 oncopy = false
 
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
@@ -87,6 +88,16 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 					files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
 				end
 			end
+
+			if not files.exists(ADRENALINEC) then
+				oncopy = true
+				files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
+			else
+				if os.crc32(files.read(ADRENALINEC)) != __CRCVSH then
+					oncopy = true
+					files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
+				end
+			end
 		end
 
 		if oncopy then
@@ -114,14 +125,14 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 					message_wait(strings.upd_bubbles..list[i].id)
 					os.delay(50)
 
-					bootinf2bootbin(list[i])
+					AutoMakeBootBin(list[i])
 
 				end
 			end
 
 		end--for
-		power.restart()
 		os.delay(500)
+		power.restart()
 	end
 
 	dofile("system/stars.lua")
