@@ -11,8 +11,9 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 5.04 ###
-### Adrenaline Bubble Booter Version used in Adrenaline Bubbles Manager: 6.3 ###
+### Adrenaline Bubbles Manager Current Version: 5.05 ###
+### Adrenaline Bubble Booter Version v0.6 ###
+### Adrenaline Version v6.4 ###
 
 ### Instructions ###
 1. **Install Adrenaline v6.3**
@@ -21,6 +22,16 @@ Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it j
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.05 ###
+- Compatible with Adrenaline v6.4 and Adrenaline Bubble Booter v.06<br>
+- Auto-Conversion of boot.inf files to boot.bin files needed for ABB v.06<br>
+- In the Edit Bubble Screen this are the available combinations:<br>
+- Driver (INFERNO/MARCH33/NP9660).<br>
+- Execute (EBOOT.BIN/EBOOT.OLD/BOOT.BIN).<br>
+- Customized: (YES/NO).<br>
+- Now when showing the bubble's linked game path will be highlighted green if the content is found, if not found will be highlighted orange.<br>
+- *NOTE: If the game linked to your bubble is not there anymore the bubble will open Adrenaline or throw an error.<br>
 
 ### Changelog 5.04 ###
 - Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
@@ -93,7 +104,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 - Press select (single) or start (all) to select bubbles you wish to uninstall.
 - Square: To uninstall the selected bubbles.
 
-# Insert Images
+*Insert Images*
 
 This option allows you to Insert your desired images to the selected bubble, this will improve the looks of your bubbles in Livearea.
 
