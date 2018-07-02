@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.06">
+    <![CDATA[
+- Fixed reboot error (reboot loop). :( <br>
+    ]]>
   <changes app_ver="05.05">
     <![CDATA[
-- Compatible with Adrenaline v6.4 and Adrenaline Bubble Booter v.06<br>
-- Auto-Conversion of boot.inf files to boot.bin files needed for ABB v.06<br>
-- In the Edit Bubble Screen this are the available combinations:<br>
-- Driver (INFERNO/MARCH33/NP9660).<br>
-- Execute (EBOOT.BIN/EBOOT.OLD/BOOT.BIN).<br>
-- Customized: (YES/NO).<br>
-- Now when showing the bubble's linked game path will be highlighted green if the content is found, if not found will be highlighted orange.<br>
-- *NOTE: If the game linked to your bubble is not there anymore the bubble will open Adrenaline or throw an error.<br>
+	- Compatible with Adrenaline v6.4 and Adrenaline Bubble Booter v.06<br>
+	- Auto-Conversion of boot.inf files to boot.bin files needed for ABB v.06<br>
+	- In the Edit Bubble Screen this are the available combinations:<br>
+	- Driver (INFERNO/MARCH33/NP9660).<br>
+	- Execute (EBOOT.BIN/EBOOT.OLD/BOOT.BIN).<br>
+	- Customized: (YES/NO).<br>
+	- Now when showing the bubble's linked game path will be highlighted green if the content is found, if not found will be highlighted orange.<br>
+	- *NOTE: If the game linked to your bubble is not there anymore the bubble will open Adrenaline or throw an error.<br>
     ]]>
   <changes app_ver="05.04">
     <![CDATA[

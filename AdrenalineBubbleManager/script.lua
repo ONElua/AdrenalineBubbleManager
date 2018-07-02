@@ -46,7 +46,6 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		if not files.exists(ADRENALINEB) then
 			oncopy = true
 			files.copy("sce_module/", ADRENALINE)
-
 		else
 
 			if not files.exists(ADRENALINEB) then
@@ -91,11 +90,11 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 
 			if not files.exists(ADRENALINEC) then
 				oncopy = true
-				files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
+				files.copy("sce_module/bootconv.suprx", ADRENALINE.."/sce_module/")
 			else
-				if os.crc32(files.read(ADRENALINEC)) != __CRCVSH then
+				if os.crc32(files.read(ADRENALINEC)) != __CRCBOOTCONV then
 					oncopy = true
-					files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
+					files.copy("sce_module/bootconv.suprx", ADRENALINE.."/sce_module/")
 				end
 			end
 		end
