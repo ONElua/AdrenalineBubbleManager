@@ -89,6 +89,8 @@ def_color =		"Color a usar",
 save =			"Opciones Extras",
 update =		"Actualización ABM",
 checkadr =		"Revisar Adrenaline",
+repairbin =		"Auto-Reparar boot.bin",
+bubblescount =	"Total Burbujas Reparadas:",
 
 --bar progress
 bubbles =		"Burbujas",

@@ -89,6 +89,8 @@ def_color =		"Couleur par défaut",
 save =			"Menu Extra",
 update =		"Mise à jour automatique d'Adrenaline Bubble Manager",
 checkadr =		"Vérification d'Adrenaline si installer",
+repairbin =		"Auto-Repair boot.bin",
+bubblescount =	"Total Fix Bubbles:",
 
 --bar progress
 bubbles =		"Bulle en cours de création...",

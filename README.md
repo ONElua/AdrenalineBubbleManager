@@ -11,17 +11,22 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 5.05 ###
+### Adrenaline Bubbles Manager Current Version: 5.07 ###
 ### Adrenaline Bubble Booter Version v0.6 ###
 ### Adrenaline Version v6.4 ###
 
 ### Instructions ###
-1. **Install Adrenaline v6.3**
+1. **Install Adrenaline v6.4**
 Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it just once, it is highly recommended to add the following line below the kernel line in ur0:tai/config.txt.<br>
 *KERNEL<br>
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.07 ###
+- Fix error C2-12828-1 on ABM bubbles.<br>
+- Added Auto Repair boot.bin option on the START button submenu (changes the customized option to YES on the old Bubbles from ABM 5.04).<br>
+- Now the bg0.png is shown at Bubbles Edit screen.<br>
 
 ### Changelog 5.06 ###
 - Fixed reboot error (reboot loop).<br>

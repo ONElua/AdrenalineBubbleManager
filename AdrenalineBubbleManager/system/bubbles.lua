@@ -27,6 +27,7 @@ function bubbles.scan()
 				path = list[i].path,                           		-- Path of the game.
 				boot = list[i].path.."/data/boot.bin",				-- Path to the boot.bin
 				imgp = "ur0:appmeta/"..list[i].id.."/icon0.png",	-- Path to icon0 of the game.
+				bg0  = "ur0:appmeta/"..list[i].id.."/livearea/contents/bg0.png",	-- Path to bg0 of the game.
 				title =	list[i].title,								-- TITLEID of the game.
 				delete = false,
 			}
@@ -73,7 +74,7 @@ function bubbles.scan()
 				--Customized
 				fp:seek("set",0x0C)
 				local custom = str2int(fp:read(4))
-				if custom < 0 or custom > 1 then custom = 0 end
+				if custom < 0 or custom > 1 then custom = 1 end
 				table.insert(bubbles.list[i].lines, custom)
 
 				--Path
@@ -81,6 +82,7 @@ function bubbles.scan()
 				bubbles.list[i].iso = fp:read()
 
 				if files.exists(bubbles.list[i].iso) then bubbles.list[i].exist = true end
+
 				--Close
 				fp:close()
 
@@ -312,8 +314,10 @@ function bubbles.install(src)
 				path = "ux0:app/"..lastid,
 				boot = "ux0:app/"..lastid.."/boot.bin",
 				imgp = "ur0:appmeta/"..lastid.."/icon0.png",
+				bg0  = "ur0:appmeta/"..lastid.."/livearea/contents/bg0.png",
 				title = bubble_title,
-				delete = false
+				delete = false,
+				exist = true
 			}
 			table.insert(bubbles.list, entry)-- Insert entry in list of bubbles! :)
 
@@ -322,9 +326,9 @@ function bubbles.install(src)
 
 			--Driver&Execute&Customized
 			bubbles.list[#bubbles.list].lines = {}
-			table.insert(bubbles.list[#bubbles.list].lines, 0)
-			table.insert(bubbles.list[#bubbles.list].lines, 0)
-			table.insert(bubbles.list[#bubbles.list].lines, 0)
+			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Inferno
+			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Eboot.bin
+			table.insert(bubbles.list[#bubbles.list].lines, 1)--Default: 1 Customized
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
@@ -345,7 +349,7 @@ function bubbles.settings()
 
 	local selector, optsel, change, bmaxim = 1,1,false,9
 	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 110, 15
-	local mark,preview = false,nil
+	local mark,preview,bg0img = false,nil,nil
 
 	buttons.interval(12,5)
 	while true do
@@ -364,6 +368,10 @@ function bubbles.settings()
 			draw.gradline(70,311,890,311,color.green,color.blue)
 		draw.rect(70,60,820,420,color.blue)
 
+		if bg0img then
+			bg0img:blit(480,270,65)
+		end
+
 		if scrids.maxim > 0 then
 
 			local y = 75
@@ -372,9 +380,15 @@ function bubbles.settings()
 					draw.fillrect(320,y-1,330,18,color.green:a(100))
 					if not preview then
 						preview = image.load(bubbles.list[scrids.sel].imgp)
+						bg0img = image.load(bubbles.list[scrids.sel].bg0)
 						if preview then
 							preview:resize(120,120)
 							preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+						end
+						if bg0img then
+							bg0img:resize(820,420)
+							bg0img:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+							bg0img:center()
 						end
 					end
 				end
@@ -474,15 +488,15 @@ function bubbles.settings()
 			if not change then
 
 				if (buttons.up or buttons.analogly < -60) then
-					if scrids:up() then preview = nil end
+					if scrids:up() then preview, bg0img = nil,nil end
 				end
 				if (buttons.down or buttons.analogly > 60) then
-					if scrids:down() then preview = nil end
+					if scrids:down() then preview, bg0img = nil,nil end
 				end
 
 				if buttons[accept] then
 					bubbles.edit(bubbles.list[scrids.sel])
-					preview = nil
+					preview, bg0img = nil,nil
 				end
 
 				if buttons.square then
@@ -499,7 +513,7 @@ function bubbles.settings()
 									buttons.homepopup(0)
 									game.delete(bubbles.list[i].id)
 									if not game.exists(bubbles.list[i].id) then
-										preview = nil
+										preview, bg0img = nil,nil
 										table.remove(bubbles.list, i)
 										bubbles.len -= 1
 										scrids:set(bubbles.list, bmaxim)

@@ -430,6 +430,7 @@ function submenu_abm.wakefunct()
 		{ text = strings.def_color },
 		{ text = strings.update },
 		{ text = strings.checkadr },
+		{ text = strings.repairbin },
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -501,7 +502,7 @@ function submenu_abm.draw(obj)
 		--Buttons
 		if buttons.up then submenu_abm.scroll:up() end
 		if buttons.down then submenu_abm.scroll:down() end
-		
+
 		if isTouched(0,0,960,544) and touch.front[1].released then--pressed then
 			if clicked then
 				clicked = false
@@ -518,6 +519,43 @@ function submenu_abm.draw(obj)
 
 		if crono:time() > 300 then -- First click, but long time to double click...
 			clicked = false
+		end
+
+		if buttons[accept] and submenu_abm.scroll.sel == 7 then --AutoRepair boot.bin
+			buttons.homepopup(0)
+			local count = 0
+			for i=1,bubbles.len do
+				if files.exists(bubbles.list[i].boot) then
+
+					local fp = io.open(bubbles.list[i].boot,"r+")
+					if fp then
+						--Customized
+						fp:seek("set",0x0C)
+						local custom = str2int(fp:read(4))
+
+						if custom != 1 then
+
+							if back2 then back2:blit(0,0) end
+							message_wait(strings.upd_bubbles..bubbles.list[i].id)
+							os.delay(80)
+
+							--Update
+							fp:seek("set",0x0C)
+							fp:write(int2str(1))
+							bubbles.list[i].lines[3] = 1
+
+							count += 1
+							--Close
+							fp:close()
+
+						end
+
+					end--fp
+				end
+			end--for
+			buttons.homepopup(1)
+			os.message(strings.bubblescount.." "..count)
+			os.delay(80)
 		end
 
 		if (buttons.left or buttons.right) then
@@ -579,7 +617,7 @@ function submenu_abm.draw(obj)
 		screen.print(480, 5, strings.save, 1, color.white, color.blue, __ACENTER)
 		screen.print(480, 32, strings.warning, 1, color.white, color.red, __ACENTER)
 
-		local h = 75
+		local h = 65
         for i=submenu_abm.scroll.ini,submenu_abm.scroll.lim do
 
 			if i==submenu_abm.scroll.sel then
@@ -601,12 +639,14 @@ function submenu_abm.draw(obj)
 				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==6 then
 				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==7 then
+				screen.print(690, h, SYMBOL_BACK2, 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 27
         end
 
-		screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
+		--screen.print(5, 222, strings.touchme.."\n\n"..strings.press_start, 1, color.white, color.blue, __ALEFT)
 
 		draw.gradline(0,yf,960,yf,color.blue,color.green)
 		draw.gradline(0,yf+1,960,yf+1,color.green,color.blue)

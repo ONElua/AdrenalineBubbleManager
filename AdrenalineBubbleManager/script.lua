@@ -42,6 +42,12 @@ oncopy = false
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
 
+	if not files.exists(ADRENALINE.."/adrenaline.bin") then
+		oncopy = true
+		files.copy("bubbles/adrenaline.bin", ADRENALINE)
+		oncopy = false
+	end
+
 	if __CHECKADR == 1 then
 		if not files.exists(ADRENALINEB) then
 			oncopy = true

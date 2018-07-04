@@ -52,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 70
+__STRINGS		= 72
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -352,9 +352,9 @@ function AutoMakeBootBin(obj)
 		end
 		fp:write(int2str(number))
 
-		--Customized
-		fp:seek("set",0x0C)
-		fp:write(int2str(0))
+		--Customized is ready in boot.bin (default)
+		--fp:seek("set",0x0C)
+		--fp:write(int2str(1))
 
 		--Path2game
 		fp:seek("set",0x20)

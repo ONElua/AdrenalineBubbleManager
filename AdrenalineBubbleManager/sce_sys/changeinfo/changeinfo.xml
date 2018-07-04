@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.07">
+    <![CDATA[
+- Fix error C2-12828-1 on ABM bubbles.<br>
+- Added Auto Repair boot.bin option on the START button submenu (changes the customized option to YES on the old Bubbles from ABM 5.04).<br>
+- Now the bg0.png is shown at Bubbles Edit screen.<br>
+    ]]>
   <changes app_ver="05.06">
     <![CDATA[
 - Fixed reboot error (reboot loop). :( <br>
