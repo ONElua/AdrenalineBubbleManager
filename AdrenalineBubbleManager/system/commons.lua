@@ -52,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 72
+__STRINGS		= 73
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -117,7 +117,8 @@ function init_msg(msg)
 	os.delay(5)
 end
 
-__SORT = tonumber(ini.read(__PATHINI,"sort","sort","2"))
+__SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
+__SORT = math.minmax(__SORT, 1,5)
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
 __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
@@ -126,21 +127,14 @@ __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 
 _sort, _color = __SORT, __COLOR
 
-if _sort == 1 then sort_type = strings.sortmtime
-	elseif _sort == 2 then sort_type = strings.sortnoinst
-		else sort_type = strings.sorttitle end
+sort_mode = { "title", "mtime", "install", "type", "gameid" }
+sort_games = { strings.sorttitle, strings.sortmtime, strings.sortnoinst, strings.category, strings.gameid }
+sort_type = sort_games[_sort]
 
-if __UPDATE == 1 then _update = strings.option1_msg
-	else _update = strings.option2_msg end
-
-if __CHECKADR == 1 then _adr = strings.option1_msg
-	else _adr = strings.option2_msg end
-
-if __SET == 0 then setpack = strings.option2_msg
-	else setpack = strings.set..__SET end
-
-if __8PNG == 1 then _png = strings.option1_msg
-	else _png = strings.option2_msg end
+if __UPDATE == 1 then _update = strings.option1_msg else _update = strings.option2_msg end
+if __CHECKADR == 1 then _adr = strings.option1_msg else _adr = strings.option2_msg end
+if __SET == 0 then setpack = strings.option2_msg else setpack = strings.set..__SET end
+if __8PNG == 1 then _png = strings.option1_msg else _png = strings.option2_msg end
 
 --[[
 	## Library Scroll ##
@@ -189,6 +183,26 @@ function newScroll(a,b,c)
 
 	return obj
 
+end
+
+function image.startup(img)
+    local w,h = img:getw(), img:geth()
+
+	if w != 280 or h != 158 then
+		w,h = 280,158
+		img = img:copyscale(w,h)
+	end
+
+	local px,py = 0, 192-h --34
+	local sheet = image.new(280, 192, 0x0)
+	for y=0,h-1 do
+		for x=0,w-1 do
+			local c = img:pixel(x,y)
+			if c:a() == 0 then c = 0x0 end 
+			sheet:pixel(px+x, py+y, c)
+		end
+	end
+	return sheet
 end
 
 function image.nostretched(img,cc)

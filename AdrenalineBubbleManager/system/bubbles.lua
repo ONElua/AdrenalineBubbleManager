@@ -142,7 +142,18 @@ function bubbles.install(src)
 			else
 				image.save(image.nostretched(timg, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
 			end
-			image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+			
+			--startup.png
+			if __SET == 0 then
+				image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+			else
+				if files.exists(__PATHSETS.."Set"..__SET.."/startup.png") then
+					timg = image.load(__PATHSETS.."Set"..__SET.."/startup.png")
+					image.save(image.startup(timg), work_dir.."sce_sys/livearea/contents/startup.png", 1)
+				else
+					image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+				end
+			end
 		else
 			files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
 			files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
@@ -613,7 +624,7 @@ function bubbles.edit(obj)
 
 	local resources = { 
 		{ name = "ICON0.PNG", 	 w = 128,	h = 128,	dest = "/sce_sys/icon0.png",						restore = "/sce_sys/" },
-		{ name = "STARTUP.PNG",  w = 262,	h = 125,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },
+		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },--262,125
 		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png",							restore = "/sce_sys/" },
 		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
 		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
@@ -783,6 +794,7 @@ function bubbles.edit(obj)
 									screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
 									screen.flip()
 
+									--i==2 STARTUP.PNG
 									if img then
 										files.copy(obj.path..resources[i].dest, path_tmp)--backup
 										img:reset()
@@ -793,16 +805,21 @@ function bubbles.edit(obj)
 											scale = true
 										end
 
-										if __8PNG == 1 then
-											image.save(img, obj.path..resources[i].dest, 1)
+										if i == 2 then
+											--Fix Startup.png Forzar 8bits
+											image.save(image.startup(img), obj.path..resources[i].dest, 1)
 										else
-											if scale then
+											if __8PNG == 1 then
 												image.save(img, obj.path..resources[i].dest, 1)
 											else
-												files.copy(tmp[j].path, obj.path..resources[i].restore)
+												if scale then
+													image.save(img, obj.path..resources[i].dest, 1)
+												else
+													files.copy(tmp[j].path, obj.path..resources[i].restore)
+												end
 											end
 										end
-									end
+									end--if img
 
 								else
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup

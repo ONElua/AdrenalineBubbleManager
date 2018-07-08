@@ -26,8 +26,9 @@ function insert(tmp_sfo,obj)
 			break
 		end
 	end
-	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true, install = install, state = state,
-				width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,	type =	tmp_sfo.CATEGORY or "UNK"	})
+	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true, install = install,
+							  state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,
+							  type = tmp_sfo.CATEGORY or "UNK", gameid = tmp_sfo.DISC_ID or "UNK" })
 
 end
 
@@ -125,15 +126,7 @@ function scan.games()
 	end
 	scan.len = #scan.list
 	if scan.len > 0 then
-		if __SORT==0 then
-			table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
-		elseif __SORT==1 then
-			table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
-		elseif __SORT==2 then
-			table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
-		elseif __SORT==3 then
-			table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
-		end
+		table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
 	end
 end
 
@@ -146,9 +139,9 @@ function load_pic1(tmp_path, flag)
 	end
 end
 
+local maximg = 14
 function scan.show(objedit)
 
-	local maximg = 14
 	local scr = newScroll(scan.list,maximg)
 
 	buttons.interval(12,5)
@@ -237,15 +230,7 @@ function scan.show(objedit)
 			end
 			
 			screen.print(955,155,strings.sort,1,color.white,color.blue,__ARIGHT)
-			if __SORT==0 then
-				screen.print(955,175,strings.sorttitle,1,color.white,color.blue,__ARIGHT)
-			elseif __SORT==1 then
-				screen.print(955,175,strings.sortmtime,1,color.white,color.blue,__ARIGHT)
-			elseif __SORT==2 then
-				screen.print(955,175,strings.sortnoinst,1,color.white,color.blue,__ARIGHT)
-			elseif __SORT==3 then
-				screen.print(955,175,strings.category,1,color.white,color.blue,__ARIGHT)
-			end
+			screen.print(955,175, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
 
 			if __SET == 0 then
 				screen.print(955,210,setpack.." "..strings.set,1,color.white,color.blue,__ARIGHT)
@@ -256,6 +241,11 @@ function scan.show(objedit)
 			if __PIC then
 				screen.print(955,235,strings.showpic,1,color.white,color.blue,__ARIGHT)
 			end
+
+			screen.print(955,255,scan.list[scr.sel].gameid or "UNK",1,color.white,color.blue,__ARIGHT)
+
+			--Debug
+			screen.print(700,380,"_sort: ".._sort.." SORT "..__SORT, 0.8,color.green,color.blue)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
@@ -368,21 +358,13 @@ function scan.show(objedit)
 			--Sort
 			if buttons.select then
 				icon0=nil
-				if __SORT==0 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
-					__SORT = 1
-				elseif __SORT==1 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
-					__SORT = 2
-				elseif __SORT==2 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
-					__SORT = 3
-				elseif __SORT==3 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
-					__SORT = 0
-				end
+				__SORT = __SORT+1
+
+				if __SORT > #sort_games then __SORT = 1 end
+				if __SORT < 1 then __SORT = #sort_games end
+				table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
 				scr:set(scan.list,maximg)
-			end	
+			end
 
 			--Full/Stretched
 			if (buttons.r or buttons.l) then
@@ -447,16 +429,7 @@ function submenu_abm.run(obj)
 
 			if tmp_sort != _sort then
 				icon0=nil
-				if __SORT==0 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end)
-				elseif __SORT==1 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.mtime)<string.lower(b.mtime) end)
-				elseif __SORT==2 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.install)<string.lower(b.install) end)
-				elseif __SORT==3 then
-					table.sort(scan.list ,function (a,b) return string.lower(a.type)<string.lower(b.type) end)
-				end
-
+				table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
 				obj:set(scan.list,maximg)
 			end
 			ini.write(__PATHINI,"sort","sort",_sort)--Save __SORT
@@ -583,13 +556,10 @@ function submenu_abm.draw(obj)
 				if buttons.right then _sort +=1 end
 				if buttons.left then _sort -=1 end
 
-				if _sort > 3 then _sort = 0 end
-				if _sort < 0 then _sort = 3 end
+				if _sort > #sort_games then _sort = 1 end
+				if _sort < 1 then _sort = #sort_games end
 
-				if _sort == 0 then sort_type = strings.sorttitle
-					elseif _sort == 1 then sort_type = strings.sortmtime
-						elseif _sort == 2 then sort_type = strings.sortnoinst
-							elseif _sort == 3 then sort_type = strings.category end
+				sort_type = sort_games[_sort]
 
 			elseif submenu_abm.scroll.sel == 4 then--Color
 

@@ -77,6 +77,7 @@ sorttitle =		"Título",
 sortmtime =		"Fecha",
 sortnoinst =	"Instalados",
 category =		"Categoría",
+gameid =		"GameID",
 set =			"Set",
 showpic =		"PIC",
 
