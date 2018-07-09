@@ -307,7 +307,7 @@ function bubbles.install(src)
 	--Install Bubble
 	buttons.homepopup(0)
 		bubble_id = lastid
-		result = game.installdir(work_dir)
+		local result = game.installdir(work_dir)
 		buttons.read()
 	buttons.homepopup(1)
 
@@ -351,18 +351,27 @@ function bubbles.install(src)
 	files.delete("ux0:data/ABMVPK/")
 end
 
+local pic_alpha, cronopic, show_pic, bg0img = 0, timer.new(), false, nil
+ 
+function restart_cronopic()
+	cronopic:reset()
+	cronopic:start()
+	show_pic, bg0img = false,nil
+	pic_alpha = 0
+end
+
 function bubbles.settings()
 
-	local options_edit = { "DRIVER:", "EXECUTE:", "CUSTOMIZED:" }
-	local drivers   = { "INFERNO", "MARCH33", "NP9660" }
-	local bins      = { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
-	local enables   = { "NO", "YES" }
+	local options_edit 	= { "DRIVER:", "EXECUTE:", "CUSTOMIZED:" }
+	local drivers   	= { "INFERNO", "MARCH33", "NP9660" }
+	local bins      	= { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
+	local enables   	= { "NO", "YES" }
 
 	local selector, optsel, change, bmaxim = 1,1,false,9
 	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 110, 15
-	local mark,preview,bg0img = false,nil,nil
+	local mark,preview = false,nil
 
-	buttons.interval(12,5)
+	buttons.interval(12,6)
 	while true do
 		buttons.read()
 			touch.read()
@@ -374,32 +383,31 @@ function bubbles.settings()
 		screen.print(480,5, strings.btitle, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,strings.count.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
-		draw.fillrect(70,60,820,420,color.new(105,105,105,230))
-			draw.gradline(70,310,890,310,color.blue,color.green)
-			draw.gradline(70,311,890,311,color.green,color.blue)
-		draw.rect(70,60,820,420,color.blue)
+		draw.fillrect(70,45,820,454,color.new(105,105,105,230))
+			draw.gradline(70,295,890,295,color.blue,color.green)
+			draw.gradline(70,296,890,296,color.green,color.blue)
+		draw.rect(70,45,820,454,color.blue)
 
-		if bg0img then
-			bg0img:blit(480,270,65)
+		if show_pic then
+			if bg0img then
+				if pic_alpha < 60 then
+					pic_alpha += 1.005
+				end
+				bg0img:blit(480,270,pic_alpha)
+			end
 		end
 
 		if scrids.maxim > 0 then
 
-			local y = 75
+			local y = 60
 			for i=scrids.ini, scrids.lim do
 				if i == scrids.sel then
 					draw.fillrect(320,y-1,330,18,color.green:a(100))
 					if not preview then
 						preview = image.load(bubbles.list[scrids.sel].imgp)
-						bg0img = image.load(bubbles.list[scrids.sel].bg0)
 						if preview then
 							preview:resize(120,120)
 							preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
-						end
-						if bg0img then
-							bg0img:resize(820,420)
-							bg0img:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
-							bg0img:center()
 						end
 					end
 				end
@@ -414,7 +422,7 @@ function bubbles.settings()
 			end
 
 			--Bar Scroll
-			local ybar,h=70, (bmaxim*24)-2
+			local ybar,h=55, (bmaxim*24)-2
 			draw.fillrect(660, ybar-2, 8, h, color.shine)
 			if scrids.maxim >= bmaxim then -- Draw Scroll Bar
 				local pos_height = math.max(h/scrids.maxim, bmaxim)
@@ -422,44 +430,63 @@ function bubbles.settings()
 			end
 
 			if preview then
-				screen.clip(200,165, 120/2)
+				screen.clip(200,150, 120/2)
 					preview:center()
-					preview:blit(200,165)
+					preview:blit(200,150)
 				screen.clip()
 			end
 
+			screen.print(480, 305, bubbles.list[scrids.sel].title or strings.unk,1,color.white,color.gray, __ACENTER)
+
 			--Options txts
-			if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
-
-			if screen.textwidth(bubbles.list[scrids.sel].iso or strings.unk) > 765 then
-				xscr1 = screen.print(xscr1, 320, bubbles.list[scrids.sel].iso or strings.unk,1,ccolor,color.gray,__SLEFT,765)
-			else
-				screen.print(480, 320, bubbles.list[scrids.sel].iso or strings.unk,1,ccolor,color.gray, __ACENTER)
-			end
-
-			local y1=346
-			for i=1,3 do
+			local y1=356
+			for i=1,4 do
 				if change then
-					if i == optsel then draw.fillrect(240,y1-1,480,18,color.green:a(100)) end
+					if i == optsel then
+						if i==4 then
+							draw.fillrect(73,329,813,19,color.green:a(100))
+						else
+							draw.fillrect(73,y1-1,813,19,color.green:a(100))
+						end
+					end
 				end
-				screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
+				if i != 4 then
+					screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
+				end
 				y1+=23
 			end
-			screen.print(680, 346, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
-			screen.print(680, 369, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
-			screen.print(680, 392, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
 
 			if not change then
-				screen.print(480,435, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,460, SYMBOL_SQUARE..": "..strings.uninstall.." ( "..dels.." )   |   "..SYMBOL_TRIANGLE..": "..strings.editboot.."   |   "..SYMBOL_BACK2..": "..strings.inject.."   |   "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+				if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
 			else
-				screen.print(480,460, "<- -> "..strings.toggle.."      |      "..SYMBOL_TRIANGLE..": "..strings.doneedit.."      ", 1, color.white, color.blue, __ACENTER)
+				if optsel == 4 then ccolor = color.yellow
+				else if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
+				end
 			end
 
-			if screen.textwidth(bubbles.list[scrids.sel].boot) > 940 then
-				xscr2 = screen.print(xscr2, 523, bubbles.list[scrids.sel].boot,1,color.white,color.blue,__SLEFT,940)
+			--Path2Game
+			if screen.textwidth(bubbles.list[scrids.sel].iso or strings.unk) > 765 then
+				xscr1 = screen.print(xscr1, 330, bubbles.list[scrids.sel].iso or strings.unk,1,ccolor,color.gray,__SLEFT,765)
 			else
-				screen.print(15, 523, bubbles.list[scrids.sel].boot,1,color.white,color.blue)
+				screen.print(480, 330, bubbles.list[scrids.sel].iso or strings.unk,1,ccolor,color.gray, __ACENTER)
+			end
+
+			--Driver&Execute&Customized
+			screen.print(680, 356, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
+			screen.print(680, 379, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
+			screen.print(680, 402, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
+
+			if not change then
+				screen.print(480,448, strings.marks, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,475, "SELECT: "..strings.uninstall.." ("..dels..")     "..SYMBOL_TRIANGLE..": "..strings.editboot.."     "..SYMBOL_BACK2..": "..strings.inject.."     "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+			else
+				if optsel == 4 then
+					screen.print(80,475, SYMBOL_BACK2..": "..strings.editpath, 1, color.white, color.blue, __ALEFT)
+					screen.print(880,475, SYMBOL_TRIANGLE..": "..strings.doneedit, 1, color.white, color.blue, __ARIGHT)
+				else
+					screen.print(80,475, "<- -> "..strings.toggle, 1, color.white, color.blue, __ALEFT)
+					screen.print(880,475, SYMBOL_TRIANGLE..": "..strings.doneedit, 1, color.white, color.blue, __ARIGHT)
+				end
 			end
 
 		else
@@ -474,10 +501,25 @@ function bubbles.settings()
 		--Controls
 		if scrids.maxim > 0 then
 
+			if cronopic:time() > 1050 then
+				show_pic = true
+			end
+
 			if buttons.triangle then
 				change = not change
 				if change then buttons.homepopup(0)
+					if not bg0img then
+						bg0img = image.load(bubbles.list[scrids.sel].bg0)
+						if bg0img then
+							bg0img:resize(820,454)
+							bg0img:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+							bg0img:center()
+						end
+					end
 				else
+					buttons.interval(12,6)
+					restart_cronopic()
+
 					if bubbles.list[scrids.sel].update then
 						local fp = io.open(bubbles.list[scrids.sel].boot, "r+")
 						if fp then
@@ -486,56 +528,20 @@ function bubbles.settings()
 								fp:seek("set", offset * i)
 								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
 							end
+
+							local path2game = bubbles.list[scrids.sel].iso
+							local fill = 256 - #bubbles.list[scrids.sel].iso
+							for j=1,fill do
+								path2game = path2game..string.char(00)
+							end
+
+							fp:seek("set",0x20)
+							fp:write(path2game)							
+
 							fp:close()
+							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true end
 							bubbles.list[scrids.sel].update = false
-						end
-					end
-					buttons.read()
-					buttons.homepopup(1)
-					optsel = 1
-				end
-			end
-
-			if not change then
-
-				if (buttons.up or buttons.analogly < -60) then
-					if scrids:up() then preview, bg0img = nil,nil end
-				end
-				if (buttons.down or buttons.analogly > 60) then
-					if scrids:down() then preview, bg0img = nil,nil end
-				end
-
-				if buttons[accept] then
-					bubbles.edit(bubbles.list[scrids.sel])
-					preview, bg0img = nil,nil
-				end
-
-				if buttons.square then
-					if dels>=1 then
-						local vbuff = screen.toimage()
-						local tmp,c = dels,0
-						if os.message(strings.uninstallbb.." "..dels,1) == 1 then
-
-							for i=bubbles.len,1,-1 do
-								if bubbles.list[i].delete then
-									if vbuff then vbuff:blit(0,0) end
-									draw.fillrect(70, 285, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
-									screen.flip()
-									buttons.homepopup(0)
-									game.delete(bubbles.list[i].id)
-									if not game.exists(bubbles.list[i].id) then
-										preview, bg0img = nil,nil
-										table.remove(bubbles.list, i)
-										bubbles.len -= 1
-										scrids:set(bubbles.list, bmaxim)
-										dels-=1
-										c+=1
-									end
-									buttons.read()
-									buttons.homepopup(1)
-								end
-							end--for
-
+							
 							--Update
 							for i=1,scan.len do
 								scan.list[i].install,scan.list[i].state = "a",false
@@ -546,14 +552,103 @@ function bubbles.settings()
 									end
 								end
 							end
-						end
+
+						end--fp
 					end
-					bubbles.len = #bubbles.list
+					buttons.read()
+					buttons.homepopup(1)
+					optsel = 1
+				end
+			end
+
+			if not change then
+
+				if (buttons.up or buttons.held.l or buttons.analogly < -60) then
+					if scrids:up() then
+						preview = nil
+						restart_cronopic()
+					end
+				end
+				if (buttons.down or buttons.held.r or buttons.analogly > 60) then
+					if scrids:down() then preview = nil
+						restart_cronopic()
+					end
+				end
+
+				if buttons[accept] then --erorororr()
+					bubbles.edit(bubbles.list[scrids.sel], preview)
+					preview = nil
+					restart_cronopic()
+				end
+
+				if buttons.square then
+					bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
+					if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
 				end
 
 				if buttons.select then
-					bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
-					if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
+					local rest = false
+					if dels == 0 then
+						dels = 1
+						rest = true
+					end
+					if os.message(strings.uninstallbb.." "..dels,1) == 1 then
+						os.delay(1000)
+
+						local vbuff = screen.toimage()
+						local tmp,c = dels,0
+
+						if dels <= 1 then
+							if vbuff then vbuff:blit(0,0) end
+							draw.fillrect(70, 270, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
+							screen.flip()
+							game.delete(bubbles.list[scrids.sel].id)
+							if not game.exists(bubbles.list[scrids.sel].id) then
+								preview = nil
+								restart_cronopic()
+								table.remove(bubbles.list, scrids.sel)
+								bubbles.len -= 1
+								scrids:set(bubbles.list, bmaxim)
+								dels-=1
+								c+=1
+							end
+						else
+							for i=bubbles.len,1,-1 do
+								if bubbles.list[i].delete then
+									if vbuff then vbuff:blit(0,0) end
+									draw.fillrect(70, 270, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
+									screen.flip()
+									buttons.homepopup(0)
+									game.delete(bubbles.list[i].id)
+									if not game.exists(bubbles.list[i].id) then
+										preview = nil
+										restart_cronopic()
+										table.remove(bubbles.list, i)
+										bubbles.len -= 1
+										scrids:set(bubbles.list, bmaxim)
+										dels-=1
+										c+=1
+									end
+									buttons.read()
+									buttons.homepopup(1)
+								end
+							end--for
+						end
+
+						--Update
+						for i=1,scan.len do
+							scan.list[i].install,scan.list[i].state = "a",false
+							for j=1,bubbles.len do
+								if scan.list[i].path:lower() == bubbles.list[j].iso:lower() then
+									scan.list[i].install,scan.list[i].state = "b",true
+									break
+								end
+							end
+						end
+
+						bubbles.len = #bubbles.list
+					end
+					if rest then dels = 0 end
 				end
 
 				if buttons.start then
@@ -564,7 +659,7 @@ function bubbles.settings()
 					end
 				end
 
-				if isTouched(155,90,240,175) and touch.front[1].released then--pressed then
+				if isTouched(125,80,270,215) and touch.front[1].released then--pressed then
 					if click then
 						click = false
 						if crono2:time() <= 300 then -- Double click and in time to Go.
@@ -585,37 +680,51 @@ function bubbles.settings()
 
 			--edit
 			else
-				if (buttons.up or buttons.held.l) then optsel-=1 end
-				if (buttons.down or buttons.held.r) then optsel+=1 end
 
-				if optsel > 3 then optsel = 1 end
-				if optsel < 1 then optsel = 3 end
+				buttons.interval(20,12)
+
+				if buttons.up then optsel-=1 end
+				if buttons.down then optsel+=1 end
+
+				if optsel > #options_edit + 1 then optsel = 1 end
+				if optsel < 1 then optsel = #options_edit + 1 end
 
 				if (buttons.left or buttons.right) then
 					if buttons.left then selector-=1 end
 					if buttons.right then selector+=1 end
 
-					if optsel == 3 then
-						if selector > 2 then selector = 1 end
-						if selector < 1 then selector = 2 end
-					else
+					if optsel == 1 or optsel == 2 then				--Driver&Execute
 						if selector > 3 then selector = 1 end
 						if selector < 1 then selector = 3 end
+					elseif optsel == 3 then							--Customized
+						if selector > 2 then selector = 1 end
+						if selector < 1 then selector = 2 end
 					end
 
 					bubbles.list[scrids.sel].lines[optsel] = selector - 1
 					bubbles.list[scrids.sel].update = true
-				end	
+				end
+
+				if buttons[accept] and optsel == 4 then
+					local new_path = osk.init(strings.path2game, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
+					bubbles.list[scrids.sel].iso = new_path
+					bubbles.list[scrids.sel].update = true
+				end
+
 			end--not change
 
 		end
 
-		if buttons[cancel] and not change then return false end
+		if buttons[cancel] and not change then
+			restart_cronopic()
+			return false
+		end
 
 	end
 end
 
-function bubbles.edit(obj)
+function bubbles.edit(obj, simg)
 
 	local tmp = files.listdirs("ux0:ABM/")
 
@@ -624,7 +733,7 @@ function bubbles.edit(obj)
 
 	local resources = { 
 		{ name = "ICON0.PNG", 	 w = 128,	h = 128,	dest = "/sce_sys/icon0.png",						restore = "/sce_sys/" },
-		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },--262,125
+		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },
 		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png",							restore = "/sce_sys/" },
 		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
 		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
@@ -681,9 +790,18 @@ function bubbles.edit(obj)
 				preview:blit(700,84)
 			end
 
-			screen.print(15,400, strings.editbubbles, 1, color.white, color.blue, __ALEFT)
-			screen.print(15,425, obj.id, 1, color.white, color.blue, __ALEFT)
-			screen.print(15,450, obj.title, 1, color.white, color.blue, __ALEFT)
+			local x1 = screen.print(15,430, strings.editbubbles, 1, color.white, color.blue, __ALEFT)
+			screen.print(15,455, obj.id, 1, color.white, color.blue, __ALEFT)
+			local x2 = screen.print(15,490, obj.title, 1, color.white, color.blue, __ALEFT)
+			
+			if simg then
+				local px = x1
+				if x1 > x2 then px = x1 + 100 else px = x2 + 100 end
+				screen.clip(px,450, 120/2)
+					simg:center()
+					simg:blit(px,450)
+				screen.clip()
+			end
 
 			if inside and find_png then
 				screen.print(480,523,strings.reinstall,1.0,color.green,color.gray,__ACENTER)
@@ -694,7 +812,7 @@ function bubbles.edit(obj)
 		end
 
 		if inside then
-			screen.print(480,490, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
+			screen.print(950,490, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ARIGHT)
 		else
 			screen.print(480,523, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end

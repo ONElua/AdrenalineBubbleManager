@@ -27,6 +27,8 @@ createbb =		"Inténtalo de nuevo después de crear algunas burbujas.",
 togoback =		"Volver Atrás",
 uninstallbb =	"Vas a Desinstalar Burbuja(s) : ",
 inject =		"Inyectar imgs",
+path2game =		"Ruta Completa",
+editpath =		"Editar Ruta",
 
 --bubles.redit
 redit =			"Inyector de imagenes",
@@ -90,8 +92,8 @@ def_color =		"Color a usar",
 save =			"Opciones Extras",
 update =		"Actualización ABM",
 checkadr =		"Revisar Adrenaline",
-repairbin =		"Auto-Reparar boot.bin",
-bubblescount =	"Total Burbujas Reparadas:",
+repairbin =		"AutoConversión boot.bin",
+bubblescount =	"Total Fix Bubbles:",
 
 --bar progress
 bubbles =		"Burbujas",

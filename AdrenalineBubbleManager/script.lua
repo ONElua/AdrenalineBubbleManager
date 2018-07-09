@@ -8,7 +8,6 @@
 	- Gdljjrod (https://twitter.com/gdljjrod).
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
-
 --Show splash ...
 splash.zoom("resources/splash.png")
 

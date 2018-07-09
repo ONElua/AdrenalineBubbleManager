@@ -14,11 +14,11 @@ instbb =		"Installation de la bulle: ",
 file =			"Fichier: ",
 
 --bubbles.lua
-btitle =		"EDITION DU DATA/BOOT.INF",
+btitle =		"EDITION DU DATA/BOOT.BIN",
 count =			"Nombre de jeu(s) : ",
-marks =			"Select/Start (Sélectionner/désélectionner tout)",
+marks =			"Square (Sélectionner) / Start (Sélectionner/désélectionner tout)",
 uninstall =		"Désinstallation",
-editboot =		"Editer le fichier boot.inf",
+editboot =		"Editer boot.bin",
 back =			"Retour",
 toggle =		"Options",
 doneedit =		"Valider",
@@ -27,6 +27,8 @@ createbb =		"Réessayer après installation d'une bulle en appuyant sur X sur un
 togoback =		"Retour",
 uninstallbb =	"Voulez-vous vraiment désinstaller la bulle, nombre de  bulle: ",
 inject =		"Injecter l'images",
+path2game =		"Ruta Completa",
+editpath =		"Editar Ruta",
 
 --bubles.redit
 redit =			"Paramètre de changement de l'image de la bulle",

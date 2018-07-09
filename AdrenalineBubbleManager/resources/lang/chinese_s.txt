@@ -14,11 +14,11 @@ instbb =		"安装气泡中:",
 file =			"文档:",
 
 --bubbles.lua
-btitle =		"编辑 DATA/BOOT.INF",
+btitle =		"编辑 DATA/BOOT.BIN",
 count =			"数量:",
-marks =			"Select/Start (选择/全选)",
+marks =			"Square (选择) / Start (选择/全选)",
 uninstall =		"卸载",
-editboot =		"编辑 boot.inf",
+editboot =		"编辑 boot.bin",
 back =			"返回",
 toggle =		"切换选项",
 doneedit =		"完成编辑",
@@ -27,6 +27,8 @@ createbb =		"请在创建气泡后重试",
 togoback =		"返回",
 uninstallbb =	"将卸载的气泡数量: ",
 inject =		"Inject imgs",
+path2game =		"Ruta Completa",
+editpath =		"Editar Ruta",
 
 --bubles.redit
 redit =			"Bubble Resources Loader",

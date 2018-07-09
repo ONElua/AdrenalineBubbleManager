@@ -28,7 +28,7 @@ function insert(tmp_sfo,obj)
 	end
 	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true, install = install,
 							  state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,
-							  type = tmp_sfo.CATEGORY or "UNK", gameid = tmp_sfo.DISC_ID or "UNK" })
+							  type = tmp_sfo.CATEGORY or strings.unk, gameid = tmp_sfo.DISC_ID or strings.unk })
 
 end
 
@@ -70,9 +70,8 @@ end
 
 function scan.insertPBP(hand)
 
-	if game.exists(hand.name) then return end                  -- Is oficial PSP game (Bubble), not read :P
-
-	if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
+	--if game.exists(hand.name) then return end                  -- Is oficial PSP game (Bubble), not read :P
+	--if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
 
 	if files.type(hand.path) == 1 then
 		local tmp0 = game.info(hand.path)
@@ -242,10 +241,7 @@ function scan.show(objedit)
 				screen.print(955,235,strings.showpic,1,color.white,color.blue,__ARIGHT)
 			end
 
-			screen.print(955,255,scan.list[scr.sel].gameid or "UNK",1,color.white,color.blue,__ARIGHT)
-
-			--Debug
-			screen.print(700,380,"_sort: ".._sort.." SORT "..__SORT, 0.8,color.green,color.blue)
+			screen.print(955,260,scan.list[scr.sel].gameid or strings.unk,1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
