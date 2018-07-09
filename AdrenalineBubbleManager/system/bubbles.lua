@@ -279,6 +279,12 @@ function bubbles.install(src)
 				files.copy(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
 			end
 
+			--FRAMEX.PNG 1 to 7
+			for i=1,7 do
+				if files.exists(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG") then
+					files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
+				end
+			end
 		end
 	buttons.homepopup(1)
 
@@ -724,6 +730,7 @@ function bubbles.settings()
 	end
 end
 
+
 function bubbles.edit(obj, simg)
 
 	local tmp = files.listdirs("ux0:ABM/")
@@ -738,6 +745,12 @@ function bubbles.edit(obj, simg)
 		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
 		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
 	}
+
+	--FRAMEX.PNG 1 to 5
+	for i=1,5 do
+		table.insert(resources, { name = "FRAME"..i..".PNG", w = 0,	h = 0, dest = "/sce_sys/livearea/contents/", restore = "/sce_sys/livearea/contents/" })
+	end
+
 	local preview, find_png, inside, backl = nil,false,false,{}
 
 	local maximset = 10
@@ -852,7 +865,7 @@ function bubbles.edit(obj, simg)
 								
 							end
 						end
-						maximset = 5
+						--maximset = 5
 						scrids = newScroll(tmp, maximset)
 					end
 				end
@@ -867,7 +880,7 @@ function bubbles.edit(obj, simg)
 					else tmp = {} end
 
 					preview, find_png, inside, backlist = nil,false,false,{}
-					maximset = 10
+					--maximset = 10
 					scrids:set(tmp,maximset)
 					if #backl>0 then
 						if scrids.maxim == backl[#backl].maxim then
@@ -942,6 +955,26 @@ function bubbles.edit(obj, simg)
 								else
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup
 									files.copy(tmp[j].path, obj.path..resources[i].dest)
+									
+									if i > 5 then
+										img = image.load(tmp[j].path)
+										if img then
+											img:resize(252,151)
+											img:center()
+											img:blit(480,272)
+										end
+
+										draw.fillrect(0,0,960,30, color.shine)
+										screen.print(10,10,strings.convert)
+										screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
+										screen.flip()
+
+										if __8PNG == 1 then
+											image.save(img, obj.path..resources[i].dest, 1)
+										else
+											files.copy(tmp[j].path, obj.path..resources[i].restore)
+										end
+									end
 								end
 							buttons.homepopup(1)
 						end
