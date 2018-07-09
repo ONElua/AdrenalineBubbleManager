@@ -279,8 +279,8 @@ function bubbles.install(src)
 				files.copy(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
 			end
 
-			--FRAMEX.PNG 1 to 7
-			for i=1,7 do
+			--FRAMEX.PNG 1 to 5
+			for i=1,5 do
 				if files.exists(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG") then
 					files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
 				end
