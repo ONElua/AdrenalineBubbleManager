@@ -283,9 +283,19 @@ function bubbles.install(src)
 			--FRAMEX.PNG 1 to 5
 			for i=1,5 do
 				if files.exists(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG") then
-					files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
+					if __8PNG == 1 then
+						local frame = image.load(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG")
+						if frame then
+							image.save(frame, work_dir.."sce_sys/livearea/contents/FRAME"..i..".PNG", 1)
+						else
+							files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
+						end
+					else
+						files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
+					end
 				end
 			end
+
 		end
 	buttons.homepopup(1)
 
@@ -971,10 +981,8 @@ function bubbles.edit(obj, simg)
 										screen.flip()
 
 										if __8PNG == 1 then
-os.message("8bits")
 											image.save(img, obj.path..resources[i].dest, 1)
 										else
-os.message("copy")
 											files.copy(tmp[j].path, obj.path..resources[i].restore)
 										end
 									end
