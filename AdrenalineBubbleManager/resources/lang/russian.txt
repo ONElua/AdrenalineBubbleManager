@@ -27,8 +27,8 @@ createbb =      "Создайте пузырь и повторите попыт�
 togoback =      "Назад",
 uninstallbb =   "Будет удалено пузырей:",
 inject =		"Вставить imgs",
-path2game =		"Ruta Completa",
-editpath =		"Editar Ruta",
+path2game =		"Whole Path",
+editpath =		"Edit Path",
 
 --bubles.redit
 redit =			"Загрузчик ресурсов пузыря",

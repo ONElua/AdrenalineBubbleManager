@@ -27,8 +27,8 @@ createbb =		"Réessayer après installation d'une bulle en appuyant sur X sur un
 togoback =		"Retour",
 uninstallbb =	"Voulez-vous vraiment désinstaller la bulle, nombre de  bulle: ",
 inject =		"Injecter l'images",
-path2game =		"Ruta Completa",
-editpath =		"Editar Ruta",
+path2game =		"Whole Path",
+editpath =		"Edit Path",
 
 --bubles.redit
 redit =			"Paramètre de changement de l'image de la bulle",

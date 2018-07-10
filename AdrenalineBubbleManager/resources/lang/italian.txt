@@ -27,8 +27,8 @@ createbb =		"Riprova dopo aver creato alcune bolle.",
 togoback =		"Torna Indietro",
 uninstallbb =	"Stai per disinstallare delle bolle : ",
 inject =		"Inietta imgs",
-path2game =		"Ruta Completa",
-editpath =		"Editar Ruta",
+path2game =		"Whole Path",
+editpath =		"Edit Path",
 
 --bubles.redit
 redit =			"Bubble Resources Loader",

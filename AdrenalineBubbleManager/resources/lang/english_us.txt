@@ -27,8 +27,8 @@ createbb =		"Try again after creating some Bubbles",
 togoback =		"To go Back",
 uninstallbb =	"You are going to Uninstall Bubble(s) : ",
 inject =		"Inject imgs",
-path2game =		"Ruta Completa",
-editpath =		"Editar Ruta",
+path2game =		"Whole Path",
+editpath =		"Edit Path",
 
 --bubles.redit
 redit =			"Bubble Resources Loader",

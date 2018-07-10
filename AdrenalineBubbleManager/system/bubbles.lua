@@ -149,6 +149,7 @@ function bubbles.install(src)
 			else
 				if files.exists(__PATHSETS.."Set"..__SET.."/startup.png") then
 					timg = image.load(__PATHSETS.."Set"..__SET.."/startup.png")
+
 					image.save(image.startup(timg), work_dir.."sce_sys/livearea/contents/startup.png", 1)
 				else
 					image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
@@ -970,8 +971,10 @@ function bubbles.edit(obj, simg)
 										screen.flip()
 
 										if __8PNG == 1 then
+os.message("8bits")
 											image.save(img, obj.path..resources[i].dest, 1)
 										else
+os.message("copy")
 											files.copy(tmp[j].path, obj.path..resources[i].restore)
 										end
 									end

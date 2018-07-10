@@ -27,8 +27,8 @@ createbb =		"请在创建气泡后重试",
 togoback =		"返回",
 uninstallbb =	"将卸载的气泡数量: ",
 inject =		"Inject imgs",
-path2game =		"Ruta Completa",
-editpath =		"Editar Ruta",
+path2game =		"Whole Path",
+editpath =		"Edit Path",
 
 --bubles.redit
 redit =			"Bubble Resources Loader",
