@@ -495,7 +495,7 @@ function bubbles.settings()
 
 			if not change then
 				screen.print(480,448, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,475, "SELECT: "..strings.uninstall.." ("..dels..")     "..SYMBOL_TRIANGLE..": "..strings.editboot.."     "..SYMBOL_BACK2..": "..strings.inject.."     "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+				screen.print(480,475, SYMBOL_SQUARE..": "..strings.uninstall.." ("..dels..")     "..SYMBOL_TRIANGLE..": "..strings.editboot.."     "..SYMBOL_BACK2..": "..strings.inject.."     "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
 			else
 				if optsel == 4 then
 					screen.print(80,475, SYMBOL_BACK2..": "..strings.editpath, 1, color.white, color.blue, __ALEFT)
@@ -509,7 +509,7 @@ function bubbles.settings()
 		else
 			screen.print(480,200, strings.notbubbles, 1, color.white, color.red, __ACENTER)
 			screen.print(480,230, strings.createbb, 1, color.white, color.red, __ACENTER)
-			screen.print(480,460, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
+			screen.print(480,470, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 		end
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
 
@@ -599,37 +599,11 @@ function bubbles.settings()
 				end
 
 				if buttons.square then
-					bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
-					if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
-				end
-
-				if buttons.select then
-					local rest = false
-					if dels == 0 then
-						dels = 1
-						rest = true
-					end
-					if os.message(strings.uninstallbb.." "..dels,1) == 1 then
-						os.delay(1000)
-
+					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
+						if os.message(strings.uninstallbb.." "..dels,1) == 1 then
 
-						if dels <= 1 then
-							if vbuff then vbuff:blit(0,0) end
-							draw.fillrect(70, 270, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
-							screen.flip()
-							game.delete(bubbles.list[scrids.sel].id)
-							if not game.exists(bubbles.list[scrids.sel].id) then
-								preview = nil
-								restart_cronopic()
-								table.remove(bubbles.list, scrids.sel)
-								bubbles.len -= 1
-								scrids:set(bubbles.list, bmaxim)
-								dels-=1
-								c+=1
-							end
-						else
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
@@ -638,8 +612,7 @@ function bubbles.settings()
 									buttons.homepopup(0)
 									game.delete(bubbles.list[i].id)
 									if not game.exists(bubbles.list[i].id) then
-										preview = nil
-										restart_cronopic()
+										preview, bg0img = nil,nil
 										table.remove(bubbles.list, i)
 										bubbles.len -= 1
 										scrids:set(bubbles.list, bmaxim)
@@ -650,22 +623,25 @@ function bubbles.settings()
 									buttons.homepopup(1)
 								end
 							end--for
-						end
 
-						--Update
-						for i=1,scan.len do
-							scan.list[i].install,scan.list[i].state = "a",false
-							for j=1,bubbles.len do
-								if scan.list[i].path:lower() == bubbles.list[j].iso:lower() then
-									scan.list[i].install,scan.list[i].state = "b",true
-									break
+							--Update
+							for i=1,scan.len do
+								scan.list[i].install,scan.list[i].state = "a",false
+								for j=1,bubbles.len do
+									if scan.list[i].path:lower() == bubbles.list[j].iso:lower() then
+										scan.list[i].install,scan.list[i].state = "b",true
+										break
+									end
 								end
 							end
 						end
-
-						bubbles.len = #bubbles.list
 					end
-					if rest then dels = 0 end
+					bubbles.len = #bubbles.list
+				end
+
+				if buttons.select then
+					bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
+					if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
 				end
 
 				if buttons.start then

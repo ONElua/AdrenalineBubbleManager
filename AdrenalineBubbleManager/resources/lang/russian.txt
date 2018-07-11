@@ -16,7 +16,7 @@ file =          "Файл:",
 --bubbles.lua
 btitle =        "МЕНЮ НАСТРОЕК DATA/BOOT.BIN",
 count =	        "Всего:",
-marks =         "Square (Выделить) / Start (Выделить/Выделить все)",
+marks =         "SELECT (Выделить) / START (Выделить/Выделить все)",
 uninstall =     "Удалить",
 editboot =      "Редактировать boot.bin",
 back =          "Назад",
@@ -84,7 +84,7 @@ set =			"Задать",
 showpic =		"PIC",
 
 --submenu
-warning =		"Изменения вступят в силу после нажатия start",
+warning =		"Изменения вступят в силу после нажатия START",
 setimgs =		"Задать Imgs",
 convert8 =		"Преобразование 8 бит",
 def_sort =		"Сортировка по умолчанию",

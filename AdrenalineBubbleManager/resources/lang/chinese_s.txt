@@ -16,7 +16,7 @@ file =			"文档:",
 --bubbles.lua
 btitle =		"编辑 DATA/BOOT.BIN",
 count =			"数量:",
-marks =			"Square (选择) / Start (选择/全选)",
+marks =			"SELECT (选择) / START (选择/全选)",
 uninstall =		"卸载",
 editboot =		"编辑 boot.bin",
 back =			"返回",
@@ -84,7 +84,7 @@ set =			"Set",
 showpic =		"PIC",
 
 --submenu
-warning =		"The changes will take effect once you press start",
+warning =		"The changes will take effect once you press START",
 setimgs =		"Set Imgs",
 convert8 =		"Convert 8bits",
 def_sort =		"Default Sort",

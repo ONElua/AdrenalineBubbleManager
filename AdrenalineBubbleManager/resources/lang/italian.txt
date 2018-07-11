@@ -16,7 +16,7 @@ file =			"File: ",
 --bubbles.lua
 btitle =		"Impostazioni delle Bolle",
 count =			"Totale: ",
-marks =			"Square (Seleziona) / Start (Seleziona/Deseleziona TUTTO)",
+marks =			"SELECT (Seleziona) / START (Seleziona/Deseleziona TUTTO)",
 uninstall =		"Disinstallazione",
 editboot =		"Editare boot.bin",
 back =			"Indietro",
@@ -84,7 +84,7 @@ set =			"Set",
 showpic =		"PIC",
 
 --submenu
-warning =		"Le modifiche avranno effetto una volta che si preme start",
+warning =		"Le modifiche avranno effetto una volta che si preme START",
 setimgs =		"Set Imgs",
 convert8 =		"Convert 8bits",
 def_sort =		"Ordinamento predefinito",

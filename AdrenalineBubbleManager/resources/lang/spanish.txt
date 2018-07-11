@@ -16,7 +16,7 @@ file =			"Archivo: ",
 --bubbles.lua
 btitle =		"Ajustes de Burbujas",
 count =			"Total: ",
-marks =			"Cuadrado (Marcar) / Start (Marcar/Desmarcar TODO)",
+marks =			"SELECT (Marcar) / START (Marcar/Desmarcar TODO)",
 uninstall =		"Desinstalar",
 editboot =		"Editar boot.bin",
 back =			"Regresar",
@@ -84,7 +84,7 @@ set =			"Set",
 showpic =		"PIC",
 
 --submenu
-warning =		"Los cambios tomarán efecto al presionar start",
+warning =		"Los cambios tomarán efecto al presionar START",
 setimgs =		"Set Imgs",
 convert8 =		"Conversión 8bits",
 def_sort =		"Orden de lista",

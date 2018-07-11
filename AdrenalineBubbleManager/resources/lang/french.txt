@@ -16,7 +16,7 @@ file =			"Fichier: ",
 --bubbles.lua
 btitle =		"EDITION DU DATA/BOOT.BIN",
 count =			"Nombre de jeu(s) : ",
-marks =			"Square (Sélectionner) / Start (Sélectionner/désélectionner tout)",
+marks =			"SELECT (Sélectionner) / START (Sélectionner/désélectionner tout)",
 uninstall =		"Désinstallation",
 editboot =		"Editer boot.bin",
 back =			"Retour",

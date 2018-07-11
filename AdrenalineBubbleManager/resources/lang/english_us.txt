@@ -16,7 +16,7 @@ file =			"File:",
 --bubbles.lua
 btitle =		"SETTINGS BUBBLES",
 count =			"Count:",
-marks =			"Square (Mark) / Start (Mark/Unmark All)",
+marks =			"SELECT (Mark) / START (Mark/Unmark All)",
 uninstall =		"Uninstall",
 editboot =		"Edit boot.bin",
 back =			"Back",
@@ -84,7 +84,7 @@ set =			"Set",
 showpic =		"PIC",
 
 --submenu
-warning =		"The changes will take effect once you press start",
+warning =		"The changes will take effect once you press START",
 setimgs =		"Set Imgs",
 convert8 =		"Convert 8bits",
 def_sort =		"Default Sort",
