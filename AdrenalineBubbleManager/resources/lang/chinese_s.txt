@@ -16,7 +16,7 @@ file =			"文档:",
 --bubbles.lua
 btitle =		"SETTINGS BUBBLES",
 count =			"数量:",
-selmarks =		"Eliminar Burbujas",
+selmarks =		"Remove Bubbles",
 startmarks =	"START: (选择/全选)",
 uninstall =		"卸载",
 editboot =		"编辑 boot.bin",

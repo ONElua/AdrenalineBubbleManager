@@ -16,7 +16,7 @@ file =          "Файл:",
 --bubbles.lua
 btitle =		"SETTINGS BUBBLES",
 count =	        "Всего:",
-selmarks =		"Eliminar Burbujas",
+selmarks =		"Remove Bubbles",
 startmarks =	"START: (ALL/CLEAN)",
 uninstall =     "Удалить",
 editboot =      "Редактировать boot.bin",
