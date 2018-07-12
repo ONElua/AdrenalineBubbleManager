@@ -18,7 +18,7 @@ dofile("system/callbacks.lua")
 if os.access() == 0 then
 	if back2 then back2:blit(0,0) end
 	screen.flip()
-	os.message(strings.unsafe)
+	custom_msg(strings.unsafe,0)
 	os.exit()
 end
 
@@ -107,7 +107,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		if oncopy then
 			if back2 then back2:blit(0,0) end
 			screen.flip()
-			os.message(strings.adrinst)
+			custom_msg(strings.adrinst,0)
 			os.delay(500)
 		end
 
@@ -150,5 +150,5 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	scan.show()
 
 else
-	os.message(strings.notadr)
+	custom_msg(strings.notadr,0)
 end

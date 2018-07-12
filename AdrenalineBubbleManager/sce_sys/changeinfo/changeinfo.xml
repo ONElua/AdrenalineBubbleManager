@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.08">
+    <![CDATA[
+- Fix "startup.png" images<br>
+- Support added for frameX.png images (with X from 1 to 5).<br>
+- Sort by ID.<br>
+- Light aesthetic changes and clean up code.<br>
+    ]]>
   <changes app_ver="05.07">
     <![CDATA[
 - Fix error C2-12828-1 on ABM bubbles.<br>

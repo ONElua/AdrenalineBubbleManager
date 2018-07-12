@@ -14,9 +14,10 @@ instbb =		"Bolle Installate: ",
 file =			"File: ",
 
 --bubbles.lua
-btitle =		"Impostazioni delle Bolle",
+btitle =		"SETTINGS BUBBLES",
 count =			"Totale: ",
-marks =			"SELECT (Seleziona) / START (Seleziona/Deseleziona TUTTO)",
+selmarks =		"Eliminar Burbujas",
+startmarks =	"START: (ALL/CLEAN)",
 uninstall =		"Disinstallazione",
 editboot =		"Editare boot.bin",
 back =			"Indietro",

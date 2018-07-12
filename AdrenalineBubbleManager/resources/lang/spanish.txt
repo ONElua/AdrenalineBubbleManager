@@ -14,9 +14,10 @@ instbb =		"Instalando Burbuja: ",
 file =			"Archivo: ",
 
 --bubbles.lua
-btitle =		"Ajustes de Burbujas",
+btitle =		"AJUSTES DE BURBUJAS",
 count =			"Total: ",
-marks =			"SELECT (Marcar) / START (Marcar/Desmarcar TODO)",
+selmarks =		"Eliminar Burbujas",
+startmarks =	"START: (Todos/Limpiar)",
 uninstall =		"Desinstalar",
 editboot =		"Editar boot.bin",
 back =			"Regresar",

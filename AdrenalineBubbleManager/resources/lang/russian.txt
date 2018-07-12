@@ -14,9 +14,10 @@ instbb =        "Создание пузыря:",
 file =          "Файл:",
 
 --bubbles.lua
-btitle =        "МЕНЮ НАСТРОЕК DATA/BOOT.BIN",
+btitle =		"SETTINGS BUBBLES",
 count =	        "Всего:",
-marks =         "SELECT (Выделить) / START (Выделить/Выделить все)",
+selmarks =		"Eliminar Burbujas",
+startmarks =	"START: (ALL/CLEAN)",
 uninstall =     "Удалить",
 editboot =      "Редактировать boot.bin",
 back =          "Назад",

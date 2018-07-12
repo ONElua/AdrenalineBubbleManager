@@ -14,9 +14,10 @@ instbb =		"安装气泡中:",
 file =			"文档:",
 
 --bubbles.lua
-btitle =		"编辑 DATA/BOOT.BIN",
+btitle =		"SETTINGS BUBBLES",
 count =			"数量:",
-marks =			"SELECT (选择) / START (选择/全选)",
+selmarks =		"Eliminar Burbujas",
+startmarks =	"START: (选择/全选)",
 uninstall =		"卸载",
 editboot =		"编辑 boot.bin",
 back =			"返回",

@@ -477,7 +477,8 @@ function submenu_abm.draw(obj)
 				clicked = false
 				if crono:time() <= 300 then -- Double click and in time to Go.
 					-- Your action here.
-					os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross)
+					--os.message(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross)
+					custom_msg(strings.press_lr.."\n\n"..strings.press_lright.."\n\n"..strings.press_select.."\n\n"..strings.pics.."\n\n"..strings.press_cross,0)
 				end
 			else
 				clicked = true
@@ -523,7 +524,7 @@ function submenu_abm.draw(obj)
 				end
 			end--for
 			buttons.homepopup(1)
-			os.message(strings.bubblescount.." "..count)
+			custom_msg(strings.bubblescount.." "..count,0)
 			os.delay(80)
 		end
 

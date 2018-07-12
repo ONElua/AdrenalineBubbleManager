@@ -14,9 +14,10 @@ instbb =		"Installation de la bulle: ",
 file =			"Fichier: ",
 
 --bubbles.lua
-btitle =		"EDITION DU DATA/BOOT.BIN",
+btitle =		"SETTINGS BUBBLES",
 count =			"Nombre de jeu(s) : ",
-marks =			"SELECT (Sélectionner) / START (Sélectionner/désélectionner tout)",
+selmarks =		"Eliminar Burbujas",
+startmarks =	"START: (ALL/CLEAN)",
 uninstall =		"Désinstallation",
 editboot =		"Editer boot.bin",
 back =			"Retour",

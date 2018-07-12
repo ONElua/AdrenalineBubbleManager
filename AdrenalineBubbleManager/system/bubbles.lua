@@ -81,7 +81,7 @@ function bubbles.scan()
 				fp:seek("set",0x20)
 				bubbles.list[i].iso = fp:read()
 
-				if files.exists(bubbles.list[i].iso) then bubbles.list[i].exist = true end
+				if files.exists(bubbles.list[i].iso) then bubbles.list[i].exist = true else bubbles.list[i].exist = false end
 
 				--Close
 				fp:close()
@@ -362,7 +362,7 @@ function bubbles.install(src)
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		os.message(strings.errinst)
+		custom_msg(strings.errinst,0)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
@@ -494,8 +494,17 @@ function bubbles.settings()
 			screen.print(680, 402, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
 
 			if not change then
-				screen.print(480,448, strings.marks, 1, color.white, color.blue, __ACENTER)
-				screen.print(480,475, SYMBOL_SQUARE..": "..strings.uninstall.." ("..dels..")     "..SYMBOL_TRIANGLE..": "..strings.editboot.."     "..SYMBOL_BACK2..": "..strings.inject.."     "..SYMBOL_BACK..": "..strings.back, 1, color.white, color.blue, __ACENTER)
+
+				if dels > 0 then
+					screen.print(80,448, "SELECT: "..strings.selmarks, 1, color.white, color.blue, __ALEFT)
+					screen.print(880,448, strings.startmarks, 1, color.white, color.blue, __ARIGHT)
+				end
+
+				screen.print(80,475, SYMBOL_SQUARE..": "..strings.uninstall.." ("..dels..")", 1, color.white, color.blue, __ALEFT)
+				screen.print(480,475, SYMBOL_TRIANGLE..": "..strings.editboot, 1, color.white, color.blue, __ACENTER)
+				screen.print(880,475, SYMBOL_BACK2..": "..strings.inject, 1, color.white, color.blue, __ARIGHT)
+
+				screen.print(480,523, SYMBOL_BACK..": "..strings.togoback, 1, color.white, color.blue, __ACENTER)
 			else
 				if optsel == 4 then
 					screen.print(80,475, SYMBOL_BACK2..": "..strings.editpath, 1, color.white, color.blue, __ALEFT)
@@ -556,7 +565,7 @@ function bubbles.settings()
 							fp:write(path2game)							
 
 							fp:close()
-							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true end
+							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end
 							bubbles.list[scrids.sel].update = false
 							
 							--Update
@@ -592,18 +601,17 @@ function bubbles.settings()
 					end
 				end
 
-				if buttons[accept] then --erorororr()
+				if buttons[accept] then
 					bubbles.edit(bubbles.list[scrids.sel], preview)
 					preview = nil
 					restart_cronopic()
 				end
 
-				if buttons.square then
+				if buttons.select then
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						if os.message(strings.uninstallbb.." "..dels,1) == 1 then
-
+						if custom_msg(strings.uninstallbb.." "..dels,1) == 1 then
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
@@ -612,7 +620,8 @@ function bubbles.settings()
 									buttons.homepopup(0)
 									game.delete(bubbles.list[i].id)
 									if not game.exists(bubbles.list[i].id) then
-										preview, bg0img = nil,nil
+										preview = nil
+										restart_cronopic()
 										table.remove(bubbles.list, i)
 										bubbles.len -= 1
 										scrids:set(bubbles.list, bmaxim)
@@ -639,7 +648,7 @@ function bubbles.settings()
 					bubbles.len = #bubbles.list
 				end
 
-				if buttons.select then
+				if buttons.square then
 					bubbles.list[scrids.sel].delete = not bubbles.list[scrids.sel].delete
 					if bubbles.list[scrids.sel].delete then dels+=1 else dels-=1 end
 				end
@@ -702,6 +711,7 @@ function bubbles.settings()
 					local new_path = osk.init(strings.path2game, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
 					bubbles.list[scrids.sel].iso = new_path
+					if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end
 					bubbles.list[scrids.sel].update = true
 				end
 
@@ -983,7 +993,7 @@ function bubbles.edit(obj, simg)
 						for i=1,#resources do
 							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
 						end
-						os.message(strings.errinst)
+						custom_msg(strings.errinst,0)
 					end
 					buttons.read()--flush
 					files.delete(path_tmp)
