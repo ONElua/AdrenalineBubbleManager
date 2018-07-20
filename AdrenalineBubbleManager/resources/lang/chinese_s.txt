@@ -28,8 +28,8 @@ createbb =		"请在创建气泡后重试",
 togoback =		"返回",
 uninstallbb =	"将卸载的气泡数量: ",
 inject =		"Inject imgs",
-path2game =		"Whole Path",
-editpath =		"Edit Path",
+path2game =		"Ruta Completa",
+editpath =		"Editar Ruta",
 
 --bubles.redit
 redit =			"Bubble Resources Loader",
@@ -85,7 +85,7 @@ set =			"Set",
 showpic =		"PIC",
 
 --submenu
-warning =		"The changes will take effect once you press START",
+warning =		"The changes will take effect once you press start",
 setimgs =		"Set Imgs",
 convert8 =		"Convert 8bits",
 def_sort =		"Default Sort",

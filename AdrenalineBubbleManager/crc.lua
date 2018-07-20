@@ -1,7 +1,7 @@
 --CRC for prks
--- default values modules ABM for adrenaline v6.4
-__CRCADRBOOTER  = 0x7758E511
+-- default values modules ABM v.07 for adrenaline v6.6
+__CRCADRBOOTER  = 0x8F3C3471
 __CRCKERNEL     = 0x38C9A7FA
-__CRCUSER       = 0x1508B8FD
+__CRCUSER       = 0x7F1AB1B6
 __CRCVSH        = 0x3B46F48C
-__CRCBOOTCONV   = 0x6929079A
+__CRCBOOTCONV   = 0xBB61E8C9

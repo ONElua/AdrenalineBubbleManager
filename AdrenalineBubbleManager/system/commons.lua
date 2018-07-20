@@ -314,9 +314,9 @@ function int2str(data)
 	return string.char((data)&0xff)..string.char(((data)>>8)&0xff)..string.char(((data)>>16)&0xff)..string.char(((data)>>24)&0xff)
 end
 
+partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:" }
 function AutoMakeBootBin(obj)
 
-	local partitions = { "ux0:", "uma0:", "ur0:", "imc0:" }
 	local path2game, _find = "", false
 	local drivers = { "ENABLE", "INFERN0", "MARCH", "NP9660" }		--0,0, 1,2
 	local bins = { "ENABLE", "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN" }	--0,0 1,2

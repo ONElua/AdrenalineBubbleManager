@@ -611,7 +611,7 @@ function bubbles.settings()
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						if custom_msg(strings.uninstallbb.." "..dels,1) == 1 then
+						if custom_msg(strings.uninstallbb.." "..dels,1) == true then
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end

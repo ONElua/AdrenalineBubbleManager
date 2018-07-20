@@ -110,19 +110,16 @@ end
 
 function scan.games()
 	scan.list = {}
-	scan.isos("ux0:pspemu/ISO")
-	scan.isos("ur0:pspemu/ISO")
-	scan.pbps("ux0:pspemu/PSP/GAME")
-	scan.pbps("ur0:pspemu/PSP/GAME")
+	for i=1,#partitions do
+		if files.exists(partitions[i]) then
+			local _info_device = os.devinfo(partitions[i])
+			if _info_device then
+				scan.isos(partitions[i].."pspemu/ISO")
+				scan.pbps(partitions[i].."pspemu/PSP/GAME")
+			end
+		end
+	end
 
-	if files.exists("uma0:") then
-		scan.isos("uma0:pspemu/ISO")
-		scan.pbps("uma0:pspemu/PSP/GAME")
-	end
-	if files.exists("imc0:") then
-		scan.isos("imc0:pspemu/ISO")
-		scan.pbps("imc0:pspemu/PSP/GAME")
-	end
 	scan.len = #scan.list
 	if scan.len > 0 then
 		table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)

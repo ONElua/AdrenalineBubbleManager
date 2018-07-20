@@ -2,6 +2,8 @@
 <changeinfo>
   <changes app_ver="05.08">
     <![CDATA[
+- Compatible with Adrenaline v6.6 and Adrenaline Bubble Booter v.07<br>
+- Added support for iso/cso/pbp in xmc0 (Use Vitashell for mount xmc0).<br>
 - Fix "startup.png" images<br>
 - Support added for frameX.png images (with X from 1 to 5).<br>
 - Sort by ID.<br>
