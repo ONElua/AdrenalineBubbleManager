@@ -24,6 +24,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
 ### Changelog 5.08 ###
+- Now ABM scans and shows PSP/PSX original games, but qwikrazor87's plugin is needed (npdrm_free.prx).
 - Compatible with Adrenaline v6.6 and Adrenaline Bubble Booter v.07<br>
 - Added support for iso/cso/pbp in xmc0 (Use Vitashell for mount xmc0).<br>
 - Fix "startup.png" images<br>
