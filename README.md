@@ -128,7 +128,7 @@ This option allows you to Insert your desired images to the selected bubble, thi
 To use this feature you have to follow the instructions below:<br>
 1. Download or create the images to insert, those images to use have to be renamed and resized to:<br>
 - icon0.png			128x128<br>
-- startup.png			262x125<br>   
+- startup.png			280x158 (max)<br>   
 - pic0.png			960x544<br>   
 - bg0.png			840x500<br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
