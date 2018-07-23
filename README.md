@@ -11,7 +11,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Bubbles Manager Current Version: 5.08 ###
+### Adrenaline Bubbles Manager Current Version: 5.09 ###
 ### Adrenaline Bubble Booter Version v0.7 ###
 ### Adrenaline Version v6.6 ###
 
@@ -22,6 +22,10 @@ Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it j
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.09 ###
+- Fix support for iso/cso/pbp in xmc0.<br>
+- Sort by Device (ux0,ur0,uma0, imc0, xmc0).<br>
 
 ### Changelog 5.08 ###
 - Now ABM scans and shows PSP/PSX original games, but qwikrazor87's plugin is needed (npdrm_free.prx).
@@ -128,7 +132,7 @@ This option allows you to Insert your desired images to the selected bubble, thi
 To use this feature you have to follow the instructions below:<br>
 1. Download or create the images to insert, those images to use have to be renamed and resized to:<br>
 - icon0.png			128x128<br>
-- startup.png			280x158 (max)<br>   
+- startup.png		280x158 (max)<br>   
 - pic0.png			960x544<br>   
 - bg0.png			840x500<br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
