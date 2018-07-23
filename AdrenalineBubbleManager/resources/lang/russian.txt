@@ -81,6 +81,7 @@ sortmtime =		"MTime",
 sortnoinst =	"Установке",
 category =		"Категории",
 gameid =		"GameID",
+device =		"Device",
 set =			"Задать",
 showpic =		"PIC",
 

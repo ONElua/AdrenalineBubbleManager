@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.09">
+    <![CDATA[
+- Fix support for iso/cso/pbp in xmc0.<br>
+- Sort by Device (ux0,ur0,uma0, imc0, xmc0).<br>
+    ]]>
   <changes app_ver="05.08">
     <![CDATA[
 - Compatible with Adrenaline v6.6 and Adrenaline Bubble Booter v.07<br>

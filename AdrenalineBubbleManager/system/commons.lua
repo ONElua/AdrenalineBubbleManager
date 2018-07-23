@@ -52,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 76
+__STRINGS		= 77
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -117,24 +117,24 @@ function init_msg(msg)
 	os.delay(5)
 end
 
+sort_games = { strings.sorttitle, strings.sortmtime, strings.sortnoinst, strings.category, strings.gameid, strings.device }
+sort_mode = { "title", "mtime", "install", "type", "gameid", "device" }
+
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
-__SORT = math.minmax(__SORT, 1,5)
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
 __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 
-_sort, _color = __SORT, __COLOR
-
-sort_mode = { "title", "mtime", "install", "type", "gameid" }
-sort_games = { strings.sorttitle, strings.sortmtime, strings.sortnoinst, strings.category, strings.gameid }
-sort_type = sort_games[_sort]
-
+__SORT = math.minmax(__SORT, 1, #sort_mode)
+_sort,sort_type = __SORT, sort_games[__SORT]
+_color = __COLOR
 if __UPDATE == 1 then _update = strings.option1_msg else _update = strings.option2_msg end
 if __CHECKADR == 1 then _adr = strings.option1_msg else _adr = strings.option2_msg end
 if __SET == 0 then setpack = strings.option2_msg else setpack = strings.set..__SET end
 if __8PNG == 1 then _png = strings.option1_msg else _png = strings.option2_msg end
+TOTAL_SET = 5
 
 --[[
 	## Library Scroll ##

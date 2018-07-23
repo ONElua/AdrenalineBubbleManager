@@ -31,11 +31,13 @@ if __UPDATE == 1 then
 end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
-ADRENALINEB = ADRENALINE.."/sce_module/adrbubblebooter.suprx"
-ADRENALINEK = ADRENALINE.."/sce_module/adrenaline_kernel.skprx"
-ADRENALINEU = ADRENALINE.."/sce_module/adrenaline_user.suprx"
-ADRENALINEV = ADRENALINE.."/sce_module/adrenaline_vsh.suprx"
-ADRENALINEC = ADRENALINE.."/sce_module/bootconv.suprx"
+MODULES = {
+  { fullpath = ADRENALINE.."/sce_module/adrbubblebooter.suprx",   path = "sce_module/adrbubblebooter.suprx",   crc = __CRCADRBOOTER },
+  { fullpath = ADRENALINE.."/sce_module/adrenaline_kernel.skprx", path = "sce_module/adrenaline_kernel.skprx", crc = __CRCKERNEL  },
+  { fullpath = ADRENALINE.."/sce_module/adrenaline_user.suprx",   path = "sce_module/adrenaline_user.suprx",   crc = __CRCUSER  },
+  { fullpath = ADRENALINE.."/sce_module/adrenaline_vsh.suprx",    path = "sce_module/adrenaline_vsh.suprx",    crc = __CRCVSH  },
+  { fullpath = ADRENALINE.."/sce_module/bootconv.suprx",          path = "sce_module/bootconv.suprx",          crc = __CRCBOOTCONV }
+}
 oncopy = false
 
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
@@ -48,58 +50,20 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	end
 
 	if __CHECKADR == 1 then
-		if not files.exists(ADRENALINEB) then
+		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
 			oncopy = true
 			files.copy("sce_module/", ADRENALINE)
 		else
 
-			if not files.exists(ADRENALINEB) then
-				oncopy = true
-				files.copy("sce_module/adrbubblebooter.suprx", ADRENALINE.."/sce_module/")
-			else
-				if os.crc32(files.read(ADRENALINEB) ) != __CRCADRBOOTER then
+			for i=1,#MODULES do
+				if not files.exists(MODULES[i].fullpath) then
 					oncopy = true
-					files.copy("sce_module/adrbubblebooter.suprx", ADRENALINE.."/sce_module/")
-				end
-			end
-
-			if not files.exists(ADRENALINEK) then
-				oncopy = true
-				files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
-			else
-				if os.crc32(files.read(ADRENALINEK) ) != __CRCKERNEL then
-					oncopy = true
-					files.copy("sce_module/adrenaline_kernel.skprx", ADRENALINE.."/sce_module/")
-				end
-			end
-
-			if not files.exists(ADRENALINEU) then
-				oncopy = true
-				files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
-			else
-				if os.crc32(files.read(ADRENALINEU)) != __CRCUSER then
-					oncopy = true
-					files.copy("sce_module/adrenaline_user.suprx", ADRENALINE.."/sce_module/")
-				end
-			end
-
-			if not files.exists(ADRENALINEV) then
-				oncopy = true
-				files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
-			else
-				if os.crc32(files.read(ADRENALINEV)) != __CRCVSH then
-					oncopy = true
-					files.copy("sce_module/adrenaline_vsh.suprx", ADRENALINE.."/sce_module/")
-				end
-			end
-
-			if not files.exists(ADRENALINEC) then
-				oncopy = true
-				files.copy("sce_module/bootconv.suprx", ADRENALINE.."/sce_module/")
-			else
-				if os.crc32(files.read(ADRENALINEC)) != __CRCBOOTCONV then
-					oncopy = true
-					files.copy("sce_module/bootconv.suprx", ADRENALINE.."/sce_module/")
+					files.copy(MODULES[i].path, ADRENALINE.."/sce_module/")
+				else
+					if os.crc32(files.read(MODULES[i].fullpath) ) != MODULES[i].crc then
+						oncopy = true
+						files.copy("sce_module/adrbubblebooter.suprx", ADRENALINE.."/sce_module/")
+					end
 				end
 			end
 		end

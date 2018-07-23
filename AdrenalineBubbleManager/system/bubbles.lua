@@ -1,5 +1,5 @@
 --[[
-
+PS1 pic1   pic0 310
     Licensed by Creative Commons Attribution-ShareAlike 4.0
    http://creativecommons.org/licenses/by-sa/4.0/
    
@@ -160,9 +160,18 @@ function bubbles.install(src)
 			files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
 		end
 
-		------------------------------pic0 & bg0
+		------------------------------pic0 (boot) & bg0
 		if __SET == 0 then
-			timg = game.getpic1(src.path)
+
+			if not src.orig then
+				timg = game.getpic1(src.path)
+			else
+				if src.type == "ME" then--PS1 Game
+					image.load("bubbles/sce_sys_lman/ps1/bg0.png")
+				else
+					image.load("bubbles/sce_sys_lman/psp/bg0.png")
+				end
+			end
 
 			if back2 then back2:blit(0,0) end
 			draw.fillrect(0,0,960,30, color.shine)
@@ -176,17 +185,31 @@ function bubbles.install(src)
 			end
 			screen.flip()
 
-			if timg then
-				timg:reset()
-				image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
-				files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
-				files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+			if not src.orig then
+				if timg then
+					timg:reset()
+					image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+					files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
+					files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+				else
+					if src.type == "ME" then--PS1 Game
+						files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+					else
+						files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+					end
+					files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
+				end
 			else
+				if src.type == "ME" then--PS1 Game
+					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				else
+					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				end
 				files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
-				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
 			end
+
 		else
-			--"PIC0.PNG", 	 w = 960,	h = 544
+			--"PIC0.PNG", 	 w = 960,	h = 544			SETX (1 to 5)
 
 			local setimg = false
 			timg = image.load(__PATHSETS.."Set"..__SET.."/PIC0.PNG")
@@ -272,7 +295,11 @@ function bubbles.install(src)
 				end
 
 			else
-				files.copy("bubbles/sce_sys_lman/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				if src.type == "ME" then--PS1 Game
+					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				else
+					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				end
 			end
 
 			--TEMPLATE.XML

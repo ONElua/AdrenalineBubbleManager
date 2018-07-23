@@ -16,9 +16,9 @@ local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions
 local __PIC = false
 local tmp_sort = __SORT
 
-function insert(tmp_sfo,obj)
+function insert(tmp_sfo,obj,device)
 
-	local install,state="a",false
+	local install,state,orig = "a",false,false
 
 	for i=1,bubbles.len do
 		if obj.path:lower() == bubbles.list[i].iso:lower() then
@@ -26,27 +26,33 @@ function insert(tmp_sfo,obj)
 			break
 		end
 	end
-	table.insert(scan.list, { title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true, install = install,
-							  state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, nostretched=false, mtime = obj.mtime,
-							  type = tmp_sfo.CATEGORY or strings.unk, gameid = tmp_sfo.DISC_ID or strings.unk })
 
+	if game.exists(obj.name) then orig = true end
+
+	table.insert( scan.list,
+		{
+		  title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
+		  install = install, state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR,
+		  nostretched=false, mtime = obj.mtime, type = tmp_sfo.CATEGORY or strings.unk, gameid = tmp_sfo.DISC_ID or strings.unk,
+		  orig = orig, device = device
+		} )
 end
 
-function scan.insertCISO(hand)
+function scan.insertCISO(hand,device)
 	local _type = files.type(hand.path)
 	if _type == 2 or _type == 3 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 then
 			if tmp0.CATEGORY == "UG" or tmp0.CATEGORY == "PG" then
 				init_msg(string.format(strings.loadciso.." %s\n",hand.path))
-				insert(tmp0,hand)
+				insert(tmp0,hand,device)
 			end
 		end
 		tmp0 = nil
 	end
 end
 
-function scan.isos(path)
+function scan.isos(path,device)
 	local tmp = files.list(path)
 	if tmp and #tmp > 0 then
 		for i=1, #tmp do
@@ -55,12 +61,12 @@ function scan.isos(path)
 				if ls and #ls > 0 then
 					for j=1, #ls do
 						local ext = ls[j].ext:upper()
-						if ext == "ISO" or ext == "CSO" then scan.insertCISO(ls[j])   end
+						if ext == "ISO" or ext == "CSO" then scan.insertCISO(ls[j],device) end
 					end
 				end
 			else
 				if tmp[i].ext and (tmp[i].ext:upper() == "ISO" or tmp[i].ext:upper() == "CSO" ) then
-					scan.insertCISO(tmp[i])                     -- Recursive only 2 levels
+					scan.insertCISO(tmp[i],device)                     -- Recursive only 2 levels
 				end
 			end
 
@@ -68,7 +74,7 @@ function scan.isos(path)
 	end
 end
 
-function scan.insertPBP(hand)
+function scan.insertPBP(hand,device)
 
 	--if game.exists(hand.name) then return end                  -- Is oficial PSP game (Bubble), not read :P
 	--if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
@@ -87,22 +93,22 @@ function scan.insertPBP(hand)
 		end
 		if _insert then
 			init_msg(string.format(strings.loadpbp.." %s\n",hand.path))
-			insert(tmp0,hand)
+			insert(tmp0,hand,device)
 		end
 		tmp0 = nil
 	end
 end
 
-function scan.pbps(path, level)
+function scan.pbps(path, device, level)
 	if not level then level = 1 end
 	local tmp = files.listdirs(path)
 	if tmp and #tmp > 0 then
 		for i=1, #tmp do
 			if files.exists(tmp[i].path.."/EBOOT.PBP") then
 				tmp[i].path += "/EBOOT.PBP"
-				scan.insertPBP(tmp[i])
+				scan.insertPBP(tmp[i],device)
 			elseif level == 1 then
-				scan.pbps(tmp[i].path, 2)                     -- Recursive only 2 levels
+				scan.pbps(tmp[i].path, device, 2)                     -- Recursive only 2 levels
 			end
 		end
 	end
@@ -114,12 +120,11 @@ function scan.games()
 		if files.exists(partitions[i]) then
 			local _info_device = os.devinfo(partitions[i])
 			if _info_device then
-				scan.isos(partitions[i].."pspemu/ISO")
-				scan.pbps(partitions[i].."pspemu/PSP/GAME")
+				scan.isos(partitions[i].."pspemu/ISO", i)
+				scan.pbps(partitions[i].."pspemu/PSP/GAME", i)
 			end
 		end
 	end
-
 	scan.len = #scan.list
 	if scan.len > 0 then
 		table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
@@ -317,9 +322,9 @@ function scan.show(objedit)
 					for i=1, scr.maxim do
 
 						if vbuff then vbuff:blit(0,0) end
-							screen.print(480,395,strings.bubbles.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
-							draw.rect(0, 417, 960, 20, color.new(25,200,25))
-							draw.fillrect(0,417, ((c+1)*960)/tmp,20,color.new(0,255,0))
+							screen.print(480,405,strings.bubbles.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
+							draw.rect(0, 437, 960, 20, color.new(25,200,25))
+							draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
 						screen.flip()
 
 						if scan.list[i].inst then
@@ -351,7 +356,7 @@ function scan.show(objedit)
 			--Sort
 			if buttons.select then
 				icon0=nil
-				__SORT = __SORT+1
+				__SORT += 1
 
 				if __SORT > #sort_games then __SORT = 1 end
 				if __SORT < 1 then __SORT = #sort_games end
@@ -504,7 +509,7 @@ function submenu_abm.draw(obj)
 
 							if back2 then back2:blit(0,0) end
 							message_wait(strings.upd_bubbles..bubbles.list[i].id)
-							os.delay(80)
+							os.delay(500)
 
 							--Update
 							fp:seek("set",0x0C)
@@ -522,25 +527,23 @@ function submenu_abm.draw(obj)
 			end--for
 			buttons.homepopup(1)
 			custom_msg(strings.bubblescount.." "..count,0)
-			os.delay(80)
+			os.delay(100)
 		end
 
 		if (buttons.left or buttons.right) then
 
 			if submenu_abm.scroll.sel == 1 then--Set 8bits
 
-				if __8PNG == 1 then __8PNG = 0 else __8PNG = 1 end
-
-				if __8PNG == 1 then _png = strings.option1_msg
-				else _png = strings.option2_msg end
+				if __8PNG == 1 then __8PNG,_png = 0,strings.option2_msg
+				else __8PNG,_png = 1,strings.option1_msg end
 
 			elseif submenu_abm.scroll.sel == 2 then--Set Packs
 
 				if buttons.right then __SET +=1 end
 				if buttons.left then __SET -=1 end
 
-				if __SET > 5 then __SET = 0 end
-				if __SET < 0 then __SET = 5 end
+				if __SET > TOTAL_SET then __SET = 0 end
+				if __SET < 0 then __SET = TOTAL_SET end
 
 				if __SET == 0 then setpack = strings.option2_msg
 				else setpack = strings.set..__SET end
@@ -564,16 +567,13 @@ function submenu_abm.draw(obj)
 				if _color < 1 then _color = #colors end
 
 			elseif submenu_abm.scroll.sel == 5 then--Update
-				if __UPDATE == 1 then __UPDATE = 0 else __UPDATE = 1 end
-
-				if __UPDATE == 1 then _update = strings.option1_msg
-				else _update = strings.option2_msg end
+				if __UPDATE == 1 then __UPDATE,_update = 0,strings.option2_msg
+				else __UPDATE,_update = 1,strings.option1_msg end
 
 			elseif submenu_abm.scroll.sel == 6 then--CheckAdrenaline
-				if __CHECKADR == 1 then __CHECKADR = 0 else __CHECKADR = 1 end
+				if __CHECKADR == 1 then __CHECKADR,_adr = 0,strings.option2_msg
+				else __CHECKADR,_adr = 1,strings.option1_msg end
 
-				if __CHECKADR == 1 then _adr = strings.option1_msg
-				else _adr = strings.option2_msg end
 			end
 			_save = true
 		end

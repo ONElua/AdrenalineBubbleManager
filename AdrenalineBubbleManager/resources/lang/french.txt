@@ -81,6 +81,7 @@ sortmtime =		"Date de modification",
 sortnoinst =	"Installer",
 category =		"Category",
 gameid =		"GameID",
+device =		"Device",
 set =			"Set",
 showpic =		"PIC",
 
