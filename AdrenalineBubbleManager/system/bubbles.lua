@@ -1,5 +1,5 @@
 --[[
-PS1 pic1   pic0 310
+
     Licensed by Creative Commons Attribution-ShareAlike 4.0
    http://creativecommons.org/licenses/by-sa/4.0/
    
