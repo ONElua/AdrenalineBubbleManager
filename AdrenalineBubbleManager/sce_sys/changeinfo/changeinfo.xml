@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.10">
+    <![CDATA[
+- Fixed reboot error (reboot loop). :( <br>
+    ]]>
   <changes app_ver="05.09">
     <![CDATA[
 - Fix support for iso/cso/pbp in xmc0.<br>

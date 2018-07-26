@@ -62,7 +62,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 				else
 					if os.crc32(files.read(MODULES[i].fullpath) ) != MODULES[i].crc then
 						oncopy = true
-						files.copy("sce_module/adrbubblebooter.suprx", ADRENALINE.."/sce_module/")
+						files.copy(MODULES[i].path, ADRENALINE.."/sce_module/")
 					end
 				end
 			end
