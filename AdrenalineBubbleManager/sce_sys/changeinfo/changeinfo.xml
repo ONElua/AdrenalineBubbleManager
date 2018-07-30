@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.11">
+    <![CDATA[
+- Compatible with Adrenaline v6.7 and Adrenaline Bubble Booter v.08<br>
+    ]]>
   <changes app_ver="05.10">
     <![CDATA[
 - Fixed reboot error (reboot loop). :( <br>

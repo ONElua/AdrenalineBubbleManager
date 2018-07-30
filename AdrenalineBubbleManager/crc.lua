@@ -1,10 +1,10 @@
 --CRC for prks
--- default values modules ABM v.07 for adrenaline v6.6
-__CRCADRBOOTER  = 0x8F3C3471
+-- default values modules ABM v.08 for adrenaline v6.7
+__CRCADRBOOTER  = 0xCB5B2529
 __CRCKERNEL     = 0x38C9A7FA
-__CRCUSER       = 0x7F1AB1B6
+__CRCUSER       = 0x4F8B21B9
 __CRCVSH        = 0x3B46F48C
-__CRCBOOTCONV   = 0xBB61E8C9
+__CRCBOOTCONV   = 0xA9C92888
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
 MODULES = {
