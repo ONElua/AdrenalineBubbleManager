@@ -52,7 +52,7 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 77
+__STRINGS		= 78
 
 dofile("resources/lang/english_us.txt")
 if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
@@ -95,7 +95,8 @@ if buttons.assign()==0 then
 end
 
 colors = { 	
-			color.black,		-- <--- dont modify this color (defect color)...
+			color.new(224,224,224), -- new default color, closely resembles official bubbles
+			color.black,		-- old default color
 			--you can add more colors :D
 			color.red, color.green, color.blue, color.cyan, color.gray, color.magenta, color.yellow,
 			color.maroon, color.grass, color.navy, color.turquoise, color.violet, color.olive,
@@ -132,9 +133,9 @@ _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
 if __UPDATE == 1 then _update = strings.option1_msg else _update = strings.option2_msg end
 if __CHECKADR == 1 then _adr = strings.option1_msg else _adr = strings.option2_msg end
-if __SET == 0 then setpack = strings.option2_msg else setpack = strings.set..__SET end
+if __SET == 0 then setpack = strings.option2_msg elseif __SET == 6 then setpack = strings.setpsp else setpack = strings.set..__SET end
 if __8PNG == 1 then _png = strings.option1_msg else _png = strings.option2_msg end
-TOTAL_SET = 5
+TOTAL_SET = 6
 
 --[[
 	## Library Scroll ##
@@ -207,16 +208,15 @@ end
 
 function image.nostretched(img,cc)
     local w,h = img:getw(), img:geth()
-	if w != 80 or h != 80 then w,h = 108,60
-	else w,h = 90,90 end 
-	img = img:copyscale(w,h)
+	if w != 80 or h != 80 then w,h = 100,55
+	img = img:copyscale(w,h) end 
 	local px,py = 64 - (w/2),64 - (h/2)
 	local sheet = image.new(128, 128, cc)
 	for y=0,h-1 do
 		for x=0,w-1 do
 			local c = img:pixel(x,y)
 			if c:a() == 0 then c = cc end 
-			sheet:pixel(px+x, py+y, c)
+			if h % 2 == 0 then sheet:pixel(px+x, py+y, c) else sheet:pixel(px+x, py+y+1, c) end
 		end
 	end
 	return sheet

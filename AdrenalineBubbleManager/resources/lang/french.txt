@@ -88,6 +88,7 @@ showpic =		"PIC",
 --submenu
 warning =		"Appuyez sur START pour valider les changements.",
 setimgs =		"Set Imgs",
+setpsp =		"Images PSP",
 convert8 =		"Convert 8bits",
 def_sort =		"Trie par défaut",
 def_color =		"Couleur par défaut",

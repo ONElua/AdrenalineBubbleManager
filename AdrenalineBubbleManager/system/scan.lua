@@ -235,6 +235,8 @@ function scan.show(objedit)
 
 			if __SET == 0 then
 				screen.print(955,210,setpack.." "..strings.set,1,color.white,color.blue,__ARIGHT)
+			elseif __SET == 6 then
+				screen.print(955,210,strings.setpsp,1,color.white,color.blue,__ARIGHT)
 			else
 				screen.print(955,210,setpack,1,color.white,color.blue,__ARIGHT)
 			end
@@ -546,6 +548,7 @@ function submenu_abm.draw(obj)
 				if __SET < 0 then __SET = TOTAL_SET end
 
 				if __SET == 0 then setpack = strings.option2_msg
+				elseif __SET == 6 then setpack = strings.setpsp
 				else setpack = strings.set..__SET end
 
 			elseif submenu_abm.scroll.sel == 3 then--Sort
