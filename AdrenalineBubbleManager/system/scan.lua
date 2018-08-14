@@ -507,7 +507,7 @@ function submenu_abm.draw(obj)
 						fp:seek("set",0x0C)
 						local custom = str2int(fp:read(4))
 
-						if custom != 1 then
+						if custom != 0 then
 
 							if back2 then back2:blit(0,0) end
 							message_wait(strings.upd_bubbles..bubbles.list[i].id)
@@ -515,7 +515,7 @@ function submenu_abm.draw(obj)
 
 							--Update
 							fp:seek("set",0x0C)
-							fp:write(int2str(1))
+							fp:write(int2str(0))
 							bubbles.list[i].lines[3] = 1
 
 							count += 1

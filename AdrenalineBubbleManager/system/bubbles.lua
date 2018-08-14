@@ -107,7 +107,13 @@ function bubbles.install(src)
 	while game.exists(string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)) do
 		i+=1
 	end
-	local lastid = string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)
+
+	--use the gameid as the folder unless is already used
+	if files.exists("ur0:appmeta/"..src.gameid.."/") then
+		lastid = string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)
+	else
+		lastid = src.gameid
+	end
 
 	local work_dir = "ux0:data/ABMVPK/"
 	files.mkdir(work_dir)
@@ -383,7 +389,7 @@ function bubbles.install(src)
 			bubbles.list[#bubbles.list].lines = {}
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Inferno
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Eboot.bin
-			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 1 Customized
+			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Non Customized
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
