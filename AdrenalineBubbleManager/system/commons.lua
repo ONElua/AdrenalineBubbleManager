@@ -20,6 +20,7 @@ files.mkdir(__PATHSETS)
 
 files.mkdir(pathABM)
 files.mkdir(pathABM.."lang/")
+files.mkdir(pathABM.."font/")
 files.mkdir(pathABM.."resources/")
 
 -- Background image must be (960x554 png or jpg image. Priority to back.png)
@@ -56,8 +57,19 @@ if not files.exists("ux0:data/ABM/lang/english_us.txt") then files.copy("resourc
 if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
 if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
 
--- Loading custom ttf font if exits
-if files.exists(pathABM.."/resources/"..__LANG..".ttf") then font.setdefault(pathABM.."/resources/"..__LANG..".ttf") end
+-- Loading custom font
+if files.exists(pathABM.."font/font.ttf") then
+	fnt = font.load(pathABM.."font/font.ttf")
+elseif files.exists(pathABM.."font/font.pgf") then
+	fnt = font.load(pathABM.."font/font.pgf")
+elseif files.exists(pathABM.."font/font.pvf") then
+	fnt = font.load(pathABM.."font/font.pvf")
+end
+
+if fnt then	font.setdefault(fnt)
+else
+	if __LANG == "CHINESE_T" or __LANG == "CHINESE_S" then font.setdefault("resources/font/font.pgf") end
+end
 
 SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)
 SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
