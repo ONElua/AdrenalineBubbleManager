@@ -349,6 +349,12 @@ function bubbles.install(src)
 		fp:seek("set",0x20)
 		fp:write(path2game)
 
+		--Customized
+		if __CUSTOM == 1 then
+			fp:seek("set",0x0C)
+			fp:write(int2str(1))
+		end
+
 		--Close
 		fp:close()
 
@@ -380,6 +386,7 @@ function bubbles.install(src)
 				delete = false,
 				exist = true
 			}
+
 			table.insert(bubbles.list, entry)-- Insert entry in list of bubbles! :)
 
 			--Path2Game
@@ -389,7 +396,7 @@ function bubbles.install(src)
 			bubbles.list[#bubbles.list].lines = {}
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Inferno
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Eboot.bin
-			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Non Customized
+			table.insert(bubbles.list[#bubbles.list].lines, __CUSTOM)--Default: 0 Non Customized
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
@@ -596,6 +603,12 @@ function bubbles.settings()
 
 							fp:seek("set",0x20)
 							fp:write(path2game)							
+
+							--Customized
+							if __CUSTOM == 1 then
+								fp:seek("set",0x0C)
+								fp:write(int2str(1))
+							end
 
 							fp:close()
 							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end

@@ -408,6 +408,7 @@ function submenu_abm.wakefunct()
 	submenu_abm.options = { 	-- Handle Option Text and Option Function
 		{ text = strings.convert8 },
 		{ text = strings.setimgs },
+		{ text = "Customized" },
 		{ text = strings.def_sort },
 		{ text = strings.def_color },
 		{ text = strings.update },
@@ -446,6 +447,8 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"resources","set",__SET)--Save __SET
 
 			ini.write(__PATHINI,"convert","8bits",__8PNG)--Save __8PNG
+
+			ini.write(__PATHINI,"custom","customized",__CUSTOM)--Save __CUSTOM
 
 		end
 		_save = false
@@ -551,7 +554,13 @@ function submenu_abm.draw(obj)
 				elseif __SET == 6 then setpack = strings.setpsp
 				else setpack = strings.set..__SET end
 
-			elseif submenu_abm.scroll.sel == 3 then--Sort
+			elseif submenu_abm.scroll.sel == 3 then--Set Customized
+
+				if __CUSTOM == 1 then __CUSTOM,_custom = 0,strings.option2_msg
+				else __CUSTOM,_custom = 1,strings.option1_msg end
+
+
+			elseif submenu_abm.scroll.sel == 4 then--Sort
 
 				if buttons.right then _sort +=1 end
 				if buttons.left then _sort -=1 end
@@ -561,7 +570,7 @@ function submenu_abm.draw(obj)
 
 				sort_type = sort_games[_sort]
 
-			elseif submenu_abm.scroll.sel == 4 then--Color
+			elseif submenu_abm.scroll.sel == 5 then--Color
 
 				if buttons.right then _color +=1 end
 				if buttons.left then _color -=1 end
@@ -569,11 +578,11 @@ function submenu_abm.draw(obj)
 				if _color > #colors then _color = 1 end
 				if _color < 1 then _color = #colors end
 
-			elseif submenu_abm.scroll.sel == 5 then--Update
+			elseif submenu_abm.scroll.sel == 6 then--Update
 				if __UPDATE == 1 then __UPDATE,_update = 0,strings.option2_msg
 				else __UPDATE,_update = 1,strings.option1_msg end
 
-			elseif submenu_abm.scroll.sel == 6 then--CheckAdrenaline
+			elseif submenu_abm.scroll.sel == 7 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR,_adr = 0,strings.option2_msg
 				else __CHECKADR,_adr = 1,strings.option1_msg end
 
@@ -598,15 +607,17 @@ function submenu_abm.draw(obj)
 			elseif i==2 then
 				screen.print(690, h, setpack, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==3 then
-				screen.print(690, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _custom, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==4 then
+				screen.print(690, h, sort_type, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==5 then
 				draw.fillrect(670, h,18,18, colors[_color])--106
 				draw.rect(670,h,18,18, color.white)
-			elseif i==5 then
-				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==6 then
-				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==7 then
+				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==8 then
 				screen.print(690, h, SYMBOL_BACK2, 1, sel_color, color.blue, __ARIGHT)
 			end
 

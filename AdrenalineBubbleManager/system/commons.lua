@@ -127,6 +127,7 @@ __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
+__CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","0"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
@@ -135,6 +136,7 @@ if __UPDATE == 1 then _update = strings.option1_msg else _update = strings.optio
 if __CHECKADR == 1 then _adr = strings.option1_msg else _adr = strings.option2_msg end
 if __SET == 0 then setpack = strings.option2_msg elseif __SET == 6 then setpack = strings.setpsp else setpack = strings.set..__SET end
 if __8PNG == 1 then _png = strings.option1_msg else _png = strings.option2_msg end
+if __CUSTOM == 1 then _custom = strings.option1_msg else _custom = strings.option2_msg end
 TOTAL_SET = 6
 
 --[[
@@ -366,9 +368,11 @@ function AutoMakeBootBin(obj)
 		end
 		fp:write(int2str(number))
 
-		--Customized is ready in boot.bin (default)
-		--fp:seek("set",0x0C)
-		--fp:write(int2str(1))
+		--Customized
+		if __CUSTOM == 1 then
+			fp:seek("set",0x0C)
+			fp:write(int2str(1))
+		end
 
 		--Path2game
 		fp:seek("set",0x20)
