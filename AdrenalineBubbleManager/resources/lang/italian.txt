@@ -1,104 +1,100 @@
 --Texts (only text in " ")
-strings = {
 
 --script.lua
-unsafe =		"La modalità NON SICURA è necessaria per utilizzare questo Homebrew !!!",
-adrinst =		"È stato installato il plugin AdrBubbleBooter... \nHai bisogno di riavviare la tua PSVita... :)",
-notadr =		"Adrenaline v6 non installato...",
-wait =			"Please wait...",
-upd_bubbles =	"Updating Bubble: ",
+UNSAFE_MODE =					"La modalità NON SICURA è necessaria per utilizzare questo Homebrew !!!"
+ADRBBOTER_INSTALLED =			"È stato installato il plugin AdrBubbleBooter... \nHai bisogno di riavviare la tua PSVita... :)"
+ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 non installato..."
+MESSAGE_WAIT =					"Please wait..."
+UPDATE_BUBBLES =				"Updating Bubble: "
 
 --callbacks.lua
-updatebb =		"Aggiornamento dell'immagine della bolla: ",
-instbb =		"Bolle Installate: ",
-file =			"File: ",
+UPDATING_BUBBLES =				"Aggiornamento dell'immagine della bolla: "
+INSTALLING_BUBBLE =				"Bolle Installate: "
+STRING_FILE =					"File: "
 
 --bubbles.lua
-btitle =		"SETTINGS BUBBLES",
-count =			"Totale: ",
-selmarks =		"Remove Bubbles",
-startmarks =	"START: (ALL/CLEAN)",
-uninstall =		"Disinstallazione",
-editboot =		"Editare boot.bin",
-back =			"Indietro",
-toggle =		"Opzioni",
-doneedit =		"Modifica effettuata con successo",
-notbubbles =	"Non hai nessuna bolla nella lista :(",
-createbb =		"Riprova dopo aver creato alcune bolle.",
-togoback =		"Torna Indietro",
-uninstallbb =	"Stai per disinstallare delle bolle : ",
-inject =		"Inietta imgs",
-path2game =		"Whole Path",
-editpath =		"Edit Path",
+BUBBLES_TITLE =					"SETTINGS BUBBLES"
+BUBBLES_COUNT =					"Totale: "
+BUBBLES_SELSMARKS =				"Remove Bubbles"
+BUBBLES_STARTMARKS =			"START: (ALL/CLEAN)"
+BUBBLES_UNINSTALL =				"Disinstallazione"
+BUBBLES_EDITBOOT_BIN =			"Editare boot.bin"
+BUBBLES_TOGGLE =				"Opzioni"
+BUBBLES_DONE_EDIT =				"Modifica effettuata con successo"
+BUBBLES_NOT_BUBBLES =			"Non hai nessuna bolla nella lista :("
+BUBBLES_CREAT_BB =				"Riprova dopo aver creato alcune bolle."
+BUBBLES_GOTOBACK =				"Torna Indietro"
+BUBBLES_UNINSTALL_QUESTION =	"Stai per disinstallare delle bolle : "
+BUBBLES_INJECT =				"Inietta imgs"
+BUBBLES_PATH2GAME =				"Whole Path"
+BUBBLES_EDITPATH =				"Edit Path"
 
 --bubles.redit
-redit =			"Bubble Resources Loader",
-reinstall =		"Premere START per caricare tutte le immagini per la bolla",
-notresources =	"Niente da mostrare",
-editbubbles =	"Bubble to edit",
+BUBBLES_RE_EDIT =				"Bubble Resources Loader"
+BUBBLES_REINSTALL =				"Premere START per caricare tutte le immagini per la bolla"
+BUBBLES_NOTRESOURCES =			"Niente da mostrare"
+BUBBLES_EDIT_BB =				"Bubble to edit"
 
 --osk
-titleosk =		"Titolo della Bolla",
-putnameosk =	"Inserisci qui il nome",
+STRINGS_TITLE_OSK =				"Titolo della Bolla"
+STRINGS_NAME_OSK =				"Inserisci qui il nome"
 
 --Process
-convert =		"Conversione delle risorse in corso...",
-errinst =		"Siamo spiacenti, c'è stato un errore di installazione",
-unk =			"UNK",
+STRINGS_CONVERTING =			"Conversione delle risorse in corso..."
+STRINGS_ERROR_INST =			"Siamo spiacenti, c'è stato un errore di installazione"
+STRINGS_UNK =					"UNK"
 
 --debug
-loadciso =		"Caricamento C/ISO",
-loadpbp =		"Caricamento PBP",
+DEBUG_LOAD_CISO =				"Caricamento C/ISO"
+DEBUG_LOAD_PBP =				"Caricamento PBP"
 
 --custom message
-title_msg =		"Messaggio di Sistema",
-option_msg =	"Ok",
-option1_msg =	"Si",
-option2_msg =	"No",
+STRINGS_CUSTOM_TITLE_MSG =		"Messaggio di Sistema"
+STRINGS_OPTION_MSG_OK =			"Ok"
+STRINGS_OPTION_MSG_YES =		"Si"
+STRINGS_OPTION_MSG_NO =			"No"
 
 --scan.lua
-scantitle =		"Giochi Disponibili [ISO/CSO/PBP]",
-fullbbicon =	"Bolle complete",
-nostretched =	"No allungato",
-defcolor =		"Colore Predefinito",
-bbcolor =		"Colore Bolla",
-pics =			"Premere Triangle per On/Off PICs",
-markgame =		"Seleziona/Deseleziona Gioco",
-bsettings =		"Impostazioni delle bolle",
-notpsp =		"Nessun gioco PSP trovato...",
-installgames =	"Si prega di installare il gioco iso/cso in pspemu/ISO",
-installgames2 =	"e i giochi eboot.pbp in pspemu/PSP/GAME/(MYGAME)",
-press_lr =		"Premere L/R per passare alle icone complete/non allungate.",
-press_select =	"Premere SELECT per ordinare per\nInstalled/Titolo/Data di modifica.",
-press_lright =	"Premere Destra/Sinistra per cambiare il colore di ogni Bolla.",
-press_cross =	"Premere X per creare la tua Bolla.",
-press_circle =	"Premere O per creare le tue Bolle.",
-touchme =		"Tocca due volte",
-press_start =	"Visualizzare l'aiuto: ",
-sort =			"Ordina per",
-sorttitle =		"Titolo",
-sortmtime =		"MTime",
-sortnoinst =	"Installato",
-category =		"Category",
-gameid =		"GameID",
-device =		"Device",
-set =			"Set",
-showpic =		"PIC",
+SCAN_TITLE =					"Giochi Disponibili [ISO/CSO/PBP]"
+SCAN_FULLBUBBLE =				"Bolle complete"
+SCAN_BB_NOTSTRETCHED =			"No allungato"
+SCAN_DEFAULT_COLOR =			"Colore Predefinito"
+SCAN_BUBBLE_COLOR =				"Colore Bolla"
+SCAN_TOGGLE_PICS =				"Premere Triangle per On/Off PICs"
+SCAN_MARK_GAME =				"Seleziona/Deseleziona Gioco"
+SCAN_BUBBLES_SETTINGS =			"Impostazioni delle bolle"
+SCAN_NOTFIND_PSPGAMES =			"Nessun gioco PSP trovato..."
+SCAN_INSTALL_CISO_GAMES =		"Si prega di installare il gioco iso/cso in pspemu/ISO"
+SCAN_INSTALL_PBP_GAMES =		"e i giochi eboot.pbp in pspemu/PSP/GAME/(MYGAME)"
+SCAN_PRESS_LR =					"Premere L/R per passare alle icone complete/non allungate."
+SCAN_PRESS_SELECT =				"Premere SELECT per ordinare per\nInstalled/Titolo/Data di modifica."
+SCAN_PRESS_LEFT_RIGHT =			"Premere Destra/Sinistra per cambiare il colore di ogni Bolla."
+SCAN_PRESS_CROSS =				"Premere X per creare la tua Bolla."
+SCAN_PRESS_CIRCLE =				"Premere O per creare le tue Bolle."
+SCAN_DOUBLE_TAP =				"Tocca due volte"
+SCAN_PRESS_START =				"Visualizzare l'aiuto: "
+SCAN_SORT_BY =					"Ordina per"
+SCAN_SORT_TITLE =				"Titolo"
+SCAN_SORT_MTIME =				"MTime"
+SCAN_SORT_INSTALLED =			"Installato"
+SCAN_SORT_CATEGORY =			"Category"
+SCAN_SORT_GAMEID =				"GameID"
+SCAN_SORT_DEVICE =				"Device"
+SCAN_SETPACK =					"Set"
+SCAN_SHOW_PIC =					"PIC"
 
 --submenu
-warning =		"Le modifiche avranno effetto una volta che si preme START",
-setimgs =		"Set Imgs",
-setpsp =		"Immagini di PSP",
-convert8 =		"Convert 8bits",
-def_sort =		"Ordinamento predefinito",
-def_color =		"Colore predefinito",
-save =			"Impostazioni EXTRA",
-update =		"Aggiorna ABM",
-checkadr =		"Verifica Adrenaline",
-repairbin =		"Auto-Repair boot.bin",
-bubblescount =	"Total Fix Bubbles:",
+STRINGS_WARNING =				"Le modifiche avranno effetto una volta che si preme START"
+STRINGS_SETIMGS =				"Set Imgs"
+STRINGS_SETPSP =				"PSP Images"
+STRINGS_CONVERT_8BITS =			"Convert 8bits"
+STRINGS_DEFAULT_SORT =			"Ordinamento predefinito"
+STRINGS_DEFAULT_COLOR =			"Colore predefinito"
+STRINGS_EXTRA_SETTINGS =		"Impostazioni EXTRA"
+STRINGS_ABM_UPDATE =			"Aggiorna ABM"
+STRINGS_CHECK_ADRENALINE =		"Verifica Adrenaline"
+STRINGS_AUTOFIX_BOOTBIN =		"Auto-Repair boot.bin"
+STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --bar progress
-bubbles =		"Bolle",
-
-}
+STRINGS_BUBBLES_BAR =			"Bolle"

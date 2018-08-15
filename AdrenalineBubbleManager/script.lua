@@ -18,7 +18,7 @@ dofile("system/callbacks.lua")
 if os.access() == 0 then
 	if back2 then back2:blit(0,0) end
 	screen.flip()
-	custom_msg(strings.unsafe,0)
+	custom_msg(UNSAFE_MODE,0)
 	os.exit()
 end
 
@@ -71,7 +71,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		if oncopy then
 			if back2 then back2:blit(0,0) end
 			screen.flip()
-			custom_msg(strings.adrinst,0)
+			custom_msg(ADRBBOTER_INSTALLED,0)
 			os.delay(500)
 		end
 
@@ -90,7 +90,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 				if not files.exists(list[i].path.."/data/boot.bin") then
 				
 					if back2 then back2:blit(0,0) end
-					message_wait(strings.upd_bubbles..list[i].id)
+					message_wait(UPDATE_BUBBLES..list[i].id)
 					os.delay(50)
 
 					AutoMakeBootBin(list[i])
@@ -114,5 +114,5 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	scan.show()
 
 else
-	custom_msg(strings.notadr,0)
+	custom_msg(ADRENALINE_NOT_INSTALLED,0)
 end

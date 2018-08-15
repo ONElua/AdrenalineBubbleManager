@@ -14,7 +14,6 @@ color.loadpalette()
 -- Set ux0 folder path
 local pathABM 	= "ux0:data/ABM/"
 __PATHINI		= "ux0:data/ABM/config.ini"
-__PATH_LANG		= "ux0:data/ABM/lang/"
 
 __PATHSETS = "ux0:ABM/"
 files.mkdir(__PATHSETS)
@@ -52,26 +51,10 @@ buttonskey2 = image.load("resources/buttons2.png",30,20)
 -- Loading language file
 __LANG = os.language()
 
-__STRINGS		= 78
-
 dofile("resources/lang/english_us.txt")
-if not files.exists(__PATH_LANG.."english_us.txt") then files.copy("resources/lang/english_us.txt",__PATH_LANG)
-else
-	dofile(__PATH_LANG.."english_us.txt")
-	local cont_strings = 0
-	for key,value in pairs(strings) do cont_strings += 1 end
---os.message(cont_strings)
-	if cont_strings != __STRINGS then files.copy("resources/lang/english_us.txt",__PATH_LANG) end
-end
-
-if files.exists(__PATH_LANG..__LANG..".txt") then
-	dofile(__PATH_LANG..__LANG..".txt")
-	local cont_strings = 0
-	for key,value in pairs(strings) do cont_strings += 1 end
-	if cont_strings != __STRINGS then dofile("resources/lang/english_us.txt") end
-else
-	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
-end
+if not files.exists("ux0:data/ABM/lang/english_us.txt") then files.copy("resources/lang/english_us.txt","ux0:data/ABM/lang/") end
+if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
+if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
 
 -- Loading custom ttf font if exits
 if files.exists(pathABM.."/resources/"..__LANG..".ttf") then font.setdefault(pathABM.."/resources/"..__LANG..".ttf") end
@@ -85,22 +68,21 @@ accept,cancel = "cross","circle"
 accept_x = 1
 SYMBOL_BACK = SYMBOL_CIRCLE
 SYMBOL_BACK2 = SYMBOL_CROSS
-strings.press = strings.press_cross
+STRING_PRESS = SCAN_PRESS_CROSS
 if buttons.assign()==0 then
 	accept,cancel = "circle","cross"
 	accept_x = 0
 	SYMBOL_BACK = SYMBOL_CROSS
 	SYMBOL_BACK2 = SYMBOL_CIRCLE
-	strings.press = strings.press_circle
+	STRING_PRESS = SCAN_PRESS_CIRCLE
 end
 
 colors = { 	
-			color.new(224,224,224), -- new default color, closely resembles official bubbles
-			color.black,		-- old default color
-			--you can add more colors :D
-			color.red, color.green, color.blue, color.cyan, color.gray, color.magenta, color.yellow,
-			color.maroon, color.grass, color.navy, color.turquoise, color.violet, color.olive,
+			color.new(224,224,224), -- new default color, closely resembles official bubbles, dont modify this color (defect color)...
+			color.black, color.red, color.green, color.blue, color.cyan, color.gray, color.magenta,
+			color.yellow, color.maroon, color.grass, color.navy, color.turquoise, color.violet, color.olive,
 			color.white, color.orange, color.chocolate
+			--you can add more colors :D
 		}
 
 -- Debug utilities :D
@@ -118,7 +100,7 @@ function init_msg(msg)
 	os.delay(5)
 end
 
-sort_games = { strings.sorttitle, strings.sortmtime, strings.sortnoinst, strings.category, strings.gameid, strings.device }
+sort_games = { SCAN_SORT_TITLE, SCAN_SORT_MTIME, SCAN_SORT_INSTALLED, SCAN_SORT_CATEGORY, SCAN_SORT_GAMEID, SCAN_SORT_DEVICE }
 sort_mode = { "title", "mtime", "install", "type", "gameid", "device" }
 
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
@@ -127,16 +109,15 @@ __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
-__CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","0"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
-if __UPDATE == 1 then _update = strings.option1_msg else _update = strings.option2_msg end
-if __CHECKADR == 1 then _adr = strings.option1_msg else _adr = strings.option2_msg end
-if __SET == 0 then setpack = strings.option2_msg elseif __SET == 6 then setpack = strings.setpsp else setpack = strings.set..__SET end
-if __8PNG == 1 then _png = strings.option1_msg else _png = strings.option2_msg end
-if __CUSTOM == 1 then _custom = strings.option1_msg else _custom = strings.option2_msg end
+if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
+if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
+--if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = SCAN_SETPACK..__SET end
+if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_SETPSP else setpack = SCAN_SETPACK..__SET end
+if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
 TOTAL_SET = 6
 
 --[[
@@ -210,14 +191,23 @@ end
 
 function image.nostretched(img,cc)
     local w,h = img:getw(), img:geth()
-	if w != 80 or h != 80 then w,h = 100,55
-	img = img:copyscale(w,h) end 
+	
+	--[[if w != 80 or h != 80 then w,h = 108,60
+	else w,h = 90,90 end 
+	img = img:copyscale(w,h)
+	]]
+	if w != 80 or h != 80 then
+		w,h = 100,55
+		img = img:copyscale(w,h)
+	end
+
 	local px,py = 64 - (w/2),64 - (h/2)
 	local sheet = image.new(128, 128, cc)
 	for y=0,h-1 do
 		for x=0,w-1 do
 			local c = img:pixel(x,y)
 			if c:a() == 0 then c = cc end 
+			--sheet:pixel(px+x, py+y, c)
 			if h % 2 == 0 then sheet:pixel(px+x, py+y, c) else sheet:pixel(px+x, py+y+1, c) end
 		end
 	end
@@ -240,8 +230,8 @@ function custom_msg(printtext,mode)
 	end
 
 	xtext = 480 - (screen.textwidth(printtext)/2)
-	xopt1 = 360 - (screen.textwidth(strings.option1_msg)/2)
-	xopt2 = 600 - (screen.textwidth(strings.option2_msg)/2)
+	xopt1 = 360 - (screen.textwidth(STRINGS_OPTION_MSG_YES)/2)
+	xopt2 = 600 - (screen.textwidth(STRINGS_OPTION_MSG_NO)/2)
 
 	buttons.read()
 	local result = false
@@ -250,14 +240,14 @@ function custom_msg(printtext,mode)
 		if buff then buff:blit(0,0) end
 		if box then	box:blit(480,272) end
 
-		screen.print(480,165, strings.title_msg, 1, color.white, color.gray, __ACENTER)
+		screen.print(480,165, STRINGS_CUSTOM_TITLE_MSG, 1, color.white, color.gray, __ACENTER)
 		screen.print(xtext,200, printtext,1, color.gray)
 
 		if mode == 0 then
-			screen.print(xopt1+120,363, SYMBOL_BACK2.." : "..strings.option_msg,1.02, color.gray)
+			screen.print(xopt1+120,363, SYMBOL_BACK2.." : "..STRINGS_OPTION_MSG_OK,1.02, color.gray)
 		else
-			screen.print(xopt1,363, SYMBOL_BACK2.." : "..strings.option1_msg,1.02, color.gray)
-			screen.print(xopt2,363, SYMBOL_BACK.." : "..strings.option2_msg,1.02, color.gray)
+			screen.print(xopt1,363, SYMBOL_BACK2.." : "..STRINGS_OPTION_MSG_YES,1.02, color.gray)
+			screen.print(xopt2,363, SYMBOL_BACK.." : "..STRINGS_OPTION_MSG_NO,1.02, color.gray)
 		end
 
 		screen.flip()
@@ -368,11 +358,9 @@ function AutoMakeBootBin(obj)
 		end
 		fp:write(int2str(number))
 
-		--Customized
-		if __CUSTOM == 1 then
-			fp:seek("set",0x0C)
-			fp:write(int2str(1))
-		end
+		--Customized is ready in boot.bin (default)
+		--fp:seek("set",0x0C)
+		--fp:write(int2str(1))
 
 		--Path2game
 		fp:seek("set",0x20)
@@ -390,7 +378,7 @@ function AutoMakeBootBin(obj)
 end
 
 function message_wait(message)
-	local mge = (message or strings.wait)
+	local mge = (message or MESSAGE_WAIT)
 	local titlew = string.format(mge)
 	local w,h = screen.textwidth(titlew,1) + 30,70
 	local x,y = 480 - (w/2), 272 - (h/2)

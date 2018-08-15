@@ -1,104 +1,100 @@
 --Texts (only text in " ")
-strings = {
 
 --script.lua
-unsafe =		"Cet homebrew requiert que le mode UNSAFE soit activé!!!",
-adrinst =		"Le plugin AdrBubbleBooter a été installé... \nUn redémarrage est requis...",
-notadr =		"Adrenaline v6 n'a pas été installé...",
-wait =			"Please wait...",
-upd_bubbles =	"Updating Bubble: ",
+UNSAFE_MODE =					"Cet homebrew requiert que le mode UNSAFE soit activé!!!"
+ADRBBOTER_INSTALLED =			"Le plugin AdrBubbleBooter a été installé... \nUn redémarrage est requis..."
+ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 n'a pas été installé..."
+MESSAGE_WAIT =					"Please wait..."
+UPDATE_BUBBLES =				"Updating Bubble: "
 
 --callbacks.lua
-updatebb =		"Updating bubble images: ",
-instbb =		"Installation de la bulle: ",
-file =			"Fichier: ",
+UPDATING_BUBBLES =				"Updating bubble images: "
+INSTALLING_BUBBLE =				"Installation de la bulle: "
+STRING_FILE =					"Fichier: "
 
 --bubbles.lua
-btitle =		"SETTINGS BUBBLES",
-count =			"Nombre de jeu(s) : ",
-selmarks =		"Remove Bubbles",
-startmarks =	"START: (ALL/CLEAN)",
-uninstall =		"Désinstallation",
-editboot =		"Editer boot.bin",
-back =			"Retour",
-toggle =		"Options",
-doneedit =		"Valider",
-notbubbles =	"Vous avez aucune bulle installée  :(",
-createbb =		"Réessayer après installation d'une bulle en appuyant sur X sur un jeu",
-togoback =		"Retour",
-uninstallbb =	"Voulez-vous vraiment désinstaller la bulle, nombre de  bulle: ",
-inject =		"Injecter l'images",
-path2game =		"Whole Path",
-editpath =		"Edit Path",
+BUBBLES_TITLE =					"SETTINGS BUBBLES"
+BUBBLES_COUNT =					"Nombre de jeu(s) : "
+BUBBLES_SELSMARKS =				"Remove Bubbles"
+BUBBLES_STARTMARKS =			"START: (ALL/CLEAN)"
+BUBBLES_UNINSTALL =				"Désinstallation"
+BUBBLES_EDITBOOT_BIN =			"Editer boot.bin"
+BUBBLES_TOGGLE =				"Options"
+BUBBLES_DONE_EDIT =				"Valider"
+BUBBLES_NOT_BUBBLES =			"Vous avez aucune bulle installée  :("
+BUBBLES_CREAT_BB =				"Réessayer après installation d'une bulle en appuyant sur X sur un jeu"
+BUBBLES_GOTOBACK =				"Retour"
+BUBBLES_UNINSTALL_QUESTION =	"Voulez-vous vraiment désinstaller la bulle, nombre de  bulle: "
+BUBBLES_INJECT =				"Injecter l'images"
+BUBBLES_PATH2GAME =				"Whole Path"
+BUBBLES_EDITPATH =				"Edit Path"
 
 --bubles.redit
-redit =			"Paramètre de changement de l'image de la bulle",
-reinstall =		"Appuyez sur START pour charger toutes les images à la bulle",
-notresources =	"Rien à afficher",
-editbubbles =	"Bubble to edit",
+BUBBLES_RE_EDIT =				"Paramètre de changement de l'image de la bulle"
+BUBBLES_REINSTALL =				"Appuyez sur START pour charger toutes les images à la bulle"
+BUBBLES_NOTRESOURCES =			"Rien à afficher"
+BUBBLES_EDIT_BB =				"Bubble to edit"
 
 --osk
-titleosk =		"Nom de la bulle",
-putnameosk =	"Mettez le nom ici",
+STRINGS_TITLE_OSK =				"Nom de la bulle"
+STRINGS_NAME_OSK =				"Mettez le nom ici"
 
 --Process
-convert =		"Conversion du jeu en cours...",
-errinst =		"Désolé, il y'a eu une erreur pendant l'installation",
-unk =			"UNK",
+STRINGS_CONVERTING =			"Conversion du jeu en cours..."
+STRINGS_ERROR_INST =			"Désolé, il y'a eu une erreur pendant l'installation"
+STRINGS_UNK =					"UNK"
 
 --debug
-loadciso =		"Chargement du fichier C/ISO",
-loadpbp =		"Chargement du fichier PBP",
+DEBUG_LOAD_CISO =				"Chargement du fichier C/ISO"
+DEBUG_LOAD_PBP =				"Chargement du fichier PBP"
 
 --custom message
-title_msg =		"Adrenaline Bubble Manager",
-option_msg =	"OK",
-option1_msg =	"Oui",
-option2_msg =	"Non",
+STRINGS_CUSTOM_TITLE_MSG =		"Adrenaline Bubble Manager"
+STRINGS_OPTION_MSG_OK =			"OK"
+STRINGS_OPTION_MSG_YES =		"Oui"
+STRINGS_OPTION_MSG_NO =			"Non"
 
 --scan.lua
-scantitle =		"Liste de jeux disponible [ISO/CSO/PBP]",
-fullbbicon =	"Bulle pleine",
-nostretched =	"Bulle coupée",
-defcolor =		"Couleur par défaut",
-bbcolor =		"Couleur de la bulle",
-pics =			"--> Triangle pour Afficher l'image PIC0",
-markgame =		"Sélectionner/désélectionner un jeu",
-bsettings =		"Paramètres des bulles",
-notpsp =		"Pas de jeux PSP trouvé...",
-installgames =	"SVP, veuillez placer un jeu PSP au format ISO/CSO dans pspemu/ISO",
-installgames2 =	"ou un jeu au format eboot.pbp dans pspemu/PSP/GAME/(MYGAME)",
-press_lr =		"\n--> L ou R pour switcher entre la bulle pleine ou coupée.",
-press_select =	"--> Select pour classer par\nInstaller/Titre/Date de modification.",
-press_lright =	"--> Gauche ou Droite pour changer la couleur de la bulle.",
-press_cross =	"Appuyer sur X pour créer la bulle.",
-press_circle =	"Appuyer sur O pour créer la bulle.",
-touchme =		"Toucher l'écran",
-press_start =	"Aide",
-sort =			"Triér par",
-sorttitle =		"Titre",
-sortmtime =		"Date de modification",
-sortnoinst =	"Installer",
-category =		"Category",
-gameid =		"GameID",
-device =		"Device",
-set =			"Set",
-showpic =		"PIC",
+SCAN_TITLE =					"Liste de jeux disponible [ISO/CSO/PBP]"
+SCAN_FULLBUBBLE =				"Bulle pleine"
+SCAN_BB_NOTSTRETCHED =			"Bulle coupée"
+SCAN_DEFAULT_COLOR =			"Couleur par défaut"
+SCAN_BUBBLE_COLOR =				"Couleur de la bulle"
+SCAN_TOGGLE_PICS =				"--> Triangle pour Afficher l'image PIC0"
+SCAN_MARK_GAME =				"Sélectionner/désélectionner un jeu"
+SCAN_BUBBLES_SETTINGS =			"Paramètres des bulles"
+SCAN_NOTFIND_PSPGAMES =			"Pas de jeux PSP trouvé..."
+SCAN_INSTALL_CISO_GAMES =		"SVP, veuillez placer un jeu PSP au format ISO/CSO dans pspemu/ISO"
+SCAN_INSTALL_PBP_GAMES =		"ou un jeu au format eboot.pbp dans pspemu/PSP/GAME/(MYGAME)"
+SCAN_PRESS_LR =					"\n--> L ou R pour switcher entre la bulle pleine ou coupée."
+SCAN_PRESS_SELECT =				"--> Select pour classer par\nInstaller/Titre/Date de modification."
+SCAN_PRESS_LEFT_RIGHT =			"--> Gauche ou Droite pour changer la couleur de la bulle."
+SCAN_PRESS_CROSS =				"Appuyer sur X pour créer la bulle."
+SCAN_PRESS_CIRCLE =				"Appuyer sur O pour créer la bulle."
+SCAN_DOUBLE_TAP =				"Toucher l'écran"
+SCAN_PRESS_START =				"Aide"
+SCAN_SORT_BY =					"Triér par"
+SCAN_SORT_TITLE =				"Titre"
+SCAN_SORT_MTIME =				"Date de modification"
+SCAN_SORT_INSTALLED =			"Installer"
+SCAN_SORT_CATEGORY =			"Category"
+SCAN_SORT_GAMEID =				"GameID"
+SCAN_SORT_DEVICE =				"Device"
+SCAN_SETPACK =					"Set"
+SCAN_SHOW_PIC =					"PIC"
 
 --submenu
-warning =		"Appuyez sur START pour valider les changements.",
-setimgs =		"Set Imgs",
-setpsp =		"Images PSP",
-convert8 =		"Convert 8bits",
-def_sort =		"Trie par défaut",
-def_color =		"Couleur par défaut",
-save =			"Menu Extra",
-update =		"Mise à jour automatique d'Adrenaline Bubble Manager",
-checkadr =		"Vérification d'Adrenaline si installer",
-repairbin =		"Auto-Repair boot.bin",
-bubblescount =	"Total Fix Bubbles:",
+STRINGS_WARNING =				"Appuyez sur START pour valider les changements."
+STRINGS_SETIMGS =				"Set Imgs"
+STRINGS_SETPSP =				"PSP Images"
+STRINGS_CONVERT_8BITS =			"Convert 8bits"
+STRINGS_DEFAULT_SORT =			"Trie par défaut"
+STRINGS_DEFAULT_COLOR =			"Couleur par défaut"
+STRINGS_EXTRA_SETTINGS =		"Menu Extra"
+STRINGS_ABM_UPDATE =			"Mise à jour automatique d'Adrenaline Bubble Manager"
+STRINGS_CHECK_ADRENALINE =		"Vérification d'Adrenaline si installer"
+STRINGS_AUTOFIX_BOOTBIN =		"Auto-Repair boot.bin"
+STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --bar progress
-bubbles =		"Bulle en cours de création...",
-
-}
+STRINGS_BUBBLES_BAR =			"Bulle en cours de création..."

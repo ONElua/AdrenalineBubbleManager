@@ -1,104 +1,100 @@
 --Texts (редактировать только текст, заключённый в кавычки " ")
-strings = {
 
 --script.lua
-unsafe =        "Необходимо активировать UNSAFE MODE для Homebrew!!!",
-adrinst =       "Плагин AdrBubbleBooter установлен. \nТребуется выполнить перезагрузку PS Vita... :)",
-notadr =        "Adrenaline v6 не обнаружен...",
-wait =			"Пожалуйста, подождите...",
-upd_bubbles =	"Обновление пузыря: ",
+UNSAFE_MODE =        			"Необходимо активировать UNSAFE MODE для Homebrew!!!"
+ADRBBOTER_INSTALLED =       	"Плагин AdrBubbleBooter установлен. \nТребуется выполнить перезагрузку PS Vita... :)"
+ADRENALINE_NOT_INSTALLED =  	"Adrenaline v6 не обнаружен..."
+MESSAGE_WAIT =					"Пожалуйста, подождите..."
+UPDATE_BUBBLES =				"Обновление пузыря: "
 
 --callbacks.lua
-updatebb =		"Обновление картинки пузыря: ",
-instbb =        "Создание пузыря:",
-file =          "Файл:",
+UPDATING_BUBBLES =				"Обновление картинки пузыря: "
+INSTALLING_BUBBLE =        		"Создание пузыря:"
+STRING_FILE =          			"Файл:"
 
 --bubbles.lua
-btitle =		"SETTINGS BUBBLES",
-count =	        "Всего:",
-selmarks =		"Remove Bubbles",
-startmarks =	"START: (ALL/CLEAN)",
-uninstall =     "Удалить",
-editboot =      "Редактировать boot.bin",
-back =          "Назад",
-toggle =        "Изменить значение",
-doneedit =      "Применить",
-notbubbles =    "Данные не найдены.",
-createbb =      "Создайте пузырь и повторите попытку.",
-togoback =      "Назад",
-uninstallbb =   "Будет удалено пузырей:",
-inject =		"Вставить imgs",
-path2game =		"Whole Path",
-editpath =		"Edit Path",
+BUBBLES_TITLE =					"SETTINGS BUBBLES"
+BUBBLES_COUNT =	        		"Всего:"
+BUBBLES_SELSMARKS =				"Remove Bubbles"
+BUBBLES_STARTMARKS =			"START: (ALL/CLEAN)"
+BUBBLES_UNINSTALL =     		"Удалить"
+BUBBLES_EDITBOOT_BIN =      	"Редактировать boot.bin"
+BUBBLES_TOGGLE =        		"Изменить значение"
+BUBBLES_DONE_EDIT =      		"Применить"
+BUBBLES_NOT_BUBBLES =    		"Данные не найдены."
+BUBBLES_CREAT_BB =      		"Создайте пузырь и повторите попытку."
+BUBBLES_GOTOBACK =      		"Назад"
+BUBBLES_UNINSTALL_QUESTION =   "Будет удалено пузырей:"
+BUBBLES_INJECT =				"Вставить imgs"
+BUBBLES_PATH2GAME =				"Whole Path"
+BUBBLES_EDITPATH =				"Edit Path"
 
 --bubles.redit
-redit =			"Загрузчик ресурсов пузыря",
-reinstall =		"Нажмите START для загрузки всех картинок в пузырь",
-notresources =	"Ничего не показывать",
-editbubbles =	"Пузырь для редактирования",
+BUBBLES_RE_EDIT =				"Загрузчик ресурсов пузыря"
+BUBBLES_REINSTALL =				"Нажмите START для загрузки всех картинок в пузырь"
+BUBBLES_NOTRESOURCES =			"Ничего не показывать"
+BUBBLES_EDIT_BB =				"Пузырь для редактирования"
 
 --osk
-titleosk =      "Название пузыря",
-putnameosk =    "Введите название",
+STRINGS_TITLE_OSK =      		"Название пузыря"
+STRINGS_NAME_OSK =    			"Введите название"
 
 --Process
-convert =       "Конвертирование ресурсов...",
-errinst =       "В процессе установки произошла ошибка.",
-unk =           "UNK",
+STRINGS_CONVERTING =       		"Конвертирование ресурсов..."
+STRINGS_ERROR_INST =       		"В процессе установки произошла ошибка."
+STRINGS_UNK =          			"UNK"
 
 --debug
-loadciso =      "Загрузка C/ISO",
-loadpbp =       "Загрузка PBP",
+DEBUG_LOAD_CISO =      			"Загрузка C/ISO"
+DEBUG_LOAD_PBP =       			"Загрузка PBP"
 
 --custom message
-title_msg =     "Системное сообщение",
-option_msg =    "Ок",
-option1_msg =   "Применить",
-option2_msg =   "Отмена",
+STRINGS_CUSTOM_TITLE_MSG =     "Системное сообщение"
+STRINGS_OPTION_MSG_OK =    		"Ок"
+STRINGS_OPTION_MSG_YES =   		"Применить"
+STRINGS_OPTION_MSG_NO =   		"Отмена"
 
 --scan.lua
-scantitle =     "Доступные игры [ISO/CSO/PBP]",
-fullbbicon =    "Иконка:\nРастянуть",
-nostretched =   "Иконка:\nОригинал",
-defcolor =      "Фоновый цвет пузыря",
-bbcolor =       "Фоновый цвет пузыря",
-pics =          "Triangle - Просмотр оформления",
-markgame =      "Выделить/снять выделение",
-bsettings =     "Настройки пузырей",
-notpsp =        "Не найдено ни одной PSP игры...",
-installgames =  "Поместите образы iso/cso в папку pspemu/ISO",
-installgames2 = "Игры формата eboot.pbp - в pspemu/PSP/GAME/(MYGAME)",
-press_lr =		"L/R - выбор типа иконки пузыря",
-press_select =	"SELECT - сортировка по\nInstalled/имени/дате",
-press_lright =	"Влево/вправо - изменение фонового цвета пузыря.",
-press_cross =	"Нажмите X для создание вашего пузыря.",
-press_circle =	"Нажмите O для создание вашего пузыря.",
-touchme =		"Двойное нажатие",
-press_start =	"Помощь",
-sort =			"Сортировка по",
-sorttitle =		"Названию",
-sortmtime =		"MTime",
-sortnoinst =	"Установке",
-category =		"Категории",
-gameid =		"GameID",
-device =		"Device",
-set =			"Задать",
-showpic =		"PIC",
+SCAN_TITLE =     				"Доступные игры [ISO/CSO/PBP]"
+SCAN_FULLBUBBLE =    			"Иконка:\nРастянуть"
+SCAN_BB_NOTSTRETCHED =   		"Иконка:\nОригинал"
+SCAN_DEFAULT_COLOR =      		"Фоновый цвет пузыря"
+SCAN_BUBBLE_COLOR =       		"Фоновый цвет пузыря"
+SCAN_TOGGLE_PICS =          	"Triangle - Просмотр оформления"
+SCAN_MARK_GAME =      			"Выделить/снять выделение"
+SCAN_BUBBLES_SETTINGS =     	"Настройки пузырей"
+SCAN_NOTFIND_PSPGAMES =        "Не найдено ни одной PSP игры..."
+SCAN_INSTALL_CISO_GAMES =  		"Поместите образы iso/cso в папку pspemu/ISO"
+SCAN_INSTALL_PBP_GAMES = 		"Игры формата eboot.pbp - в pspemu/PSP/GAME/(MYGAME)"
+SCAN_PRESS_LR =					"L/R - выбор типа иконки пузыря"
+SCAN_PRESS_SELECT =				"SELECT - сортировка по\nInstalled/имени/дате"
+SCAN_PRESS_LEFT_RIGHT =			"Влево/вправо - изменение фонового цвета пузыря."
+SCAN_PRESS_CROSS =				"Нажмите X для создание вашего пузыря."
+SCAN_PRESS_CIRCLE =				"Нажмите O для создание вашего пузыря."
+SCAN_DOUBLE_TAP =				"Двойное нажатие"
+SCAN_PRESS_START =				"Помощь"
+SCAN_SORT_BY =					"Сортировка по"
+SCAN_SORT_TITLE =				"Названию"
+SCAN_SORT_MTIME =				"MTime"
+SCAN_SORT_INSTALLED =			"Установке"
+SCAN_SORT_CATEGORY =			"Категории"
+SCAN_SORT_GAMEID =				"GameID"
+SCAN_SORT_DEVICE =				"Device"
+SCAN_SETPACK =					"Задать"
+SCAN_SHOW_PIC =					"PIC"
 
 --submenu
-warning =		"Изменения вступят в силу после нажатия START",
-setimgs =		"Задать Imgs",
-setpsp =		"Изображения PSP",
-convert8 =		"Преобразование 8 бит",
-def_sort =		"Сортировка по умолчанию",
-def_color =		"Цвет по умолчанию",
-save =			"Дополнительные настройки",
-update =		"Обновление ABM",
-checkadr =		"Проверка Adrenaline",
-repairbin =		"Auto-Repair boot.bin",
-bubblescount =	"Всего исправлено пузырей:",
+STRINGS_WARNING =				"Изменения вступят в силу после нажатия START"
+STRINGS_SETIMGS =				"Задать Imgs"
+STRINGS_SETPSP =				"PSP Images"
+STRINGS_CONVERT_8BITS =			"Преобразование 8 бит"
+STRINGS_DEFAULT_SORT =			"Сортировка по умолчанию"
+STRINGS_DEFAULT_COLOR =			"Цвет по умолчанию"
+STRINGS_EXTRA_SETTINGS =		"Дополнительные настройки"
+STRINGS_ABM_UPDATE =			"Обновление ABM"
+STRINGS_CHECK_ADRENALINE =		"Проверка Adrenaline"
+STRINGS_AUTOFIX_BOOTBIN =		"Auto-Repair boot.bin"
+STRINGS_BB_FIX_COUNT =			"Всего исправлено пузырей:"
 
 --bar progress
-bubbles =       "Пузыри",
-
-}
+STRINGS_BUBBLES_BAR =       	"Пузыри"

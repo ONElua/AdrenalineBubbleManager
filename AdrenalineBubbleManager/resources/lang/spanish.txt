@@ -1,104 +1,100 @@
 --Texts (only text in " ")
-strings = {
 
 --script.lua
-unsafe =		"MODO UNSAFE es requerido para usar este Homebrew !!!",
-adrinst =		"El plugin AdrBubbleBooter ha sido instalado... \nNecesitamos reiniciar tu PSVita... :)",
-notadr =		"Adrenaline v6 no instalada...",
-wait =			"Por Favor Espere...",
-upd_bubbles =	"Actualizando Burbuja: ",
+UNSAFE_MODE =					"MODO UNSAFE es requerido para usar este Homebrew !!!"
+ADRBBOTER_INSTALLED =			"El plugin AdrBubbleBooter ha sido instalado... \nNecesitamos reiniciar tu PSVita... :)"
+ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 no instalada..."
+MESSAGE_WAIT =					"Por Favor Espere..."
+UPDATE_BUBBLES =				"Actualizando Burbuja: "
 
 --callbacks.lua
-updatebb =		"Actualizando Burbuja: ",
-instbb =		"Instalando Burbuja: ",
-file =			"Archivo: ",
+UPDATING_BUBBLES =				"Actualizando Burbuja: "
+INSTALLING_BUBBLE =				"Instalando Burbuja: "
+STRING_FILE =					"Archivo: "
 
 --bubbles.lua
-btitle =		"AJUSTES DE BURBUJAS",
-count =			"Total: ",
-selmarks =		"Eliminar Burbujas",
-startmarks =	"START: (Todos/Limpiar)",
-uninstall =		"Desinstalar",
-editboot =		"Editar boot.bin",
-back =			"Regresar",
-toggle =		"Opciones",
-doneedit =		"Terminar Edición",
-notbubbles =	"No hay burbujas :(",
-createbb =		"Inténtalo de nuevo después de crear algunas burbujas.",
-togoback =		"Volver Atrás",
-uninstallbb =	"Vas a Desinstalar Burbuja(s) : ",
-inject =		"Inyectar imgs",
-path2game =		"Ruta Completa",
-editpath =		"Editar Ruta",
+BUBBLES_TITLE =					"AJUSTES DE BURBUJAS"
+BUBBLES_COUNT =					"Total: "
+BUBBLES_SELSMARKS =				"Eliminar Burbujas"
+BUBBLES_STARTMARKS =			"START: (Todos/Limpiar)"
+BUBBLES_UNINSTALL =				"Desinstalar"
+BUBBLES_EDITBOOT_BIN =			"Editar boot.bin"
+BUBBLES_TOGGLE =				"Opciones"
+BUBBLES_DONE_EDIT =				"Terminar Edición"
+BUBBLES_NOT_BUBBLES =			"No hay burbujas :("
+BUBBLES_CREAT_BB =				"Inténtalo de nuevo después de crear algunas burbujas."
+BUBBLES_GOTOBACK =				"Volver Atrás"
+BUBBLES_UNINSTALL_QUESTION =	"Vas a Desinstalar Burbuja(s) : "
+BUBBLES_INJECT =				"Inyectar imgs"
+BUBBLES_PATH2GAME =				"Ruta Completa"
+BUBBLES_EDITPATH =				"Editar Ruta"
 
 --bubles.redit
-redit =			"Inyector de imagenes",
-reinstall =		"Presiona START para inyectar las imagenes",
-notresources =	"Nada para mostrar",
-editbubbles =	"Burbuja a Editar:",
+BUBBLES_RE_EDIT =				"Inyector de imagenes"
+BUBBLES_REINSTALL =				"Presiona START para inyectar las imagenes"
+BUBBLES_NOTRESOURCES =			"Nada para mostrar"
+BUBBLES_EDIT_BB =				"Burbuja a Editar:"
 
 --osk
-titleosk =		"Título de la Burbuja",
-putnameosk =	"Coloca aquí el nombre",
+STRINGS_TITLE_OSK =				"Título de la Burbuja"
+STRINGS_NAME_OSK =				"Coloca aquí el nombre"
 
 --Process
-convert =		"Convirtiendo Recursos...",
-errinst =		"Lo siento, Hubo un error en la instalación",
-unk =			"UNK",
+STRINGS_CONVERTING =			"Convirtiendo Recursos..."
+STRINGS_ERROR_INST =			"Lo siento, Hubo un error en la instalación"
+STRINGS_UNK =					"UNK"
 
 --debug
-loadciso =		"Cargando C/ISO",
-loadpbp =		"Cargando PBP",
+DEBUG_LOAD_CISO =				"Cargando C/ISO"
+DEBUG_LOAD_PBP =				"Cargando PBP"
 
 --custom message
-title_msg =		"Mensaje de Sistema",
-option_msg =	"Ok",
-option1_msg =	"Si",
-option2_msg =	"No",
+STRINGS_CUSTOM_TITLE_MSG =		"Mensaje de Sistema"
+STRINGS_OPTION_MSG_OK =			"Ok"
+STRINGS_OPTION_MSG_YES =		"Si"
+STRINGS_OPTION_MSG_NO =			"No"
 
 --scan.lua
-scantitle =		"Juegos Disponibles [ISO/CSO/PBP]",
-fullbbicon =	"Full Bubble",
-nostretched =	"No Stretched",
-defcolor =		"Color PRE",
-bbcolor =		"Color Burbuja",
-pics =			"Presiona Triangulo para Mostrar/No Mostrar PICs",
-markgame =		"Marcar/Desmarcar Juego",
-bsettings =		"Configuración de Burbujas",
-notpsp =		"No hay juegos de PSP...",
-installgames =	"Instala los juegos iso/cso en pspemu/ISO",
-installgames2 =	"y juegos eboot.pbp en pspemu/PSP/GAME/(MYGAME)",
-press_lr =		"Presiona L/R Burbuja Completa/Stretched.",
-press_select =	"Presiona SELECT para ordenar por\nInstalados/Título/Fecha Modificación.",
-press_lright =	"Presiona Izq/Der para cambiar el color de cada Burbuja.",
-press_cross =	"Presiona X para crear tus Burbujas.",
-press_circle =	"Presiona O para crear tus Burbujas.",
-touchme =		"Doble tap",
-press_start =	"Mostrar la ayuda",
-sort =			"Ordenados por",
-sorttitle =		"Título",
-sortmtime =		"Fecha",
-sortnoinst =	"Instalados",
-category =		"Categoría",
-gameid =		"GameID",
-device =		"Device",
-set =			"Set",
-showpic =		"PIC",
+SCAN_TITLE =					"Juegos Disponibles [ISO/CSO/PBP]"
+SCAN_FULLBUBBLE =				"Full Bubble"
+SCAN_BB_NOTSTRETCHED =			"No Stretched"
+SCAN_DEFAULT_COLOR =			"Color PRE"
+SCAN_BUBBLE_COLOR =				"Color Burbuja"
+SCAN_TOGGLE_PICS =				"Presiona Triangulo para Mostrar/No Mostrar PICs"
+SCAN_MARK_GAME =				"Marcar/Desmarcar Juego"
+SCAN_BUBBLES_SETTINGS =			"Configuración de Burbujas"
+SCAN_NOTFIND_PSPGAMES =			"No hay juegos de PSP..."
+SCAN_INSTALL_CISO_GAMES =		"Instala los juegos iso/cso en pspemu/ISO"
+SCAN_INSTALL_PBP_GAMES =		"y juegos eboot.pbp en pspemu/PSP/GAME/(MYGAME)"
+SCAN_PRESS_LR =					"Presiona L/R Burbuja Completa/Stretched."
+SCAN_PRESS_SELECT =				"Presiona SELECT para ordenar por\nInstalados/Título/Fecha Modificación."
+SCAN_PRESS_LEFT_RIGHT =			"Presiona Izq/Der para cambiar el color de cada Burbuja."
+SCAN_PRESS_CROSS =				"Presiona X para crear tus Burbujas."
+SCAN_PRESS_CIRCLE =				"Presiona O para crear tus Burbujas."
+SCAN_DOUBLE_TAP =				"Doble tap"
+SCAN_PRESS_START =				"Mostrar la ayuda"
+SCAN_SORT_BY =					"Ordenados por"
+SCAN_SORT_TITLE =				"Título"
+SCAN_SORT_MTIME =				"Fecha"
+SCAN_SORT_INSTALLED =			"Instalados"
+SCAN_SORT_CATEGORY =			"Categoría"
+SCAN_SORT_GAMEID =				"GameID"
+SCAN_SORT_DEVICE =				"Device"
+SCAN_SETPACK =					"Set"
+SCAN_SHOW_PIC =					"PIC"
 
 --submenu
-warning =		"Los cambios tomarán efecto al presionar START",
-setimgs =		"Set Imgs",
-setpsp =		"Imágenes de PSP",
-convert8 =		"Conversión 8bits",
-def_sort =		"Orden de lista",
-def_color =		"Color a usar",
-save =			"Opciones Extras",
-update =		"Actualización ABM",
-checkadr =		"Revisar Adrenaline",
-repairbin =		"AutoConversión boot.bin",
-bubblescount =	"Total Fix Bubbles:",
+STRINGS_WARNING =				"Los cambios tomarán efecto al presionar START"
+STRINGS_SETIMGS =				"Set Imgs"
+STRINGS_SETPSP =				"PSP Imgs"
+STRINGS_CONVERT_8BITS =			"Conversión 8bits"
+STRINGS_DEFAULT_SORT =			"Orden de lista"
+STRINGS_DEFAULT_COLOR =			"Color a usar"
+STRINGS_EXTRA_SETTINGS =		"Opciones Extras"
+STRINGS_ABM_UPDATE =			"Actualización ABM"
+STRINGS_CHECK_ADRENALINE =		"Revisar Adrenaline"
+STRINGS_AUTOFIX_BOOTBIN =		"AutoConversión boot.bin"
+STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --bar progress
-bubbles =		"Burbujas",
-
-}
+STRINGS_BUBBLES_BAR =			"Burbujas"

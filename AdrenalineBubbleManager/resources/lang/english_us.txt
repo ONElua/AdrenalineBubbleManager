@@ -1,104 +1,100 @@
 --Texts (only text in " ")
-strings = {
 
 --script.lua
-unsafe =		"UNSAFE MODE is required for this Homebrew !!!",
-adrinst =		"AdrBubbleBooter plugin has been installed... \nWe need to restart your PS Vita... :)",
-notadr =		"Adrenaline v6 has not been installed...",
-wait =			"Please wait...",
-upd_bubbles =	"Updating Bubble: ",
+UNSAFE_MODE =					"UNSAFE MODE is required for this Homebrew !!!"
+ADRBBOTER_INSTALLED = 			"AdrBubbleBooter plugin has been installed... \nWe need to restart your PS Vita... :)"
+ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 has not been installed..."
+MESSAGE_WAIT =					"Please wait..."
+UPDATE_BUBBLES =				"Updating Bubble: "
 
 --callbacks.lua
-updatebb =		"Updating Bubble Images: ",
-instbb =		"Installing Bubble:",
-file =			"File:",
+UPDATING_BUBBLES =				"Updating Bubble Images: "
+INSTALLING_BUBBLE =				"Installing Bubble:"
+STRING_FILE =					"File:"
 
 --bubbles.lua
-btitle =		"SETTINGS BUBBLES",
-count =			"Count:",
-selmarks =		"Remove Bubbles",
-startmarks =	"START: (ALL/CLEAN)",
-uninstall =		"Uninstall",
-editboot =		"Edit boot.bin",
-back =			"Back",
-toggle =		"Toggle options",
-doneedit =		"Done editing",
-notbubbles =	"You don´t have any bubbles to list :(",
-createbb =		"Try again after creating some Bubbles",
-togoback =		"To go Back",
-uninstallbb =	"You are going to Uninstall Bubble(s) : ",
-inject =		"Inject imgs",
-path2game =		"Whole Path",
-editpath =		"Edit Path",
+BUBBLES_TITLE =					"SETTINGS BUBBLES"
+BUBBLES_COUNT =					"Count:"
+BUBBLES_SELSMARKS =				"Remove Bubbles"
+BUBBLES_STARTMARKS =			"START: (ALL/CLEAN)"
+BUBBLES_UNINSTALL =				"Uninstall"
+BUBBLES_EDITBOOT_BIN =			"Edit boot.bin"
+BUBBLES_TOGGLE =				"Toggle options"
+BUBBLES_DONE_EDIT =				"Done editing"
+BUBBLES_NOT_BUBBLES =			"You don´t have any bubbles to list :("
+BUBBLES_CREAT_BB =				"Try again after creating some Bubbles"
+BUBBLES_GOTOBACK =				"To go Back"
+BUBBLES_UNINSTALL_QUESTION =	"You are going to Uninstall Bubble(s) : "
+BUBBLES_INJECT =				"Inject imgs"
+BUBBLES_PATH2GAME =				"Whole Path"
+BUBBLES_EDITPATH = 				"Edit Path"
 
 --bubles.redit
-redit =			"Bubble Resources Loader",
-reinstall =		"Press START to load all images to the bubble",
-notresources =	"Nothing to show",
-editbubbles =	"Bubble to edit",
+BUBBLES_RE_EDIT =				"Bubble Resources Loader"
+BUBBLES_REINSTALL =				"Press START to load all images to the bubble"
+BUBBLES_NOTRESOURCES =			"Nothing to show"
+BUBBLES_EDIT_BB =				"Bubble to edit"
 
 --osk
-titleosk =		"Bubble's Title",
-putnameosk =	"Put here name",
+STRINGS_TITLE_OSK =				"Bubble's Title"
+STRINGS_NAME_OSK =				"Put here name"
 
 --Process
-convert =		"Converting Resources...",
-errinst =		"Sorry, There was an Installation error",
-unk =			"UNK",
+STRINGS_CONVERTING =			"Converting Resources..."
+STRINGS_ERROR_INST =			"Sorry, There was an Installation error"
+STRINGS_UNK =					"UNK"
 
 --debug
-loadciso =		"Loading C/ISO",
-loadpbp =		"Loading PBP",
+DEBUG_LOAD_CISO =				"Loading C/ISO"
+DEBUG_LOAD_PBP =				"Loading PBP"
 
 --custom message
-title_msg =		"System Message",
-option_msg =	"OK",
-option1_msg =	"Yes",
-option2_msg =	"No",
+STRINGS_CUSTOM_TITLE_MSG =		"System Message"
+STRINGS_OPTION_MSG_OK =			"OK"
+STRINGS_OPTION_MSG_YES =		"Yes"
+STRINGS_OPTION_MSG_NO =			"No"
 
 --scan.lua
-scantitle =		"Available games [ISO/CSO/PBP]",
-fullbbicon =	"Full Bubble",
-nostretched =	"No Stretched",
-defcolor =		"Default Color",
-bbcolor =		"Bubble Color",
-pics =			"Press Triangle On/Off PICs",
-markgame =		"Mark/Unmark Game",
-bsettings =		"Bubbles Settings",
-notpsp =		"Did not find any PSP Games...",
-installgames =	"Please install the iso/cso games in pspemu/ISO",
-installgames2 =	"and eboot.pbp games in pspemu/PSP/GAME/(MYGAME)",
-press_lr =		"Press L/R to switch between full/no stretched icons.",
-press_select =	"Press Select to sort by\nInstalled/Title/Date of modification.",
-press_lright =	"Press Left/Right to change the color of each bubble.",
-press_cross =	"Press X to create your Bubbles.",
-press_circle =	"Press O to create your Bubbles.",
-touchme =		"Double tap",
-press_start =	"For help",
-sort =			"Sort by",
-sorttitle =		"Title",
-sortmtime =		"MTime",
-sortnoinst =	"Installed",
-category =		"Category",
-gameid =		"GameID",
-device =		"Device",
-set =			"Set",
-showpic =		"PIC",
+SCAN_TITLE =					"Available games [ISO/CSO/PBP]"
+SCAN_FULLBUBBLE =				"Full Bubble"
+SCAN_BB_NOTSTRETCHED =			"No Stretched"
+SCAN_DEFAULT_COLOR =			"Default Color"
+SCAN_BUBBLE_COLOR =				"Bubble Color"
+SCAN_TOGGLE_PICS =				"Press Triangle On/Off PICs"
+SCAN_MARK_GAME =				"Mark/Unmark Game"
+SCAN_BUBBLES_SETTINGS =			"Bubbles Settings"
+SCAN_NOTFIND_PSPGAMES =			"Did not find any PSP Games..."
+SCAN_INSTALL_CISO_GAMES =		"Please install the iso/cso games in pspemu/ISO"
+SCAN_INSTALL_PBP_GAMES =		"and eboot.pbp games in pspemu/PSP/GAME/(MYGAME)"
+SCAN_PRESS_LR =					"Press L/R to switch between full/no stretched icons."
+SCAN_PRESS_SELECT =				"Press Select to sort by\nInstalled/Title/Date of modification."
+SCAN_PRESS_LEFT_RIGHT =			"Press Left/Right to change the color of each bubble."
+SCAN_PRESS_CROSS =				"Press X to create your Bubbles."
+SCAN_PRESS_CIRCLE =				"Press O to create your Bubbles."
+SCAN_DOUBLE_TAP =				"Double tap"
+SCAN_PRESS_START =				"For help"
+SCAN_SORT_BY =					"Sort by"
+SCAN_SORT_TITLE =				"Title"
+SCAN_SORT_MTIME =				"MTime"
+SCAN_SORT_INSTALLED =			"Installed"
+SCAN_SORT_CATEGORY =			"Category"
+SCAN_SORT_GAMEID =				"GameID"
+SCAN_SORT_DEVICE =				"Device"
+SCAN_SETPACK =					"Set"
+SCAN_SHOW_PIC =					"PIC"
 
 --submenu
-warning =		"The changes will take effect once you press START",
-setimgs =		"Set Imgs",
-setpsp =		"PSP Images",
-convert8 =		"Convert 8bits",
-def_sort =		"Default Sort",
-def_color =		"Default Color",
-save =			"Extra Settings",
-update =		"ABM Update",
-checkadr =		"Check Adrenaline",
-repairbin =		"Auto-Repair boot.bin",
-bubblescount =	"Total Fix Bubbles:",
+STRINGS_WARNING =				"The changes will take effect once you press START"
+STRINGS_SETIMGS =				"Set Imgs"
+STRINGS_SETPSP =				"PSP Images"
+STRINGS_CONVERT_8BITS =			"Convert 8bits"
+STRINGS_DEFAULT_SORT =			"Default Sort"
+STRINGS_DEFAULT_COLOR =			"Default Color"
+STRINGS_EXTRA_SETTINGS =		"Extra Settings"
+STRINGS_ABM_UPDATE =			"ABM Update"
+STRINGS_CHECK_ADRENALINE =		"Check Adrenaline"
+STRINGS_AUTOFIX_BOOTBIN =		"Auto-Repair boot.bin"
+STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --bar progress
-bubbles =		"Bubbles",
-
-}
+STRINGS_BUBBLES_BAR =			"Bubbles"
