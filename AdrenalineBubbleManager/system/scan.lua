@@ -235,8 +235,6 @@ function scan.show(objedit)
 
 			if __SET == 0 then
 				screen.print(955,210,setpack.." "..SCAN_SETPACK,1,color.white,color.blue,__ARIGHT)
-			elseif __SET == 6 then
-				screen.print(955,210,STRINGS_SETPSP,1,color.white,color.blue,__ARIGHT)
 			else
 				screen.print(955,210,setpack,1,color.white,color.blue,__ARIGHT)
 			end
@@ -293,8 +291,7 @@ function scan.show(objedit)
 			if buttons.up or buttons.analogly<-60 then 
 				if scr:up() then
 					icon0=nil
-					--if __PIC and __SET == 0 then
-					if __PIC and __SET == 6 then
+					if __PIC and __SET == 0 then
 						load_pic1(scan.list[scr.sel].path)
 					end
 				end
@@ -303,16 +300,14 @@ function scan.show(objedit)
 			if buttons.down or buttons.analogly>60 then
 				if scr:down() then
 					icon0=nil
-					--if __PIC and __SET == 0 then
-					if __PIC and __SET == 6 then
+					if __PIC and __SET == 0 then
 						load_pic1(scan.list[scr.sel].path)
 					end
 				end
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				--if __PIC and __SET == 0 then
-				if __PIC and __SET == 6 then
+				if __PIC and __SET == 0 then
 					load_pic1(scan.list[scr.sel].path)
 				end
 			end
@@ -344,9 +339,8 @@ function scan.show(objedit)
 			--PIC
 			if buttons.triangle then
 				__PIC = not __PIC
-				if __PIC then 
-					--if __SET == 0 then load_pic1(scan.list[scr.sel].path)
-					if __SET == 6 then load_pic1(scan.list[scr.sel].path)
+				if __PIC then
+					if __SET == 0 then load_pic1(scan.list[scr.sel].path)
 					else load_pic1(__PATHSETS.."Set"..__SET.."/BG0.PNG", true) end
 				else
 					pic1 = nil
@@ -511,7 +505,6 @@ function submenu_abm.draw(obj)
 				if __SET < 0 then __SET = TOTAL_SET end
 
 				if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO
-				elseif __SET == 6 then setpack = STRINGS_SETPSP
 				else setpack = SCAN_SETPACK..__SET end
 
 			elseif submenu_abm.scroll.sel == 3 then--Sort

@@ -144,7 +144,7 @@ function bubbles.install(src)
 			end
 			
 			--startup.png
-			if __SET == 0 or __SET == 6 then
+			if __SET == 0 then
 				image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
 			else
 				if files.exists(__PATHSETS.."Set"..__SET.."/startup.png") then
@@ -161,9 +161,9 @@ function bubbles.install(src)
 		end
 
 		------------------------------pic0 (boot) & bg0
-		if __SET == 0 or __SET == 6 then
+		if __SET == 0 then
 
-			if __SET == 6 then
+			if not src.orig then
 				timg = game.getpic1(src.path)
 			else
 				if src.type == "ME" then--PS1 Game
@@ -185,7 +185,7 @@ function bubbles.install(src)
 			end
 			screen.flip()
 
-			if __SET == 6 then
+			if not src.orig then
 				if timg then
 					timg:reset()
 					image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
@@ -197,7 +197,7 @@ function bubbles.install(src)
 						files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
 					else
 						files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
-						files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
+						files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
 					end
 				end
 			else
@@ -206,7 +206,7 @@ function bubbles.install(src)
 					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
 				else
 					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
-					files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
+					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
 				end
 			end
 
@@ -252,7 +252,11 @@ function bubbles.install(src)
 				end
 
 			else
-				files.copy("bubbles/sce_sys_lman/pic0.png", work_dir.."sce_sys/")
+				if src.type == "ME" then--PS1 Game
+					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
+				else
+					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
+				end
 			end
 
 			--"BG0.PNG", 	 w = 840,	h = 500
@@ -390,7 +394,6 @@ function bubbles.install(src)
 			bubbles.list[#bubbles.list].lines = {}
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Inferno
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Eboot.bin
-			--table.insert(bubbles.list[#bubbles.list].lines, 1)--Default: 1 Customized
 			table.insert(bubbles.list[#bubbles.list].lines, __CUSTOM)--Default: 1 Customized
 
 			bubbles.len = #bubbles.list

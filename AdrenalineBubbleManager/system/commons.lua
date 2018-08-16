@@ -124,10 +124,10 @@ _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
 if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
-if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_SETPSP else setpack = SCAN_SETPACK..__SET end
+if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = SCAN_SETPACK..__SET end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
 if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
-TOTAL_SET = 6
+TOTAL_SET = 5
 
 --[[
 	## Library Scroll ##

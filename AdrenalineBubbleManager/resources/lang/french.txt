@@ -86,7 +86,6 @@ SCAN_SHOW_PIC =					"PIC"
 --submenu
 STRINGS_WARNING =				"Appuyez sur START pour valider les changements."
 STRINGS_SETIMGS =				"Set Imgs"
-STRINGS_SETPSP =				"PSP Images"
 STRINGS_CONVERT_8BITS =			"Convert 8bits"
 STRINGS_DEFAULT_SORT =			"Trie par défaut"
 STRINGS_DEFAULT_COLOR =			"Couleur par défaut"
