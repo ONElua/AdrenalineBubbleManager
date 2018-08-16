@@ -65,11 +65,7 @@ elseif files.exists(pathABM.."font/font.pgf") then
 elseif files.exists(pathABM.."font/font.pvf") then
 	fnt = font.load(pathABM.."font/font.pvf")
 end
-
-if fnt then	font.setdefault(fnt)
-else
-	if __LANG == "CHINESE_T" or __LANG == "CHINESE_S" then font.setdefault("resources/font/font.pgf") end
-end
+if fnt then	font.setdefault(fnt) end
 
 SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)
 SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
@@ -121,15 +117,16 @@ __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
+__CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","1"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
 if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
---if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = SCAN_SETPACK..__SET end
 if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_SETPSP else setpack = SCAN_SETPACK..__SET end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
+if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
 TOTAL_SET = 6
 
 --[[

@@ -336,6 +336,11 @@ function bubbles.install(src)
 	-- Path ISO/CSO/PBP to BOOT.BIN
 	local fp = io.open(work_dir.."data/boot.bin", "r+")
 	if fp then
+
+		--Customized
+		fp:seek("set",0x0C)
+		fp:write(int2str(__CUSTOM))
+
 		local path2game = src.path
 		local fill = 256 - #src.path
 		for j=1,fill do
@@ -385,7 +390,8 @@ function bubbles.install(src)
 			bubbles.list[#bubbles.list].lines = {}
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Inferno
 			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Eboot.bin
-			table.insert(bubbles.list[#bubbles.list].lines, 1)--Default: 1 Customized
+			--table.insert(bubbles.list[#bubbles.list].lines, 1)--Default: 1 Customized
+			table.insert(bubbles.list[#bubbles.list].lines, __CUSTOM)--Default: 1 Customized
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
@@ -578,7 +584,10 @@ function bubbles.settings()
 					if bubbles.list[scrids.sel].update then
 						local fp = io.open(bubbles.list[scrids.sel].boot, "r+")
 						if fp then
+
 							local offset = 0x04
+
+							--i=1 for drivers, i=2 for Execute, i=3 for Customized
 							for i=1,3 do
 								fp:seek("set", offset * i)
 								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
@@ -690,7 +699,7 @@ function bubbles.settings()
 					end
 				end
 
-				if isTouched(125,80,270,215) and touch.front[1].released then--pressed then
+				if isTouched(125,80,270,215) and touch.front[1].released then
 					if click then
 						click = false
 						if crono2:time() <= 300 then -- Double click and in time to Go.

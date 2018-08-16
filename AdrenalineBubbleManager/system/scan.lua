@@ -414,9 +414,9 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_SETIMGS },
 		{ text = STRINGS_DEFAULT_SORT },
 		{ text = STRINGS_DEFAULT_COLOR },
+		{ text = STRINGS_CUSTOMIZED },
 		{ text = STRINGS_ABM_UPDATE },
 		{ text = STRINGS_CHECK_ADRENALINE },
-		{ text = STRINGS_AUTOFIX_BOOTBIN },
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -442,14 +442,11 @@ function submenu_abm.run(obj)
 				scan.list[i].selcc =  _color
 			end
 			ini.write(__PATHINI,"color","color",_color)--Save __COLOR
-			
 			ini.write(__PATHINI,"update","update",__UPDATE)--Save __UPDATE
-
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)--Save __CHECKADR
-
 			ini.write(__PATHINI,"resources","set",__SET)--Save __SET
-
 			ini.write(__PATHINI,"convert","8bits",__8PNG)--Save __8PNG
+			ini.write(__PATHINI,"custom","customized",__CUSTOM)--Save __CUSTOM
 
 		end
 		_save = false
@@ -480,12 +477,11 @@ function submenu_abm.draw(obj)
 		if buttons.up then submenu_abm.scroll:up() end
 		if buttons.down then submenu_abm.scroll:down() end
 
-		if isTouched(0,0,960,544) and touch.front[1].released then--pressed then
+		if isTouched(0,0,960,544) and touch.front[1].released then
 			if clicked then
 				clicked = false
 				if crono:time() <= 300 then -- Double click and in time to Go.
 					-- Your action here.
-					--os.message(SCAN_PRESS_LR.."\n\n"..SCAN_PRESS_LEFT_RIGHT.."\n\n"..SCAN_PRESS_SELECT.."\n\n"..SCAN_TOGGLE_PICS.."\n\n"..STRING_PRESS)
 					custom_msg(SCAN_PRESS_LR.."\n\n"..SCAN_PRESS_LEFT_RIGHT.."\n\n"..SCAN_PRESS_SELECT.."\n\n"..SCAN_TOGGLE_PICS.."\n\n"..STRING_PRESS,0)
 				end
 			else
@@ -497,43 +493,6 @@ function submenu_abm.draw(obj)
 
 		if crono:time() > 300 then -- First click, but long time to double click...
 			clicked = false
-		end
-
-		if buttons[accept] and submenu_abm.scroll.sel == 7 then --AutoRepair boot.bin
-			buttons.homepopup(0)
-			local count = 0
-			for i=1,bubbles.len do
-				if files.exists(bubbles.list[i].boot) then
-
-					local fp = io.open(bubbles.list[i].boot,"r+")
-					if fp then
-						--Customized
-						fp:seek("set",0x0C)
-						local custom = str2int(fp:read(4))
-
-						if custom != 1 then
-
-							if back2 then back2:blit(0,0) end
-							message_wait(UPDATE_BUBBLES..bubbles.list[i].id)
-							os.delay(500)
-
-							--Update
-							fp:seek("set",0x0C)
-							fp:write(int2str(1))
-							bubbles.list[i].lines[3] = 1
-
-							count += 1
-							--Close
-							fp:close()
-
-						end
-
-					end--fp
-				end
-			end--for
-			buttons.homepopup(1)
-			custom_msg(STRINGS_BB_FIX_COUNT.." "..count,0)
-			os.delay(100)
 		end
 
 		if (buttons.left or buttons.right) then
@@ -573,11 +532,15 @@ function submenu_abm.draw(obj)
 				if _color > #colors then _color = 1 end
 				if _color < 1 then _color = #colors end
 
-			elseif submenu_abm.scroll.sel == 5 then--Update
+			elseif submenu_abm.scroll.sel == 5 then--Customized
+				if __CUSTOM == 1 then __CUSTOM,_custom = 0,STRINGS_OPTION_MSG_NO
+				else __CUSTOM,_custom = 1,STRINGS_OPTION_MSG_YES end
+
+			elseif submenu_abm.scroll.sel == 6 then--Update
 				if __UPDATE == 1 then __UPDATE,_update = 0,STRINGS_OPTION_MSG_NO
 				else __UPDATE,_update = 1,STRINGS_OPTION_MSG_YES end
 
-			elseif submenu_abm.scroll.sel == 6 then--CheckAdrenaline
+			elseif submenu_abm.scroll.sel == 7 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR,_adr = 0,STRINGS_OPTION_MSG_NO
 				else __CHECKADR,_adr = 1,STRINGS_OPTION_MSG_YES end
 
@@ -608,11 +571,11 @@ function submenu_abm.draw(obj)
 				draw.rect(670,h,18,18, color.white)
 				screen.print(655, h, "(".._color..")", 1, sel_color, color.blue, __ARIGHT)
 			elseif i==5 then
-				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _custom, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==6 then
-				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==7 then
-				screen.print(690, h, SYMBOL_BACK2, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 27
