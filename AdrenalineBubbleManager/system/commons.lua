@@ -23,6 +23,24 @@ files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."font/")
 files.mkdir(pathABM.."resources/")
 
+-- Loading language file
+__LANG = os.language()
+
+dofile("resources/lang/english_us.txt")
+if not files.exists("ux0:data/ABM/lang/english_us.txt") then files.copy("resources/lang/english_us.txt","ux0:data/ABM/lang/") end
+if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
+if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
+
+-- Loading custom font
+if files.exists(pathABM.."font/font.ttf") then
+	fnt = font.load(pathABM.."font/font.ttf")
+elseif files.exists(pathABM.."font/font.pgf") then
+	fnt = font.load(pathABM.."font/font.pgf")
+elseif files.exists(pathABM.."font/font.pvf") then
+	fnt = font.load(pathABM.."font/font.pvf")
+end
+if fnt then	font.setdefault(fnt) end
+
 -- Background image must be (960x554 png or jpg image. Priority to back.png)
 if files.exists(pathABM.."resources/back.png") then back = image.load(pathABM.."resources/back.png")
 	elseif files.exists(pathABM.."resources/back.jpg") then back = image.load(pathABM.."resources/back.jpg")
@@ -48,24 +66,6 @@ else box = image.load("resources/box.png") end
 -- Loading default GFX from app folder
 buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
-
--- Loading language file
-__LANG = os.language()
-
-dofile("resources/lang/english_us.txt")
-if not files.exists("ux0:data/ABM/lang/english_us.txt") then files.copy("resources/lang/english_us.txt","ux0:data/ABM/lang/") end
-if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
-if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
-
--- Loading custom font
-if files.exists(pathABM.."font/font.ttf") then
-	fnt = font.load(pathABM.."font/font.ttf")
-elseif files.exists(pathABM.."font/font.pgf") then
-	fnt = font.load(pathABM.."font/font.pgf")
-elseif files.exists(pathABM.."font/font.pvf") then
-	fnt = font.load(pathABM.."font/font.pvf")
-end
-if fnt then	font.setdefault(fnt) end
 
 SYMBOL_CROSS	= string.char(0xe2)..string.char(0x95)..string.char(0xb3)
 SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
@@ -124,10 +124,10 @@ _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
 if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
-if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = SCAN_SETPACK..__SET end
+if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_PSP_PSX_BUBBLES else setpack = SCAN_SETPACK..__SET end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
 if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
-TOTAL_SET = 5
+TOTAL_SET = 6
 
 --[[
 	## Library Scroll ##

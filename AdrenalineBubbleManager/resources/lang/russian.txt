@@ -90,11 +90,21 @@ STRINGS_CONVERT_8BITS =			"Преобразование 8 бит"
 STRINGS_DEFAULT_SORT =			"Сортировка по умолчанию"
 STRINGS_DEFAULT_COLOR =			"Цвет по умолчанию"
 STRINGS_CUSTOMIZED =			"Customized"
+STRINGS_PSP_PSX_BUBBLES =		"PSP/PSX"
 STRINGS_EXTRA_SETTINGS =		"Дополнительные настройки"
 STRINGS_ABM_UPDATE =			"Обновление ABM"
 STRINGS_CHECK_ADRENALINE =		"Проверка Adrenaline"
 STRINGS_AUTOFIX_BOOTBIN =		"Auto-Repair boot.bin"
 STRINGS_BB_FIX_COUNT =			"Всего исправлено пузырей:"
+
+--submenu descrptions
+STRINGS_DESC_CONVERT8BITS =		"It makes the 8 bits images conversion, if your images are 8bits already set to NO"
+STRINGS_DESC_SETIMGS =			"Select a customset (with your images) to create bubbles , or select PSP/PSX to make bubbles look like originals"
+STRINGS_DESC_DEFAULT_SORT =		"Default Sort when ABM is started"
+STRINGS_DESC_SETIMGS =			"Default Color for bubble creation"
+STRINGS_DESC_CUSTOMIZED =		"To let each bubble have its own settings keep it in YES"
+STRINGS_DESC_ABM_UPDATE =		"Checks for ABM Updates at start, default is YES"
+STRINGS_DESC_CHECK_ADRENALINE =	"Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version"
 
 --bar progress
 STRINGS_BUBBLES_BAR =       	"Пузыри"

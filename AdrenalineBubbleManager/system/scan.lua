@@ -8,6 +8,9 @@
    
 ]]
 
+PSP_IMG = image.load("bubbles/sce_sys_lman/psp/bg0.png")
+PSX_IMG = image.load("bubbles/sce_sys_lman/ps1/bg0.png")
+
 --tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
 scan = {}
 toinstall = 0
@@ -131,8 +134,14 @@ function scan.games()
 	end
 end
 
-function load_pic1(tmp_path, flag)
+function load_pic1(tmp_path, _type, flag)
 	if flag then pic1=image.load(tmp_path)
+	elseif __SET == 6 then
+		if _type == "ME" then--PS1 Game
+			pic1 = PSX_IMG
+		else
+			pic1 = PSP_IMG
+		end
 	else pic1 = game.getpic1(tmp_path) end
 	if pic1 then
 		pic1:resize(960,488)
@@ -233,17 +242,13 @@ function scan.show(objedit)
 			screen.print(955,155,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
 			screen.print(955,175, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
 
-			if __SET == 0 then
-				screen.print(955,210,setpack.." "..SCAN_SETPACK,1,color.white,color.blue,__ARIGHT)
-			else
-				screen.print(955,210,setpack,1,color.white,color.blue,__ARIGHT)
-			end
+			screen.print(955,210,setpack,1,color.white,color.blue,__ARIGHT)
 
 			if __PIC then
-				screen.print(955,235,SCAN_SHOW_PIC,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,240,SCAN_SHOW_PIC,1,color.white,color.blue,__ARIGHT)
 			end
 
-			screen.print(955,260,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,270,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
@@ -291,8 +296,8 @@ function scan.show(objedit)
 			if buttons.up or buttons.analogly<-60 then 
 				if scr:up() then
 					icon0=nil
-					if __PIC and __SET == 0 then
-						load_pic1(scan.list[scr.sel].path)
+					if __PIC and (__SET == 0 or __SET == 6) then
+						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
 					end
 				end
 			end
@@ -300,15 +305,15 @@ function scan.show(objedit)
 			if buttons.down or buttons.analogly>60 then
 				if scr:down() then
 					icon0=nil
-					if __PIC and __SET == 0 then
-						load_pic1(scan.list[scr.sel].path)
+					if __PIC and (__SET == 0 or __SET == 6) then
+						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
 					end
 				end
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				if __PIC and __SET == 0 then
-					load_pic1(scan.list[scr.sel].path)
+				if __PIC and (__SET == 0 or __SET == 6) then
+					load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
 				end
 			end
 
@@ -340,8 +345,8 @@ function scan.show(objedit)
 			if buttons.triangle then
 				__PIC = not __PIC
 				if __PIC then
-					if __SET == 0 then load_pic1(scan.list[scr.sel].path)
-					else load_pic1(__PATHSETS.."Set"..__SET.."/BG0.PNG", true) end
+					if __SET == 0 or __SET == 6 then load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
+					else load_pic1(__PATHSETS.."Set"..__SET.."/BG0.PNG", scan.list[scr.sel].type, true) end
 				else
 					pic1 = nil
 				end
@@ -389,7 +394,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-local yf, _save = 280,false
+local yf, _save = 300,false
 submenu_abm = { -- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -404,13 +409,13 @@ submenu_abm = { -- Creamos un objeto menu contextual
 
 function submenu_abm.wakefunct()
 	submenu_abm.options = { 	-- Handle Option Text and Option Function
-		{ text = STRINGS_CONVERT_8BITS },
-		{ text = STRINGS_SETIMGS },
-		{ text = STRINGS_DEFAULT_SORT },
-		{ text = STRINGS_DEFAULT_COLOR },
-		{ text = STRINGS_CUSTOMIZED },
-		{ text = STRINGS_ABM_UPDATE },
-		{ text = STRINGS_CHECK_ADRENALINE },
+		{ text = STRINGS_CONVERT_8BITS, 	desc = STRINGS_DESC_CONVERT8BITS },
+		{ text = STRINGS_SETIMGS, 			desc = STRINGS_DESC_SETIMGS },
+		{ text = STRINGS_DEFAULT_SORT,		desc = STRINGS_DESC_DEFAULT_SORT },
+		{ text = STRINGS_DEFAULT_COLOR,		desc = STRINGS_DESC_DEFAULT_COLOR },
+		{ text = STRINGS_CUSTOMIZED,		desc = STRINGS_DESC_CUSTOMIZED },
+		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },
+		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -435,12 +440,12 @@ function submenu_abm.run(obj)
 			for i=1,scan.len do
 				scan.list[i].selcc =  _color
 			end
-			ini.write(__PATHINI,"color","color",_color)--Save __COLOR
-			ini.write(__PATHINI,"update","update",__UPDATE)--Save __UPDATE
-			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)--Save __CHECKADR
-			ini.write(__PATHINI,"resources","set",__SET)--Save __SET
-			ini.write(__PATHINI,"convert","8bits",__8PNG)--Save __8PNG
-			ini.write(__PATHINI,"custom","customized",__CUSTOM)--Save __CUSTOM
+			ini.write(__PATHINI,"color","color",_color)					--Save __COLOR
+			ini.write(__PATHINI,"update","update",__UPDATE)				--Save __UPDATE
+			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)		--Save __CHECKADR
+			ini.write(__PATHINI,"resources","set",__SET)				--Save __SET
+			ini.write(__PATHINI,"convert","8bits",__8PNG)				--Save __8PNG
+			ini.write(__PATHINI,"custom","customized",__CUSTOM)			--Save __CUSTOM
 
 		end
 		_save = false
@@ -450,6 +455,7 @@ function submenu_abm.run(obj)
 
 end
 
+local x_scroll_submenu = 5
 function submenu_abm.draw(obj)
 
     if not submenu_abm.close and submenu_abm.y < 0 then
@@ -468,15 +474,15 @@ function submenu_abm.draw(obj)
 		tmp_sort = __SORT
  
 		--Buttons
-		if buttons.up then submenu_abm.scroll:up() end
-		if buttons.down then submenu_abm.scroll:down() end
+		if buttons.up then submenu_abm.scroll:up() x_scroll_submenu=5 end
+		if buttons.down then submenu_abm.scroll:down() x_scroll_submenu = 5 end
 
 		if isTouched(0,0,960,544) and touch.front[1].released then
 			if clicked then
 				clicked = false
 				if crono:time() <= 300 then -- Double click and in time to Go.
 					-- Your action here.
-					custom_msg(SCAN_PRESS_LR.."\n\n"..SCAN_PRESS_LEFT_RIGHT.."\n\n"..SCAN_PRESS_SELECT.."\n\n"..SCAN_TOGGLE_PICS.."\n\n"..STRING_PRESS,0)
+					custom_msg(SCAN_PRESS_LR.."\n\n"..SCAN_PRESS_LEFT_RIGHT.."\n\n"..SCAN_PRESS_SELECT.."\n\n"..SCAN_TOGGLE_PICS.."\n"..STRING_PRESS,0)
 				end
 			else
 				clicked = true
@@ -490,7 +496,6 @@ function submenu_abm.draw(obj)
 		end
 
 		if (buttons.left or buttons.right) then
-
 			if submenu_abm.scroll.sel == 1 then--Set 8bits
 
 				if __8PNG == 1 then __8PNG,_png = 0,STRINGS_OPTION_MSG_NO
@@ -505,6 +510,7 @@ function submenu_abm.draw(obj)
 				if __SET < 0 then __SET = TOTAL_SET end
 
 				if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO
+				elseif __SET == 6 then setpack = STRINGS_PSP_PSX_BUBBLES
 				else setpack = SCAN_SETPACK..__SET end
 
 			elseif submenu_abm.scroll.sel == 3 then--Sort
@@ -574,6 +580,11 @@ function submenu_abm.draw(obj)
 			h += 27
         end
 
+		if screen.textwidth(submenu_abm.options[submenu_abm.scroll.sel].desc,1) > 955 then
+			x_scroll_submenu = screen.print(x_scroll_submenu, 265, submenu_abm.options[submenu_abm.scroll.sel].desc,1,color.green,color.shine,__SLEFT,955)
+		else
+			screen.print(480, 265, submenu_abm.options[submenu_abm.scroll.sel].desc, 1,color.green,color.shine, __ACENTER)
+		end
 		--screen.print(5, 222, SCAN_DOUBLE_TAP.."\n\n"..SCAN_PRESS_START, 1, color.white, color.blue, __ALEFT)
 
 		draw.gradline(0,yf,960,yf,color.blue,color.green)

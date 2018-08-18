@@ -129,7 +129,6 @@ function bubbles.install(src)
 		screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
 
 		if timg then
-			timg:resize(252,151)
 			timg:center()
 			timg:blit(480,272)
 		end
@@ -144,7 +143,7 @@ function bubbles.install(src)
 			end
 			
 			--startup.png
-			if __SET == 0 then
+			if __SET == 0 or __SET == 6 then
 				image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
 			else
 				if files.exists(__PATHSETS.."Set"..__SET.."/startup.png") then
@@ -161,16 +160,16 @@ function bubbles.install(src)
 		end
 
 		------------------------------pic0 (boot) & bg0
-		if __SET == 0 then
+		if __SET == 0 or __SET == 6 then
 
-			if not src.orig then
-				timg = game.getpic1(src.path)
-			else
+			if __SET == 6 or src.orig then
 				if src.type == "ME" then--PS1 Game
-					image.load("bubbles/sce_sys_lman/ps1/bg0.png")
+					timg = PSX_IMG
 				else
-					image.load("bubbles/sce_sys_lman/psp/bg0.png")
+					timg = PSP_IMG
 				end
+			else
+				timg = game.getpic1(src.path)
 			end
 
 			if back2 then back2:blit(0,0) end
@@ -179,13 +178,22 @@ function bubbles.install(src)
 			screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
 
 			if timg then
-				timg:resize(252,151)
+				timg:scale(75)
 				timg:center()
 				timg:blit(480,272)
 			end
 			screen.flip()
+			if __SET == 6 or src.orig then os.delay(250) end
 
-			if not src.orig then
+			if __SET == 6 or src.orig then
+				if src.type == "ME" then--PS1 Game
+					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
+				else
+					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
+				end
+			else
 				if timg then
 					timg:reset()
 					image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
@@ -199,14 +207,6 @@ function bubbles.install(src)
 						files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
 						files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
 					end
-				end
-			else
-				if src.type == "ME" then--PS1 Game
-					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
-					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
-				else
-					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
-					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
 				end
 			end
 
@@ -225,11 +225,12 @@ function bubbles.install(src)
 			screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
 
 			if timg then
-				timg:resize(252,151)
+				timg:scale(75)
 				timg:center()
 				timg:blit(480,272)
 			end
 			screen.flip()
+			if __SET == 6 or src.orig then os.delay(250) end
 
 			if timg then
 				timg:reset()
@@ -274,7 +275,7 @@ function bubbles.install(src)
 			screen.print(950,10,"BG0.PNG",1, color.white, color.blue, __ARIGHT)
 
 			if bg0 then
-				bg0:resize(252,151)
+				bg0:scale(85)
 				bg0:center()
 				bg0:blit(480,272)
 			end
@@ -817,7 +818,9 @@ function bubbles.edit(obj, simg)
 						if tmp[i].ext and tmp[i].ext:upper() == "PNG" then
 							preview = image.load(tmp[i].path)
 							if preview then
-								preview:resize(252,151)
+								if i != 1 then
+									preview:scale(75)
+								end
 								preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 							end
 						end
@@ -953,7 +956,8 @@ function bubbles.edit(obj, simg)
 
 									img = image.load(tmp[j].path)
 									if img then
-										img:resize(252,151)
+										--img:resize(252,151)
+										img:scale(75)
 										img:center()
 										img:blit(480,272)
 									end
@@ -997,7 +1001,8 @@ function bubbles.edit(obj, simg)
 									if i > 5 then
 										img = image.load(tmp[j].path)
 										if img then
-											img:resize(252,151)
+											--img:resize(252,151)
+											img:scale(75)
 											img:center()
 											img:blit(480,272)
 										end
