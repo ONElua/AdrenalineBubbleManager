@@ -26,7 +26,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 ### Changelog 5.12 ###
 - Added PSP/PSX image set for bubble creation.<br>
 - Added option description at submenu.<br>
-- Added Customized option to ABM submenu.<br>
+- Added enable/disable Adrenaline menu customized option to ABM submenu.<br>
 - Added a new bubble color similar to original PSP/PSX bubbles.<br>
 - Added chinese support (download font from github repo and place at ux0:data/ABM/font)<br>
 
