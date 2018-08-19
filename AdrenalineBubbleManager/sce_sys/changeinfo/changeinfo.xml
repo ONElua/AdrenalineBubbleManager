@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+  <changes app_ver="05.12">
+    <![CDATA[
+- Added PSP/PSX image set for bubble creation.<br>
+- Added option description at submenu.<br>
+- Added Customized option to ABM submenu.<br>
+- Added a new bubble color similar to original PSP/PSX bubbles.<br>
+- Added chinese support (download font from github repo and place at ux0:data/ABM/font)<br>
+    ]]>
   <changes app_ver="05.11">
     <![CDATA[
 - Compatible with Adrenaline v6.7 and Adrenaline Bubble Booter v.08<br>

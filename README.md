@@ -23,6 +23,13 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
+### Changelog 5.12 ###
+- Added PSP/PSX image set for bubble creation.<br>
+- Added option description at submenu.<br>
+- Added Customized option to ABM submenu.<br>
+- Added a new bubble color similar to original PSP/PSX bubbles.<br>
+- Added chinese support (download font from github repo and place at ux0:data/ABM/font)<br>
+
 ### Changelog 5.11 ###
 - Compatible with Adrenaline v6.7 and Adrenaline Bubble Booter v.08<br>
 

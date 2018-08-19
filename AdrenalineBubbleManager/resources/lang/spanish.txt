@@ -99,7 +99,7 @@ STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --submenu descrptions
 STRINGS_DESC_CONVERT8BITS =		"Habilita la conversión de 8bits para las burbujas, SOLO SI tus imagenes dentro de los SetPacks son 8bits colocar en NO"
-STRINGS_DESC_SETIMGS =			"Al seleccionar un SetPack tu burbujas serán creadas con dichos recursos, al seleccionar PSP/PSX tus burbujas serán casi similires a las originales"
+STRINGS_DESC_SETIMGS =			"Al seleccionar un SetPack tu burbujas serán creadas con dichos recursos, al seleccionar PSP/PSX tus burbujas serán casi similares a las originales"
 STRINGS_DESC_DEFAULT_SORT =		"Permite ordenar tu lista de juegos disponibles al iniciar ABM"
 STRINGS_DESC_DEFAULT_COLOR =	"Color por defecto al crear las burbujas"
 STRINGS_DESC_CUSTOMIZED =		"Permite que las burbujas creadas tengan su propio archivo config.bin, con lo cual cada burbuja guardará sus ajustes personales"
