@@ -334,8 +334,8 @@ function bubbles.install(src)
 	buttons.homepopup(1)
 
 	-- Set SFO & TITLE
-	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(bubble_title), 0)
-	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(bubble_title), 0)
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(string.sub(bubble_title,1,127)), 0)
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(string.sub(bubble_title,1,51)), 0)
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
 
 	-- Path ISO/CSO/PBP to BOOT.BIN
@@ -818,9 +818,7 @@ function bubbles.edit(obj, simg)
 						if tmp[i].ext and tmp[i].ext:upper() == "PNG" then
 							preview = image.load(tmp[i].path)
 							if preview then
-								if i != 1 then
-									preview:scale(75)
-								end
+								preview:resize(252,151)
 								preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 							end
 						end
@@ -956,7 +954,6 @@ function bubbles.edit(obj, simg)
 
 									img = image.load(tmp[j].path)
 									if img then
-										--img:resize(252,151)
 										img:scale(75)
 										img:center()
 										img:blit(480,272)
@@ -1001,7 +998,6 @@ function bubbles.edit(obj, simg)
 									if i > 5 then
 										img = image.load(tmp[j].path)
 										if img then
-											--img:resize(252,151)
 											img:scale(75)
 											img:center()
 											img:blit(480,272)

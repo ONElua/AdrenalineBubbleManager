@@ -32,6 +32,8 @@ function insert(tmp_sfo,obj,device)
 
 	if game.exists(obj.name) then orig = true end
 
+	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n"," ") end
+
 	table.insert( scan.list,
 		{
 		  title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
