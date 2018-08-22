@@ -120,223 +120,256 @@ function bubbles.install(src)
 	--Resources to 8bits
 	buttons.homepopup(0)
 
-		------------------------------icon0 & startup
-		timg = game.geticon0(src.path)
+	------------------------------icon0 & startup
+	timg = game.geticon0(src.path)
+
+	if back2 then back2:blit(0,0) end
+	draw.fillrect(0,0,960,30, color.shine)
+	screen.print(10,10,STRINGS_CONVERTING)
+	screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
+
+	if timg then
+		timg:center()
+		timg:blit(480,272)
+	end
+	screen.flip()
+
+	if timg then
+		timg:reset()
+		if src.nostretched then
+			image.save(timg:copyscale(128,128),work_dir.."sce_sys/icon0.png", 1)
+		else
+			image.save(image.nostretched(timg, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
+		end
+			
+		--startup.png
+		if src.setpack == STRINGS_OPTION_MSG_NO or src.setpack == STRINGS_PSP_PSX_BUBBLES then
+			image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+		else
+			if files.exists(__PATHSETS..src.setpack.."/startup.png") then
+				timg = image.load(__PATHSETS..src.setpack.."/startup.png")
+
+				image.save(image.startup(timg), work_dir.."sce_sys/livearea/contents/startup.png", 1)
+			else
+				image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
+			end
+		end
+	else
+		files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
+		files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
+	end
+
+	------------------------------pic0 (boot) & bg0
+	if src.setpack == STRINGS_OPTION_MSG_NO or src.setpack == STRINGS_PSP_PSX_BUBBLES then
+		if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then
+			if src.type == "ME" then--PS1 Game
+				timg = PSX_IMG
+			else
+				timg = PSP_IMG
+			end
+		else
+			timg = game.getpic1(src.path)
+		end
 
 		if back2 then back2:blit(0,0) end
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
-		screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
+		screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
 
 		if timg then
+			timg:scale(75)
 			timg:center()
 			timg:blit(480,272)
 		end
 		screen.flip()
+		if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then os.delay(250) end
+
+		if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then
+			if src.type == "ME" then--PS1 Game
+				files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
+			else
+				files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+				files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
+			end
+		else
+			if timg then
+				timg:reset()
+				image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
+				files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
+				files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
+			else
+				if src.type == "ME" then--PS1 Game
+					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
+				else
+					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
+				end
+			end
+		end
+
+	else
+		--"PIC0.PNG", 	 w = 960,	h = 544			SETX (1 to 5)
+
+		local setimg = false
+		timg = image.load(__PATHSETS..src.setpack.."/PIC0.PNG")
+
+		if timg then setimg = true
+		else timg = game.getpic1(src.path) end
+		
+		if back2 then back2:blit(0,0) end
+		draw.fillrect(0,0,960,30, color.shine)
+		screen.print(10,10,STRINGS_CONVERTING)
+		screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
+
+		if timg then
+			timg:scale(75)
+			timg:center()
+			timg:blit(480,272)
+		end
+		screen.flip()
+		if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then os.delay(250) end
 
 		if timg then
 			timg:reset()
-			if src.nostretched then
-				image.save(timg:copyscale(128,128),work_dir.."sce_sys/icon0.png", 1)
+			local scale = false
+			if timg:getrealw() != 960 or timg:getrealh() != 544 then
+				timg=timg:copyscale(960,544)
+				scale = true
+			end
+
+			if __8PNG == 1 then
+				image.save(timg, work_dir.."sce_sys/pic0.png", 1)
 			else
-				image.save(image.nostretched(timg, colors[src.selcc]), work_dir.."sce_sys/icon0.png", 1)
-			end
-			
-			--startup.png
-			if __SET == 0 or __SET == 6 then
-				image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
-			else
-				if files.exists(__PATHSETS.."Set"..__SET.."/startup.png") then
-					timg = image.load(__PATHSETS.."Set"..__SET.."/startup.png")
-
-					image.save(image.startup(timg), work_dir.."sce_sys/livearea/contents/startup.png", 1)
-				else
-					image.save(timg, work_dir.."sce_sys/livearea/contents/startup.png", 1)
-				end
-			end
-		else
-			files.copy("bubbles/sce_sys_lman/icon0.png", work_dir.."sce_sys")
-			files.copy("bubbles/sce_sys_lman/startup.png", work_dir.."sce_sys/livearea/contents/")
-		end
-
-		------------------------------pic0 (boot) & bg0
-		if __SET == 0 or __SET == 6 then
-
-			if __SET == 6 or src.orig then
-				if src.type == "ME" then--PS1 Game
-					timg = PSX_IMG
-				else
-					timg = PSP_IMG
-				end
-			else
-				timg = game.getpic1(src.path)
-			end
-
-			if back2 then back2:blit(0,0) end
-			draw.fillrect(0,0,960,30, color.shine)
-			screen.print(10,10,STRINGS_CONVERTING)
-			screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
-
-			if timg then
-				timg:scale(75)
-				timg:center()
-				timg:blit(480,272)
-			end
-			screen.flip()
-			if __SET == 6 or src.orig then os.delay(250) end
-
-			if __SET == 6 or src.orig then
-				if src.type == "ME" then--PS1 Game
-					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
-					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
-				else
-					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
-					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
-				end
-			else
-				if timg then
-					timg:reset()
-					image.save(timg:copyscale(960,544), work_dir.."sce_sys/pic0.png", 1)
-					files.copy(work_dir.."sce_sys/pic0.png", work_dir.."sce_sys/livearea/contents")
-					files.rename(work_dir.."/sce_sys/livearea/contents/pic0.png","bg0.png")
-				else
-					if src.type == "ME" then--PS1 Game
-						files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
-						files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
-					else
-						files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
-						files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
-					end
-				end
-			end
-
-		else
-			--"PIC0.PNG", 	 w = 960,	h = 544			SETX (1 to 5)
-
-			local setimg = false
-			timg = image.load(__PATHSETS.."Set"..__SET.."/PIC0.PNG")
-
-			if timg then setimg = true
-			else timg = game.getpic1(src.path) end
-			
-			if back2 then back2:blit(0,0) end
-			draw.fillrect(0,0,960,30, color.shine)
-			screen.print(10,10,STRINGS_CONVERTING)
-			screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
-
-			if timg then
-				timg:scale(75)
-				timg:center()
-				timg:blit(480,272)
-			end
-			screen.flip()
-			if __SET == 6 or src.orig then os.delay(250) end
-
-			if timg then
-				timg:reset()
-				local scale = false
-				if timg:getrealw() != 960 or timg:getrealh() != 544 then
-					timg=timg:copyscale(960,544)
-					scale = true
-				end
-
-				if __8PNG == 1 then
+				if scale then
 					image.save(timg, work_dir.."sce_sys/pic0.png", 1)
+				elseif setimg then
+					files.copy(__PATHSETS..src.setpack.."/PIC0.PNG", work_dir.."sce_sys/")
 				else
-					if scale then
-						image.save(timg, work_dir.."sce_sys/pic0.png", 1)
-					elseif setimg then
-						files.copy(__PATHSETS.."Set"..__SET.."/PIC0.PNG", work_dir.."sce_sys/")
-					else
-						image.save(timg, work_dir.."sce_sys/pic0.png", 1)
-					end
+					image.save(timg, work_dir.."sce_sys/pic0.png", 1)
 				end
+			end
 
+		else
+			if src.type == "ME" then--PS1 Game
+				files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
 			else
-				if src.type == "ME" then--PS1 Game
-					files.copy("bubbles/sce_sys_lman/ps1/pic0.png", work_dir.."sce_sys/")
-				else
-					files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
-				end
+				files.copy("bubbles/sce_sys_lman/psp/pic0.png", work_dir.."sce_sys/")
 			end
-
-			--"BG0.PNG", 	 w = 840,	h = 500
-			setimg = false
-			local bg0 = image.load(__PATHSETS.."Set"..__SET.."/BG0.PNG")
-			if not bg0 then
-				if timg then bg0 = timg end
-			else
-				setimg = true
-			end
-
-			if back2 then back2:blit(0,0) end
-			draw.fillrect(0,0,960,30, color.shine)
-			screen.print(10,10,STRINGS_CONVERTING)
-			screen.print(950,10,"BG0.PNG",1, color.white, color.blue, __ARIGHT)
-
-			if bg0 then
-				bg0:scale(85)
-				bg0:center()
-				bg0:blit(480,272)
-			end
-			screen.flip()
-
-			if bg0 then
-				bg0:reset()
-				local scale = false
-				if bg0:getrealw() != 840 or bg0:getrealh() != 500 then
-					bg0 = bg0:copyscale(840,500)
-					scale = true
-				end
-
-				if __8PNG == 1 then
-					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-				else
-					if scale then
-						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-					elseif setimg then
-						files.copy(__PATHSETS.."Set"..__SET.."/BG0.PNG", work_dir.."sce_sys/livearea/contents/")
-					else
-						image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
-					end
-				end
-
-			else
-				if src.type == "ME" then--PS1 Game
-					files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
-				else
-					files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
-				end
-			end
-
-			--TEMPLATE.XML
-			if files.exists(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML") then
-				files.copy(__PATHSETS.."Set"..__SET.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
-			end
-
-			--FRAMEX.PNG 1 to 5
-			for i=1,5 do
-				if files.exists(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG") then
-					if __8PNG == 1 then
-						local frame = image.load(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG")
-						if frame then
-							image.save(frame, work_dir.."sce_sys/livearea/contents/FRAME"..i..".PNG", 1)
-						else
-							files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
-						end
-					else
-						files.copy(__PATHSETS.."Set"..__SET.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
-					end
-				end
-			end
-
 		end
+
+		--"BG0.PNG", 	 w = 840,	h = 500
+		setimg = false
+		local bg0 = image.load(__PATHSETS..src.setpack.."/BG0.PNG")
+		if not bg0 then
+			if timg then bg0 = timg end
+		else
+			setimg = true
+		end
+
+		if back2 then back2:blit(0,0) end
+		draw.fillrect(0,0,960,30, color.shine)
+		screen.print(10,10,STRINGS_CONVERTING)
+		screen.print(950,10,"BG0.PNG",1, color.white, color.blue, __ARIGHT)
+
+		if bg0 then
+			bg0:scale(85)
+			bg0:center()
+			bg0:blit(480,272)
+		end
+		screen.flip()
+
+		if bg0 then
+			bg0:reset()
+			local scale = false
+			if bg0:getrealw() != 840 or bg0:getrealh() != 500 then
+				bg0 = bg0:copyscale(840,500)
+				scale = true
+			end
+
+			if __8PNG == 1 then
+				image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+			else
+				if scale then
+					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+				elseif setimg then
+					files.copy(__PATHSETS..src.setpack.."/BG0.PNG", work_dir.."sce_sys/livearea/contents/")
+				else
+					image.save(bg0, work_dir.."sce_sys/livearea/contents/bg0.png", 1)
+				end
+			end
+
+		else
+			if src.type == "ME" then--PS1 Game
+				files.copy("bubbles/sce_sys_lman/ps1/bg0.png", work_dir.."sce_sys/livearea/contents/")
+			else
+				files.copy("bubbles/sce_sys_lman/psp/bg0.png", work_dir.."sce_sys/livearea/contents/")
+			end
+		end
+
+		--TEMPLATE.XML
+		if files.exists(__PATHSETS..src.setpack.."/TEMPLATE.XML") then
+			files.copy(__PATHSETS..src.setpack.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
+		end
+
+		--FRAMEX.PNG 1 to 5
+		for i=1,5 do
+			if files.exists(__PATHSETS..src.setpack.."/FRAME"..i..".PNG") then
+				if __8PNG == 1 then
+					local frame = image.load(__PATHSETS..src.setpack.."/FRAME"..i..".PNG")
+					if frame then
+						image.save(frame, work_dir.."sce_sys/livearea/contents/FRAME"..i..".PNG", 1)
+					else
+						files.copy(__PATHSETS..src.setpack.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
+					end
+				else
+					files.copy(__PATHSETS..src.setpack.."/FRAME"..i..".PNG", work_dir.."sce_sys/livearea/contents/")
+				end
+			end
+		end
+
+	end
+
 	buttons.homepopup(1)
 
 	-- Set SFO & TITLE
-	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(string.sub(bubble_title,1,127)), 0)
-	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(string.sub(bubble_title,1,51)), 0)
+	local fp_sfo = io.open(work_dir.."sce_sys/PARAM.SFO", "r+")
+	if fp_sfo then
+	
+		--STITLE offset
+		fp_sfo:seek("set",0x2C8)
+
+		local stitle = bubble_title
+		local fill = 51 - #stitle
+		for j=1,fill do
+			stitle = stitle..string.char(00)
+		end
+		fp_sfo:write(string.sub(stitle,1,51))
+
+		--TITLE offset
+		fp_sfo:seek("set",0x2FC)
+
+		local title = bubble_title
+		local fill = 127 - #title
+		for j=1,fill do
+			title = title..string.char(00)
+		end
+		fp_sfo:write(title)
+
+		--TITLE_ID offset
+		fp_sfo:seek("set",0x37C)
+		fp_sfo:write(tostring(lastid))
+
+		--Close
+		fp_sfo:close()
+
+	end
+--[[
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(bubble_title), 0)
+	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(bubble_title), 0)
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE_ID", tostring(lastid), 0)
+]]
 
 	-- Path ISO/CSO/PBP to BOOT.BIN
 	local fp = io.open(work_dir.."data/boot.bin", "r+")

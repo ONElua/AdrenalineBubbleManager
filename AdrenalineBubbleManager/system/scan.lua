@@ -37,7 +37,7 @@ function insert(tmp_sfo,obj,device)
 	table.insert( scan.list,
 		{
 		  title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
-		  install = install, state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR,
+		  install = install, state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, setpack = setpack,
 		  nostretched=false, mtime = obj.mtime, type = tmp_sfo.CATEGORY or STRINGS_UNK, gameid = tmp_sfo.DISC_ID or STRINGS_UNK,
 		  orig = orig, device = device
 		} )
@@ -136,9 +136,9 @@ function scan.games()
 	end
 end
 
-function load_pic1(tmp_path, _type, flag)
+function load_pic1(tmp_path, _type, sset, flag)
 	if flag then pic1=image.load(tmp_path)
-	elseif __SET == 6 then
+	elseif sset == STRINGS_PSP_PSX_BUBBLES then
 		if _type == "ME" then--PS1 Game
 			pic1 = PSX_IMG
 		else
@@ -235,22 +235,29 @@ function scan.show(objedit)
 				end
 			end
 
+			--Print Streched
 			if scan.list[scr.sel].nostretched then
 				screen.print(955,120,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
 			else
 				screen.print(955,120,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
 			end
-			
+
+			--Print Sort
 			screen.print(955,155,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
 			screen.print(955,175, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
 
-			screen.print(955,210,setpack,1,color.white,color.blue,__ARIGHT)
+			--Print SetPack
+			screen.print(955,210,STRINGS_SETIMGS..":",1,color.white,color.blue,__ARIGHT)
+			screen.print(955,235,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
 
+			--Print Gameid
+			screen.print(955,270,SCAN_SORT_GAMEID..":",1,color.white,color.blue,__ARIGHT)
+			screen.print(955,290,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ARIGHT)
+
+			--Print PIC
 			if __PIC then
-				screen.print(955,240,SCAN_SHOW_PIC,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,325,SCAN_SHOW_PIC,1,color.white,color.blue,__ARIGHT)
 			end
-
-			screen.print(955,270,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
@@ -298,8 +305,12 @@ function scan.show(objedit)
 			if buttons.up or buttons.analogly<-60 then 
 				if scr:up() then
 					icon0=nil
-					if __PIC and (__SET == 0 or __SET == 6) then
-						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
+					if __PIC then
+						if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+							load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
+						else
+							load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
+						end
 					end
 				end
 			end
@@ -307,15 +318,23 @@ function scan.show(objedit)
 			if buttons.down or buttons.analogly>60 then
 				if scr:down() then
 					icon0=nil
-					if __PIC and (__SET == 0 or __SET == 6) then
-						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
+					if __PIC then
+						if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+							load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
+						else
+							load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
+						end
 					end
 				end
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				if __PIC and (__SET == 0 or __SET == 6) then
-					load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
+				if __PIC then
+					if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
+					else
+						load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
+					end
 				end
 			end
 
@@ -347,8 +366,11 @@ function scan.show(objedit)
 			if buttons.triangle then
 				__PIC = not __PIC
 				if __PIC then
-					if __SET == 0 or __SET == 6 then load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type)
-					else load_pic1(__PATHSETS.."Set"..__SET.."/BG0.PNG", scan.list[scr.sel].type, true) end
+					if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
+					else
+						load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
+					end
 				else
 					pic1 = nil
 				end
@@ -372,8 +394,34 @@ function scan.show(objedit)
 			end
 
 			--Full/Stretched
-			if (buttons.r or buttons.l) then
+			if buttons.released.l then
 				scan.list[scr.sel].nostretched = not scan.list[scr.sel].nostretched
+			end
+
+			if buttons.released.r then
+				if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO then
+					scan.list[scr.sel].setpack = SCAN_SETPACK.."1"
+				elseif scan.list[scr.sel].setpack == SCAN_SETPACK.."1" then
+					scan.list[scr.sel].setpack = SCAN_SETPACK.."2"
+				elseif scan.list[scr.sel].setpack == SCAN_SETPACK.."2" then
+					scan.list[scr.sel].setpack = SCAN_SETPACK.."3"
+				elseif scan.list[scr.sel].setpack == SCAN_SETPACK.."3" then
+					scan.list[scr.sel].setpack = SCAN_SETPACK.."4"
+				elseif scan.list[scr.sel].setpack == SCAN_SETPACK.."4" then
+					scan.list[scr.sel].setpack = SCAN_SETPACK.."5"
+				elseif scan.list[scr.sel].setpack == SCAN_SETPACK.."5" then
+					scan.list[scr.sel].setpack = STRINGS_PSP_PSX_BUBBLES
+				elseif scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+					scan.list[scr.sel].setpack = STRINGS_OPTION_MSG_NO
+				end
+				--Update PIC
+				if __PIC then
+					if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
+					else
+						load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
+					end
+				end
 			end
 
 			--Bubbles Color
@@ -440,7 +488,8 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"sort","sort",_sort)--Save __SORT
 			
 			for i=1,scan.len do
-				scan.list[i].selcc =  _color
+				scan.list[i].selcc = _color
+				scan.list[i].setpack = setpack
 			end
 			ini.write(__PATHINI,"color","color",_color)					--Save __COLOR
 			ini.write(__PATHINI,"update","update",__UPDATE)				--Save __UPDATE
