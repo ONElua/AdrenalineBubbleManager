@@ -355,7 +355,7 @@ function bubbles.install(src)
 		for j=1,fill do
 			title = title..string.char(00)
 		end
-		fp_sfo:write(title)
+		fp_sfo:write(string.sub(title,1,127))
 
 		--TITLE_ID offset
 		fp_sfo:seek("set",0x37C)
@@ -426,9 +426,9 @@ function bubbles.install(src)
 
 			--Driver&Execute&Customized
 			bubbles.list[#bubbles.list].lines = {}
-			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Inferno
-			table.insert(bubbles.list[#bubbles.list].lines, 0)--Default: 0 Eboot.bin
-			table.insert(bubbles.list[#bubbles.list].lines, __CUSTOM)--Default: 1 Customized
+			table.insert(bubbles.list[#bubbles.list].lines, 0)			--Default: 0 Inferno
+			table.insert(bubbles.list[#bubbles.list].lines, 0)			--Default: 0 Eboot.bin
+			table.insert(bubbles.list[#bubbles.list].lines, __CUSTOM)	--Default: 1 Customized
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)

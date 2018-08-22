@@ -136,19 +136,24 @@ function scan.games()
 	end
 end
 
-function load_pic1(tmp_path, _type, sset, flag)
-	if flag then pic1=image.load(tmp_path)
-	elseif sset == STRINGS_PSP_PSX_BUBBLES then
-		if _type == "ME" then--PS1 Game
+function load_pic1(obj)
+	if obj.setpack == STRINGS_PSP_PSX_BUBBLES then
+		if obj.type == "ME" then--PS1 Game
 			pic1 = PSX_IMG
 		else
 			pic1 = PSP_IMG
 		end
-	else pic1 = game.getpic1(tmp_path) end
+	elseif obj.setpack == STRINGS_OPTION_MSG_NO then
+		pic1 = game.getpic1(obj.path)
+	else
+		pic1=image.load(__PATHSETS..obj.setpack.."/BG0.PNG")
+	end
+
 	if pic1 then
 		pic1:resize(960,488)
 		pic1:center()
 	end
+
 end
 
 local maximg = 14
@@ -305,37 +310,19 @@ function scan.show(objedit)
 			if buttons.up or buttons.analogly<-60 then 
 				if scr:up() then
 					icon0=nil
-					if __PIC then
-						if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
-							load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
-						else
-							load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
-						end
-					end
+					if __PIC then load_pic1(scan.list[scr.sel])	end
 				end
 			end
 
 			if buttons.down or buttons.analogly>60 then
 				if scr:down() then
 					icon0=nil
-					if __PIC then
-						if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
-							load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
-						else
-							load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
-						end
-					end
+					if __PIC then load_pic1(scan.list[scr.sel])	end
 				end
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				if __PIC then
-					if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
-						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
-					else
-						load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
-					end
-				end
+				if __PIC then load_pic1(scan.list[scr.sel])	end
 			end
 
 			--Install
@@ -365,15 +352,7 @@ function scan.show(objedit)
 			--PIC
 			if buttons.triangle then
 				__PIC = not __PIC
-				if __PIC then
-					if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
-						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
-					else
-						load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
-					end
-				else
-					pic1 = nil
-				end
+				if __PIC then load_pic1(scan.list[scr.sel])	else pic1 = nil	end
 			end
 				
 			--Mark/Unmark
@@ -415,13 +394,7 @@ function scan.show(objedit)
 					scan.list[scr.sel].setpack = STRINGS_OPTION_MSG_NO
 				end
 				--Update PIC
-				if __PIC then
-					if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO or scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
-						load_pic1(scan.list[scr.sel].path, scan.list[scr.sel].type, scan.list[scr.sel].setpack)
-					else
-						load_pic1(__PATHSETS..scan.list[scr.sel].setpack.."/BG0.PNG", scan.list[scr.sel].type, scan.list[scr.sel].setpack, true)
-					end
-				end
+				if __PIC then load_pic1(scan.list[scr.sel])	end
 			end
 
 			--Bubbles Color
