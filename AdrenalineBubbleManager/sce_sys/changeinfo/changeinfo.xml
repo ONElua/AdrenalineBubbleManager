@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="05.13">
+    <![CDATA[
+- Now you can select the SetPack for each bubble. Press R on the selected game.<br>
+- Fixed error with the STITLE when creating bubbles (max length 52).<br>
+    ]]>
   <changes app_ver="05.12">
     <![CDATA[
 - Added PSP/PSX image set for bubble creation.<br>
