@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="05.14">
+    <![CDATA[
+- Use Default Title option added to Submenu (START) enable it to skip the renaming process.<br>
+- Now when creating 2 or more bubbles you'll have to rename all the bubbles before the creating process begins.<br>
+    ]]>
 <changes app_ver="05.13">
     <![CDATA[
 - Now you can select the SetPack for each bubble. Press R on the selected game.<br>

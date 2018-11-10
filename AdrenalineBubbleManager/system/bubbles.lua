@@ -122,6 +122,7 @@ function bubbles.install(src)
 	draw.fillrect(0,0,960,30, color.shine)
 	screen.print(10,10,STRINGS_CONVERTING)
 	screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
+	screen.print(10,40,src.title_bubble or STRINGS_UNK,1, color.white, color.blue, __ALEFT)
 
 	if timg then
 		timg:center()
@@ -170,6 +171,7 @@ function bubbles.install(src)
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
 		screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
+		screen.print(10,40,src.title_bubble or STRINGS_UNK,1, color.white, color.blue, __ALEFT)
 
 		if timg then
 			timg:scale(75)
@@ -217,6 +219,7 @@ function bubbles.install(src)
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
 		screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
+		screen.print(10,40,src.title_bubble or STRINGS_UNK,1, color.white, color.blue, __ALEFT)
 
 		if timg then
 			timg:scale(75)
@@ -267,6 +270,7 @@ function bubbles.install(src)
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
 		screen.print(950,10,"BG0.PNG",1, color.white, color.blue, __ARIGHT)
+		screen.print(10,40,src.title_bubble or STRINGS_UNK,1, color.white, color.blue, __ALEFT)
 
 		if bg0 then
 			bg0:scale(85)

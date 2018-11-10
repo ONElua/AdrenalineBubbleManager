@@ -94,6 +94,7 @@ STRINGS_PSP_PSX_BUBBLES =		"PSP/PSX"
 STRINGS_EXTRA_SETTINGS =		"Opciones Extras"
 STRINGS_ABM_UPDATE =			"Actualización ABM"
 STRINGS_CHECK_ADRENALINE =		"Revisar Adrenaline"
+STRINGS_DEFAULT_TITLE =			"Titulo del juego"
 STRINGS_AUTOFIX_BOOTBIN =		"AutoConversión boot.bin"
 STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
@@ -105,6 +106,7 @@ STRINGS_DESC_DEFAULT_COLOR =	"Color por defecto al crear las burbujas"
 STRINGS_DESC_CUSTOMIZED =		"Permite que las burbujas creadas tengan su propio archivo config.bin, con lo cual cada burbuja guardará sus ajustes personales"
 STRINGS_DESC_ABM_UPDATE =		"Permite revisar si hay Updates de ABM en cada inicio, por defecto: SI"
 STRINGS_DESC_CHECK_ADRENALINE =	"Al salir nuevas versiones de adrenaline, puedes colocar en NO, para siempre tener la misma versión de adrenaline"
+STRINGS_DESC_TITLES =			"Activa esta opción para usar el Titulo incluido en el juego al crear la burbuja"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Burbujas"

@@ -327,24 +327,33 @@ function scan.show(objedit)
 
 			--Install
 			if buttons[accept] then
-			
-				--batch titles
-				for i=1, scr.maxim do
-					if scan.list[i].inst then
-						local bubble_title = nil
-						if scan.list[i].title then
-							if __TITLE == 0 then
-								bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[i].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
-							end
-						end
-						if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[i].title or scan.list[i].name end
-						scan.list[i].title_bubble = bubble_title
-					end
-				end
 
 				if toinstall <= 1 then
+					local bubble_title = nil
+					if scan.list[scr.sel].title then
+						if __TITLE == 0 then
+							bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[scr.sel].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+						end
+					end
+					if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[scr.sel].title or scan.list[scr.sel].name end
+					scan.list[scr.sel].title_bubble = bubble_title
 					bubbles.install(scan.list[scr.sel])
 				else
+
+					--batch titles
+					for i=1, scr.maxim do
+						if scan.list[i].inst then
+							local bubble_title = nil
+							if scan.list[i].title then
+								if __TITLE == 0 then
+									bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[i].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+								end
+							end
+							if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[i].title or scan.list[i].name end
+							scan.list[i].title_bubble = bubble_title
+						end
+					end
+
 					local vbuff = screen.toimage()
 					local tmp,c = toinstall,0
 					for i=1, scr.maxim do
