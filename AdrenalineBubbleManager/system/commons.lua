@@ -118,6 +118,7 @@ __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 __CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","1"))
+__TITLE = tonumber(ini.read(__PATHINI,"title","title","0"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
@@ -127,6 +128,7 @@ if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION
 if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_PSP_PSX_BUBBLES else setpack = SCAN_SETPACK..__SET end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
 if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
+if __TITLE == 1 then _title = STRINGS_OPTION_MSG_YES else _title = STRINGS_OPTION_MSG_NO end
 TOTAL_SET = 6
 
 --[[

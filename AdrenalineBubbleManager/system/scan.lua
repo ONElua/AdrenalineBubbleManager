@@ -36,7 +36,7 @@ function insert(tmp_sfo,obj,device)
 
 	table.insert( scan.list,
 		{
-		  title = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
+		  title = tmp_sfo.TITLE or obj.name, title_bubble = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
 		  install = install, state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, setpack = setpack,
 		  nostretched=false, mtime = obj.mtime, type = tmp_sfo.CATEGORY or STRINGS_UNK, gameid = tmp_sfo.DISC_ID or STRINGS_UNK,
 		  orig = orig, device = device
@@ -327,6 +327,21 @@ function scan.show(objedit)
 
 			--Install
 			if buttons[accept] then
+			
+				--batch titles
+				for i=1, scr.maxim do
+					if scan.list[i].inst then
+						local bubble_title = nil
+						if scan.list[i].title then
+							if __TITLE == 0 then
+								bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[i].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+							end
+						end
+						if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[i].title or scan.list[i].name end
+						scan.list[i].title_bubble = bubble_title
+					end
+				end
+
 				if toinstall <= 1 then
 					bubbles.install(scan.list[scr.sel])
 				else
@@ -417,7 +432,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-local yf, _save = 300,false
+local yf, _save = 325,false
 submenu_abm = { -- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -439,6 +454,7 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_CUSTOMIZED,		desc = STRINGS_DESC_CUSTOMIZED },
 		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },
 		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },
+		{ text = STRINGS_DEFAULT_TITLE,		desc = STRINGS_DESC_TITLES },
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -470,6 +486,7 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"resources","set",__SET)				--Save __SET
 			ini.write(__PATHINI,"convert","8bits",__8PNG)				--Save __8PNG
 			ini.write(__PATHINI,"custom","customized",__CUSTOM)			--Save __CUSTOM
+			ini.write(__PATHINI,"title","title",__TITLE)				--Save __TITLE
 
 		end
 		_save = false
@@ -566,6 +583,9 @@ function submenu_abm.draw(obj)
 			elseif submenu_abm.scroll.sel == 7 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR,_adr = 0,STRINGS_OPTION_MSG_NO
 				else __CHECKADR,_adr = 1,STRINGS_OPTION_MSG_YES end
+			elseif submenu_abm.scroll.sel == 8 then--Titles for your Bubbles
+				if __TITLE == 1 then __TITLE,_title = 0,STRINGS_OPTION_MSG_NO
+				else __TITLE,_title = 1,STRINGS_OPTION_MSG_YES end
 
 			end
 			_save = true
@@ -599,15 +619,17 @@ function submenu_abm.draw(obj)
 				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==7 then
 				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==8 then
+				screen.print(690, h, _title, 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 27
         end
 
 		if screen.textwidth(submenu_abm.options[submenu_abm.scroll.sel].desc,1) > 955 then
-			x_scroll_submenu = screen.print(x_scroll_submenu, 265, submenu_abm.options[submenu_abm.scroll.sel].desc,1,color.green,color.shine,__SLEFT,955)
+			x_scroll_submenu = screen.print(x_scroll_submenu, yf-30, submenu_abm.options[submenu_abm.scroll.sel].desc,1,color.green,color.shine,__SLEFT,955)--265
 		else
-			screen.print(480, 265, submenu_abm.options[submenu_abm.scroll.sel].desc, 1,color.green,color.shine, __ACENTER)
+			screen.print(480, yf-30, submenu_abm.options[submenu_abm.scroll.sel].desc, 1,color.green,color.shine, __ACENTER)--265
 		end
 		--screen.print(5, 222, SCAN_DOUBLE_TAP.."\n\n"..SCAN_PRESS_START, 1, color.white, color.blue, __ALEFT)
 

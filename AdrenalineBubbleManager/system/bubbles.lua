@@ -96,12 +96,6 @@ end
 function bubbles.install(src)
 
 	files.delete("ux0:data/ABMVPK/")
-	local bubble_title,timg = nil,nil
-
-	if src.title then
-		bubble_title = osk.init(STRINGS_TITLE_OSK, src.title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
-	end
-	if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = src.title or src.name end
 
 	local i=0
 	while game.exists(string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)) do
@@ -121,6 +115,7 @@ function bubbles.install(src)
 	buttons.homepopup(0)
 
 	------------------------------icon0 & startup
+	local timg = nil
 	timg = game.geticon0(src.path)
 
 	if back2 then back2:blit(0,0) end
@@ -340,7 +335,7 @@ function bubbles.install(src)
 		--STITLE offset
 		fp_sfo:seek("set",0x2C8)
 
-		local stitle = bubble_title
+		local stitle = src.title_bubble
 		local fill = 51 - #stitle
 		for j=1,fill do
 			stitle = stitle..string.char(00)
@@ -350,7 +345,7 @@ function bubbles.install(src)
 		--TITLE offset
 		fp_sfo:seek("set",0x2FC)
 
-		local title = bubble_title
+		local title = src.title_bubble
 		local fill = 127 - #title
 		for j=1,fill do
 			title = title..string.char(00)
@@ -365,6 +360,7 @@ function bubbles.install(src)
 		fp_sfo:close()
 
 	end
+
 --[[
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "TITLE", tostring(bubble_title), 0)
 	game.setsfo(work_dir.."sce_sys/PARAM.SFO", "STITLE", tostring(bubble_title), 0)
@@ -415,7 +411,7 @@ function bubbles.install(src)
 				boot = "ux0:app/"..lastid.."/boot.bin",
 				imgp = "ur0:appmeta/"..lastid.."/icon0.png",
 				bg0  = "ur0:appmeta/"..lastid.."/livearea/contents/bg0.png",
-				title = bubble_title,
+				title = src.title_bubble,
 				delete = false,
 				exist = true
 			}
