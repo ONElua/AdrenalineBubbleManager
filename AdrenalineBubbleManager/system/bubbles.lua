@@ -566,7 +566,6 @@ function bubbles.settings()
 			if not change then
 
 				if total_empty > 0 and dels <= 0 then
-					--screen.print(80,448, "SELECT: "..BUBBLES_EMPTY, 1, color.white, color.blue, __ALEFT)
 					screen.print(480,448, "SELECT: "..BUBBLES_EMPTY, 1, color.white, color.blue, __ACENTER)
 				elseif dels > 0 then
 					screen.print(80,448, "SELECT: "..BUBBLES_SELSMARKS, 1, color.white, color.blue, __ALEFT)
@@ -728,7 +727,7 @@ function bubbles.settings()
 						end
 
 						if total_empty >= 1 then
-							if custom_msg(BUBBLES_UNINSTALL_EMPTYS.." "..total_empty.." ? ",1) == true then
+							if custom_msg(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",1) == true then
 								local vbuff = screen.toimage()
 								local tmp,c = total_empty,0
 
