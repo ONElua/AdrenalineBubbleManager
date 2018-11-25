@@ -113,7 +113,10 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 *Creating Bubbles*
 
-- **L/R:** To switch the way the bubble will look like in Livearea (original icon look/stretched icon look)<br>
+- **Triangle:** Batch Installation for non installed content.<br>
+- **L:** To switch the way the bubble will look like in Livearea (original icon look/stretched icon look)<br>
+- **R:** Select the SetPack for each bubble.<br>
+- **Select:** Sort List: Device, Install, GameId, Category.<br>
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
 - **Start:** Open Extra Settings menu (set default bubble color, sort list, Adrenaline version check, Adrenaline Bubbles Manager version check).<br>
@@ -123,11 +126,15 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 *Extra Settings*
 
 This option allows you to set some preferences as default for ABM such as:
+- Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
+	You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Enter the submenu to change this settings with start.
+- Set Imgs: Set1 to Set5, or Set PSP/PSX.<br>	
 - Set sort list of your iso/cso/pbp.<br>
 - Select the default color for your bubbles.<br>
 - Enable/Disable ABM updates.<br>
 - Adrenaline version check.<br>
-	This option disables/enables ABM to check the Adrenaline version you have installed in your ps vita. 
+	This option disables/enables ABM to check the Adrenaline version you have installed in your ps vita.
+- Default Title Enable it to skip the renaming process.<br>	
 
 ![header](ExtraSettings.png)
 
