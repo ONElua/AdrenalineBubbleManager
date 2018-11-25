@@ -368,7 +368,7 @@ function scan.show(objedit)
 				end
 			end
 
-			--PIC
+			--Install all (only games not installed)
 			if buttons.triangle then
 				local check_install = 0
 				for i=1, scr.maxim do
