@@ -16,7 +16,6 @@ scan = {}
 toinstall = 0
 local pic1,icon0 = nil,nil
 local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions.
-local __PIC = false
 local tmp_sort = __SORT
 
 function insert(tmp_sfo,obj,device)
@@ -137,6 +136,7 @@ function scan.games()
 end
 
 function load_pic1(obj)
+	pic1 = nil
 	if obj.setpack == STRINGS_PSP_PSX_BUBBLES then
 		if obj.type == "ME" then--PS1 Game
 			pic1 = PSX_IMG
@@ -144,7 +144,7 @@ function load_pic1(obj)
 			pic1 = PSP_IMG
 		end
 	elseif obj.setpack == STRINGS_OPTION_MSG_NO then
-		pic1 = game.getpic1(obj.path)
+		--pic1 = game.getpic1(obj.path)
 	else
 		pic1=image.load(__PATHSETS..obj.setpack.."/BG0.PNG")
 	end
@@ -259,11 +259,6 @@ function scan.show(objedit)
 			screen.print(955,270,SCAN_SORT_GAMEID..":",1,color.white,color.blue,__ARIGHT)
 			screen.print(955,290,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ARIGHT)
 
-			--Print PIC
-			if __PIC then
-				screen.print(955,325,SCAN_SHOW_PIC,1,color.white,color.blue,__ARIGHT)
-			end
-
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
 				xprint = screen.print(20,465,"<- "..SCAN_DEFAULT_COLOR.." ("..scan.list[scr.sel].selcc..") ->",1,color.white,color.blue, __ALEFT)
@@ -307,22 +302,22 @@ function scan.show(objedit)
 		--Controls
 		if scr.maxim > 0 and submenu_abm.h == -submenu_abm.y then
 
-			if buttons.up or buttons.analogly<-60 then 
+			if (buttons.up or buttons.analogly<-60) and not buttons.held.square then
 				if scr:up() then
 					icon0=nil
-					if __PIC then load_pic1(scan.list[scr.sel])	end
+					load_pic1(scan.list[scr.sel])
 				end
 			end
 
-			if buttons.down or buttons.analogly>60 then
+			if (buttons.down or buttons.analogly>60) and not buttons.held.square then 
 				if scr:down() then
 					icon0=nil
-					if __PIC then load_pic1(scan.list[scr.sel])	end
+					load_pic1(scan.list[scr.sel])
 				end
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
-				if __PIC then load_pic1(scan.list[scr.sel])	end
+				load_pic1(scan.list[scr.sel])
 			end
 
 			--Install
@@ -369,16 +364,53 @@ function scan.show(objedit)
 							c+=1
 						end
 					end
-					os.delay(50)
+					os.delay(15)
 				end
 			end
 
 			--PIC
 			if buttons.triangle then
-				__PIC = not __PIC
-				if __PIC then load_pic1(scan.list[scr.sel])	else pic1 = nil	end
+				local check_install = 0
+				for i=1, scr.maxim do
+					if scan.list[i].install == "a" then	check_install += 1 end
+				end
+
+				if check_install > 0 then
+					if custom_msg(SCAN_INSTALL_ALL.." ? ",1) == true then
+						--batch titles
+						for i=1, scr.maxim do
+							if scan.list[i].install == "a" then
+								local bubble_title = nil
+								if scan.list[i].title then
+									if __TITLE == 0 then
+										bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[i].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+									end
+								end
+								if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[i].title or scan.list[i].name end
+								scan.list[i].title_bubble = bubble_title
+								scan.list[i].inst = true
+							end
+						end
+
+						local vbuff = screen.toimage()
+						local tmp,c = check_install,0
+						for i=1, scr.maxim do
+
+							if vbuff then vbuff:blit(0,0) end
+								screen.print(480,405,STRINGS_BUBBLES_BAR.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
+								draw.rect(0, 437, 960, 20, color.new(25,200,25))
+								draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
+								screen.flip()
+
+							if scan.list[i].inst then
+								bubbles.install(scan.list[i])
+								c+=1
+							end
+						end
+					end
+				end
 			end
-				
+
 			--Mark/Unmark
 			if buttons.square then
 				scan.list[scr.sel].inst = not scan.list[scr.sel].inst
@@ -418,7 +450,7 @@ function scan.show(objedit)
 					scan.list[scr.sel].setpack = STRINGS_OPTION_MSG_NO
 				end
 				--Update PIC
-				if __PIC then load_pic1(scan.list[scr.sel])	end
+				load_pic1(scan.list[scr.sel])
 			end
 
 			--Bubbles Color
@@ -442,7 +474,7 @@ end
 
 --------------------------SubMenuContextual
 local yf, _save = 325,false
-submenu_abm = { -- Creamos un objeto menu contextual
+submenu_abm = { 			-- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
     x = 0,					-- X origin of menu
@@ -474,7 +506,6 @@ function submenu_abm.run(obj)
 
 	if buttons[submenu_abm.ctrl] then
 		submenu_abm.close = not submenu_abm.close
-		__PIC,pic1 = false,nil
 		if submenu_abm.close and _save then
 			__SORT = _sort
 
@@ -497,6 +528,8 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"custom","customized",__CUSTOM)			--Save __CUSTOM
 			ini.write(__PATHINI,"title","title",__TITLE)				--Save __TITLE
 
+			--Update PIC
+			load_pic1(scan.list[obj.sel])
 		end
 		_save = false
 	end

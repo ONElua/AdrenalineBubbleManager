@@ -505,7 +505,12 @@ function bubbles.settings()
 						end
 					end
 				end
-				screen.print(480,y,bubbles.list[i].id or STRINGS_UNK,1.0,color.white,color.gray,__ACENTER)
+
+				if bubbles.list[i].exist then
+					screen.print(480,y,bubbles.list[i].id or STRINGS_UNK,1.0,color.white,color.gray,__ACENTER)
+				else
+					screen.print(480,y,"  !  "..bubbles.list[i].id or STRINGS_UNK,1.0,color.yellow,color.gray,__ACENTER)
+				end
 
 				if bubbles.list[i].delete then
 					draw.fillrect(750,y-1,30,18,color.new(255,255,255,100))
