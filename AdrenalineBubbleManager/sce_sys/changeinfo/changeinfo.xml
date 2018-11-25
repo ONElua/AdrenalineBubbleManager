@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="05.15">
+    <![CDATA[
+- Removed option show pic with triangle button.<br>
+- Added Batch Installation Option by pressing triangle button for non installed content.<br>
+- Now you can uninstall non linked bubbles per batch.<br>
+    ]]>
 <changes app_ver="05.14">
     <![CDATA[
 - Use Default Title option added to Submenu (START) enable it to skip the renaming process.<br>
