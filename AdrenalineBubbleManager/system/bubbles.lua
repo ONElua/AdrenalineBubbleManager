@@ -81,8 +81,7 @@ function bubbles.scan()
 				fp:seek("set",0x20)
 				bubbles.list[i].iso = fp:read()
 
-				if files.exists(bubbles.list[i].iso) then
-					bubbles.list[i].exist = true
+				if files.exists(bubbles.list[i].iso) then bubbles.list[i].exist = true
 				else
 					bubbles.list[i].exist = false
 					total_empty += 1
@@ -539,17 +538,29 @@ function bubbles.settings()
 
 			--Options txts
 			local y1=356
-			for i=1,#options_edit do
+			for i=1,4 do
 				if change then
 					if i == optsel then
-						draw.fillrect(73,y1-1,813,19,color.green:a(100))
+						if i==4 then
+							draw.fillrect(73,329,813,19,color.green:a(100))
+						else
+							draw.fillrect(73,y1-1,813,19,color.green:a(100))
+						end
 					end
 				end
-				screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
+				if i != 4 then
+					screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
+				end
 				y1+=23
 			end
 
-			if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
+			if not change then
+				if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
+			else
+				if optsel == 4 then ccolor = color.yellow
+				else if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
+				end
+			end
 
 			--Path2Game
 			if screen.textwidth(bubbles.list[scrids.sel].iso or STRINGS_UNK) > 765 then
@@ -578,8 +589,13 @@ function bubbles.settings()
 
 				screen.print(480,523, SYMBOL_BACK..": "..BUBBLES_GOTOBACK, 1, color.white, color.blue, __ACENTER)
 			else
-				screen.print(80,475, "<- -> "..BUBBLES_TOGGLE, 1, color.white, color.blue, __ALEFT)
-				screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
+				if optsel == 4 then
+					screen.print(80,475, SYMBOL_BACK2..": "..BUBBLES_EDITPATH, 1, color.white, color.blue, __ALEFT)
+					screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
+				else
+					screen.print(80,475, "<- -> "..BUBBLES_TOGGLE, 1, color.white, color.blue, __ALEFT)
+					screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
+				end
 			end
 
 		else
@@ -635,9 +651,18 @@ function bubbles.settings()
 							fp:write(path2game)							
 
 							fp:close()
+
+							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end
+
 							bubbles.list[scrids.sel].update = false
-							
+
 							--Update
+							total_empty = 0
+							for i=1,bubbles.len do
+								if not bubbles.list[i].exist then
+									total_empty += 1
+								end
+							end
 							for i=1,scan.len do
 								scan.list[i].install,scan.list[i].state = "a",false
 								for j=1,bubbles.len do
@@ -691,7 +716,6 @@ function bubbles.settings()
 									if not game.exists(bubbles.list[i].id) then
 										preview = nil
 										restart_cronopic()
-										if not bubbles.list[i].exist then total_empty -= 1 end
 										table.remove(bubbles.list, i)
 										bubbles.len -= 1
 										scrids:set(bubbles.list, bmaxim)
@@ -705,6 +729,12 @@ function bubbles.settings()
 							end--for
 
 							--Update
+							total_empty = 0
+							for i=1,bubbles.len do
+								if not bubbles.list[i].exist then
+									total_empty += 1
+								end
+							end
 							for i=1,scan.len do
 								scan.list[i].install,scan.list[i].state = "a",false
 								for j=1,bubbles.len do
@@ -809,8 +839,8 @@ function bubbles.settings()
 				if buttons.up then optsel-=1 end
 				if buttons.down then optsel+=1 end
 
-				if optsel > #options_edit then optsel = 1 end
-				if optsel < 1 then optsel = #options_edit end
+				if optsel > #options_edit + 1 then optsel = 1 end
+				if optsel < 1 then optsel = #options_edit + 1 end
 
 				if (buttons.left or buttons.right) then
 					if buttons.left then selector-=1 end
@@ -825,6 +855,23 @@ function bubbles.settings()
 					end
 
 					bubbles.list[scrids.sel].lines[optsel] = selector - 1
+					bubbles.list[scrids.sel].update = true
+				end
+
+				if buttons[accept] and optsel == 4 then
+					local new_path = osk.init(BUBBLES_PATH2GAME, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
+					bubbles.list[scrids.sel].iso = new_path
+
+					if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end
+
+					--Update
+					total_empty = 0
+					for i=1,bubbles.len do
+						if not bubbles.list[i].exist then
+							total_empty += 1
+						end
+					end
 					bubbles.list[scrids.sel].update = true
 				end
 
