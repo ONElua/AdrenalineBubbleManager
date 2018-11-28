@@ -858,7 +858,7 @@ function bubbles.settings()
 					bubbles.list[scrids.sel].update = true
 				end
 
-				if buttons[accept] and optsel == 4 then
+				if (buttons[accept] and optsel == 4) and not bubbles.list[scrids.sel].exist then
 					local new_path = osk.init(BUBBLES_PATH2GAME, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
 					bubbles.list[scrids.sel].iso = new_path

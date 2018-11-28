@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="05.16">
+    <![CDATA[
+- Re-add edit bubble path. Only when the path to the game does not exist<br>
+    ]]>
 <changes app_ver="05.15">
     <![CDATA[
 - Removed option show pic with triangle button.<br>
