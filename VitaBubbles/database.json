@@ -21,52 +21,150 @@
         "time": "0"
     },
 	{
-        "id": "PURPLE-OLD",
-        "title": "Purple Old Theme",
+        "id": "BREATHIV",
+        "title": "Breath of Fire IV",
         "version": "1.00",
-        "author": "WZ-(JK)",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "CHTRIGGER",
+        "title": "Chrono Trigger",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "CLADUNX2",
+        "title": "ClaDun x2",
+        "version": "1.00",
+        "author": "Quasinconsistent",
         "time": "0"
     },
     {
-        "id": "EXEDDGT-WZ",
-        "title": "Extreme Edition: Dark Gray Theme",
+        "id": "DARKSTALKERS",
+        "title": "Darkstalkers Chronicle",
         "version": "1.00",
-        "author": "WZ-(JK)",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DIGIMONCARD",
+        "title": "Digimon Digital Card Battle",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DIGIMONRUMBLE",
+        "title": "Digimon Rumble Arena",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DIGIMONW",
+        "title": "Digimon World",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DIGIMONW2",
+        "title": "Digimon World 2",
+        "version": "1.00",
+        "author": "Quasinconsistent",
         "time": "0"
     },
     {
-        "id": "EXEDLGT-WZ",
-        "title": "Extreme Edition: Gray Theme",
+        "id": "DISGAEA",
+        "title": "Disgaea",
         "version": "1.00",
-        "author": "WZ-(JK)",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DISGAEA2",
+        "title": "Disgaea 2",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DISSIDIA",
+        "title": "Dissidia Final Fantasy",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "DISSIDIA012",
+        "title": "Dissidia Final Fantasy - Duodecim 012",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "FFI",
+        "title": "Final Fantasy I",
+        "version": "1.00",
+        "author": "Quasinconsistent",
         "time": "0"
     },
     {
-        "id": "LEGANCY-RZ",
-        "title": "Legancy",
+        "id": "FFII",
+        "title": "Final Fantasy II",
         "version": "1.00",
-        "author": "Raziel",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "FFIIII",
+        "title": "Final Fantasy III",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "FFIV",
+        "title": "Final Fantasy IV",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "FFVI",
+        "title": "Final Fantasy VI",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+	{
+        "id": "FFVII",
+        "title": "Final Fantasy VII",
+        "version": "1.00",
+        "author": "Quasinconsistent",
         "time": "0"
     },
     {
-        "id": "EDITPORTJF",
-        "title": "Edition Portable",
+        "id": "FFVIII",
+        "title": "Final Fantasy VIII",
         "version": "1.00",
-        "author": "Jffry",
+        "author": "Quasinconsistent",
         "time": "0"
     },
-    {
-        "id": "VITABLUEJF",
-        "title": "Ps Vita Blue",
+	{
+        "id": "FFIX",
+        "title": "Final Fantasy IX",
         "version": "1.00",
-        "author": "Jffry",
+        "author": "Quasinconsistent",
         "time": "0"
     },
-    {
-        "id": "PS4SKIN-RZ",
-        "title": "PS4 Skin",
+	{
+        "id": "FFTACTICS",
+        "title": "Final Fantasy Tactics - War of The Lions",
         "version": "1.00",
-        "author": "Raziel",
+        "author": "Quasinconsistent",
         "time": "0"
-    }
+    },
 ]
