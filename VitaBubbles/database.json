@@ -1,152 +1,72 @@
 [
 	{
-		"id" : "ALADDIN",
-		"title" : "Aladdin - Nasira's Revenge",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
+        "id": "ALADDIN",
+        "title": "Aladdin - Nasira's Revenge",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
+    {
+        "id": "ALUNDRA",
+        "title": "Alundra",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
 	{
-		"id" : "ALUNDRA",
-		"title" : "Alundra",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
+        "id": "BREATHIII",
+        "title": "Breath of Fire III",
+        "version": "1.00",
+        "author": "Quasinconsistent",
+        "time": "0"
+    },
 	{
-		"id" : "BREATHIII",
-		"title" : "Breath of Fire III",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "BREATHIV",
-		"title" : "Breath of Fire IV",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "CHTRIGGER",
-		"title" : "Chrono Trigger",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "CLADUNX2",
-		"title" : "ClaDun x2",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DARKSTALKERS",
-		"title" : "Darkstalkers Chronicle",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DIGIMONCARD",
-		"title" : "Digimon Digital Card Battle",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DIGIMONRUMBLE",
-		"title" : "Digimon Rumble Arena",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DIGIMONW2",
-		"title" : "Digimon World 2",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DIGIMONW",
-		"title" : "Digimon World",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DISGAEA",
-		"title" : "Disgaea",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DISGAEA2",
-		"title" : "Disgaea 2",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DISSIDIA012",
-		"title" : "Dissidia Final Fantasy - Duodecim 012",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "DISSIDIA",
-		"title" : "Dissidia Final Fantasy COMPLETE",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFI",
-		"title" : "Final Fantasy I",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFII",
-		"title" : "Final Fantasy II",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFIII",
-		"title" : "Final Fantasy III",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFIV",
-		"title" : "Final Fantasy IV",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFV",
-		"title" : "Final Fantasy V",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFVI",
-		"title" : "Final Fantasy VI",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFVII",
-		"title" : "Final Fantasy VII",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFVIII",
-		"title" : "Final Fantasy VIII",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFIX",
-		"title" : "Final Fantasy IX",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	},
-	{
-		"id" : "FFTACTICS",
-		"title" : "Final Fantasy Tactics - War of The Lions",
-		"version" : "1.00",
-		"author" : "Quasinconsistent"
-	}
+        "id": "PURPLE-OLD",
+        "title": "Purple Old Theme",
+        "version": "1.00",
+        "author": "WZ-(JK)",
+        "time": "0"
+    },
+    {
+        "id": "EXEDDGT-WZ",
+        "title": "Extreme Edition: Dark Gray Theme",
+        "version": "1.00",
+        "author": "WZ-(JK)",
+        "time": "0"
+    },
+    {
+        "id": "EXEDLGT-WZ",
+        "title": "Extreme Edition: Gray Theme",
+        "version": "1.00",
+        "author": "WZ-(JK)",
+        "time": "0"
+    },
+    {
+        "id": "LEGANCY-RZ",
+        "title": "Legancy",
+        "version": "1.00",
+        "author": "Raziel",
+        "time": "0"
+    },
+    {
+        "id": "EDITPORTJF",
+        "title": "Edition Portable",
+        "version": "1.00",
+        "author": "Jffry",
+        "time": "0"
+    },
+    {
+        "id": "VITABLUEJF",
+        "title": "Ps Vita Blue",
+        "version": "1.00",
+        "author": "Jffry",
+        "time": "0"
+    },
+    {
+        "id": "PS4SKIN-RZ",
+        "title": "PS4 Skin",
+        "version": "1.00",
+        "author": "Raziel",
+        "time": "0"
+    }
 ]
