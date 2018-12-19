@@ -887,7 +887,6 @@ function bubbles.settings()
 	end
 end
 
-
 function bubbles.edit(obj, simg)
 
 	local tmp = files.listdirs("ux0:ABM/")
@@ -985,6 +984,7 @@ function bubbles.edit(obj, simg)
 			screen.print(950,490, SYMBOL_BACK..": "..BUBBLES_GOTOBACK, 1, color.white, color.blue, __ARIGHT)
 		else
 			screen.print(480,523, SYMBOL_BACK..": "..BUBBLES_GOTOBACK, 1, color.white, color.blue, __ACENTER)
+			screen.print(950,490, "SELECT: "..STRINGS_RESOURCES_ONLINE, 1, color.white, color.blue, __ARIGHT)
 		end
 
 		draw.fillrect(0,516,960,30, 0x64545353)--Down
@@ -1000,6 +1000,21 @@ function bubbles.edit(obj, simg)
 
 			if (buttons.down or buttons.analogly > 60) then
 				if scrids:down() then preview = nil end
+			end
+
+			--online
+			if buttons.select and not inside then
+
+				local vbuff = screen.toimage()
+				if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
+				message_wait(STRINGS_RESOURCES_SEARCH)
+				os.delay(500)
+
+				bubbles.online(obj, simg, tmp)
+				tmp = files.listdirs("ux0:ABM/")
+				if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
+				else tmp = {} end
+				scrids:set(tmp,maximset)
 			end
 
 			if buttons[accept] and tmp[scrids.sel].directory then

@@ -113,3 +113,14 @@ STRINGS_DESC_TITLES =			"Enable it to create bubbles using the game default's Ti
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Bubbles"
+
+--online
+STRINGS_RESOURCES_AUTHOR =			"AUTHOR"
+STRINGS_RESOURCES_ID =				"ID"
+STRINGS_RESOURCES_SEARCH =			"Search Online"
+STRINGS_RESOURCES_ONLINE =			"Resources Online"
+STRINGS_RESOURCES_ERROR_DECODE =	"Error Decode Database of Resources!"
+STRINGS_RESOURCES_ERROR_BASE =		"Error Get Database of Resources!"
+STRINGS_RESOURCES_INSTALLED =		"Resources Installed!"
+STRINGS_RESOURCES_ERROR_UNPACK =	"Error Unpack Resources!"
+STRINGS_RESOURCES_ERROR_DOWNLOAD =	"Error Downloading Resources!"

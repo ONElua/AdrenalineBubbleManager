@@ -107,6 +107,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	dofile("system/stars.lua")
 	dofile("system/scan.lua")
 	dofile("system/bubbles.lua")
+	dofile("system/resources.lua")
 
 	os.cpu(444)
 		bubbles.scan()
