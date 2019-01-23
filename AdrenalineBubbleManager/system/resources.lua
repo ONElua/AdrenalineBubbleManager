@@ -14,6 +14,10 @@ files.mkdir(__PATH_TMP)
 APP_REPO = "ONElua"
 APP_PROJECT = "VitaBubbles"
 
+COVERS_PORT_I = channel.new("COVERS_PORT_I")
+COVERS_PORT_O = channel.new("COVERS_PORT_O")
+THID_THEME = thread.new("system/thread_covers.lua")
+
 function bubbles.online(obj, simg)
 
 	local list,maxim,xscr1,xscr2 = {},10,705,705

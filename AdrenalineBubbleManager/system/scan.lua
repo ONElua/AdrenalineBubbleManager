@@ -18,7 +18,7 @@ local pic1,icon0 = nil,nil
 local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions.
 local tmp_sort = __SORT
 
-function insert(tmp_sfo,obj,device)
+function insert(tmp_sfo,obj,device,official)
 
 	local install,state,orig = "a",false,false
 
@@ -29,7 +29,8 @@ function insert(tmp_sfo,obj,device)
 		end
 	end
 
-	if game.exists(obj.name) then orig = true end
+	if official then orig = official end
+	--if game.exists(obj.name) then orig = true end
 
 	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n"," ") end
 
@@ -80,7 +81,8 @@ end
 
 function scan.insertPBP(hand,device)
 
-	--if game.exists(hand.name) then return end                  -- Is oficial PSP game (Bubble), not read :P
+	local orig = false
+	if game.exists(hand.name) then orig = true end                  -- Is oficial PSP game (Bubble), not read :P
 	--if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
 
 	if files.type(hand.path) == 1 then
@@ -97,7 +99,7 @@ function scan.insertPBP(hand,device)
 		end
 		if _insert then
 			init_msg(string.format(DEBUG_LOAD_PBP.." %s\n",hand.path))
-			insert(tmp0,hand,device)
+			insert(tmp0,hand,device,orig)
 		end
 		tmp0 = nil
 	end
@@ -144,7 +146,7 @@ function load_pic1(obj)
 			pic1 = PSP_IMG
 		end
 	elseif obj.setpack == STRINGS_OPTION_MSG_NO then
-		--pic1 = game.getpic1(obj.path)
+--		pic1 = game.getpic1(obj.path)
 	else
 		pic1=image.load(__PATHSETS..obj.setpack.."/BG0.PNG")
 	end
