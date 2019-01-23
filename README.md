@@ -121,6 +121,8 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 ## iso/cso/pbp content selection screen ##
 
+![header](ContentSelection2.png)
+
 *Creating Bubbles*
 
 - **Triangle:** Batch Installation for non installed content.<br>
