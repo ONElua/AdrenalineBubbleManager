@@ -14,6 +14,12 @@ files.mkdir(__PATH_TMP)
 APP_REPO = "ONElua"
 APP_PROJECT = "VitaBubbles"
 
+BUBBLES_PORT_I = channel.new("BUBBLES_PORT_I")
+BUBBLES_PORT_O = channel.new("BUBBLES_PORT_O")
+THID_THEME = thread.new("system/thread_bubbles.lua")
+
+pic_alpha = 0
+
 function bubbles.online(obj, simg)
 
 	local list,maxim,xscr1,xscr2 = {},10,705,705
@@ -29,16 +35,13 @@ function bubbles.online(obj, simg)
 		local not_err = true
 		not_err, list = pcall(json.decode, raw)
 		if not_err then
-
-			if not files.exists(__PATH_TMP.."icon0s.zip") then
-				http.getfile(url.."icon0s.zip", __PATH_TMP.."icon0s.zip")
-				files.extract(__PATH_TMP.."icon0s.zip", __PATH_TMP)
-			else
+			if list then
 				for i=1,#list do
-					if not files.exists(__PATH_TMP..list[i].id..".png") then http.getfile(url..list[i].id..".png", __PATH_TMP..list[i].id..".png") os.delay(100) end
+					if not files.exists(__PATH_TMP..list[i].id..".png") then
+						BUBBLES_PORT_O:push({ id = list[i].id })
+					end
 				end
 			end
-
 		else
 			mge = STRINGS_RESOURCES_ERROR_DECODE
 		end
@@ -70,10 +73,20 @@ function bubbles.online(obj, simg)
 				if i == scroll.sel then
 
 					if not preview then
-						preview = image.load(__PATH_TMP..list[i].id..".png")
-						if preview then
-							preview:resize(200,128)
+
+						if pic_alpha < 255 then
+							pic_alpha += 02
+							if not angle then angle = 0 end
+							angle += 20
+							if angle > 360 then angle = 0 end
+							draw.framearc(825, 145, 20, color.shine:a(125), 0, 360, 20, 30)
+							draw.framearc(825, 145, 20, color.gray:a(200), angle, 90, 20, 30)--gira
+						else
+							pic_alpha = 0
 						end
+
+						preview = image.load(__PATH_TMP..list[i].id..".png")
+						if preview then preview:resize(200,128)	end
 					end
 
 					screen.print(700+128, 230, "' "..STRINGS_RESOURCES_AUTHOR.." '",1,color.green:a(200),color.gray,__ACENTER)
@@ -124,11 +137,13 @@ function bubbles.online(obj, simg)
 
 			if buttons.up or buttons.analogly < -60 then
 				if scroll:up() then xscr1,xscr2 = 705,705
+					pic_alpha = 0
 					if preview then preview = nil end
 				end
 			end
 			if buttons.down or buttons.analogly > 60 then
 				if scroll:down() then xscr1,xscr2 = 705,705
+					pic_alpha = 0
 					if preview then preview = nil end
 				end
 			end

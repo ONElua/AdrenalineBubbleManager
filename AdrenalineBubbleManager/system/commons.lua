@@ -32,36 +32,20 @@ if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/
 if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
 
 -- Loading custom font
-if files.exists(pathABM.."font/font.ttf") then
-	fnt = font.load(pathABM.."font/font.ttf")
-elseif files.exists(pathABM.."font/font.pgf") then
-	fnt = font.load(pathABM.."font/font.pgf")
-elseif files.exists(pathABM.."font/font.pvf") then
-	fnt = font.load(pathABM.."font/font.pvf")
-end
+fnt = font.load(pathABM.."font/font.ttf") or font.load(pathABM.."font/font.pgf") or font.load(pathABM.."font/font.pvf")
 if fnt then	font.setdefault(fnt) end
 
 -- Background image must be (960x554 png or jpg image. Priority to back.png)
-if files.exists(pathABM.."resources/back.png") then back = image.load(pathABM.."resources/back.png")
-	elseif files.exists(pathABM.."resources/back.jpg") then back = image.load(pathABM.."resources/back.jpg")
-		else back = image.load("resources/back.png")
-end
+back = image.load(pathABM.."resources/back.png") or image.load(pathABM.."resources/back.jpg") or image.load("resources/back.png")
+
+-- Background1 image must be (960x554 png or jpg image. Priority to back1.png)
+back1 = image.load(pathABM.."resources/back1.png") or image.load(pathABM.."resources/back1.jpg") or image.load("resources/back1.png")
 
 -- Background2 image must be (960x554 png or jpg image. Priority to back2.png)
-if files.exists(pathABM.."resources/back1.png") then back1 = image.load(pathABM.."resources/back1.png")
-	elseif files.exists(pathABM.."resources/back1.jpg") then back1 = image.load(pathABM.."resources/back1.jpg")
-		else back1 = image.load("resources/back1.png")
-end
-
--- Background2 image must be (960x554 png or jpg image. Priority to back2.png)
-if files.exists(pathABM.."resources/back2.png") then back2 = image.load(pathABM.."resources/back2.png")
-	elseif files.exists(pathABM.."resources/back2.jpg") then back2 = image.load(pathABM.."resources/back2.jpg")
-		else back2 = image.load("resources/back2.png")
-end
+back2 = image.load(pathABM.."resources/back2.png") or image.load(pathABM.."resources/back2.jpg") or image.load("resources/back2.png")
 
 -- Popup message background (must be 706x274 png image)
-if files.exists(pathABM.."resources/box.png") then box = image.load(pathABM.."resources/box.png")
-else box = image.load("resources/box.png") end
+box = image.load(pathABM.."resources/box.png") or image.load("resources/box.png")
 
 -- Loading default GFX from app folder
 buttonskey = image.load("resources/buttons.png",20,20)
@@ -202,11 +186,7 @@ end
 
 function image.nostretched(img,cc)
     local w,h = img:getw(), img:geth()
-	
-	--[[if w != 80 or h != 80 then w,h = 108,60
-	else w,h = 90,90 end 
-	img = img:copyscale(w,h)
-	]]
+
 	if w != 80 or h != 80 then
 		w,h = 100,55
 		img = img:copyscale(w,h)
