@@ -165,6 +165,8 @@ function scan.show(objedit)
 
 	buttons.interval(12,5)
 	local xscr,xscrtitle,xprint = 15,20,5
+
+	local xb,yb = 820,90
 	while true do
 		buttons.read()
 			touch.read()
@@ -191,9 +193,19 @@ function scan.show(objedit)
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
 							if icon0 then
-								if icon0:getw()>144 then icon0:resize(144,80) end
+								if icon0:getrealw() != 80 or icon0:getrealw() != 80 then
+									if not scan.list[scr.sel].nostretched then
+										icon0 = icon0:copyscale(100,55)
+									else
+										icon0 = icon0:copyscale(128,128)
+									end
+								else
+									scan.list[scr.sel].noscaled = true
+									if scan.list[scr.sel].nostretched then
+										icon0 = icon0:copyscale(128,128)
+									end
+								end
 								icon0:center()
-								icon0:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 							else
 								scan.list[scr.sel].icon = false
 							end
@@ -224,42 +236,33 @@ function scan.show(objedit)
 
 			--Blit icon0
 			if icon0 then
-				--Full bbl icon
-				if scan.list[scr.sel].nostretched then
-					screen.clip(960-45, 75, 40)
-						icon0:blit(960-45, 75)
-					screen.clip()
-				else
-					--icon0:blit(960 - (icon0:getw()/2), 70)
-					icon0:blit(885, 73)
-				end
+				screen.clip(xb+64, yb+64, 120/2)
+				draw.fillrect(xb,yb, 128, 128, colors[scan.list[scr.sel].selcc])
+					icon0:blit(xb+64, yb+64)
+				screen.clip()
 			else
-				if scan.list[scr.sel].nostretched then
-					draw.gradcircle(960-45,75,45, color.white:a(100),color.white:a(100))
-				else
-					draw.fillrect(960-80,35, 80, 80, color.white:a(100))
-					draw.rect(960-80,35, 80, 80, color.white)
-				end
+				draw.fillrect(xb,yb, 128, 128, color.white:a(100))
+				draw.rect(xb,yb, 128, 128, color.white)
 			end
+
+			--Print Gameid
+			screen.print(960-75,35,SCAN_SORT_GAMEID,1,color.white,color.blue,__ACENTER)
+			screen.print(960-75,60,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ACENTER)
 
 			--Print Streched
 			if scan.list[scr.sel].nostretched then
-				screen.print(955,120,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,yb+64+70,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
 			else
-				screen.print(955,120,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,yb+64+70,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
 			end
 
 			--Print Sort
-			screen.print(955,155,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
-			screen.print(955,175, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+120,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+140, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
 
 			--Print SetPack
-			screen.print(955,210,STRINGS_SETIMGS..":",1,color.white,color.blue,__ARIGHT)
-			screen.print(955,235,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
-
-			--Print Gameid
-			screen.print(955,270,SCAN_SORT_GAMEID..":",1,color.white,color.blue,__ARIGHT)
-			screen.print(955,290,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+180,STRINGS_SETIMGS,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+200,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
@@ -433,6 +436,16 @@ function scan.show(objedit)
 			--Full/Stretched
 			if buttons.released.l then
 				scan.list[scr.sel].nostretched = not scan.list[scr.sel].nostretched
+				if icon0 then
+					local ws,hs = 128,128
+					if scan.list[scr.sel].noscaled then
+						if not scan.list[scr.sel].nostretched then ws,hs = 80,80 end
+					else
+						if not scan.list[scr.sel].nostretched then ws,hs = 100,55 end
+					end
+					icon0 = icon0:copyscale(ws,hs)
+					icon0:center()
+				end
 			end
 
 			if buttons.released.r then
