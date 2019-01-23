@@ -12,7 +12,7 @@ __PATH_TMP = "ux0:data/ABM/tmp/"
 __PATH_RESOURCES = "ux0:ABM/"
 files.mkdir(__PATH_TMP)
 APP_REPO = "ONElua"
-APP_PROJECT = "VitaBubbles"
+PROJECT_BUBBLES = "VitaBubbles"
 
 BUBBLES_PORT_I = channel.new("BUBBLES_PORT_I")
 BUBBLES_PORT_O = channel.new("BUBBLES_PORT_O")
@@ -28,7 +28,7 @@ function bubbles.online(obj, simg)
 
 	local path_json = "https://raw.githubusercontent.com/%s/%s/master/database.json"
 	local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
-	local raw = http.get(string.format(path_json, APP_REPO, APP_PROJECT))
+	local raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
 	local url = "https://raw.githubusercontent.com/ONElua/VitaBubbles/master/"
 	
 	if raw then
@@ -155,7 +155,7 @@ function bubbles.online(obj, simg)
 				message_wait()
 				os.delay(15)
 
-				local url_bubbles = string.format("https://raw.githubusercontent.com/%s/%s/master/%s.zip", APP_REPO, APP_PROJECT, list[scroll.sel].id)
+				local url_bubbles = string.format("https://raw.githubusercontent.com/%s/%s/master/%s.zip", APP_REPO, PROJECT_BUBBLES, list[scroll.sel].id)
 				local path = string.format(__PATH_TMP.."%s.zip", list[scroll.sel].id)
 				if http.getfile(url_bubbles, path) then
 					if files.extract(path, __PATH_RESOURCES) == 1 then
