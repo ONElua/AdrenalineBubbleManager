@@ -13,7 +13,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ### Adrenaline Version v6.7 ###
 ### Adrenaline Bubble Booter Version v0.8 ###
-### Adrenaline Bubbles Manager Current Version: 5.17 ###
+### Adrenaline Bubbles Manager Current Version: 5.18 ###
 
 ### Instructions ###
 1. **Install Adrenaline v6.7**
@@ -22,6 +22,10 @@ Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it j
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.18 ###
+- Now the preview images look more like ABM made bubbles when switching from full to non stretched option with L button.<br>
+- Now the preview icons download is done by threads in function Online Resources.<br>
 
 ### Changelog 5.17 ###
 - Added option to download resources and inject them un the desired ABM bubble.<br>
