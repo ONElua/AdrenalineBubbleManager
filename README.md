@@ -183,6 +183,14 @@ To use this feature you have to follow the instructions below:<br>
 
 ![header](PreviewsImgs.png)
 
+## Resources Online ##
+Please visit Repo:
+*([VitaBubbles](https://github.com/ONElua/VitaBubbles)).*<br>
+
+![header](ResourcesOnline.png)
+
+![header](ResourcesOnline2.png)
+
 ### NOTE: ###
 Make sure the images are renamed as mentioned above and to be in png format, also make sure the images are resized to corresponding sizes mentioned avobe (if your images sizes are close to specs they will work too).<br>
 You can add your own template.xml file. (Make sure the images names are the same to images linked in the template.xml).
