@@ -195,17 +195,18 @@ function scan.show(objedit)
 							if icon0 then
 								if icon0:getrealw() != 80 or icon0:getrealw() != 80 then
 									if not scan.list[scr.sel].nostretched then
-										icon0 = icon0:copyscale(100,55)
+										icon0:resize(100,55)
 									else
-										icon0 = icon0:copyscale(128,128)
+										icon0:resize(128,128)
 									end
 								else
 									scan.list[scr.sel].noscaled = true
 									if scan.list[scr.sel].nostretched then
-										icon0 = icon0:copyscale(128,128)
+										icon0:resize(128,128)
 									end
 								end
 								icon0:center()
+								icon0:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 							else
 								scan.list[scr.sel].icon = false
 							end
@@ -443,7 +444,7 @@ function scan.show(objedit)
 					else
 						if not scan.list[scr.sel].nostretched then ws,hs = 100,55 end
 					end
-					icon0 = icon0:copyscale(ws,hs)
+					icon0:resize(ws,hs)
 					icon0:center()
 				end
 			end
