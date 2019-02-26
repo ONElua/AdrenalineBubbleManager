@@ -251,19 +251,21 @@ function scan.show(objedit)
 			screen.print(960-75,60,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ACENTER)
 
 			--Print Streched
+			screen.print(955,yb+64+70,"<< L >>",0.9,color.white,color.blue,__ARIGHT)
 			if scan.list[scr.sel].nostretched then
-				screen.print(955,yb+64+70,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,yb+64+90,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
 			else
-				screen.print(955,yb+64+70,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,yb+64+90,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
 			end
 
-			--Print Sort
-			screen.print(955,yb+64+120,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+140, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
-
 			--Print SetPack
-			screen.print(955,yb+64+180,STRINGS_SETIMGS,1,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+200,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+125,"<< R >>",0.9,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+145,STRINGS_SETIMGS,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+165,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
+
+			--Print Sort
+			screen.print(955,yb+64+200,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+220, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
@@ -489,7 +491,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-local yf, _save = 325,false
+local yf, _save = 365,false
 submenu_abm = { 			-- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -504,14 +506,15 @@ submenu_abm = { 			-- Creamos un objeto menu contextual
 
 function submenu_abm.wakefunct()
 	submenu_abm.options = { 	-- Handle Option Text and Option Function
-		{ text = STRINGS_CONVERT_8BITS, 	desc = STRINGS_DESC_CONVERT8BITS },
-		{ text = STRINGS_SETIMGS, 			desc = STRINGS_DESC_SETIMGS },
-		{ text = STRINGS_DEFAULT_SORT,		desc = STRINGS_DESC_DEFAULT_SORT },
-		{ text = STRINGS_DEFAULT_COLOR,		desc = STRINGS_DESC_DEFAULT_COLOR },
-		{ text = STRINGS_CUSTOMIZED,		desc = STRINGS_DESC_CUSTOMIZED },
-		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },
-		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },
-		{ text = STRINGS_DEFAULT_TITLE,		desc = STRINGS_DESC_TITLES },
+		{ text = STRINGS_CONVERT_8BITS, 	desc = STRINGS_DESC_CONVERT8BITS },			--1
+		{ text = STRINGS_SETIMGS, 			desc = STRINGS_DESC_SETIMGS },				--2
+		{ text = STRINGS_DEFAULT_SORT,		desc = STRINGS_DESC_DEFAULT_SORT },			--3
+		{ text = STRINGS_DEFAULT_COLOR,		desc = STRINGS_DESC_DEFAULT_COLOR },		--4
+		{ text = STRINGS_CUSTOMIZED,		desc = STRINGS_DESC_CUSTOMIZED },			--5
+		{ text = STRINGS_PSBUTTON,			desc = STRINGS_DESC_PSBUTTON },				--6
+		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--7
+		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--8
+		{ text = STRINGS_DEFAULT_TITLE,		desc = STRINGS_DESC_TITLES },				--9
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -536,12 +539,14 @@ function submenu_abm.run(obj)
 				scan.list[i].selcc = _color
 				scan.list[i].setpack = setpack
 			end
+
+			ini.write(__PATHINI,"convert","8bits",__8PNG)				--Save __8PNG
+			ini.write(__PATHINI,"resources","set",__SET)				--Save __SET
 			ini.write(__PATHINI,"color","color",_color)					--Save __COLOR
+			ini.write(__PATHINI,"custom","customized",__CUSTOM)			--Save __CUSTOM
+			ini.write(__PATHINI,"psbutton","menu",__PSBUTTON)			--Save __PSBUTTON
 			ini.write(__PATHINI,"update","update",__UPDATE)				--Save __UPDATE
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)		--Save __CHECKADR
-			ini.write(__PATHINI,"resources","set",__SET)				--Save __SET
-			ini.write(__PATHINI,"convert","8bits",__8PNG)				--Save __8PNG
-			ini.write(__PATHINI,"custom","customized",__CUSTOM)			--Save __CUSTOM
 			ini.write(__PATHINI,"title","title",__TITLE)				--Save __TITLE
 
 			--Update PIC
@@ -634,14 +639,19 @@ function submenu_abm.draw(obj)
 				if __CUSTOM == 1 then __CUSTOM,_custom = 0,STRINGS_OPTION_MSG_NO
 				else __CUSTOM,_custom = 1,STRINGS_OPTION_MSG_YES end
 
-			elseif submenu_abm.scroll.sel == 6 then--Update
+			elseif submenu_abm.scroll.sel == 6 then--PsButton
+				if __PSBUTTON == 1 then __PSBUTTON,_psbutton = 0,STRINGS_PSBUTTON_MENU
+				else __PSBUTTON,_psbutton = 1,STRINGS_PSBUTTON_LIVEAREA end
+
+			elseif submenu_abm.scroll.sel == 7 then--Update
 				if __UPDATE == 1 then __UPDATE,_update = 0,STRINGS_OPTION_MSG_NO
 				else __UPDATE,_update = 1,STRINGS_OPTION_MSG_YES end
 
-			elseif submenu_abm.scroll.sel == 7 then--CheckAdrenaline
+			elseif submenu_abm.scroll.sel == 8 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR,_adr = 0,STRINGS_OPTION_MSG_NO
 				else __CHECKADR,_adr = 1,STRINGS_OPTION_MSG_YES end
-			elseif submenu_abm.scroll.sel == 8 then--Titles for your Bubbles
+
+			elseif submenu_abm.scroll.sel == 9 then--Titles for your Bubbles
 				if __TITLE == 1 then __TITLE,_title = 0,STRINGS_OPTION_MSG_NO
 				else __TITLE,_title = 1,STRINGS_OPTION_MSG_YES end
 
@@ -674,10 +684,12 @@ function submenu_abm.draw(obj)
 			elseif i==5 then
 				screen.print(690, h, _custom, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==6 then
-				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _psbutton, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==7 then
-				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==8 then
+				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==9 then
 				screen.print(690, h, _title, 1, sel_color, color.blue, __ARIGHT)
 			end
 

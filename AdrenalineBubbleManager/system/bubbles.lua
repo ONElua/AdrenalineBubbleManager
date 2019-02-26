@@ -77,6 +77,12 @@ function bubbles.scan()
 				if custom < 0 or custom > 1 then custom = 1 end
 				table.insert(bubbles.list[i].lines, custom)
 
+				--PSbutton
+				fp:seek("set",0x14)
+				local psbutton = str2int(fp:read(4))
+				if psbutton < 0 or psbutton > 1 then psbutton = 0 end
+				table.insert(bubbles.list[i].lines, psbutton)
+
 				--Path
 				fp:seek("set",0x20)
 				bubbles.list[i].iso = fp:read()
@@ -169,6 +175,15 @@ function bubbles.install(src)
 			end
 		else
 			timg = game.getpic1(src.path)
+		end
+
+		if timg then
+			if timg:getrealw() != 480 or timg:getrealh() != 272 then
+				image.save(timg:copyscale(480,272), work_dir.."data/boot.png")
+			else
+				image.save(timg, work_dir.."data/boot.png")
+			end
+			timg:reset()
 		end
 
 		if back2 then back2:blit(0,0) end
@@ -383,6 +398,10 @@ function bubbles.install(src)
 		fp:seek("set",0x0C)
 		fp:write(int2str(__CUSTOM))
 
+		--PSbutton
+		fp:seek("set",0x14)
+		fp:write(int2str(__PSBUTTON))
+
 		local path2game = src.path
 		local fill = 256 - #src.path
 		for j=1,fill do
@@ -428,11 +447,12 @@ function bubbles.install(src)
 			--Path2Game
 			bubbles.list[#bubbles.list].iso = src.path:lower()
 
-			--Driver&Execute&Customized
+			--Driver&Execute&Customized&PSbutton
 			bubbles.list[#bubbles.list].lines = {}
 			table.insert(bubbles.list[#bubbles.list].lines, 0)			--Default: 0 Inferno
 			table.insert(bubbles.list[#bubbles.list].lines, 0)			--Default: 0 Eboot.bin
 			table.insert(bubbles.list[#bubbles.list].lines, __CUSTOM)	--Default: 1 Customized
+			table.insert(bubbles.list[#bubbles.list].lines, __PSBUTTON)	--Default: 0 PSbutton Menu
 
 			bubbles.len = #bubbles.list
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
@@ -455,13 +475,14 @@ end
 
 function bubbles.settings()
 
-	local options_edit 	= { "DRIVER:", "EXECUTE:", "CUSTOMIZED:" }
+	local options_edit 	= { "DRIVER:", "EXECUTE:", "CUSTOMIZED:", "LIVEAREA:" }
 	local drivers   	= { "INFERNO", "MARCH33", "NP9660" }
 	local bins      	= { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
 	local enables   	= { "NO", "YES" }
+	local descp			= { STRINGS_DESC_DRIVER, STRINGS_DESC_EXECUTE, STRINGS_DESC_CUSTOMIZED, STRINGS_DESC_PSBUTTON, STRINGS_DESC_EDITPATH }
 
 	local selector, optsel, change, bmaxim = 1,1,false,9
-	local scrids, xscr1, xscr2 = newScroll(bubbles.list, bmaxim), 110, 15
+	local scrids, xscr1, xscr_desc = newScroll(bubbles.list, bmaxim), 110, 15
 	local mark,preview = false,nil
 
 	buttons.interval(12,6)
@@ -538,17 +559,17 @@ function bubbles.settings()
 
 			--Options txts
 			local y1=356
-			for i=1,4 do
+			for i=1,5 do
 				if change then
 					if i == optsel then
-						if i==4 then
+						if i==5 then
 							draw.fillrect(73,329,813,19,color.green:a(100))
 						else
 							draw.fillrect(73,y1-1,813,19,color.green:a(100))
 						end
 					end
 				end
-				if i != 4 then
+				if i != 5 then
 					screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
 				end
 				y1+=23
@@ -557,7 +578,7 @@ function bubbles.settings()
 			if not change then
 				if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
 			else
-				if optsel == 4 then ccolor = color.yellow
+				if optsel == 5 then ccolor = color.yellow
 				else if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
 				end
 			end
@@ -573,6 +594,7 @@ function bubbles.settings()
 			screen.print(680, 356, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
 			screen.print(680, 379, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
 			screen.print(680, 402, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
+			screen.print(680, 425, enables[ bubbles.list[scrids.sel].lines[4] + 1 ],1,color.white,color.gray, __ARIGHT)
 
 			if not change then
 
@@ -589,13 +611,20 @@ function bubbles.settings()
 
 				screen.print(480,523, SYMBOL_BACK..": "..BUBBLES_GOTOBACK, 1, color.white, color.blue, __ACENTER)
 			else
-				if optsel == 4 then
+				if optsel == 5 then
 					screen.print(80,475, SYMBOL_BACK2..": "..BUBBLES_EDITPATH, 1, color.white, color.blue, __ALEFT)
 					screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
 				else
 					screen.print(80,475, "<- -> "..BUBBLES_TOGGLE, 1, color.white, color.blue, __ALEFT)
 					screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
 				end
+				
+				if screen.textwidth(descp[optsel] or STRINGS_UNK) > 955 then
+					xscr_desc = screen.print(xscr_desc, 523, descp[optsel] or STRINGS_UNK,1,color.white, color.blue,__SLEFT,955)
+				else
+					screen.print(480, 523, descp[optsel] or STRINGS_UNK,1,color.white, color.blue, __ACENTER)
+				end
+
 			end
 
 		else
@@ -640,6 +669,9 @@ function bubbles.settings()
 								fp:seek("set", offset * i)
 								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
 							end
+
+							fp:seek("set", 0x14)
+							fp:write(int2str(bubbles.list[scrids.sel].lines[4]))
 
 							local path2game = bubbles.list[scrids.sel].iso
 							local fill = 256 - #bubbles.list[scrids.sel].iso
@@ -836,8 +868,14 @@ function bubbles.settings()
 
 				buttons.interval(20,12)
 
-				if buttons.up then optsel-=1 end
-				if buttons.down then optsel+=1 end
+				if buttons.up then
+					optsel-=1
+					xscr_desc= 15
+				end
+				if buttons.down then
+					optsel+=1
+					xscr_desc= 15
+				end
 
 				if optsel > #options_edit + 1 then optsel = 1 end
 				if optsel < 1 then optsel = #options_edit + 1 end
@@ -849,7 +887,7 @@ function bubbles.settings()
 					if optsel == 1 or optsel == 2 then				--Driver&Execute
 						if selector > 3 then selector = 1 end
 						if selector < 1 then selector = 3 end
-					elseif optsel == 3 then							--Customized
+					elseif optsel == 3 or optsel == 4 then			--Customized&psbutton
 						if selector > 2 then selector = 1 end
 						if selector < 1 then selector = 2 end
 					end
@@ -858,7 +896,7 @@ function bubbles.settings()
 					bubbles.list[scrids.sel].update = true
 				end
 
-				if (buttons[accept] and optsel == 4) and not bubbles.list[scrids.sel].exist then
+				if (buttons[accept] and optsel == 5) and not bubbles.list[scrids.sel].exist then
 					local new_path = osk.init(BUBBLES_PATH2GAME, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
 					bubbles.list[scrids.sel].iso = new_path
@@ -899,6 +937,7 @@ function bubbles.edit(obj, simg)
 		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },
 		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png",							restore = "/sce_sys/" },
 		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
+		{ name = "BOOT.PNG", 	 w = 480,	h = 272,	dest = "/data/boot.png",							restore = "/data/" },
 		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
 	}
 
@@ -1083,7 +1122,7 @@ function bubbles.edit(obj, simg)
 
 								if back2 then back2:blit(0,0) end
 
-								if i < 5 then
+								if i < #resources then--5 or 6
 
 									img = image.load(tmp[j].path)
 									if img then
@@ -1097,7 +1136,6 @@ function bubbles.edit(obj, simg)
 									screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
 									screen.flip()
 
-									--i==2 STARTUP.PNG
 									if img then
 										files.copy(obj.path..resources[i].dest, path_tmp)--backup
 										img:reset()
@@ -1108,6 +1146,7 @@ function bubbles.edit(obj, simg)
 											scale = true
 										end
 
+										--i==2 STARTUP.PNG
 										if i == 2 then
 											--Fix Startup.png Forzar 8bits
 											image.save(image.startup(img), obj.path..resources[i].dest, 1)
@@ -1128,7 +1167,7 @@ function bubbles.edit(obj, simg)
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup
 									files.copy(tmp[j].path, obj.path..resources[i].dest)
 									
-									if i > 5 then
+									if i > #resources then
 										img = image.load(tmp[j].path)
 										if img then
 											img:scale(75)

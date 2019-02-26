@@ -103,6 +103,7 @@ __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 __CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","1"))
 __TITLE = tonumber(ini.read(__PATHINI,"title","title","0"))
+__PSBUTTON = tonumber(ini.read(__PATHINI,"psbutton","menu","0"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
@@ -113,7 +114,8 @@ if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpac
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
 if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
 if __TITLE == 1 then _title = STRINGS_OPTION_MSG_YES else _title = STRINGS_OPTION_MSG_NO end
-TOTAL_SET = 6
+if __PSBUTTON == 1 then _psbutton = STRINGS_PSBUTTON_LIVEAREA else _psbutton = STRINGS_PSBUTTON_MENU end
+TOTAL_SET = 7
 
 --[[
 	## Library Scroll ##
