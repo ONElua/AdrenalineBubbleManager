@@ -100,7 +100,8 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 			end
 
 		end--for
-		os.delay(500)
+		custom_msg(ADRENALINE_LAUNCH_FIRST,0)
+		os.delay(1000)
 		power.restart()
 	end
 
