@@ -264,8 +264,9 @@ function scan.show(objedit)
 			screen.print(955,yb+64+165,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
 
 			--Print Sort
-			screen.print(955,yb+64+200,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+220, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+200,"<< SELECT >>",0.9,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+220,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+240, sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
 			if scan.list[scr.sel].selcc == 1 then
