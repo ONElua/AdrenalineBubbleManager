@@ -34,10 +34,13 @@ function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 		if update then update:blit(0,0) end
 			draw.fillrect(0,0,960,30, color.green:a(100))
 				screen.print(10,10,"Unpack vpk...")
-				screen.print(925,10,"Percent Total: "..math.floor((totalwritten*100)/totalsize).." %",1.0,color.white, color.black, __ARIGHT)
 				screen.print(10,35,"File: "..tostring(file))
-				screen.print(10,55,"Percent: "..math.floor((written*100)/size_argv).." %")
-			draw.fillrect(0,544-30,(totalwritten*960)/totalsize,30, color.new(0,255,0))
+				
+				l = (totalwritten*940)/totalsize
+					screen.print(3+l,495,math.floor((totalwritten*100)/totalsize).."%",0.8,0xFFFFFFFF,0x0,__ACENTER)
+						draw.fillrect(10,524,l,6,color.new(0,255,0))
+							draw.circle(10+l,526,6,color.new(0,255,0),30)
+
 		screen.flip()
 	elseif step == 4 then											-- Promote or install
 		if update then update:blit(0,0) end

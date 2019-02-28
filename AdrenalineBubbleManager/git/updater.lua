@@ -39,10 +39,15 @@ function screen.flip()
 				elseif back2 then back2:blit(0,0) end
 
 				screen.print(10,10,"Downloading Update...")
-				screen.print(10,30,"Size: "..tostring(size).." Written: "..tostring(written).." Speed: "..tostring(speed).."Kb/s")
-				screen.print(10,50,"Percent: "..math.floor((written*100)/size).."%")
-				draw.fillrect(0,520,((written*960)/size),24,color.new(0,255,0))
+				screen.print(480,470,tostring(files.sizeformat(written or 0)).." / "..tostring(files.sizeformat(size or 0)),1,color.white, color.blue:a(135),__ACENTER)
+				
+				l = (written*940)/size
+					screen.print(3+l,495,math.floor((written*100)/size).."%",0.8,0xFFFFFFFF,0x0,__ACENTER)
+						draw.fillrect(10,524,l,6,color.new(0,255,0))
+							draw.circle(10+l,526,6,color.new(0,255,0),30)
+
 				screen.flip()
+
 				buttons.read()
 				if buttons.circle then return 0 end --Cancel or Abort
 				return 1;
