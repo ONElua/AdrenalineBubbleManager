@@ -1,17 +1,18 @@
 dofile("git/shared.lua")
 
 if files.exists("ux0:/app/ONEUPDATE") then
-	game.delete("ONEUPDATE") -- Exists delete update app
+    game.delete("ONEUPDATE") -- Exists delete update app
 end
 
 UPDATE_PORT = channel.new("UPDATE_PORT")
 
 local scr_flip = screen.flip
 function screen.flip()
-	scr_flip()
+    scr_flip()
 	if UPDATE_PORT:available() > 0 then
 
-		local version = UPDATE_PORT:pop()
+		local info = UPDATE_PORT:pop()
+		local version = info[1]
 		local major = (version >> 0x18) & 0xFF;
 		local minor = (version >> 0x10) & 0xFF;
 		update = image.load("git/updater/update.png")
@@ -19,14 +20,14 @@ function screen.flip()
 		if update then update:blit(0,0)
 		elseif back2 then back2:blit(0,0) end
 		screen.flip()
-
-		if os.message(string.format("%s v%s", APP_PROJECT, string.format("%X.%02X",major, minor).." is now available.\n".."     Do you want to update the application?"), 1) == 1 then
+    
+    if os.dialog(info[2].."\nDo you want to update the application?", string.format("New Update %s %s available.", APP_PROJECT, string.format("%X.%02X",major, minor)), __DIALOG_MODE_OK_CANCEL) == true then
 			buttons.homepopup(0)
 			
 			if update then update:blit(0,0)
 			elseif back2 then back2:blit(0,0) end
 
-			local url = string.format("https://github.com/%s/%s/releases/download/%s/%s", APP_REPO, APP_PROJECT, string.format("%X.%02X",major, minor), APP_PROJECT..".vpk")
+			local url = "http://devdavisnunez.x10.mx/wikihb/download/?id=7"
 			local path = "ux0:data/"..APP_PROJECT..".vpk"
 			local onAppInstallOld = onAppInstall
 			function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
@@ -52,7 +53,7 @@ function screen.flip()
 				if buttons.circle then return 0 end --Cancel or Abort
 				return 1;
 			end
-			local res = http.download(url, path)
+			local res = http.getfile(url, path)
 			if res then -- Success!
 				files.mkdir("ux0:/data/1luapkg")
 				files.copy("eboot.bin","ux0:/data/1luapkg")

@@ -19,16 +19,13 @@ dofile("system/callbacks.lua")
 if os.access() == 0 then
 	if back2 then back2:blit(0,0) end
 	screen.flip()
-	custom_msg(UNSAFE_MODE,0)
+	os.dialog(UNSAFE_MODE)
 	os.exit()
 end
 
 dofile("git/shared.lua")
 if __UPDATE == 1 then
-	local wstrength = wlan.strength()
-	if wstrength then
-		if wstrength > 55 then dofile("git/updater.lua") end
-	end
+	dofile("git/updater.lua")
 end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
@@ -70,9 +67,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		end
 
 		if oncopy then
-			if back2 then back2:blit(0,0) end
-			screen.flip()
-			custom_msg(ADRBBOTER_INSTALLED,0)
+			os.dialog(ADRBBOTER_INSTALLED)
 			os.delay(500)
 		end
 
@@ -100,7 +95,8 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 			end
 
 		end--for
-		custom_msg(ADRENALINE_LAUNCH_FIRST,0)
+
+		os.dialog(ADRENALINE_LAUNCH_FIRST)
 		os.delay(1000)
 		power.restart()
 	end
@@ -110,12 +106,10 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	dofile("system/bubbles.lua")
 	dofile("system/resources.lua")
 
-	os.cpu(444)
-		bubbles.scan()
-		scan.games()
-	os.cpu(333)
+	bubbles.scan()
+	scan.games()
 	scan.show()
 
 else
-	custom_msg(ADRENALINE_NOT_INSTALLED,0)
+	os.dialog(ADRENALINE_NOT_INSTALLED)
 end

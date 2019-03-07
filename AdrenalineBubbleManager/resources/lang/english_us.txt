@@ -133,3 +133,11 @@ STRINGS_RESOURCES_ERROR_BASE =		"Error Get Database of Resources!"
 STRINGS_RESOURCES_INSTALLED =		"Resources Installed!"
 STRINGS_RESOURCES_ERROR_UNPACK =	"Error Unpack Resources!"
 STRINGS_RESOURCES_ERROR_DOWNLOAD =	"Error Downloading Resources!"
+
+------------	Updater	-------------------------------------------------------------------------
+STRINGS_UPDATER_QUESTION = 		"is now available.\n\nDo you want to update the application?"
+STRINGS_UPDATER = 				"Downloading Update..."
+STRINGS_UPDATER_SIZE = 			"Size: "
+STRINGS_UPDATER_WRITTEN = 		"Written: "
+STRINGS_UPDATER_SPEED = 		"Speed: "
+STRINGS_UPDATER_PERCENT = 		"Percent: "

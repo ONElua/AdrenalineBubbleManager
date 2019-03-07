@@ -168,7 +168,8 @@ function bubbles.online(obj, simg)
 					mge = STRINGS_RESOURCES_ERROR_DOWNLOAD
 				end
 
-				os.message(tostring(mge))
+				os.dialog(tostring(mge))
+
 			end
 		end
 

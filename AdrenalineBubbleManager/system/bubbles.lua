@@ -458,7 +458,7 @@ function bubbles.install(src)
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		custom_msg(STRINGS_ERROR_INST,0)
+		os.dialog(STRINGS_ERROR_INST)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
@@ -684,7 +684,8 @@ function bubbles.settings()
 
 							fp:close()
 
-							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end
+							if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true
+							else bubbles.list[scrids.sel].exist = false	end
 
 							bubbles.list[scrids.sel].update = false
 
@@ -737,7 +738,7 @@ function bubbles.settings()
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						if custom_msg(BUBBLES_UNINSTALL_QUESTION.." "..dels.. " ? ",1) == true then
+						if os.dialog(BUBBLES_UNINSTALL_QUESTION.." "..dels.. " ? ",__DIALOG_MODE_OK_CANCEL) == true then
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
@@ -789,7 +790,7 @@ function bubbles.settings()
 						end
 
 						if total_empty >= 1 then
-							if custom_msg(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",1) == true then
+							if os.dialog(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",__DIALOG_MODE_OK_CANCEL) == true then
 								local vbuff = screen.toimage()
 								local tmp,c = total_empty,0
 
@@ -824,7 +825,7 @@ function bubbles.settings()
 										end
 									end
 								end
-							end--custom_msg
+							end
 						end
 
 					end
@@ -901,7 +902,9 @@ function bubbles.settings()
 					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
 					bubbles.list[scrids.sel].iso = new_path
 
-					if files.exists(bubbles.list[scrids.sel].iso) then bubbles.list[scrids.sel].exist = true else bubbles.list[scrids.sel].exist = false end
+					if files.exists(bubbles.list[scrids.sel].iso) then
+						bubbles.list[scrids.sel].exist = true
+					else bubbles.list[scrids.sel].exist = false end
 
 					--Update
 					total_empty = 0
@@ -946,8 +949,8 @@ function bubbles.edit(obj, simg)
 		table.insert(resources, { name = "FRAME"..i..".PNG", w = 0,	h = 0, dest = "/sce_sys/livearea/contents/", restore = "/sce_sys/livearea/contents/" })
 	end
 
-	local preview, find_png, inside, backl = nil,false,false,{}
-
+	local find_png, inside, backl = false,false,{}
+	local bubble_color = 1
 	local maximset = 10
 	local scrids, newpath = newScroll(tmp, maximset),"ux0:ABM/"
 	buttons.interval(12,5)
@@ -968,18 +971,8 @@ function bubbles.edit(obj, simg)
 			for i=scrids.ini, scrids.lim do
 
 				if i == scrids.sel then
-					draw.fillrect(14,y-3,682,25,color.green:a(100))
-
-					if not preview then
-						if tmp[i].ext and tmp[i].ext:upper() == "PNG" then
-							preview = image.load(tmp[i].path)
-							if preview then
-								preview:resize(252,151)
-								preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
-							end
-						end
-					end
-
+					if not inside then draw.fillrect(14,y-3,936,25,color.green:a(100))
+					else draw.fillrect(14,y-3,682,25,color.green:a(100)) end
 				end
 				screen.print(20,y,tmp[i].name,1.0,color.white,color.blue,__ALEFT)
 
@@ -989,13 +982,13 @@ function bubbles.edit(obj, simg)
 			--Bar Scroll
 			local ybar, h = 70, (maximset*32)-2
 			draw.fillrect(3, ybar-2, 8, h, color.shine)
-			if scrids.maxim >= maximset then -- Draw Scroll Bar
+			--if scrids.maxim >= maximset then -- Draw Scroll Bar
 				local pos_height = math.max(h/scrids.maxim, maximset)
 				draw.fillrect(3, ybar-2 + ((h-pos_height)/(scrids.maxim-1))*(scrids.sel-1), 8, pos_height, color.new(0,255,0))
-			end
+			--end
 
-			if preview then
-				preview:blit(700,84)
+			if tmp[scrids.sel].img then
+				tmp[scrids.sel].img:blit(700,84)
 			end
 
 			local x1 = screen.print(15,430, BUBBLES_EDIT_BB, 1, color.white, color.blue, __ALEFT)
@@ -1013,6 +1006,21 @@ function bubbles.edit(obj, simg)
 
 			if inside and find_png then
 				screen.print(480,523,BUBBLES_REINSTALL,1.0,color.green,color.gray,__ACENTER)
+
+				--Print Streched
+				screen.print(955,240,"<< L >>",0.9,color.white,color.blue,__ARIGHT)
+				if tmp.nostretched then
+					screen.print(955,260,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
+				else
+					screen.print(955,260,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
+				end
+
+				--Print Colors
+				screen.print(955,300,"<- ->",0.9,color.white,color.blue,__ARIGHT)
+				draw.fillrect(935,322,18,18, colors[bubble_color])
+				draw.rect(935,322,18,18, color.white)
+				screen.print(922, 322, "("..bubble_color..")", 1, color.white, color.blue, __ARIGHT)
+
 			end
 
 		else
@@ -1031,79 +1039,126 @@ function bubbles.edit(obj, simg)
 		screen.flip()
 
 		--Controls
-		if scrids.maxim > 0 then
+		if buttons[cancel] then
+			if inside then
+				newpath = files.nofile(newpath)
+				tmp = files.listdirs(newpath)
 
-			if (buttons.up or buttons.analogly < -60) then
-				if scrids:up() then preview = nil end
-			end
-
-			if (buttons.down or buttons.analogly > 60) then
-				if scrids:down() then preview = nil end
-			end
-
-			--online
-			if buttons.select and not inside then
-
-				local vbuff = screen.toimage()
-				if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
-				message_wait(STRINGS_RESOURCES_SEARCH)
-				os.delay(500)
-
-				bubbles.online(obj, simg, tmp)
-				tmp = files.listdirs("ux0:ABM/")
 				if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
 				else tmp = {} end
+
+				os.delay(750)
+
+				find_png, inside, backlist = false,false,{}
+				maximset = 10
 				scrids:set(tmp,maximset)
+				if #backl>0 then
+					if scrids.maxim == backl[#backl].maxim then
+						scrids.ini = backl[#backl].ini
+						scrids.lim = backl[#backl].lim
+						scrids.sel = backl[#backl].sel
+					end
+					backl[#backl] = nil
+				end
+
+			else
+				buttons.read() break
 			end
+		end
+
+		--online
+		if buttons.select and not inside then
+
+			local vbuff = screen.toimage()
+			if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
+			message_wait(STRINGS_RESOURCES_SEARCH)
+			os.delay(500)
+
+			bubbles.online(obj, simg, tmp)
+			tmp = files.listdirs("ux0:ABM/")
+			if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
+			else tmp = {} end
+			maximset = 10
+			scrids:set(tmp,maximset)
+		end
+
+		if scrids.maxim > 0 then
+
+			if (buttons.up or buttons.analogly < -60) then scrids:up() end
+			if (buttons.down or buttons.analogly > 60) then scrids:down() end
 
 			if buttons[accept] and tmp[scrids.sel].directory then
 				table.insert(backl, {maxim = scrids.maxim, ini = scrids.ini, sel = scrids.sel, lim = scrids.lim })
 				inside = true
 				newpath = "ux0:ABM/"..tmp[scrids.sel].name
 				local png = files.listfiles(newpath)
-				if png then
+				if png and #png > 0 then
 					table.sort(png,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
 					if #png > 0 then
 						tmp = {}
 						for i=1,#png do
 							if png[i].ext:upper() == "PNG" or png[i].ext:upper() == "XML" then
+								find_png = true
 								for j=1,#resources do
 									if png[i].name:upper() == resources[j].name then
-										table.insert(tmp, { name = png[i].name, path = png[i].path, ext = png[i].ext, directory = png[i].directory or false })
-										find_png = true
+
+										local noscaled = false
+										if png[i].ext:upper() == "PNG" then
+
+											png[i].img = image.load(png[i].path)
+
+											if png[i].img then
+												if png[i].name:upper() == "ICON0.PNG" then
+													if png[i].img:getrealw() == 128 and png[i].img:getrealw() == 128 then
+														noscaled = true
+													end
+												end
+												png[i].img:resize(252,151)
+												png[i].img:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+											end
+
+										end
+										table.insert(tmp, { name = png[i].name, path = png[i].path, ext = png[i].ext, img = png[i].img or nil,
+															directory = png[i].directory or false })
+										tmp.nostretched = true
+										tmp.noscaled = noscaled
+
 									end
-								end
-								
+								end--for resources
+
 							end
-						end
-						--maximset = 5
+						end--for png
+
+						maximset = #tmp
 						scrids = newScroll(tmp, maximset)
 					end
 				end
 			end
 
-			if buttons[cancel] then
-				if inside then
-					newpath = files.nofile(newpath)
-					tmp = files.listdirs(newpath)
+			--Bubbles Color
+			if (buttons.right or buttons.left) and inside then
 
-					if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
-					else tmp = {} end
+				if buttons.right then bubble_color += 1 end
+				if buttons.left then bubble_color -= 1 end
+			
+				if bubble_color > #colors then bubble_color = 1 end
+				if bubble_color < 1 then bubble_color = #colors end
 
-					preview, find_png, inside, backlist = nil,false,false,{}
-					--maximset = 10
-					scrids:set(tmp,maximset)
-					if #backl>0 then
-						if scrids.maxim == backl[#backl].maxim then
-							scrids.ini = backl[#backl].ini
-							scrids.lim = backl[#backl].lim
-							scrids.sel = backl[#backl].sel
+			end
+
+			--Full/Stretched
+			if buttons.released.l and inside then
+				tmp.nostretched = not tmp.nostretched
+				for i=1,#tmp do
+					if tmp[i].img and tmp[i].name:upper() == "ICON0.PNG" then
+						local ws,hs = 252,151
+						if tmp.noscaled then
+							if not tmp.nostretched then ws,hs = 252,151 end
+						else
+							if not tmp.nostretched then ws,hs = 152,151 end
 						end
-						backl[#backl] = nil
+						tmp[i].img:resize(ws,hs)
 					end
-
-				else
-					buttons.read() break
 				end
 			end
 
@@ -1141,9 +1196,11 @@ function bubbles.edit(obj, simg)
 										img:reset()
 
 										local scale = false
-										if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
-											img=img:copyscale(resources[i].w, resources[i].h)
-											scale = true
+										if tmp[j].name:upper() != "ICON0.PNG" then
+											if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+												img=img:copyscale(resources[i].w, resources[i].h)
+												scale = true
+											end
 										end
 
 										--i==2 STARTUP.PNG
@@ -1152,12 +1209,36 @@ function bubbles.edit(obj, simg)
 											image.save(image.startup(img), obj.path..resources[i].dest, 1)
 										else
 											if __8PNG == 1 then
-												image.save(img, obj.path..resources[i].dest, 1)
+												if tmp[j].name:upper() == "ICON0.PNG" then
+													if tmp.nostretched then
+														if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+															image.save(img:copyscale(128,128), obj.path..resources[i].dest, 1)
+														else
+															image.save(img, obj.path..resources[i].dest, 1)
+														end
+													else
+														image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
+													end
+												else
+													image.save(img, obj.path..resources[i].dest, 1)
+												end
 											else
 												if scale then
 													image.save(img, obj.path..resources[i].dest, 1)
 												else
-													files.copy(tmp[j].path, obj.path..resources[i].restore)
+													if tmp[j].name:upper() == "ICON0.PNG" then
+														if tmp.nostretched then
+															if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+																image.save(img:copyscale(128,128), obj.path..resources[i].dest, 1)
+															else
+																image.save(img, obj.path..resources[i].dest, 1)
+															end
+														else
+															image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
+														end
+													else
+														files.copy(tmp[j].path, obj.path..resources[i].restore)
+													end
 												end
 											end
 										end
@@ -1207,7 +1288,7 @@ function bubbles.edit(obj, simg)
 						for i=1,#resources do
 							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
 						end
-						custom_msg(STRINGS_ERROR_INST,0)
+						os.dialog(STRINGS_ERROR_INST)
 					end
 					buttons.read()--flush
 					files.delete(path_tmp)
@@ -1217,30 +1298,7 @@ function bubbles.edit(obj, simg)
 				buttons.read() break
 			end
 
-		else
-
-			if buttons[cancel] and inside then
-				newpath = files.nofile(newpath)
-				tmp = files.listdirs(newpath)
-
-				if tmp then table.sort(tmp,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
-				else tmp = {} end
-
-				preview, find_png, inside, backlist = nil,false,false,{}
-				scrids:set(tmp,maximset)
-				if #backl>0 then
-					if scrids.maxim == backl[#backl].maxim then
-						scrids.ini = backl[#backl].ini
-						scrids.lim = backl[#backl].lim
-						scrids.sel = backl[#backl].sel
-					end
-					backl[#backl] = nil
-				end
-			end
-
-			if buttons.released[cancel] and not inside then buttons.read() break end
-
-		end--maxim>0
+		end
 
 	end--while
 

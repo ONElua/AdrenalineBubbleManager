@@ -194,10 +194,10 @@ function scan.show(objedit)
 							icon0 = game.geticon0(scan.list[scr.sel].path)
 							if icon0 then
 								if icon0:getrealw() != 80 or icon0:getrealw() != 80 then
-									if not scan.list[scr.sel].nostretched then
-										icon0:resize(100,55)
-									else
+									if scan.list[scr.sel].nostretched then
 										icon0:resize(128,128)
+									else
+										icon0:resize(100,55)
 									end
 								else
 									scan.list[scr.sel].noscaled = true
@@ -230,10 +230,10 @@ function scan.show(objedit)
 			--Bar Scroll
 			local ybar,h=30, (maximg*26)-3
 			draw.fillrect(795, ybar-2, 8, h, color.shine)
-			if scr.maxim >= maximg then -- Draw Scroll Bar
+			--if scr.maxim >= maximg then -- Draw Scroll Bar
 				local pos_height = math.max(h/scr.maxim, maximg)
 				draw.fillrect(795, ybar-2 + ((h-pos_height)/(scr.maxim-1))*(scr.sel-1), 8, pos_height, color.new(0,255,0))
-			end
+			--end
 
 			--Blit icon0
 			if icon0 then
@@ -385,7 +385,7 @@ function scan.show(objedit)
 				end
 
 				if check_install > 0 then
-					if custom_msg(SCAN_INSTALL_ALL.." ? ",1) == true then
+					if os.dialog(SCAN_INSTALL_ALL.." ? ",__DIALOG_MODE_OK_CANCEL) == true then
 						--batch titles
 						for i=1, scr.maxim do
 							if scan.list[i].install == "a" then
@@ -500,7 +500,7 @@ submenu_abm = { 			-- Creamos un objeto menu contextual
     y = -yf,				-- Y origin of menu
     open = false,			-- Is open the menu?
     close = true,
-    speed = 10,				-- Speed of Effect Open/Close.
+    speed = 12,				-- Speed of Effect Open/Close.
     ctrl = "start",
     scroll = newScroll(),	-- Scroll of menu options.
 }
@@ -587,7 +587,7 @@ function submenu_abm.draw(obj)
 				clicked = false
 				if crono:time() <= 300 then -- Double click and in time to Go.
 					-- Your action here.
-					custom_msg(SCAN_PRESS_LR.."\n\n"..SCAN_PRESS_LEFT_RIGHT.."\n\n"..SCAN_PRESS_SELECT.."\n\n"..SCAN_TOGGLE_PICS.."\n"..STRING_PRESS,0)
+					os.dialog(SCAN_PRESS_LR.."\n\n"..SCAN_PRESS_LEFT_RIGHT.."\n\n"..SCAN_PRESS_SELECT.."\n\n"..SCAN_TOGGLE_PICS.."\n"..STRING_PRESS)
 				end
 			else
 				clicked = true
