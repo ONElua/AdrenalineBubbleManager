@@ -385,7 +385,7 @@ function scan.show(objedit)
 				end
 
 				if check_install > 0 then
-					if os.dialog(SCAN_INSTALL_ALL.." ? ",__DIALOG_MODE_OK_CANCEL) == true then
+					if os.dialog(SCAN_INSTALL_ALL.." ? ",STRINGS_OS_DIALOG, __DIALOG_MODE_OK_CANCEL) == true then
 						--batch titles
 						for i=1, scr.maxim do
 							if scan.list[i].install == "a" then
