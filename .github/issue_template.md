@@ -19,4 +19,3 @@ Obtained result: [insert the result you got here]
 - [Did you add the adrenaline line to tai:config.txt? here]
 - [issue on a specific bubble or all ABM bubbles? here]
 
-[please make sure to add all possible details, like the title id (the 9-chars string in the left column) of the game you are talking about]
