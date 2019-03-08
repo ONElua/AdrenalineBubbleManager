@@ -738,7 +738,7 @@ function bubbles.settings()
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						if os.dialog(BUBBLES_UNINSTALL_QUESTION.." "..dels.. " ? ",__DIALOG_MODE_OK_CANCEL) == true then
+						if os.dialog(BUBBLES_UNINSTALL_QUESTION.." "..dels.. " ? ",STRINGS_OS_DIALOG, __DIALOG_MODE_OK_CANCEL) == true then
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
@@ -790,7 +790,7 @@ function bubbles.settings()
 						end
 
 						if total_empty >= 1 then
-							if os.dialog(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",__DIALOG_MODE_OK_CANCEL) == true then
+							if os.dialog(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",STRINGS_OS_DIALOG,__DIALOG_MODE_OK_CANCEL) == true then
 								local vbuff = screen.toimage()
 								local tmp,c = total_empty,0
 

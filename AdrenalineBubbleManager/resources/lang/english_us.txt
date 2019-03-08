@@ -8,6 +8,8 @@ ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 has not been installed..."
 MESSAGE_WAIT =					"Please wait..."
 UPDATE_BUBBLES =				"Updating Bubble: "
 
+STRINGS_OS_DIALOG =				"System Message"
+
 --callbacks.lua
 UPDATING_BUBBLES =				"Updating Bubble Images: "
 INSTALLING_BUBBLE =				"Installing Bubble:"

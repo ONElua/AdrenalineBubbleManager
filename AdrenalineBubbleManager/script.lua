@@ -8,7 +8,6 @@
 	- Gdljjrod (https://twitter.com/gdljjrod).
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
-
 --Show splash ...
 splash.zoom("resources/splash.png")
 
@@ -67,6 +66,8 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		end
 
 		if oncopy then
+			if back2 then back2:blit(0,0) end
+			screen.flip()
 			os.dialog(ADRBBOTER_INSTALLED)
 			os.delay(500)
 		end
