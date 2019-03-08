@@ -1,7 +1,7 @@
-PSVITA model: [insert model]
-Version of firmware: [insert version]
-Version of ABM: [insert version]
-Version of Adrenaline: [insert version]
+- PSVITA model: [insert model]
+- Version of firmware: [insert version]
+- Version of ABM: [insert version]
+- Version of Adrenaline: [insert version]
 
 ## After installing ABM and creating some bubbles
 
