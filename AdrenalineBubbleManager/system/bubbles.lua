@@ -458,7 +458,7 @@ function bubbles.install(src)
 			table.sort(bubbles.list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 		end
 	else
-		os.dialog(STRINGS_ERROR_INST)
+		custom_msg(STRINGS_ERROR_INST,0)
 	end
 	----------------------------------------------------------------------------------------------------------------------------
 	files.delete("ux0:data/ABMVPK/")
@@ -738,7 +738,7 @@ function bubbles.settings()
 					if dels>=1 then
 						local vbuff = screen.toimage()
 						local tmp,c = dels,0
-						if os.dialog(BUBBLES_UNINSTALL_QUESTION.." "..dels.. " ? ",STRINGS_OS_DIALOG, __DIALOG_MODE_OK_CANCEL) == true then
+						if custom_msg(BUBBLES_UNINSTALL_QUESTION.." "..dels.. " ? ",1) == true then
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
@@ -790,7 +790,7 @@ function bubbles.settings()
 						end
 
 						if total_empty >= 1 then
-							if os.dialog(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",STRINGS_OS_DIALOG,__DIALOG_MODE_OK_CANCEL) == true then
+							if custom_msg(BUBBLES_UNINSTALL_EMPTYS.." : "..total_empty.." ? ",1) == true then
 								local vbuff = screen.toimage()
 								local tmp,c = total_empty,0
 
@@ -1288,7 +1288,7 @@ function bubbles.edit(obj, simg)
 						for i=1,#resources do
 							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
 						end
-						os.dialog(STRINGS_ERROR_INST)
+						custom_msg(STRINGS_ERROR_INST,0)
 					end
 					buttons.read()--flush
 					files.delete(path_tmp)

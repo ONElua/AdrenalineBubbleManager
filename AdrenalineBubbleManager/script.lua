@@ -18,7 +18,7 @@ dofile("system/callbacks.lua")
 if os.access() == 0 then
 	if back2 then back2:blit(0,0) end
 	screen.flip()
-	os.dialog(UNSAFE_MODE)
+	custom_msg(UNSAFE_MODE,0)
 	os.exit()
 end
 
@@ -45,6 +45,10 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		files.copy("bubbles/adrenaline.bin", ADRENALINE)
 		oncopy = false
 	end
+
+if not files.exists(ADRENALINE.."/menucolor.bin") then
+files.copy("bubbles/menucolor.bin", ADRENALINE)
+end
 
 	if __CHECKADR == 1 then
 		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
@@ -96,8 +100,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 			end
 
 		end--for
-
-		os.dialog(ADRENALINE_LAUNCH_FIRST)
+		custom_msg(ADRENALINE_LAUNCH_FIRST,0)
 		os.delay(1000)
 		power.restart()
 	end
@@ -112,5 +115,5 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	scan.show()
 
 else
-	os.dialog(ADRENALINE_NOT_INSTALLED)
+	custom_msg(ADRENALINE_NOT_INSTALLED,0)
 end

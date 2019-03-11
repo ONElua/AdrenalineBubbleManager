@@ -207,6 +207,71 @@ function image.nostretched(img,cc)
 	return sheet
 end
 
+function custom_msg(printtext,mode)
+	local buff = screen.toimage()
+	if box then box:center() end
+
+	for i=0,102,6 do
+
+		if buff then buff:blit(0,0) end
+		if box then
+			box:scale(i)
+			box:blit(960/2,544/2)
+		end
+
+		screen.flip()
+	end
+
+	xtext = 480 - (screen.textwidth(printtext)/2)
+	xopt1 = 360 - (screen.textwidth(STRINGS_OPTION_MSG_YES)/2)
+	xopt2 = 600 - (screen.textwidth(STRINGS_OPTION_MSG_NO)/2)
+
+	buttons.read()
+	local result = false
+	while true do
+		buttons.read()
+		if buff then buff:blit(0,0) end
+		if box then	box:blit(480,272) end
+
+		screen.print(480,165, STRINGS_CUSTOM_TITLE_MSG, 1, color.white, color.gray, __ACENTER)
+		screen.print(xtext,200, printtext,1, color.gray)
+
+		if mode == 0 then
+			screen.print(xopt1+120,363, SYMBOL_BACK2.." : "..STRINGS_OPTION_MSG_OK,1.02, color.gray)
+		else
+			screen.print(xopt1,363, SYMBOL_BACK2.." : "..STRINGS_OPTION_MSG_YES,1.02, color.gray)
+			screen.print(xopt2,363, SYMBOL_BACK.." : "..STRINGS_OPTION_MSG_NO,1.02, color.gray)
+		end
+
+		screen.flip()
+
+		if buttons[accept] and mode != 2 then-- Accept
+			result = true
+			break
+		end
+
+		if buttons[cancel] and mode != 0 then-- Cancel
+			result = false
+			break
+		end
+	end
+	buttons.read()
+
+	for i=102,0,-6 do
+
+		if buff then buff:blit(0,0) end
+		if box then
+			box:scale(i)
+			box:blit(960/2,544/2)
+		end
+
+		screen.flip()
+	end
+
+	if result then return true else return false end
+
+end
+
 function files.read(path,mode)
 	local fp = io.open(path, mode or "r")
 	if not fp then return nil end
@@ -304,6 +369,20 @@ function AutoMakeBootBin(obj)
 	end--fp
 
 end
+
+function AutoFixBubbles()
+
+	local vbuff = screen.toimage()
+
+	for i=1,bubbles.len do
+		if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
+			files.copy("bubbles/pspemuxxx/eboot.bin", bubbles.list[i].path)
+		message_wait(bubbles.list[i].id)
+	end
+	if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
+	os.delay(500)
+end
+
 
 function message_wait(message)
 	local mge = (message or MESSAGE_WAIT)

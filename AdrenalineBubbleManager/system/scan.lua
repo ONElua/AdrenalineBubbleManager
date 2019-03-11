@@ -385,7 +385,7 @@ function scan.show(objedit)
 				end
 
 				if check_install > 0 then
-					if os.dialog(SCAN_INSTALL_ALL.." ? ",STRINGS_OS_DIALOG, __DIALOG_MODE_OK_CANCEL) == true then
+					if custom_msg(SCAN_INSTALL_ALL.." ? ",1) == true then
 						--batch titles
 						for i=1, scr.maxim do
 							if scan.list[i].install == "a" then
@@ -492,7 +492,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-local yf, _save = 365,false
+local yf, _save = 370,false
 submenu_abm = { 			-- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -516,6 +516,7 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--7
 		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--8
 		{ text = STRINGS_DEFAULT_TITLE,		desc = STRINGS_DESC_TITLES },				--9
+		{ text = STRINGS_AUTOFIX_BUBBLES,	desc = STRINGS_DESC_AUTOFIX },				--10
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -659,6 +660,9 @@ function submenu_abm.draw(obj)
 			end
 			_save = true
 		end
+		if buttons[accept] and submenu_abm.scroll.sel == 10 then
+			AutoFixBubbles()
+		end
 
 		screen.print(480, 5, STRINGS_EXTRA_SETTINGS, 1, color.white, color.blue, __ACENTER)
 		screen.print(480, 32, STRINGS_WARNING, 1, color.white, color.red, __ACENTER)
@@ -692,6 +696,8 @@ function submenu_abm.draw(obj)
 				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==9 then
 				screen.print(690, h, _title, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==10 then
+				screen.print(690, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 27

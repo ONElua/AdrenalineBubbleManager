@@ -89,6 +89,10 @@ SCAN_SORT_DEVICE =				"Device"
 SCAN_SETPACK =					"Set"
 SCAN_SHOW_PIC =					"PIC"
 
+--dont remove %s
+SCAN_PRESS_CONFIRM =			"Press %s"
+
+
 --submenu
 STRINGS_WARNING =				"The changes will take effect once you press START"
 STRINGS_SETIMGS =				"Set Imgs"
@@ -105,6 +109,7 @@ STRINGS_DEFAULT_TITLE =			"Default title"
 STRINGS_PSBUTTON_MENU =			"Menu"
 STRINGS_PSBUTTON_LIVEAREA =		"LiveArea"
 STRINGS_AUTOFIX_BOOTBIN =		"Auto-Repair boot.bin"
+STRINGS_AUTOFIX_BUBBLES =		"Auto Bubble fixer"
 STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --submenu descrptions
@@ -121,6 +126,7 @@ STRINGS_DESC_PSBUTTON =			"PS button function: Toggle between opening Adrenaline
 STRINGS_DESC_ABM_UPDATE =		"Checks for ABM Updates at start, default is YES"
 STRINGS_DESC_CHECK_ADRENALINE =	"Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version"
 STRINGS_DESC_TITLES =			"Enable it to create bubbles using the game default's Title"
+STRINGS_DESC_AUTOFIX =			"To fix booting bug on Bubbles created with version 5.20"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Bubbles"
