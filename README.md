@@ -26,7 +26,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 ### Changelog 5.21 ###
 - Added Bubble fix option to START menu for fixing bubbles asking to install adrbblbooter on every boot.<br>
-- Fix menucolor.bin.<br>
+- Fix menucolor.bin (Menucolor.bin now installs only to PSPEMUCFW)<br>
 - Added FullBubble-Non Streched in inject resources.<br>
 
 ### Changelog 5.20 ###
