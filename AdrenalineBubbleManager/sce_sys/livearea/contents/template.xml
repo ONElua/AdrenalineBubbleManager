@@ -24,13 +24,13 @@
 	<frame id="frame3">
 		<liveitem>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="22" shadow="on">Version 5.20</str>
+				<str size="22" shadow="on">Version 5.21</str>
 			</text>
 		</liveitem>
 		<liveitem>
 			<lang>ru</lang>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="22" shadow="on">Версия 5.20</str>
+				<str size="22" shadow="on">Версия 5.21</str>
 			</text>
 		</liveitem>
 		</frame>
@@ -38,13 +38,13 @@
 	<frame id="frame4">
 		<liveitem>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="20" bold="on" shadow="on">®2018 Team ONElua - ONElua.x10.mx</str>
+				<str size="20" bold="on" shadow="on">®2019 Team ONElua - ONElua.x10.mx</str>
 			</text>
 		</liveitem>
 		<liveitem>
 			<lang>ru</lang>
 			<text valign="top" align="left" text-align="left" text-valign="top" line-space="2" ellipsis="on">
-				<str size="20" bold="on" shadow="on">®2018 Team ONElua - ONElua.x10.mx</str>
+				<str size="20" bold="on" shadow="on">®2019 Team ONElua - ONElua.x10.mx</str>
 			</text>
 		</liveitem>
 	</frame>
