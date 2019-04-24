@@ -326,6 +326,11 @@ function bubbles.install(src)
 			end
 		end
 
+		--MANUAL folder
+		if files.exists(__PATHSETS..src.setpack.."/MANUAL/") then
+			files.copy(__PATHSETS..src.setpack.."/MANUAL/", work_dir.."sce_sys/")
+		end
+
 		--TEMPLATE.XML
 		if files.exists(__PATHSETS..src.setpack.."/TEMPLATE.XML") then
 			files.copy(__PATHSETS..src.setpack.."/TEMPLATE.XML", work_dir.."sce_sys/livearea/contents/")
@@ -1177,7 +1182,7 @@ function bubbles.edit(obj, simg)
 
 								if back2 then back2:blit(0,0) end
 
-								if i < #resources then--5 or 6
+								if i < 6 then--no mayor a xml y frames
 
 									img = image.load(tmp[j].path)
 									if img then
@@ -1245,10 +1250,11 @@ function bubbles.edit(obj, simg)
 									end--if img
 
 								else
+
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup
 									files.copy(tmp[j].path, obj.path..resources[i].dest)
 									
-									if i > #resources then
+									if i > 6 then
 										img = image.load(tmp[j].path)
 										if img then
 											img:scale(75)
@@ -1272,6 +1278,15 @@ function bubbles.edit(obj, simg)
 						end
 					end
 				end--for
+
+				--MANUALs folders
+				if files.exists(newpath.."/Manual/") then
+					draw.fillrect(0,0,960,30, color.shine)
+						screen.print(10,10,STRINGS_INSTALL_MANUAL)
+					screen.flip()
+					files.copy(newpath.."/Manual/", obj.path.."/sce_sys/")
+				end
+
 				buttons.homepopup(1)
 
 

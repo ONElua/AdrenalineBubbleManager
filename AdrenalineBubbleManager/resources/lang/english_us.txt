@@ -3,7 +3,7 @@
 --script.lua
 UNSAFE_MODE =					"UNSAFE MODE is required for this Homebrew !!!"
 ADRBBOTER_INSTALLED = 			"AdrBubbleBooter plugin has been installed... \nWe need to restart your PS Vita... :)"
-ADRENALINE_LAUNCH_FIRST =		"After the Reboot, you must open Adrenaline again to make sure it works ok\n\notherwise bubbles made with abm could error out"
+ADRENALINE_LAUNCH_FIRST =		"After the Reboot, you must open Adrenaline again\n\nto make sure it works okotherwise bubbles\n\nmade with abm could error out"
 ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 has not been installed..."
 MESSAGE_WAIT =					"Please wait..."
 UPDATE_BUBBLES =				"Updating Bubble: "
@@ -46,6 +46,7 @@ STRINGS_NAME_OSK =				"Put here name"
 
 --Process
 STRINGS_CONVERTING =			"Converting Resources..."
+STRINGS_INSTALL_MANUAL =		"Installing Game Manual..."
 STRINGS_ERROR_INST =			"Sorry, There was an Installation error"
 STRINGS_UNK =					"UNK"
 
