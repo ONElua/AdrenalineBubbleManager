@@ -24,9 +24,13 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
+### Changelog 5.22 ###
+- Fixed template.xml and framesXX.png when injecting images.<br>
+- Added option to inject game Manual to bubbles.<br>
+
 ### Changelog 5.21 ###
 - Added Bubble fix option to START menu for fixing bubbles asking to install adrbblbooter on every boot.<br>
-- Fix menucolor.bin (Menucolor.bin now installs only to PSPEMUCFW)<br>
+- Fix menucolor.bin.<br>
 - Added FullBubble-Non Streched in inject resources.<br>
 
 ### Changelog 5.20 ###
@@ -195,7 +199,8 @@ To use this feature you have to follow the instructions below:<br>
 - pic0.png			960x544<br>   
 - bg0.png			840x500<br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
-3. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
+3. it is now possible to inject the Manual folder with your images inside (001.png, 002.png ...) <br>
+4. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
 
 ![header](PreviewsImgs.png)
 
