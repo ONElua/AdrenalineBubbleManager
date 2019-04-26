@@ -199,7 +199,7 @@ To use this feature you have to follow the instructions below:<br>
 - pic0.png			960x544<br>   
 - bg0.png			840x500<br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
-3. Now is possible to inject the Manual folder with your images inside (001.png, 002.png ...)<br>
+3. Now is possible ti inject the Manual folder with your manual's images inside (001.png, 002.png 960x544). The folder of the Manual must be place in the following path ux0:ABM/(Gameid)/<br>
 4. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
 
 ![header](PreviewsImgs.png)
