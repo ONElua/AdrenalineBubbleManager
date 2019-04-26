@@ -29,6 +29,7 @@ function bubbles.online(obj, simg)
 	local path_json = "https://raw.githubusercontent.com/%s/%s/master/database.json"
 	local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
 	local raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
+	--local raw = files.read("database.json")
 	local url = "https://raw.githubusercontent.com/ONElua/VitaBubbles/master/"
 	
 	if raw then
@@ -101,6 +102,13 @@ function bubbles.online(obj, simg)
 						xscr2 = screen.print(xscr2, 310, list[i].id or "unk",1,color.white,color.gray,__SLEFT,250)
 					else
 						screen.print(700+128, 310, list[i].id or "unk",1,color.white,color.gray,__ACENTER)
+					end
+
+					screen.print(700+128, 345, "' "..STRINGS_RESOURCES_MANUAL.." '",1,color.green:a(200),color.gray,__ACENTER)
+					if list[i].manual then
+						screen.print(700+128, 365, STRINGS_OPTION_MSG_YES,1,color.white,color.gray,__ACENTER)
+					else
+						screen.print(700+128, 365, STRINGS_OPTION_MSG_NO,1,color.white,color.gray,__ACENTER)
 					end
 
 					draw.fillrect(5,y-3,680,25,color.shine)

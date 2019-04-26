@@ -1096,6 +1096,13 @@ function bubbles.edit(obj, simg)
 				table.insert(backl, {maxim = scrids.maxim, ini = scrids.ini, sel = scrids.sel, lim = scrids.lim })
 				inside = true
 				newpath = "ux0:ABM/"..tmp[scrids.sel].name
+
+				--MANUAL folder
+				local manual_flag = false
+				if files.exists(newpath.."/Manual/") then
+					manual_flag = true
+				end
+
 				local png = files.listfiles(newpath)
 				if png and #png > 0 then
 					table.sort(png,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
@@ -1133,6 +1140,10 @@ function bubbles.edit(obj, simg)
 
 							end
 						end--for png
+
+						if manual_flag then
+							table.insert(tmp, { name = "Manual" })
+						end
 
 						maximset = #tmp
 						scrids = newScroll(tmp, maximset)
@@ -1279,7 +1290,7 @@ function bubbles.edit(obj, simg)
 					end
 				end--for
 
-				--MANUALs folders
+				--MANUAL folder
 				if files.exists(newpath.."/Manual/") then
 					draw.fillrect(0,0,960,30, color.shine)
 						screen.print(10,10,STRINGS_INSTALL_MANUAL)
