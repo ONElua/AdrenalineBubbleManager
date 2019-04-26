@@ -13,7 +13,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ### Adrenaline Version v6.8 ###
 ### Adrenaline Bubble Booter Version v0.9 ###
-### Adrenaline Bubbles Manager Current Version: 5.22 ###
+### Adrenaline Bubbles Manager Current Version: 5.23 ###
 
 
 ### Instructions ###
@@ -23,6 +23,11 @@ Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it j
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.23 ###
+- Now Manual folder is detected at resources injection option.<br>
+- Download Manual option added to online resources injection.<br>
+- Vitabubbles repo updated with lots of new resources.<br>
 
 ### Changelog 5.22 ###
 - Fixed template.xml and framesXX.png when injecting images.<br>
