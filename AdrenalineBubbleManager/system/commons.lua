@@ -356,7 +356,7 @@ function AutoMakeBootBin(obj)
 		--fp:write(int2str(1))
 
 		--Path2game
-		fp:seek("set",0x20)
+		fp:seek("set",0x40)
 		local fill = 256 - #path2game
 		for j=1,fill do
 			path2game = path2game..string.char(00)

@@ -57,6 +57,10 @@ function bubbles.scan()
 		--Read data/boot.bin
 		for i=1, bubbles.len do
 			bubbles.list[i].lines = {}
+
+			local size = files.size(bubbles.list[i].boot)
+			if size > 288 then bubbles.list[i].adrnew = true else bubbles.list[i].adrnew = false end
+			
 			local fp = io.open(bubbles.list[i].boot,"r")
 			if fp then
 				--Driver
@@ -77,6 +81,8 @@ function bubbles.scan()
 				if custom < 0 or custom > 1 then custom = 1 end
 				table.insert(bubbles.list[i].lines, custom)
 
+				--loadstate 0x10
+
 				--PSbutton
 				fp:seek("set",0x14)
 				local psbutton = str2int(fp:read(4))
@@ -84,7 +90,11 @@ function bubbles.scan()
 				table.insert(bubbles.list[i].lines, psbutton)
 
 				--Path
-				fp:seek("set",0x20)
+				if bubbles.list[i].adrnew then
+					fp:seek("set",0x40)
+				else
+					fp:seek("set",0x20)
+				end
 				bubbles.list[i].iso = fp:read()
 
 				if files.exists(bubbles.list[i].iso) then bubbles.list[i].exist = true
@@ -413,7 +423,7 @@ function bubbles.install(src)
 			path2game = path2game..string.char(00)
 		end
 
-		fp:seek("set",0x20)
+		fp:seek("set",0x40)
 		fp:write(path2game)
 
 		--Close
@@ -678,14 +688,25 @@ function bubbles.settings()
 							fp:seek("set", 0x14)
 							fp:write(int2str(bubbles.list[scrids.sel].lines[4]))
 
+							--Update Old ??
+							if not bubbles.list[scrids.sel].adrnew then
+								local void = ""
+								for z=1,0x20 do
+									void = void..string.char(00)
+								end
+								fp:seek("set", 0x20)
+								fp:write(void)
+							end
+
+							--Path
 							local path2game = bubbles.list[scrids.sel].iso
 							local fill = 256 - #bubbles.list[scrids.sel].iso
 							for j=1,fill do
 								path2game = path2game..string.char(00)
 							end
 
-							fp:seek("set",0x20)
-							fp:write(path2game)							
+							fp:seek("set",0x40)
+							fp:write(path2game)
 
 							fp:close()
 
