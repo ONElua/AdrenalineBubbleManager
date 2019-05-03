@@ -118,7 +118,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 ### Changelog 5.04 ###
 - Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
 *NOTE: You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Enter the submenu to change this settings with start.<br>
-- Some changes in the list of Inject Imgs.<br>
+- Some changes in the list of Inject Images.<br>
 
 ### Changelog 5.03 ###
 - New option to set default pic0 and bg0 images and your own xml file for your bubbles (up to 5 sets provided by you: ux0:ABM/Set1 to ux0:ABM/Set5).<br>
@@ -193,7 +193,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 - Press select (single) or start (all) to select bubbles you wish to uninstall.
 - Square: To uninstall the selected bubbles.
 
-*Insert Images*
+## Inject images and manual to ABM bubbles ##
 
 This option allows you to Insert your desired images to the selected bubble, this will improve the looks of your bubbles in Livearea.
 
