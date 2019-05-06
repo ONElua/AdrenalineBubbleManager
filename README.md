@@ -26,12 +26,12 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 ### Changelog 5.25 ###
 - Added option Lmans new customizable options such as:<br>
-	"Suspend game" Stop the game running on the psp when PS button is pressed.
-	"Enable/Disable Plugins" very self explainatory.
-	"NonpDRM Engine" Load content using Quickrazor's plugin.
-	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)
-	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.
-- Allows to load selected language at start: English or Custom", loads chosen language if set as default..<br>
+	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
+	"Enable/Disable Plugins" very self explainatory.<br>
+	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
+	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
+	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
+- Allows to load selected language at start: English or Custom", loads chosen language if set as default.<br>
 
 ### Changelog 5.24 ###
 - Added compatibility with adrenaline 6.9 thanks to LMAN.<br>
