@@ -11,18 +11,31 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ![header](Bubbles.png)
 
-### Adrenaline Version v6.8 ###
+### Adrenaline Version v6.9 ###
 ### Adrenaline Bubble Booter Version v0.9 ###
-### Adrenaline Bubbles Manager Current Version: 5.23 ###
+### Adrenaline Bubbles Manager Current Version: 5.25 ###
 
 
 ### Instructions ###
-1. **Install Adrenaline v6.8**
+1. **Install Adrenaline v6.9**
 Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it just once, it is highly recommended to add the following line below the kernel line in ur0:tai/config.txt.<br>
 *KERNEL<br>
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 5.25 ###
+- Added option Lmans new customizable options such as:<br>
+	"Suspend game" Stop the game running on the psp when PS button is pressed.
+	"Enable/Disable Plugins" very self explainatory.
+	"NonpDRM Engine" Load content using Quickrazor's plugin.
+	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)
+	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.
+- Allows to load selected language at start: English or Custom", loads chosen language if set as default..<br>
+
+### Changelog 5.24 ###
+- Added compatibility with adrenaline 6.9 thanks to LMAN.<br>
+- For Adrbubblebooter changelog visit its website [AdrBooterv1.0](https://sites.google.com/site/theleecherman/adrbubblebooter/vpkedition)
 
 ### Changelog 5.23 ###
 - Now Manual folder is detected at resources injection option.<br>
