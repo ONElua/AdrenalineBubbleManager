@@ -26,10 +26,16 @@ files.mkdir(pathABM.."resources/")
 -- Loading language file
 __LANG = os.language()
 
+
+__LANG_CUSTOM = tonumber(ini.read(__PATHINI,"lang","lang","1"))
+
 dofile("resources/lang/english_us.txt")
+
 if not files.exists("ux0:data/ABM/lang/english_us.txt") then files.copy("resources/lang/english_us.txt","ux0:data/ABM/lang/") end
-if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
-if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
+if __LANG_CUSTOM == 1 then
+	if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
+	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
+end
 
 -- Loading custom font
 fnt = font.load(pathABM.."font/font.ttf") or font.load(pathABM.."font/font.pgf") or font.load(pathABM.."font/font.pvf")
@@ -108,6 +114,7 @@ __PSBUTTON = tonumber(ini.read(__PATHINI,"psbutton","menu","0"))
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
+_lang = __LANG_CUSTOM
 if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
 if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_PSP_PSX_BUBBLES else setpack = SCAN_SETPACK..__SET end
@@ -115,7 +122,8 @@ if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG
 if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
 if __TITLE == 1 then _title = STRINGS_OPTION_MSG_YES else _title = STRINGS_OPTION_MSG_NO end
 if __PSBUTTON == 1 then _psbutton = STRINGS_PSBUTTON_LIVEAREA else _psbutton = STRINGS_PSBUTTON_MENU end
-TOTAL_SET = 7
+if __LANG_CUSTOM == 1 then _lang = STRINGS_LANG_CUSTOM else _lang = STRINGS_LANG_DEFAULT end
+TOTAL_SET = 8
 
 --[[
 	## Library Scroll ##
@@ -382,7 +390,6 @@ function AutoFixBubbles()
 	if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
 	os.delay(500)
 end
-
 
 function message_wait(message)
 	local mge = (message or MESSAGE_WAIT)

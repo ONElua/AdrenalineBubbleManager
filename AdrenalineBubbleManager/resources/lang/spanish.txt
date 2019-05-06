@@ -3,9 +3,12 @@
 --script.lua
 UNSAFE_MODE =					"MODO UNSAFE es requerido para usar este Homebrew !!!"
 ADRBBOTER_INSTALLED =			"El plugin AdrBubbleBooter ha sido instalado... \nNecesitamos reiniciar tu PSVita... :)"
+ADRENALINE_LAUNCH_FIRST =		"After the Reboot, you must open Adrenaline again\n\nto make sure it works okotherwise bubbles\n\nmade with abm could error out"
 ADRENALINE_NOT_INSTALLED =		"Adrenaline v6 no instalada..."
 MESSAGE_WAIT =					"Por Favor Espere..."
 UPDATE_BUBBLES =				"Actualizando Burbuja: "
+
+STRINGS_OS_DIALOG =				"System Message"
 
 --callbacks.lua
 UPDATING_BUBBLES =				"Actualizando Burbuja: "
@@ -43,6 +46,7 @@ STRINGS_NAME_OSK =				"Coloca aquí el nombre"
 
 --Process
 STRINGS_CONVERTING =			"Convirtiendo Recursos..."
+STRINGS_INSTALL_MANUAL =		"Instalando Manual del Juego..."
 STRINGS_ERROR_INST =			"Lo siento, Hubo un error en la instalación"
 STRINGS_UNK =					"UNK"
 
@@ -86,19 +90,29 @@ SCAN_SORT_DEVICE =				"Partición"
 SCAN_SETPACK =					"Set"
 SCAN_SHOW_PIC =					"PIC"
 
+--dont remove %s
+SCAN_PRESS_CONFIRM =			"Presiona %s"
+
 --submenu
 STRINGS_WARNING =				"Los cambios tomarán efecto al presionar START"
 STRINGS_SETIMGS =				"Set Imgs"
 STRINGS_CONVERT_8BITS =			"Conversión 8bits"
 STRINGS_DEFAULT_SORT =			"Orden de lista"
 STRINGS_DEFAULT_COLOR =			"Color a usar"
-STRINGS_CUSTOMIZED =			"Customized"
+STRINGS_CUSTOMIZED =			"Customizado"
+STRINGS_PSBUTTON =				"Botón PS"
 STRINGS_PSP_PSX_BUBBLES =		"PSP/PSX"
 STRINGS_EXTRA_SETTINGS =		"Opciones Extras"
 STRINGS_ABM_UPDATE =			"Actualización ABM"
 STRINGS_CHECK_ADRENALINE =		"Revisar Adrenaline"
 STRINGS_DEFAULT_TITLE =			"Titulo del juego"
+STRINGS_PSBUTTON_MENU =			"Menu"
+STRINGS_PSBUTTON_LIVEAREA =		"LiveArea"
+STRINGS_LANG_CUSTOM =			"Personalizado"
+STRINGS_LANG_DEFAULT =			"Inglés"
+STRINGS_LANG_OPTION =			"Cargar Lenguaje"
 STRINGS_AUTOFIX_BOOTBIN =		"AutoConversión boot.bin"
+STRINGS_AUTOFIX_BUBBLES =		"Auto Bubble fixer"
 STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
 
 --submenu descrptions
@@ -106,10 +120,42 @@ STRINGS_DESC_CONVERT8BITS =		"Habilita la conversión de 8bits para las burbujas
 STRINGS_DESC_SETIMGS =			"Al seleccionar un SetPack tu burbujas serán creadas con dichos recursos, al seleccionar PSP/PSX tus burbujas serán casi similares a las originales"
 STRINGS_DESC_DEFAULT_SORT =		"Permite ordenar tu lista de juegos disponibles al iniciar ABM"
 STRINGS_DESC_DEFAULT_COLOR =	"Color por defecto al crear las burbujas"
+
+STRINGS_DESC_EDITPATH = 		"Permite modificar la ruta del juego, solo para juegos marcados como "Extraviados""
+STRINGS_DESC_DRIVER =			"Cambiar Drivers: INFERNO, MARCH33, NP9660"
+STRINGS_DESC_EXECUTE =			"Cambiar el modo bin: EBOOT.BIN, BOOT.BIN, EBOOT.OLD"
 STRINGS_DESC_CUSTOMIZED =		"Permite que las burbujas creadas tengan su propio archivo config.bin, con lo cual cada burbuja guardará sus ajustes personales"
+STRINGS_DESC_PSBUTTON =			"Función del botón PS: Abrir menú Adrenaline o Salir al LiveArea"
+STRINGS_DESC_THREADS =			"Suspender Juego"
+STRINGS_DESC_PLUGINS =			"Activar/Desactivar Plugins"
+STRINGS_DESC_NONPDRM =			"Motor NonpDRM"
+STRINGS_DESC_HMEMORY =			"Alta Memoria"
+STRINGS_DESC_SPEED =			"Cmabiar velocidad del juego"
 STRINGS_DESC_ABM_UPDATE =		"Permite revisar si hay Updates de ABM en cada inicio, por defecto: SI"
 STRINGS_DESC_CHECK_ADRENALINE =	"Al salir nuevas versiones de adrenaline, puedes colocar en NO, para siempre tener la misma versión de adrenaline"
 STRINGS_DESC_TITLES =			"Activa esta opción para usar el Titulo incluido en el juego al crear la burbuja"
+STRINGS_DESC_AUTOFIX =			"To fix booting bug on Bubbles created with version 5.20"
+STRINGS_DESC_LANG_OPTION =		"Permite cargar el idioma al iniciar: Inglés o Personalizado"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Burbujas"
+
+--online
+STRINGS_RESOURCES_AUTHOR =			"AUTHOR"
+STRINGS_RESOURCES_ID =				"ID"
+STRINGS_RESOURCES_MANUAL =			"MANUAL"
+STRINGS_RESOURCES_SEARCH =			"Search Online"
+STRINGS_RESOURCES_ONLINE =			"Resources Online"
+STRINGS_RESOURCES_ERROR_DECODE =	"Error Decode Database of Resources!"
+STRINGS_RESOURCES_ERROR_BASE =		"Error Get Database of Resources!"
+STRINGS_RESOURCES_INSTALLED =		"Resources Installed!"
+STRINGS_RESOURCES_ERROR_UNPACK =	"Error Unpack Resources!"
+STRINGS_RESOURCES_ERROR_DOWNLOAD =	"Error Downloading Resources!"
+
+------------	Updater	-------------------------------------------------------------------------
+STRINGS_UPDATER_QUESTION = 		"is now available.\n\nDo you want to update the application?"
+STRINGS_UPDATER = 				"Downloading Update..."
+STRINGS_UPDATER_SIZE = 			"Size: "
+STRINGS_UPDATER_WRITTEN = 		"Written: "
+STRINGS_UPDATER_SPEED = 		"Speed: "
+STRINGS_UPDATER_PERCENT = 		"Percent: "

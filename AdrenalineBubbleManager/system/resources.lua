@@ -31,7 +31,7 @@ function bubbles.online(obj, simg)
 	local raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
 	--local raw = files.read("database.json")
 	local url = "https://raw.githubusercontent.com/ONElua/VitaBubbles/master/"
-	
+
 	if raw then
 		local not_err = true
 		not_err, list = pcall(json.decode, raw)
@@ -111,9 +111,17 @@ function bubbles.online(obj, simg)
 						screen.print(700+128, 365, STRINGS_OPTION_MSG_NO,1,color.white,color.gray,__ACENTER)
 					end
 
-					draw.fillrect(5,y-3,680,25,color.shine)
+					draw.fillrect(0,y-3,690,25,color.shine)
 				end
-				screen.print(20,y,list[i].title,1,color.white,color.black)
+
+				if files.exists(__PATH_RESOURCES..list[i].id) then
+					screen.print(25,y,list[i].title,1,color.green, color.shine:a(155))
+				else
+					screen.print(25,y,list[i].title,1,color.white, color.black)
+				end
+
+				if list[i].update then screen.print(8,y,'*',1,color.green,color.shine:a(135)) end
+
 				y+=26
 			end
 
@@ -156,29 +164,59 @@ function bubbles.online(obj, simg)
 				end
 			end
 
+			if buttons.square then list[scroll.sel].update = not list[scroll.sel].update end
+
+			if buttons.triangle then
+				for i=1,#list do
+					list[i].update = false
+				end
+			end
+
 			if buttons[accept] then
 
-				local vbuff = screen.toimage()
-				if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
-				message_wait()
-				os.delay(15)
+				list[scroll.sel].update = true
 
-				local url_bubbles = string.format("https://raw.githubusercontent.com/%s/%s/master/%s.zip", APP_REPO, PROJECT_BUBBLES, list[scroll.sel].id)
-				local path = string.format(__PATH_TMP.."%s.zip", list[scroll.sel].id)
-				if http.getfile(url_bubbles, path) then
-					if files.extract(path, __PATH_RESOURCES) == 1 then
-						mge = STRINGS_RESOURCES_INSTALLED
-					else
-						mge = STRINGS_RESOURCES_ERROR_UNPACK
-					end
-					files.delete(path)
-				else
-					mge = STRINGS_RESOURCES_ERROR_DOWNLOAD
+				local cont_resources = 0
+				for i=1,#list do
+					if list[i].update then cont_resources += 1 end
 				end
+				TResources = cont_resources
 
-				os.message(tostring(mge))
+				NResources = 0
+				for i=1,#list do
+					if list[i].update then
+						
+						local url_bubbles = string.format("https://raw.githubusercontent.com/%s/%s/master/%s.zip", APP_REPO, PROJECT_BUBBLES, list[i].id)
+						local path = string.format(__PATH_TMP.."%s.zip", list[i].id)
 
+						bubble_id = list[i].id
+						NResources += 1
+						iconprewview = image.load(__PATH_TMP..list[i].id..".png")
+						if iconprewview then iconprewview:resize(200,128) end
+
+						if http.getfile(url_bubbles, path) then
+							if files.extract(path, __PATH_RESOURCES) == 1 then
+								mge = list[i].id..'\n\n'..STRINGS_RESOURCES_INSTALLED
+							else
+								mge = list[i].id..'\n\n'..STRINGS_RESOURCES_ERROR_UNPACK
+							end
+							files.delete(path)
+						else
+							mge = list[i].id..'\n\n'..STRINGS_RESOURCES_ERROR_DOWNLOAD
+						end
+						bubble_id,iconprewview = "",nil
+						list[i].update = nil
+
+						if back2 then back2:blit(0,0) end
+						message_wait(mge)
+						os.delay(500)
+						
+					end
+				end	--for list
+				NResources, TResources = 0,0
+				os.delay(500)
 			end
+
 		end
 
 		if buttons.released[cancel] then

@@ -490,16 +490,24 @@ end
 
 function bubbles.settings()
 
-	local options_edit 	= { "DRIVER:", "EXECUTE:", "CUSTOMIZED:", "LIVEAREA:" }
+	local options_edit 	= { "DRIVER", "EXECUTE", "CUSTOMIZED", "PSBUTTON MODE", "SUSPEND THREADS", "PLUGINS", "NONPDRM", "HIGH MEMORY", "CPU SPEED" }
 	local drivers   	= { "INFERNO", "MARCH33", "NP9660" }
 	local bins      	= { "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD" }
-	local enables   	= { "NO", "YES" }
-	local descp			= { STRINGS_DESC_DRIVER, STRINGS_DESC_EXECUTE, STRINGS_DESC_CUSTOMIZED, STRINGS_DESC_PSBUTTON, STRINGS_DESC_EDITPATH }
+	local enables   	= { "DEFAULT", "ENABLE", "DISABLE" }
+	local noyes   		= { "NO", "YES" }
+	local yesno   		= { "YES", "NO" }
+	local psb   		= { "MENU", "LIVEAREA" }
+	local cpu   		= { "DEFAULT", "20/10", "50/25", "75/37", "100/50", "111/55", "122/61", "133/66", "166/83", "200/100",
+							"222/111", "266/133", "288/144", "300/150", "333/166" }
+
+	local descp			= { STRINGS_DESC_DRIVER, STRINGS_DESC_EXECUTE, STRINGS_DESC_CUSTOMIZED, STRINGS_DESC_PSBUTTON,
+							STRINGS_DESC_THREADS, STRINGS_DESC_PLUGINS, STRINGS_DESC_NONPDRM, STRINGS_DESC_HMEMORY, STRINGS_DESC_SPEED, STRINGS_DESC_EDITPATH }
 
 	local selector, optsel, change, bmaxim = 1,1,false,9
 	local scrids, xscr1, xscr_desc = newScroll(bubbles.list, bmaxim), 110, 15
 	local mark,preview = false,nil
 
+	local xb,yb = 200,150
 	buttons.interval(12,6)
 	while true do
 		buttons.read()
@@ -520,7 +528,7 @@ function bubbles.settings()
 		if show_pic then
 			if bg0img then
 				if pic_alpha < 60 then
-					pic_alpha += 1.005
+					pic_alpha += 1.05
 				end
 				bg0img:blit(480,270,pic_alpha)
 			end
@@ -528,72 +536,83 @@ function bubbles.settings()
 
 		if scrids.maxim > 0 then
 
-			local y = 60
-			for i=scrids.ini, scrids.lim do
-				if i == scrids.sel then
-					draw.fillrect(320,y-1,330,18,color.green:a(100))
-					if not preview then
-						preview = image.load(bubbles.list[scrids.sel].imgp)
-						if preview then
-							preview:resize(120,120)
-							preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+			if not change then
+				local y = 60
+				for i=scrids.ini, scrids.lim do
+					if i == scrids.sel then
+						draw.fillrect(320,y-1,330,18,color.green:a(100))
+						if not preview then
+							preview = image.load(bubbles.list[scrids.sel].imgp)
+							if preview then
+								preview:resize(120,120)
+								preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+							end
 						end
 					end
+
+					if bubbles.list[i].exist then
+						screen.print(480,y,bubbles.list[i].id or STRINGS_UNK,1.0,color.white,color.gray,__ACENTER)
+					else
+						screen.print(480,y,"  !  "..bubbles.list[i].id or STRINGS_UNK,1.0,color.yellow,color.gray,__ACENTER)
+					end
+
+					if bubbles.list[i].delete then
+						draw.fillrect(750,y-1,30,18,color.new(255,255,255,100))
+						screen.print(757,y,SYMBOL_CROSS,1.0,color.white,color.red)
+					end
+
+					y += 23
 				end
 
-				if bubbles.list[i].exist then
-					screen.print(480,y,bubbles.list[i].id or STRINGS_UNK,1.0,color.white,color.gray,__ACENTER)
-				else
-					screen.print(480,y,"  !  "..bubbles.list[i].id or STRINGS_UNK,1.0,color.yellow,color.gray,__ACENTER)
+				--Bar Scroll
+				local ybar,h=55, (bmaxim*24)-2
+				draw.fillrect(660, ybar-2, 8, h, color.shine)
+				if scrids.maxim >= bmaxim then -- Draw Scroll Bar
+					local pos_height = math.max(h/scrids.maxim, bmaxim)
+					draw.fillrect(660, ybar-2 + ((h-pos_height)/(scrids.maxim-1))*(scrids.sel-1), 8, pos_height, color.new(0,255,0))
 				end
 
-				if bubbles.list[i].delete then
-					draw.fillrect(750,y-1,30,18,color.new(255,255,255,100))
-					screen.print(757,y,SYMBOL_CROSS,1.0,color.white,color.red)
-				end
-
-				y += 23
-			end
-
-			--Bar Scroll
-			local ybar,h=55, (bmaxim*24)-2
-			draw.fillrect(660, ybar-2, 8, h, color.shine)
-			if scrids.maxim >= bmaxim then -- Draw Scroll Bar
-				local pos_height = math.max(h/scrids.maxim, bmaxim)
-				draw.fillrect(660, ybar-2 + ((h-pos_height)/(scrids.maxim-1))*(scrids.sel-1), 8, pos_height, color.new(0,255,0))
 			end
 
 			if preview then
-				screen.clip(200,150, 120/2)
+				screen.clip(xb,yb, 120/2)
 					preview:center()
-					preview:blit(200,150)
+					preview:blit(xb,yb)
 				screen.clip()
 			end
 
 			screen.print(480, 305, bubbles.list[scrids.sel].title or STRINGS_UNK,1,color.white,color.gray, __ACENTER)
 
 			--Options txts
-			local y1=356
-			for i=1,5 do
+			if change then y1 = 60 else y1 = 356 end
+
+			for i=1,#options_edit + 1 do
 				if change then
 					if i == optsel then
-						if i==5 then
+						if i==#options_edit + 1 then
 							draw.fillrect(73,329,813,19,color.green:a(100))
 						else
-							draw.fillrect(73,y1-1,813,19,color.green:a(100))
+							draw.fillrect(235,y1-1,490,19,color.green:a(100))
 						end
 					end
+					if i != #options_edit + 1 then
+						screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
+					end
+				else
+					--Solo imprimir 4 opciones
+					if i < 5  then
+						screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
+					end
 				end
-				if i != 5 then
-					screen.print(280, y1, options_edit[i],1,color.white,color.gray, __ALEFT)
-				end
+
 				y1+=23
+
 			end
 
 			if not change then
 				if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
 			else
-				if optsel == 5 then ccolor = color.yellow
+				if optsel == #options_edit + 1 then ccolor = color.yellow
 				else if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
 				end
 			end
@@ -606,10 +625,33 @@ function bubbles.settings()
 			end
 
 			--Driver&Execute&Customized
-			screen.print(680, 356, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
-			screen.print(680, 379, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
-			screen.print(680, 402, enables[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
-			screen.print(680, 425, enables[ bubbles.list[scrids.sel].lines[4] + 1 ],1,color.white,color.gray, __ARIGHT)
+			if change then
+				screen.print(680, 60, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 83, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 106, noyes[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 129, psb[ bubbles.list[scrids.sel].lines[4] + 1 ],1,color.white,color.gray, __ARIGHT)
+				if bubbles.list[scrids.sel].lines[5] then
+					screen.print(680, 152, yesno[ bubbles.list[scrids.sel].lines[5] + 1 ],1,color.white,color.gray, __ARIGHT)
+				end
+				if bubbles.list[scrids.sel].lines[6] then
+					screen.print(680, 175, enables[ bubbles.list[scrids.sel].lines[6] + 1 ],1,color.white,color.gray, __ARIGHT)
+				end
+				if bubbles.list[scrids.sel].lines[7] then
+					screen.print(680, 198, enables[ bubbles.list[scrids.sel].lines[7] + 1 ],1,color.white,color.gray, __ARIGHT)
+				end
+				if bubbles.list[scrids.sel].lines[8] then
+					screen.print(680, 221, enables[ bubbles.list[scrids.sel].lines[8] + 1 ],1,color.white,color.gray, __ARIGHT)
+				end
+				if bubbles.list[scrids.sel].lines[9] then
+					screen.print(680, 244, cpu[ bubbles.list[scrids.sel].lines[9] + 1 ],1,color.white,color.gray, __ARIGHT)
+				end
+
+			else
+				screen.print(680, 356, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 379, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 402, noyes[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 425, psb[ bubbles.list[scrids.sel].lines[4] + 1 ],1,color.white,color.gray, __ARIGHT)
+			end
 
 			if not change then
 
@@ -626,14 +668,14 @@ function bubbles.settings()
 
 				screen.print(480,523, SYMBOL_BACK..": "..BUBBLES_GOTOBACK, 1, color.white, color.blue, __ACENTER)
 			else
-				if optsel == 5 then
+				if optsel == #options_edit + 1 then
 					screen.print(80,475, SYMBOL_BACK2..": "..BUBBLES_EDITPATH, 1, color.white, color.blue, __ALEFT)
 					screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
 				else
 					screen.print(80,475, "<- -> "..BUBBLES_TOGGLE, 1, color.white, color.blue, __ALEFT)
 					screen.print(880,475, SYMBOL_TRIANGLE..": "..BUBBLES_DONE_EDIT, 1, color.white, color.blue, __ARIGHT)
 				end
-				
+
 				if screen.textwidth(descp[optsel] or STRINGS_UNK) > 955 then
 					xscr_desc = screen.print(xscr_desc, 523, descp[optsel] or STRINGS_UNK,1,color.white, color.blue,__SLEFT,955)
 				else
@@ -661,6 +703,61 @@ function bubbles.settings()
 			if buttons.triangle then
 				change = not change
 				if change then buttons.homepopup(0)
+
+					--Get all
+					if not bubbles.list[scrids.sel].lines[5] then
+
+						if not bubbles.list[scrids.sel].adrnew then
+							--Suspend
+							bubbles.list[scrids.sel].lines[5] = 0
+							--Plugins
+							bubbles.list[scrids.sel].lines[6] = 2
+							--NonpDRM
+							bubbles.list[scrids.sel].lines[7] = 2
+							--HighMemory
+							bubbles.list[scrids.sel].lines[8] = 2
+							--CPU Speed
+							bubbles.list[scrids.sel].lines[9] = 0
+
+						else
+							local fp = io.open(bubbles.list[scrids.sel].boot,"r")
+							if fp then
+								--Suspend
+								fp:seek("set",0x18)
+								local suspend = str2int(fp:read(4))
+								if suspend < 0 or suspend > 1 then suspend = 0 end
+								bubbles.list[scrids.sel].lines[5] = suspend
+
+								--1C cpuspeed
+								fp:seek("set",0x1C)
+								local speed = str2int(fp:read(4))
+								if speed < 0 or speed > 14 then speed = 0 end
+								bubbles.list[scrids.sel].lines[9] = speed
+
+								--Plugins
+								fp:seek("set",0x20)
+								local plugs = str2int(fp:read(4))
+								if plugs < 0 or plugs > 2 then plugs = 0 end
+								bubbles.list[scrids.sel].lines[6] = plugs
+
+								--NonpDRM
+								fp:seek("set",0x24)
+								local nonpdrm = str2int(fp:read(4))
+								if nonpdrm < 0 or nonpdrm > 2 then nonpdrm = 0 end
+								bubbles.list[scrids.sel].lines[7] = nonpdrm
+
+								--HighMemory
+								fp:seek("set",0x28)
+								local hm = str2int(fp:read(4))
+								if hm < 0 or hm > 2 then hm = 0 end
+								bubbles.list[scrids.sel].lines[8] = hm
+
+							end
+						end
+
+					end
+
+					xb,yb = 140,115
 					if not bg0img then
 						bg0img = image.load(bubbles.list[scrids.sel].bg0)
 						if bg0img then
@@ -670,6 +767,7 @@ function bubbles.settings()
 						end
 					end
 				else
+					xb,yb = 200,150
 					buttons.interval(12,6)
 					restart_cronopic()
 
@@ -685,8 +783,21 @@ function bubbles.settings()
 								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
 							end
 
+							--PSButton
 							fp:seek("set", 0x14)
 							fp:write(int2str(bubbles.list[scrids.sel].lines[4]))
+
+							--Suspend
+							if bubbles.list[scrids.sel].lines[5] then
+								fp:seek("set", 0x18)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[5]))
+							end
+
+							--cpuspeed			//0x1C
+							if bubbles.list[scrids.sel].lines[9] then
+								fp:seek("set", 0x1C)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[9]))
+							end
 
 							--Update Old ??
 							if not bubbles.list[scrids.sel].adrnew then
@@ -696,6 +807,22 @@ function bubbles.settings()
 								end
 								fp:seek("set", 0x20)
 								fp:write(void)
+							end
+
+							--Plugins
+							if bubbles.list[scrids.sel].lines[6] then
+								fp:seek("set", 0x20)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[6]))
+							end
+							--NonpDRM
+							if bubbles.list[scrids.sel].lines[7] then
+								fp:seek("set", 0x24)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[7]))
+							end
+							--HighMemory
+							if bubbles.list[scrids.sel].lines[8] then
+								fp:seek("set", 0x28)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[8]))
 							end
 
 							--Path
@@ -908,22 +1035,26 @@ function bubbles.settings()
 				if optsel < 1 then optsel = #options_edit + 1 end
 
 				if (buttons.left or buttons.right) then
-					if buttons.left then selector-=1 end
-					if buttons.right then selector+=1 end
 
-					if optsel == 1 or optsel == 2 then				--Driver&Execute
-						if selector > 3 then selector = 1 end
-						if selector < 1 then selector = 3 end
-					elseif optsel == 3 or optsel == 4 then			--Customized&psbutton
-						if selector > 2 then selector = 1 end
-						if selector < 1 then selector = 2 end
+					if buttons.left then bubbles.list[scrids.sel].lines[optsel]-=1 end
+					if buttons.right then bubbles.list[scrids.sel].lines[optsel]+=1 end
+
+					if optsel == 1 or optsel == 2 or optsel == 6 or optsel == 7 or optsel == 8 then		--Driver&Execute&Plugins
+						if bubbles.list[scrids.sel].lines[optsel] > 2 then bubbles.list[scrids.sel].lines[optsel] = 0 end
+						if bubbles.list[scrids.sel].lines[optsel] < 0 then bubbles.list[scrids.sel].lines[optsel] = 2 end
+					elseif optsel == 3 or optsel == 4 or optsel == 5 then								--Customized&psbutton&suspend
+						if bubbles.list[scrids.sel].lines[optsel] > 1 then bubbles.list[scrids.sel].lines[optsel] = 0 end
+						if bubbles.list[scrids.sel].lines[optsel] < 0 then bubbles.list[scrids.sel].lines[optsel] = 1 end
+					elseif optsel == 9 then																--CPU speed
+						if bubbles.list[scrids.sel].lines[optsel] > 14 then bubbles.list[scrids.sel].lines[optsel] = 0 end
+						if bubbles.list[scrids.sel].lines[optsel] < 0 then bubbles.list[scrids.sel].lines[optsel] = 14 end
 					end
 
-					bubbles.list[scrids.sel].lines[optsel] = selector - 1
 					bubbles.list[scrids.sel].update = true
+
 				end
 
-				if (buttons[accept] and optsel == 5) and not bubbles.list[scrids.sel].exist then
+				if (buttons[accept] and optsel == #options_edit + 1) and not bubbles.list[scrids.sel].exist then
 					local new_path = osk.init(BUBBLES_PATH2GAME, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
 					bubbles.list[scrids.sel].iso = new_path
@@ -966,6 +1097,7 @@ function bubbles.edit(obj, simg)
 		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },
 		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png",							restore = "/sce_sys/" },
 		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
+		{ name = "BG.PNG", 	 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg.png",			restore = "/sce_sys/livearea/contents/" },
 		{ name = "BOOT.PNG", 	 w = 480,	h = 272,	dest = "/data/boot.png",							restore = "/data/" },
 		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
 	}
@@ -1133,7 +1265,8 @@ function bubbles.edit(obj, simg)
 							if png[i].ext:upper() == "PNG" or png[i].ext:upper() == "XML" then
 								find_png = true
 								for j=1,#resources do
-									if png[i].name:upper() == resources[j].name then
+
+									if (png[i].name:upper() == resources[j].name) then
 
 										local noscaled = false
 										if png[i].ext:upper() == "PNG" then
@@ -1214,7 +1347,7 @@ function bubbles.edit(obj, simg)
 
 								if back2 then back2:blit(0,0) end
 
-								if i < 6 then--no mayor a xml y frames
+								if i < 7 then--no mayor a xml y frames
 
 									img = image.load(tmp[j].path)
 									if img then
@@ -1286,7 +1419,7 @@ function bubbles.edit(obj, simg)
 									files.copy(obj.path..resources[i].dest, path_tmp)--backup
 									files.copy(tmp[j].path, obj.path..resources[i].dest)
 									
-									if i > 6 then
+									if i > 7 then
 										img = image.load(tmp[j].path)
 										if img then
 											img:scale(75)

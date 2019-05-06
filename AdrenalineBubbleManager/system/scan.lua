@@ -516,7 +516,7 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--7
 		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--8
 		{ text = STRINGS_DEFAULT_TITLE,		desc = STRINGS_DESC_TITLES },				--9
-		{ text = STRINGS_AUTOFIX_BUBBLES,	desc = STRINGS_DESC_AUTOFIX },				--10
+		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--10
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -550,7 +550,14 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"update","update",__UPDATE)				--Save __UPDATE
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)		--Save __CHECKADR
 			ini.write(__PATHINI,"title","title",__TITLE)				--Save __TITLE
+			ini.write(__PATHINI,"lang","lang",__LANG_CUSTOM)			--Save __LANG_CUSTOM
 
+			if __LANG_CUSTOM == 1 then
+				if files.exists("ux0:data/ABM/lang/"..__LANG..".txt") then dofile("ux0:data/ABM/lang/"..__LANG..".txt")	end
+				if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
+			else
+				dofile("resources/lang/english_us.txt")
+			end
 			--Update PIC
 			load_pic1(scan.list[obj.sel])
 		end
@@ -656,13 +663,17 @@ function submenu_abm.draw(obj)
 			elseif submenu_abm.scroll.sel == 9 then--Titles for your Bubbles
 				if __TITLE == 1 then __TITLE,_title = 0,STRINGS_OPTION_MSG_NO
 				else __TITLE,_title = 1,STRINGS_OPTION_MSG_YES end
-
+			elseif submenu_abm.scroll.sel == 10 then--Load Language
+				if __LANG_CUSTOM == 1 then __LANG_CUSTOM,_lang = 0,STRINGS_LANG_DEFAULT
+				else __LANG_CUSTOM,_lang = 1,STRINGS_LANG_CUSTOM end
 			end
 			_save = true
 		end
+		--[[
 		if buttons[accept] and submenu_abm.scroll.sel == 10 then
 			AutoFixBubbles()
 		end
+		]]
 
 		screen.print(480, 5, STRINGS_EXTRA_SETTINGS, 1, color.white, color.blue, __ACENTER)
 		screen.print(480, 32, STRINGS_WARNING, 1, color.white, color.red, __ACENTER)
@@ -697,7 +708,8 @@ function submenu_abm.draw(obj)
 			elseif i==9 then
 				screen.print(690, h, _title, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==10 then
-				screen.print(690, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
+				--screen.print(690, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _lang, 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 27
