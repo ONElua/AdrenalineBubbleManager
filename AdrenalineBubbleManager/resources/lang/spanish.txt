@@ -121,7 +121,7 @@ STRINGS_DESC_SETIMGS =			"Al seleccionar un SetPack tu burbujas serán creadas c
 STRINGS_DESC_DEFAULT_SORT =		"Permite ordenar tu lista de juegos disponibles al iniciar ABM"
 STRINGS_DESC_DEFAULT_COLOR =	"Color por defecto al crear las burbujas"
 
-STRINGS_DESC_EDITPATH = 		"Permite modificar la ruta del juego, solo para juegos marcados como "Extraviados""
+STRINGS_DESC_EDITPATH = 		"Permite modificar la ruta del juego, solo para juegos marcados como Extraviados"
 STRINGS_DESC_DRIVER =			"Cambiar Drivers: INFERNO, MARCH33, NP9660"
 STRINGS_DESC_EXECUTE =			"Cambiar el modo bin: EBOOT.BIN, BOOT.BIN, EBOOT.OLD"
 STRINGS_DESC_CUSTOMIZED =		"Permite que las burbujas creadas tengan su propio archivo config.bin, con lo cual cada burbuja guardará sus ajustes personales"
