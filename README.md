@@ -12,7 +12,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 ![header](Bubbles.png)
 
 ### Adrenaline Version v6.9 ###
-### Adrenaline Bubble Booter Version v0.9 ###
+### Adrenaline Bubble Booter Version v1.0 ###
 ### Adrenaline Bubbles Manager Current Version: 5.25 ###
 
 
@@ -31,7 +31,8 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
 	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
 	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
-- Allows to load selected language at start: English or Custom", loads chosen language if set as default.<br>
+- Allows to load selected language at start: English or Custom", loads chosen language if set as default (ABM only not bubbles).<br>
+- For Adrbubblebooter changelog visit its website [AdrBooterv1.0](https://sites.google.com/site/theleecherman/adrbubblebooter/vpkedition)
 
 ### Changelog 5.24 ###
 - Added compatibility with adrenaline 6.9 thanks to LMAN.<br>
