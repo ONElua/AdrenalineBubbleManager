@@ -135,7 +135,7 @@ STRINGS_DESC_ABM_UPDATE =		"Checks for ABM Updates at start, default is YES"
 STRINGS_DESC_CHECK_ADRENALINE =	"Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version"
 STRINGS_DESC_TITLES =			"Enable it to create bubbles using the game default's Title"
 STRINGS_DESC_AUTOFIX =			"To fix booting bug on Bubbles created with version 5.20"
-STRINGS_DESC_LANG_OPTION =		"Allows to load selected language at start: English or Custom"
+STRINGS_DESC_LANG_OPTION =		"Allows to load selected language at start in ABM: English or Custom"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Bubbles"

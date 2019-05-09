@@ -135,7 +135,7 @@ STRINGS_DESC_ABM_UPDATE =		"Permite revisar si hay Updates de ABM en cada inicio
 STRINGS_DESC_CHECK_ADRENALINE =	"Al salir nuevas versiones de adrenaline, puedes colocar en NO, para siempre tener la misma versión de adrenaline"
 STRINGS_DESC_TITLES =			"Activa esta opción para usar el Titulo incluido en el juego al crear la burbuja"
 STRINGS_DESC_AUTOFIX =			"To fix booting bug on Bubbles created with version 5.20"
-STRINGS_DESC_LANG_OPTION =		"Permite cargar el idioma al iniciar: Inglés o Personalizado"
+STRINGS_DESC_LANG_OPTION =		"Permite cargar el idioma en AMB al iniciar: Inglés o Personalizado"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Burbujas"
