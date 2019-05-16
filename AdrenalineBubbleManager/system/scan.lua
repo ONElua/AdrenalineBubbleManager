@@ -334,11 +334,14 @@ function scan.show(objedit)
 
 				if toinstall <= 1 then
 					local bubble_title = nil
-					if scan.list[scr.sel].title then
-						if __TITLE == 0 then
-							bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[scr.sel].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
-						end
+					if __TITLE == 1 then
+						bubble_title = scan.list[scr.sel].title
+					elseif __TITLE == 2 then
+						bubble_title = scan.list[scr.sel].name
+					else
+						bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[scr.sel].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 					end
+
 					if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[scr.sel].title or scan.list[scr.sel].name end
 					scan.list[scr.sel].title_bubble = bubble_title
 					bubbles.install(scan.list[scr.sel])
@@ -348,11 +351,14 @@ function scan.show(objedit)
 					for i=1, scr.maxim do
 						if scan.list[i].inst then
 							local bubble_title = nil
-							if scan.list[i].title then
-								if __TITLE == 0 then
-									bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[i].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
-								end
+							if __TITLE == 1 then
+								bubble_title = scan.list[i].title
+							elseif __TITLE == 2 then
+								bubble_title = scan.list[i].name
+							else
+								bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[scr.sel].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 							end
+
 							if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[i].title or scan.list[i].name end
 							scan.list[i].title_bubble = bubble_title
 						end
@@ -515,7 +521,7 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_PSBUTTON,			desc = STRINGS_DESC_PSBUTTON },				--6
 		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--7
 		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--8
-		{ text = STRINGS_DEFAULT_TITLE,		desc = STRINGS_DESC_TITLES },				--9
+		{ text = STRINGS_DEFAULT_BNAME,		desc = STRINGS_DESC_TITLES },				--9
 		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--10
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
@@ -661,8 +667,10 @@ function submenu_abm.draw(obj)
 				else __CHECKADR,_adr = 1,STRINGS_OPTION_MSG_YES end
 
 			elseif submenu_abm.scroll.sel == 9 then--Titles for your Bubbles
-				if __TITLE == 1 then __TITLE,_title = 0,STRINGS_OPTION_MSG_NO
-				else __TITLE,_title = 1,STRINGS_OPTION_MSG_YES end
+				if __TITLE == 1 then __TITLE,_title = 2,STRINGS_DEFAULT_NAME
+				elseif __TITLE == 2 then __TITLE,_title = 0,STRINGS_DEFAULT_OSK
+				else __TITLE,_title = 1,STRINGS_DEFAULT_TITLE end
+	
 			elseif submenu_abm.scroll.sel == 10 then--Load Language
 				if __LANG_CUSTOM == 1 then __LANG_CUSTOM,_lang = 0,STRINGS_LANG_DEFAULT
 				else __LANG_CUSTOM,_lang = 1,STRINGS_LANG_CUSTOM end
