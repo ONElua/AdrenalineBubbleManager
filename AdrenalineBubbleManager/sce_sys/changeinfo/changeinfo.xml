@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="05.27">
+    <![CDATA[
+- Added an option to use the filename ("example".iso) to rename bubbles made with ABM.<br>
+- Added compatibility with Adrenaline Bubble Booter v1.1.<br>
+    ]]>
 <changes app_ver="05.16">
     <![CDATA[
 - Re-add edit bubble path. Only when the path to the game does not exist<br>
