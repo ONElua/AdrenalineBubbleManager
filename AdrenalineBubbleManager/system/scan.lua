@@ -329,6 +329,8 @@ function scan.show(objedit)
 				load_pic1(scan.list[scr.sel])
 			end
 
+			if buttons.select then error("FTP") end
+
 			--Install
 			if buttons[accept] then
 
@@ -356,7 +358,7 @@ function scan.show(objedit)
 							elseif __TITLE == 2 then
 								bubble_title = scan.list[i].name
 							else
-								bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[scr.sel].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
+								bubble_title = osk.init(STRINGS_TITLE_OSK, scan.list[i].title or STRINGS_NAME_OSK, 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 							end
 
 							if not bubble_title or (string.len(bubble_title)<=0) then bubble_title = scan.list[i].title or scan.list[i].name end
@@ -364,22 +366,25 @@ function scan.show(objedit)
 						end
 					end
 
-					local vbuff = screen.toimage()
+					--batch install
 					local tmp,c = toinstall,0
 					for i=1, scr.maxim do
-
-						if vbuff then vbuff:blit(0,0) end
-							screen.print(480,405,STRINGS_BUBBLES_BAR.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
-							draw.rect(0, 437, 960, 20, color.new(25,200,25))
-							draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
-						screen.flip()
-
 						if scan.list[i].inst then
-							bubbles.install(scan.list[i])
+
+							if back2 then back2:blit(0,0) end
+							screen.print(480,490,STRINGS_BUBBLES_BAR.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
+							draw.fillrect(10, 520, 940, 9, color.shine:a(125))
+							draw.fillrect(10,520, ((c+1)*940)/tmp,9,color.new(0,255,0))
+							draw.circle(10,524,8,color.new(0,255,0),30)
+							draw.circle(948,524,8,color.new(0,255,0),30)
+							screen.flip()
+
+							local vbuff = screen.buffertoimage()
+							bubbles.install(scan.list[i],vbuff)
 							c+=1
 						end
 					end
-					os.delay(15)
+					os.delay(25)
 				end
 			end
 
@@ -407,21 +412,24 @@ function scan.show(objedit)
 							end
 						end
 
-						local vbuff = screen.toimage()
+						--batch install
 						local tmp,c = check_install,0
 						for i=1, scr.maxim do
-
-							if vbuff then vbuff:blit(0,0) end
-								screen.print(480,405,STRINGS_BUBBLES_BAR.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
-								draw.rect(0, 437, 960, 20, color.new(25,200,25))
-								draw.fillrect(0,437, ((c+1)*960)/tmp,20,color.new(0,255,0))
+							if scan.list[i].inst then
+								if back2 then back2:blit(0,0) end
+								screen.print(480,490,STRINGS_BUBBLES_BAR.." ( "..(c+1).." / "..tmp.." )",1,color.white,color.blue, __ACENTER)
+								draw.fillrect(10, 520, 940, 9, color.shine:a(125))
+								draw.fillrect(10,520, ((c+1)*940)/tmp,9,color.new(0,255,0))
+								draw.circle(10,524,8,color.new(0,255,0),30)
+								draw.circle(948,524,8,color.new(0,255,0),30)
 								screen.flip()
 
-							if scan.list[i].inst then
-								bubbles.install(scan.list[i])
+								local vbuff = screen.buffertoimage()
+								bubbles.install(scan.list[i],vbuff)
 								c+=1
 							end
 						end
+						os.delay(25)
 					end
 				end
 			end

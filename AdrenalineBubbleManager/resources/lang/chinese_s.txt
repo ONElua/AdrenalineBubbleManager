@@ -136,7 +136,7 @@ STRINGS_DESC_HMEMORY =			"High Memory"
 STRINGS_DESC_SPEED =			"Change game cpu clock speed"
 STRINGS_DESC_ABM_UPDATE =		"在 ABM 程序启动时检查更新, 默认为 是"
 STRINGS_DESC_CHECK_ADRENALINE =	"检查 Adrenaline 更新, 如果你想留在当前已安装的版本, 请设置为 否"
-STRINGS_DESC_TITLES =			"Select the desired option to name/rename your Bubbles: By Title, By Name By File Name or Input the desired Name"
+STRINGS_DESC_TITLES =			"Select the desired option to name/rename your Bubbles: By Title, By File Name or Input the desired Name"
 STRINGS_DESC_AUTOFIX =			"修复 5.20 版本所创建气泡的启动问题"
 STRINGS_DESC_LANG_OPTION =		"Permite Usar por Defecto el Idioma al iniciar: Inglés o Personalizado"
 

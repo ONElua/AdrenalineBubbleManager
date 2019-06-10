@@ -113,7 +113,7 @@ function bubbles.scan()
 end
 
 -- src = objet game to launch
-function bubbles.install(src)
+function bubbles.install(src,buff)
 
 	files.delete("ux0:data/ABMVPK/")
 
@@ -138,7 +138,7 @@ function bubbles.install(src)
 	local timg = nil
 	timg = game.geticon0(src.path)
 
-	if back2 then back2:blit(0,0) end
+	if buff then buff:blit(0,0) elseif back2 then back2:blit(0,0) end
 	draw.fillrect(0,0,960,30, color.shine)
 	screen.print(10,10,STRINGS_CONVERTING)
 	screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
@@ -196,7 +196,7 @@ function bubbles.install(src)
 			timg:reset()
 		end
 
-		if back2 then back2:blit(0,0) end
+		if buff then buff:blit(0,0) elseif back2 then back2:blit(0,0) end
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
 		screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
@@ -243,8 +243,8 @@ function bubbles.install(src)
 
 		if timg then setimg = true
 		else timg = game.getpic1(src.path) end
-		
-		if back2 then back2:blit(0,0) end
+
+		if buff then buff:blit(0,0) elseif back2 then back2:blit(0,0) end
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
 		screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
@@ -295,7 +295,7 @@ function bubbles.install(src)
 			setimg = true
 		end
 
-		if back2 then back2:blit(0,0) end
+		if buff then buff:blit(0,0) elseif back2 then back2:blit(0,0) end
 		draw.fillrect(0,0,960,30, color.shine)
 		screen.print(10,10,STRINGS_CONVERTING)
 		screen.print(950,10,"BG0.PNG",1, color.white, color.blue, __ARIGHT)
@@ -895,7 +895,10 @@ function bubbles.settings()
 							for i=bubbles.len,1,-1 do
 								if bubbles.list[i].delete then
 									if vbuff then vbuff:blit(0,0) end
-									draw.fillrect(70, 270, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
+										draw.fillrect(80, 274, 800, 9, color.shine:a(125))--890
+										draw.fillrect(80, 274, ( (tmp-c) * 800 )/tmp, 9, color.new(0,255,0))
+										draw.circle(80,278,8,color.new(0,255,0),30)
+										draw.circle(876,278,8,color.new(0,255,0),30)
 									screen.flip()
 									buttons.homepopup(0)
 									game.delete(bubbles.list[i].id)
@@ -950,7 +953,10 @@ function bubbles.settings()
 								for i=bubbles.len,1,-1 do
 									if not bubbles.list[i].exist then
 										if vbuff then vbuff:blit(0,0) end
-										draw.fillrect(70, 270, ( (tmp-c) * 820 )/tmp, 25, color.new(0,255,0))
+										draw.fillrect(80, 274, 800, 9, color.shine:a(125))--890
+										draw.fillrect(80, 274, ( (tmp-c) * 800 )/tmp, 9, color.new(0,255,0))
+										draw.circle(80,278,8,color.new(0,255,0),30)
+										draw.circle(876,278,8,color.new(0,255,0),30)
 										screen.flip()
 										buttons.homepopup(0)
 										game.delete(bubbles.list[i].id)
