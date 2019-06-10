@@ -329,8 +329,6 @@ function scan.show(objedit)
 				load_pic1(scan.list[scr.sel])
 			end
 
-			if buttons.select then error("FTP") end
-
 			--Install
 			if buttons[accept] then
 

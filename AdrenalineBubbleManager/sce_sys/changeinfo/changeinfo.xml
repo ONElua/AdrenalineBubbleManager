@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="05.30">
+    <![CDATA[
+- - Fixed error when creating multi-bubbles, now each bubble gets its own name.<br>
+    ]]>
 <changes app_ver="05.27">
     <![CDATA[
 - Added an option to use the filename ("example".iso) to rename bubbles made with ABM.<br>
