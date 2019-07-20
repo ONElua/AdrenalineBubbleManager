@@ -123,7 +123,7 @@ if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OP
 if __TITLE == 1 then _title = STRINGS_DEFAULT_TITLE elseif __TITLE == 2 then _title = STRINGS_DEFAULT_NAME else _title = STRINGS_DEFAULT_OSK end
 if __PSBUTTON == 1 then _psbutton = STRINGS_PSBUTTON_LIVEAREA else _psbutton = STRINGS_PSBUTTON_MENU end
 if __LANG_CUSTOM == 1 then _lang = STRINGS_LANG_CUSTOM else _lang = STRINGS_LANG_DEFAULT end
-TOTAL_SET = 8
+TOTAL_SET = 6
 
 --[[
 	## Library Scroll ##

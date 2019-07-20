@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.00">
+    <![CDATA[
+- Added option to inject only the game's Manual.<br>
+    ]]>
 <changes app_ver="05.30">
     <![CDATA[
-- - Fixed error when creating multi-bubbles, now each bubble gets its own name.<br>
+- Fixed error when creating multi-bubbles, now each bubble gets its own name.<br>
     ]]>
 <changes app_ver="05.27">
     <![CDATA[

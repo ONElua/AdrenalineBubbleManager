@@ -49,6 +49,7 @@ STRINGS_CONVERTING =			"Converting Resources..."
 STRINGS_INSTALL_MANUAL =		"Installing Game Manual..."
 STRINGS_ERROR_INST =			"Sorry, There was an Installation error"
 STRINGS_UNK =					"UNK"
+STRINGS_BACKUP =				"Original Bubble Backup"
 
 --debug
 DEBUG_LOAD_CISO =				"Loading C/ISO"

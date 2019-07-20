@@ -1099,21 +1099,21 @@ function bubbles.edit(obj, simg)
 	else tmp = {} end
 
 	local resources = { 
-		{ name = "ICON0.PNG", 	 w = 128,	h = 128,	dest = "/sce_sys/icon0.png",						restore = "/sce_sys/" },
-		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png",	restore = "/sce_sys/livearea/contents/" },
-		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png",							restore = "/sce_sys/" },
-		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png",		restore = "/sce_sys/livearea/contents/" },
-		{ name = "BG.PNG", 	 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg.png",			restore = "/sce_sys/livearea/contents/" },
-		{ name = "BOOT.PNG", 	 w = 480,	h = 272,	dest = "/data/boot.png",							restore = "/data/" },
-		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/",				restore = "/sce_sys/livearea/contents/" },
+		{ name = "ICON0.PNG", 	 w = 128,	h = 128,	dest = "/sce_sys/icon0.png", },
+		{ name = "STARTUP.PNG",  w = 280,	h = 158,	dest = "/sce_sys/livearea/contents/startup.png", },
+		{ name = "PIC0.PNG", 	 w = 960,	h = 544,	dest = "/sce_sys/pic0.png", },
+		{ name = "BG0.PNG", 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg0.png", },
+		{ name = "BG.PNG", 	 	 w = 840,	h = 500,	dest = "/sce_sys/livearea/contents/bg.png" },
+		{ name = "BOOT.PNG", 	 w = 480,	h = 272,	dest = "/data/boot.png", },
+		{ name = "TEMPLATE.XML", w = 0,		h = 0,		dest = "/sce_sys/livearea/contents/", },
 	}
 
 	--FRAMEX.PNG 1 to 5
 	for i=1,5 do
-		table.insert(resources, { name = "FRAME"..i..".PNG", w = 0,	h = 0, dest = "/sce_sys/livearea/contents/", restore = "/sce_sys/livearea/contents/" })
+		table.insert(resources, { name = "FRAME"..i..".PNG", w = 0,	h = 0, dest = "/sce_sys/livearea/contents/", })
 	end
 
-	local find_png, inside, backl = false,false,{}
+	local find_png, inside, backl, manual_flag = false,false,{},false
 	local bubble_color = 1
 	local maximset = 10
 	local scrids, newpath = newScroll(tmp, maximset),"ux0:ABM/"
@@ -1168,7 +1168,7 @@ function bubbles.edit(obj, simg)
 				screen.clip()
 			end
 
-			if inside and find_png then
+			if inside and (find_png or manual_flag) then
 				screen.print(480,523,BUBBLES_REINSTALL,1.0,color.green,color.gray,__ACENTER)
 
 				--Print Streched
@@ -1213,7 +1213,7 @@ function bubbles.edit(obj, simg)
 
 				os.delay(750)
 
-				find_png, inside, backlist = false,false,{}
+				find_png, inside, backlist, manual_flag = false,false,{},false
 				maximset = 10
 				scrids:set(tmp,maximset)
 				if #backl>0 then
@@ -1257,58 +1257,54 @@ function bubbles.edit(obj, simg)
 				newpath = "ux0:ABM/"..tmp[scrids.sel].name
 
 				--MANUAL folder
-				local manual_flag = false
-				if files.exists(newpath.."/Manual/") then
-					manual_flag = true
-				end
+				manual_flag = false
+				if files.exists(newpath.."/Manual/") then manual_flag = true end
 
+				tmp = {}
 				local png = files.listfiles(newpath)
 				if png and #png > 0 then
 					table.sort(png,function(a,b) return string.lower(a.name)<string.lower(b.name) end)
-					if #png > 0 then
-						tmp = {}
-						for i=1,#png do
-							if png[i].ext:upper() == "PNG" or png[i].ext:upper() == "XML" then
-								find_png = true
-								for j=1,#resources do
+					for i=1,#png do
+						if png[i].ext:upper() == "PNG" or png[i].ext:upper() == "XML" then
+							find_png = true
+							for j=1,#resources do
 
-									if (png[i].name:upper() == resources[j].name) then
+								if (png[i].name:upper() == resources[j].name) then
 
-										local noscaled = false
-										if png[i].ext:upper() == "PNG" then
+									local noscaled = false
+									if png[i].ext:upper() == "PNG" then
 
-											png[i].img = image.load(png[i].path)
+										png[i].img = image.load(png[i].path)
 
-											if png[i].img then
-												if png[i].name:upper() == "ICON0.PNG" then
-													if png[i].img:getrealw() == 128 and png[i].img:getrealw() == 128 then
-														noscaled = true
-													end
+										if png[i].img then
+											if png[i].name:upper() == "ICON0.PNG" then
+												if png[i].img:getrealw() == 128 and png[i].img:getrealw() == 128 then
+													noscaled = true
 												end
-												png[i].img:resize(252,151)
-												png[i].img:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 											end
-
+											png[i].img:resize(252,151)
+											png[i].img:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 										end
-										table.insert(tmp, { name = png[i].name, path = png[i].path, ext = png[i].ext, img = png[i].img or nil,
-															directory = png[i].directory or false })
-										tmp.nostretched = true
-										tmp.noscaled = noscaled
 
 									end
-								end--for resources
+									table.insert(tmp, { name = png[i].name, path = png[i].path, ext = png[i].ext, img = png[i].img or nil,
+														directory = png[i].directory or false })
+									tmp.nostretched = true
+									tmp.noscaled = noscaled
 
-							end
-						end--for png
+								end
+							end--for resources
 
-						if manual_flag then
-							table.insert(tmp, { name = "Manual" })
 						end
-
-						maximset = #tmp
-						scrids = newScroll(tmp, maximset)
-					end
+					end--for png
 				end
+
+				if manual_flag then
+					table.insert(tmp, { name = "Manual" })
+				end
+
+				maximset = #tmp
+				scrids = newScroll(tmp, maximset)
 			end
 
 			--Bubbles Color
@@ -1338,23 +1334,106 @@ function bubbles.edit(obj, simg)
 				end
 			end
 
-			if buttons.start and find_png and inside then--hacer la reinstalación
+			if buttons.start and inside and (find_png or manual_flag) then--hacer la reinstalación
+
+				buttons.homepopup(0)
+
 				local img = nil
-				local path_tmp = ("ux0:data/vpk_abm/")
+				local path_tmp = "ux0:data/vpk_abm/"
 				files.delete(path_tmp)
 				files.mkdir(path_tmp)
+
+				if back2 then back2:blit(0,0) end
+				draw.fillrect(0,0,960,30, color.shine)
+				screen.print(10,10,STRINGS_BACKUP)
+				os.delay(250)
+				screen.flip()
+
+				--Backup All
+				files.copy(obj.path.."/sce_sys/livearea/", path_tmp.."sce_sys/")
+				files.copy(obj.path.."/sce_sys/package/", path_tmp.."sce_sys/")
+				files.copy(obj.path.."/sce_sys/icon0.png", path_tmp.."sce_sys/")
+				files.copy(obj.path.."/sce_sys/param.sfo", path_tmp.."sce_sys/")
+				files.copy(obj.path.."/sce_sys/pic0.png", path_tmp.."sce_sys/")
+				files.copy(obj.path.."/data/", path_tmp)
+
 				for i=1,#resources do
 					for j=1,#tmp do
 
 						if tmp[j].name:upper() == resources[i].name then
 
 							--Resources to 8bits
-							buttons.homepopup(0)
+							if back2 then back2:blit(0,0) end
 
-								if back2 then back2:blit(0,0) end
+							if i < 7 then--no mayor a xml y frames
 
-								if i < 7 then--no mayor a xml y frames
+								img = image.load(tmp[j].path)
+								if img then
+									img:scale(75)
+									img:center()
+									img:blit(480,272)
+								end
 
+								draw.fillrect(0,0,960,30, color.shine)
+								screen.print(10,10,STRINGS_CONVERTING)
+								screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
+								screen.flip()
+
+								if img then
+									img:reset()
+
+									local scale = false
+									if tmp[j].name:upper() != "ICON0.PNG" then
+										if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+											img=img:copyscale(resources[i].w, resources[i].h)
+											scale = true
+										end
+									end
+
+									--i==2 STARTUP.PNG
+									if i == 2 then
+										--Fix Startup.png Forzar 8bits
+										image.save(image.startup(img), obj.path..resources[i].dest, 1)
+									else
+										if __8PNG == 1 then
+											if tmp[j].name:upper() == "ICON0.PNG" then
+												if tmp.nostretched then
+													if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+														image.save(img:copyscale(128,128), obj.path..resources[i].dest, 1)
+													else
+														image.save(img, obj.path..resources[i].dest, 1)
+													end
+												else
+													image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
+												end
+											else
+												image.save(img, obj.path..resources[i].dest, 1)
+											end
+										else
+											if scale then
+												image.save(img, obj.path..resources[i].dest, 1)
+											else
+												if tmp[j].name:upper() == "ICON0.PNG" then
+													if tmp.nostretched then
+														if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
+															image.save(img:copyscale(128,128), obj.path..resources[i].dest, 1)
+														else
+															image.save(img, obj.path..resources[i].dest, 1)
+														end
+													else
+														image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
+													end
+												end
+											end
+										end
+									end
+								end--if img
+
+							else
+
+								files.copy(tmp[j].path, obj.path..resources[i].dest)
+									
+								if i > 7 then
 									img = image.load(tmp[j].path)
 									if img then
 										img:scale(75)
@@ -1367,118 +1446,40 @@ function bubbles.edit(obj, simg)
 									screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
 									screen.flip()
 
-									if img then
-										files.copy(obj.path..resources[i].dest, path_tmp)--backup
-										img:reset()
-
-										local scale = false
-										if tmp[j].name:upper() != "ICON0.PNG" then
-											if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
-												img=img:copyscale(resources[i].w, resources[i].h)
-												scale = true
-											end
-										end
-
-										--i==2 STARTUP.PNG
-										if i == 2 then
-											--Fix Startup.png Forzar 8bits
-											image.save(image.startup(img), obj.path..resources[i].dest, 1)
-										else
-											if __8PNG == 1 then
-												if tmp[j].name:upper() == "ICON0.PNG" then
-													if tmp.nostretched then
-														if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
-															image.save(img:copyscale(128,128), obj.path..resources[i].dest, 1)
-														else
-															image.save(img, obj.path..resources[i].dest, 1)
-														end
-													else
-														image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
-													end
-												else
-													image.save(img, obj.path..resources[i].dest, 1)
-												end
-											else
-												if scale then
-													image.save(img, obj.path..resources[i].dest, 1)
-												else
-													if tmp[j].name:upper() == "ICON0.PNG" then
-														if tmp.nostretched then
-															if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
-																image.save(img:copyscale(128,128), obj.path..resources[i].dest, 1)
-															else
-																image.save(img, obj.path..resources[i].dest, 1)
-															end
-														else
-															image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
-														end
-													else
-														files.copy(tmp[j].path, obj.path..resources[i].restore)
-													end
-												end
-											end
-										end
-									end--if img
-
-								else
-
-									files.copy(obj.path..resources[i].dest, path_tmp)--backup
-									files.copy(tmp[j].path, obj.path..resources[i].dest)
-									
-									if i > 7 then
-										img = image.load(tmp[j].path)
-										if img then
-											img:scale(75)
-											img:center()
-											img:blit(480,272)
-										end
-
-										draw.fillrect(0,0,960,30, color.shine)
-										screen.print(10,10,STRINGS_CONVERTING)
-										screen.print(950,10,resources[i].name,1, color.white, color.blue, __ARIGHT)
-										screen.flip()
-
-										if __8PNG == 1 then
-											image.save(img, obj.path..resources[i].dest, 1)
-										else
-											files.copy(tmp[j].path, obj.path..resources[i].restore)
-										end
+									if __8PNG == 1 then
+										image.save(img, obj.path..resources[i].dest, 1)
 									end
 								end
-							buttons.homepopup(1)
+							end
 						end
 					end
 				end--for
 
 				--MANUAL folder
 				if files.exists(newpath.."/Manual/") then
+					if back2 then back2:blit(0,0) end
 					draw.fillrect(0,0,960,30, color.shine)
 						screen.print(10,10,STRINGS_INSTALL_MANUAL)
 					screen.flip()
+					files.move(obj.path.."/sce_sys/Manual/", path_tmp.."sce_sys/")
 					files.copy(newpath.."/Manual/", obj.path.."/sce_sys/")
 				end
 
-				buttons.homepopup(1)
-
-
 				--Install Bubble
-				buttons.homepopup(0)
-					files.copy(obj.path.."/sce_sys/package/",path_tmp)--backup
-					files.copy("ur0:shell/db/app.db",path_tmp)
-					bubble_id,reinstall = obj.id,true
-					result = game.installdir(obj.path)
-					if result != 1 then
-						--Restore
-						files.copy(path_tmp.."app.db", "ur0:shell/db/")
-						files.copy(path_tmp.."package/",obj.path.."/sce_sys/")
-						for i=1,#resources do
-							files.copy(path_tmp..resources[i].name, obj.path..resources[i].restore)
-						end
-						custom_msg(STRINGS_ERROR_INST,0)
-					end
-					buttons.read()--flush
-					files.delete(path_tmp)
-					reinstall = false
+				files.copy("ur0:shell/db/app.db",path_tmp)
+				bubble_id,reinstall = obj.id,true
+				local result = game.installdir(obj.path)
+				if result != 1 then
+					--Restore
+					files.copy(path_tmp.."app.db", "ur0:shell/db/")
+					files.move(path_tmp.."sce_sys/",obj.path)
+					files.move(path_tmp.."data/",obj.path)
+					custom_msg(STRINGS_ERROR_INST,0)
+				end
+				buttons.read()--flush
+				files.delete(path_tmp)
+				reinstall = false
+
 				buttons.homepopup(1)
 
 				buttons.read() break
