@@ -881,7 +881,7 @@ function bubbles.settings()
 					end
 				end
 
-				if buttons[accept] then
+				if buttons.accept then
 					bubbles.edit(bubbles.list[scrids.sel], preview)
 					preview = nil
 					restart_cronopic()
@@ -1060,7 +1060,7 @@ function bubbles.settings()
 
 				end
 
-				if (buttons[accept] and optsel == #options_edit + 1) and not bubbles.list[scrids.sel].exist then
+				if (buttons.accept and optsel == #options_edit + 1) and not bubbles.list[scrids.sel].exist then
 					local new_path = osk.init(BUBBLES_PATH2GAME, bubbles.list[scrids.sel].iso or "", 128, __OSK_TYPE_DEFAULT, __OSK_MODE_TEXT)
 					if not new_path or (string.len(new_path)<=0) then new_path = bubbles.list[scrids.sel].iso end
 					bubbles.list[scrids.sel].iso = new_path
@@ -1083,7 +1083,7 @@ function bubbles.settings()
 
 		end
 
-		if buttons[cancel] and not change then
+		if buttons.cancel and not change then
 			restart_cronopic()
 			return false
 		end
@@ -1203,7 +1203,7 @@ function bubbles.edit(obj, simg)
 		screen.flip()
 
 		--Controls
-		if buttons[cancel] then
+		if buttons.cancel then
 			if inside then
 				newpath = files.nofile(newpath)
 				tmp = files.listdirs(newpath)
@@ -1251,7 +1251,7 @@ function bubbles.edit(obj, simg)
 			if (buttons.up or buttons.analogly < -60) then scrids:up() end
 			if (buttons.down or buttons.analogly > 60) then scrids:down() end
 
-			if buttons[accept] and tmp[scrids.sel].directory then
+			if buttons.accept and tmp[scrids.sel].directory then
 				table.insert(backl, {maxim = scrids.maxim, ini = scrids.ini, sel = scrids.sel, lim = scrids.lim })
 				inside = true
 				newpath = "ux0:ABM/"..tmp[scrids.sel].name

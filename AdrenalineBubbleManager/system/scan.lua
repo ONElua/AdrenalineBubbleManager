@@ -330,7 +330,7 @@ function scan.show(objedit)
 			end
 
 			--Install
-			if buttons[accept] then
+			if buttons.accept then
 
 				if toinstall <= 1 then
 					local bubble_title = nil
@@ -497,7 +497,7 @@ function scan.show(objedit)
 
 		end
 
-		if buttons[cancel] and submenu_abm.h == -submenu_abm.y then bubbles.settings() end
+		if buttons.cancel and submenu_abm.h == -submenu_abm.y then bubbles.settings() end
 
 	end
 
@@ -684,7 +684,7 @@ function submenu_abm.draw(obj)
 			_save = true
 		end
 		--[[
-		if buttons[accept] and submenu_abm.scroll.sel == 10 then
+		if buttons.accept and submenu_abm.scroll.sel == 10 then
 			AutoFixBubbles()
 		end
 		]]

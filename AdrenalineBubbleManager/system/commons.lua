@@ -62,13 +62,11 @@ SYMBOL_SQUARE	= string.char(0xe2)..string.char(0x96)..string.char(0xa1)
 SYMBOL_TRIANGLE	= string.char(0xe2)..string.char(0x96)..string.char(0xb3)
 SYMBOL_CIRCLE	= string.char(0xe2)..string.char(0x97)..string.char(0x8b)
 
-accept,cancel = "cross","circle"
 accept_x = 1
 SYMBOL_BACK = SYMBOL_CIRCLE
 SYMBOL_BACK2 = SYMBOL_CROSS
 STRING_PRESS = SCAN_PRESS_CROSS
 if buttons.assign()==0 then
-	accept,cancel = "circle","cross"
 	accept_x = 0
 	SYMBOL_BACK = SYMBOL_CROSS
 	SYMBOL_BACK2 = SYMBOL_CIRCLE
@@ -253,12 +251,12 @@ function custom_msg(printtext,mode)
 
 		screen.flip()
 
-		if buttons[accept] and mode != 2 then-- Accept
+		if buttons.accept and mode != 2 then-- Accept
 			result = true
 			break
 		end
 
-		if buttons[cancel] and mode != 0 then-- Cancel
+		if buttons.cancel and mode != 0 then-- Cancel
 			result = false
 			break
 		end
