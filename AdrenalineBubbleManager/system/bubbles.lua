@@ -116,12 +116,17 @@ end
 function bubbles.install(src,buff)
 
 	files.delete("ux0:data/ABMVPK/")
+	local lastid
 
-	local i=0
-	while game.exists(string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)) do
-		i+=1
+	if src.gameid:len() == 9 and not game.exists(src.gameid) then
+		lastid = src.gameid
+	else
+		local i=0
+		while game.exists(string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)) do
+			i+=1
+		end
+		lastid = string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)
 	end
-	local lastid = string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)
 
 	local work_dir = "ux0:data/ABMVPK/"
 	files.mkdir(work_dir)
