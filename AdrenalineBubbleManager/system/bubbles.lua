@@ -118,7 +118,8 @@ function bubbles.install(src,buff)
 	files.delete("ux0:data/ABMVPK/")
 	local lastid
 
-	if src.gameid:len() == 9 and not game.exists(src.gameid) then
+	--src.type: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
+	if __TITLEID == 1 and src.gameid:len() == 9 and not game.exists(src.gameid) and (src.type != "MG" and src.type != "PG") then
 		lastid = src.gameid
 	else
 		local i=0

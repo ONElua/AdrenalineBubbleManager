@@ -50,7 +50,7 @@ function screen.flip()
 				screen.flip()
 
 				buttons.read()
-				if buttons.circle then return 0 end --Cancel or Abort
+				--if buttons.cancel then return 0 end --Cancel or Abort
 				return 1;
 			end
 			local res = http.getfile(url, path)

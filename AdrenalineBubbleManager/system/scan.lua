@@ -504,7 +504,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-local yf, _save = 370,false
+local yf, _save = 380,false--370
 submenu_abm = { 			-- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -525,10 +525,11 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_DEFAULT_COLOR,		desc = STRINGS_DESC_DEFAULT_COLOR },		--4
 		{ text = STRINGS_CUSTOMIZED,		desc = STRINGS_DESC_CUSTOMIZED },			--5
 		{ text = STRINGS_PSBUTTON,			desc = STRINGS_DESC_PSBUTTON },				--6
-		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--7
-		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--8
-		{ text = STRINGS_DEFAULT_BNAME,		desc = STRINGS_DESC_TITLES },				--9
-		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--10
+		{ text = STRINGS_DEFAULT_BUBBLE,	desc = STRINGS_DESC_DEFAULT_BUBBLE },		--7
+		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--8
+		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--9
+		{ text = STRINGS_DEFAULT_BNAME,		desc = STRINGS_DESC_TITLES },				--10
+		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--11
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -559,6 +560,7 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"color","color",_color)					--Save __COLOR
 			ini.write(__PATHINI,"custom","customized",__CUSTOM)			--Save __CUSTOM
 			ini.write(__PATHINI,"psbutton","menu",__PSBUTTON)			--Save __PSBUTTON
+			ini.write(__PATHINI,"gameid","titleid",__TITLEID)			--Save __TITLEID
 			ini.write(__PATHINI,"update","update",__UPDATE)				--Save __UPDATE
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)		--Save __CHECKADR
 			ini.write(__PATHINI,"title","title",__TITLE)				--Save __TITLE
@@ -590,6 +592,7 @@ function submenu_abm.draw(obj)
     end
 
 	if submenu_abm.y > -submenu_abm.h then
+		draw.fillrect(0,0,960,10,color.black:a(210))
 		draw.fillrect(submenu_abm.x, submenu_abm.y, submenu_abm.w, submenu_abm.h, color.black:a(210))
 	end
 
@@ -664,20 +667,24 @@ function submenu_abm.draw(obj)
 				if __PSBUTTON == 1 then __PSBUTTON,_psbutton = 0,STRINGS_PSBUTTON_MENU
 				else __PSBUTTON,_psbutton = 1,STRINGS_PSBUTTON_LIVEAREA end
 
-			elseif submenu_abm.scroll.sel == 7 then--Update
+			elseif submenu_abm.scroll.sel == 7 then--gameid
+				if __TITLEID  == 1 then __TITLEID ,_gameid = 0,STRINGS_DEFAULT_PSPEMUXXX
+				else __TITLEID,_gameid = 1,STRINGS_DEFAULT_GAMEID end
+
+			elseif submenu_abm.scroll.sel == 8 then--Update
 				if __UPDATE == 1 then __UPDATE,_update = 0,STRINGS_OPTION_MSG_NO
 				else __UPDATE,_update = 1,STRINGS_OPTION_MSG_YES end
 
-			elseif submenu_abm.scroll.sel == 8 then--CheckAdrenaline
+			elseif submenu_abm.scroll.sel == 9 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR,_adr = 0,STRINGS_OPTION_MSG_NO
 				else __CHECKADR,_adr = 1,STRINGS_OPTION_MSG_YES end
 
-			elseif submenu_abm.scroll.sel == 9 then--Titles for your Bubbles
+			elseif submenu_abm.scroll.sel == 10 then--Titles for your Bubbles
 				if __TITLE == 1 then __TITLE,_title = 2,STRINGS_DEFAULT_NAME
 				elseif __TITLE == 2 then __TITLE,_title = 0,STRINGS_DEFAULT_OSK
 				else __TITLE,_title = 1,STRINGS_DEFAULT_TITLE end
 	
-			elseif submenu_abm.scroll.sel == 10 then--Load Language
+			elseif submenu_abm.scroll.sel == 11 then--Load Language
 				if __LANG_CUSTOM == 1 then __LANG_CUSTOM,_lang = 0,STRINGS_LANG_DEFAULT
 				else __LANG_CUSTOM,_lang = 1,STRINGS_LANG_CUSTOM end
 			end
@@ -692,7 +699,7 @@ function submenu_abm.draw(obj)
 		screen.print(480, 5, STRINGS_EXTRA_SETTINGS, 1, color.white, color.blue, __ACENTER)
 		screen.print(480, 32, STRINGS_WARNING, 1, color.white, color.red, __ACENTER)
 
-		local h = 65
+		local h = 60
         for i=submenu_abm.scroll.ini,submenu_abm.scroll.lim do
 
 			if i==submenu_abm.scroll.sel then
@@ -716,23 +723,25 @@ function submenu_abm.draw(obj)
 			elseif i==6 then
 				screen.print(690, h, _psbutton, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==7 then
-				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _gameid, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==8 then
-				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _update, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==9 then
-				screen.print(690, h, _title, 1, sel_color, color.blue, __ARIGHT)
+				screen.print(690, h, _adr, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==10 then
+				screen.print(690, h, _title, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==11 then
 				--screen.print(690, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
 				screen.print(690, h, _lang, 1, sel_color, color.blue, __ARIGHT)
 			end
 
-			h += 27
+			h += 26
         end
 
 		if screen.textwidth(submenu_abm.options[submenu_abm.scroll.sel].desc,1) > 955 then
-			x_scroll_submenu = screen.print(x_scroll_submenu, yf-30, submenu_abm.options[submenu_abm.scroll.sel].desc,1,color.green,color.shine,__SLEFT,955)--265
+			x_scroll_submenu = screen.print(x_scroll_submenu, yf-27, submenu_abm.options[submenu_abm.scroll.sel].desc,1,color.green,color.shine,__SLEFT,955)--265
 		else
-			screen.print(480, yf-30, submenu_abm.options[submenu_abm.scroll.sel].desc, 1,color.green,color.shine, __ACENTER)--265
+			screen.print(480, yf-27, submenu_abm.options[submenu_abm.scroll.sel].desc, 1,color.green,color.shine, __ACENTER)--265
 		end
 		--screen.print(5, 222, SCAN_DOUBLE_TAP.."\n\n"..SCAN_PRESS_START, 1, color.white, color.blue, __ALEFT)
 

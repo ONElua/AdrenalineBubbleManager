@@ -108,6 +108,7 @@ __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 __CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","1"))
 __TITLE = tonumber(ini.read(__PATHINI,"title","title","0"))
 __PSBUTTON = tonumber(ini.read(__PATHINI,"psbutton","menu","0"))
+__TITLEID = tonumber(ini.read(__PATHINI,"gameid","titleid","0"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
@@ -120,6 +121,7 @@ if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG
 if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
 if __TITLE == 1 then _title = STRINGS_DEFAULT_TITLE elseif __TITLE == 2 then _title = STRINGS_DEFAULT_NAME else _title = STRINGS_DEFAULT_OSK end
 if __PSBUTTON == 1 then _psbutton = STRINGS_PSBUTTON_LIVEAREA else _psbutton = STRINGS_PSBUTTON_MENU end
+if __TITLEID == 1 then _gameid = STRINGS_DEFAULT_GAMEID else _gameid = STRINGS_DEFAULT_PSPEMUXXX end
 if __LANG_CUSTOM == 1 then _lang = STRINGS_LANG_CUSTOM else _lang = STRINGS_LANG_DEFAULT end
 TOTAL_SET = 6
 

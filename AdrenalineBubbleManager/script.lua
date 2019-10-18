@@ -8,13 +8,16 @@
 	- Gdljjrod (https://twitter.com/gdljjrod).
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
+
 --Show splash ...
-splash.zoom("resources/splash.png")
+local splash = image.load("resources/splash.png")
+if splash then splash:blit(0,0) end
+screen.flip()
+splash=nil
 
 dofile("crc.lua")
 dofile("system/commons.lua")
 dofile("system/callbacks.lua")
-
 if os.access() == 0 then
 	if back2 then back2:blit(0,0) end
 	screen.flip()

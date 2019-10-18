@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.10">
+    <![CDATA[
+- In the option Online Resources, you can see the list of the Resources availables separated by Authors or Creators.<br>
+- - Added the option to take the titleID of the PSP/PSX game to create the Shortcut.<br>
+    ]]>
 <changes app_ver="06.00">
     <![CDATA[
 - Added option to inject only the game's Manual.<br>
