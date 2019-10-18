@@ -1,5 +1,5 @@
 # Adrenaline Bubbles Manager
-**Create and organize your direct adrenaline bubbles.**
+** Create and organize your direct adrenaline bubbles.**
 
 ![header](ContentSelection.png)
 
@@ -13,7 +13,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ### Adrenaline Version v6.9 ###
 ### Adrenaline Bubble Booter Version v1.1 ###
-### Adrenaline Bubbles Manager Current Version: 6.00 ###
+### Adrenaline Bubbles Manager Current Version: 6.10 ###
 
 
 ### Instructions ###
@@ -23,6 +23,13 @@ Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it j
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
+
+### Changelog 6.10 ###
+- In the option Online Resources, you can see the list of the Resources availables separated by Authors or Creators. (You can move around the authors with the left/right key).<br>
+- Added the option to take the titleID of the PSP/PSX game to create the Shortcut. To apply this change, go to Extra Settings menu (press START in the iso/cso/pbp list), put the option BubbleID in TitleID.<br>
+
+### NOTE: ###
+Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew will be created like PSPEMUXXX.<br>
 
 ### Changelog 6.00 ###
 - Added option to inject only the game's Manual.<br>
@@ -105,68 +112,6 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 - Added a new bubble color similar to original PSP/PSX bubbles.<br>
 - Added chinese support (download font from github repo and place at ux0:data/ABM/font)<br>
 
-### Changelog 5.11 ###
-- Compatible with Adrenaline v6.7 and Adrenaline Bubble Booter v.08<br>
-
-### Changelog 5.10 ###
-- Fixed reboot error (reboot loop). :( <br>
-
-### Changelog 5.09 ###
-- Fix support for iso/cso/pbp in xmc0.<br>
-- Sort by Device (ux0,ur0,uma0, imc0, xmc0).<br>
-
-### Changelog 5.08 ###
-- Now ABM scans and shows PSP/PSX original games, but qwikrazor87's plugin is needed (npdrm_free.prx).
-- Compatible with Adrenaline v6.6 and Adrenaline Bubble Booter v.07<br>
-- Added support for iso/cso/pbp in xmc0 (Use Vitashell for mount xmc0).<br>
-- Fix "startup.png" images<br>
-- Support added for frameX.png images (with X from 1 to 5).<br>
-- Sort by ID.<br>
-- Light aesthetic changes and clean up code.<br>
-
-### Changelog 5.07 ###
-- Fix error C2-12828-1 on ABM bubbles.<br>
-- Added Auto Repair boot.bin option on the START button submenu (changes the customized option to YES on the old Bubbles from ABM 5.04).<br>
-- Now the bg0.png is shown at Bubbles Edit screen.<br>
-
-### Changelog 5.06 ###
-- Fixed reboot error (reboot loop).<br>
-
-### Changelog 5.05 ###
-- Compatible with Adrenaline v6.4 and Adrenaline Bubble Booter v.06<br>
-- Auto-Conversion of boot.inf files to boot.bin files needed for ABB v.06<br>
-- In the Edit Bubble Screen this are the available combinations:<br>
-- Driver (INFERNO/MARCH33/NP9660).<br>
-- Execute (EBOOT.BIN/EBOOT.OLD/BOOT.BIN).<br>
-- Customized: (YES/NO).<br>
-- Now when showing the bubble's linked game path will be highlighted green if the content is found, if not found will be highlighted orange.<br>
-- *NOTE: If the game linked to your bubble is not there anymore the bubble will open Adrenaline or throw an error.<br>
-
-### Changelog 5.04 ###
-- Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
-*NOTE: You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Enter the submenu to change this settings with start.<br>
-- Some changes in the list of Inject Images.<br>
-
-### Changelog 5.03 ###
-- New option to set default pic0 and bg0 images and your own xml file for your bubbles (up to 5 sets provided by you: ux0:ABM/Set1 to ux0:ABM/Set5).<br>
-- New option to sort: Category.<br>
-
-### Changelog 5.02 ###
-- Fixed data.inf error.<br>
-- Added config.bin on each bubble (adrenaline boot screen disabled).<br>
-- New graphics by Wz-Jk.<br>
-
-### Changelog 5.01 ###
-- Compatible with Adrenaline v6.3 thanks to Lman.<br>
-- Added npdrmfree enable/disable option to ABM bubble edit screen.<br>
-- Added ux0:data/ABM/crc.ini to detect the CRC32 of the skprx modules.<br>
-
-**NOTE:** With lman plugins update, now every bubble saves its own adrenaline configs if you like to disable adrenaline boot screen you have to do that for every bubble.<br>
-
-### Changelog 5.00 ###
-- Added submenu for Extra Setting.<br>
-- Added hability to inject images to ABM bubbles.<br>
-
 ### Controls ###
 
 **Adrenaline Bubbles Manager does recognize the accept/cancel buttons According to console region.**
@@ -178,7 +123,7 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 - **Triangle:** Batch Installation for non installed content.<br>
 - **L:** To switch the way the bubble will look like in Livearea (original icon look/stretched icon look)<br>
 - **R:** Select the SetPack for each bubble.<br>
-- **Select:** Sort List: Device, Install, GameId, Category.<br>
+- **SELECT:** Sort List: Device, Install, GameId, Category.<br>
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
 - **Start:** Open Extra Settings menu (set default bubble color, sort list, Adrenaline version check, Adrenaline Bubbles Manager version check).<br>
@@ -193,10 +138,12 @@ This option allows you to set some preferences as default for ABM such as:
 - Set Imgs: Set1 to Set5, or Set PSP/PSX.<br>	
 - Set sort list of your iso/cso/pbp.<br>
 - Select the default color for your bubbles.<br>
+- Customized: To let each bubble have its own settings keep it in YES.<br>
+- BubbleID: PSPEMUXXX or GAMEID.<br>
 - Enable/Disable ABM updates.<br>
 - Adrenaline version check.<br>
 	This option disables/enables ABM to check the Adrenaline version you have installed in your ps vita.
-- Default Title Enable it to skip the renaming process.<br>	
+- Default BubbleName: By Title, By File Name or Input the desired Name.<br>	
 
 ![header](ExtraSettings.png)
 
@@ -211,13 +158,17 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 **Triangle:** Allows to edit the configuration file boot.inf<br>
 	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
 	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
+	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
 	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
-	Disable/Enable npdrmfree: "ENABLE", "DISABLE"<br>
+	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
+	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
+	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
+	"English or Custom:"Allows to load selected language at start: English or Custom", loads chosen language if set as default (ABM only not bubbles).<br>
 
 ![header](BubbleEdit.png)
 
 *Uninstall Bubbles*
-- Press select (single) or start (all) to select bubbles you wish to uninstall.
+- Press SELECT (single) or START (all) to select bubbles you wish to uninstall.
 - Square: To uninstall the selected bubbles.
 
 ## Inject images and manual to ABM bubbles ##
@@ -237,8 +188,6 @@ To use this feature you have to follow the instructions below:<br>
 
 ![header](PreviewsImgs.png)
 
-![header](ResourcesOnline2.png)
-
 ### NOTE: ###
 Make sure the images are renamed as mentioned above and to be in png format, also make sure the images are resized to corresponding sizes mentioned avobe (if your images sizes are close to specs they will work too).<br>
 You can add your own template.xml file. (Make sure the images names are the same to images linked in the template.xml).
@@ -254,11 +203,19 @@ After choosing a folder, when you can see the images previews:<br>
 -- **O:** To go back.<br>
 - **START:** Insert the previewed images to chosen bubble.<br>
 
+## Resources Online ##
+Press SELECT in the Inyector of Images option to install incredibles Online Resources created by the community for all of us.
+
+![header](ResourcesOnline.png)
+
+![header](ResourcesOnline2.png)
+
 ### Credits ###
 - eCFW Adrenaline By TheFloW.
 - Adrenaline Bubble Booter By LMAN 'leecherman'
 - startup.png By Freakler.
 - Testers @_Falaschi_, @baltazarregala4.
+- Translator @Z3R0N3__.
 - Some graphics By WZ-JK.
 
 ## Donation ##
