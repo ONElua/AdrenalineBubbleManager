@@ -1,5 +1,5 @@
 # Adrenaline Bubbles Manager
-** Create and organize your direct adrenaline bubbles.**
+**Create and organize your direct adrenaline bubbles.**
 
 ![header](ContentSelection.png)
 
@@ -30,87 +30,6 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 ### NOTE: ###
 Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew will be created like PSPEMUXXX.<br>
-
-### Changelog 6.00 ###
-- Added option to inject only the game's Manual.<br>
-
-### Changelog 5.30 ###
-- Fixed error when creating multi-bubbles, now each bubble gets its own name.<br>
-
-### Changelog 5.27 ###
-- Added an option to use the filename ("example".iso) to rename bubbles made with ABM.<br>
-- Added compatibility with Adrenaline Bubble Booter v1.1.<br>
-
-### Changelog 5.26 ###
-- Fix typo in spanish.txt.<br>
-
-### Changelog 5.25 ###
-- Added option Lmans new customizable options such as:<br>
-	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
-	"Enable/Disable Plugins" very self explainatory.<br>
-	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
-	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
-	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
-- Allows to load selected language at start: English or Custom", loads chosen language if set as default (ABM only not bubbles).<br>
-- For Adrbubblebooter changelog visit its website [AdrBooterv1.0](https://sites.google.com/site/theleecherman/adrbubblebooter/vpkedition)
-
-### Changelog 5.24 ###
-- Added compatibility with adrenaline 6.9 thanks to LMAN.<br>
-- For Adrbubblebooter changelog visit its website [AdrBooterv1.0](https://sites.google.com/site/theleecherman/adrbubblebooter/vpkedition)
-
-### Changelog 5.23 ###
-- Now Manual folder is detected at resources injection option.<br>
-- Download Manual option added to online resources injection.<br>
-- Vitabubbles repo updated with lots of new resources.<br>
-
-### Changelog 5.22 ###
-- Fixed template.xml and framesXX.png when injecting images.<br>
-- Added option to inject game Manual to bubbles.<br>
-
-### Changelog 5.21 ###
-- Added Bubble fix option to START menu for fixing bubbles asking to install adrbblbooter on every boot.<br>
-- Fix menucolor.bin.<br>
-- Added FullBubble-Non Streched in inject resources.<br>
-
-### Changelog 5.20 ###
-- Added PS button option to Extra Settings menu.<br>
-- Added PS button option to Edit Bubble Settings menu.<br>
-- Added description for the options in Edit Bubble menu.<br>
-- Now you can set an image as boot.png again and inject the desired image, should be 480*272.<br>
-
-### Changelog 5.19 ###
-- Added compatibility with adrenaline 6.8 thanks to LMAN.<br>
-- For Adrbubblebooter changelog visit its website [AdrBooterv0.9](https://sites.google.com/site/theleecherman/adrbubblebooter/vpkedition)
-
-### Changelog 5.18 ###
-- Now the preview images look more like ABM made bubbles when switching from full to non stretched option with L button.<br>
-- Now the preview icons download is done by threads in function Online Resources.<br>
-
-### Changelog 5.17 ###
-- Added option to download resources and inject them un the desired ABM bubble.<br>
-
-### Changelog 5.16 ###
-- Re-add edit bubble path. Only when the path to the game does not exist<br>
-
-### Changelog 5.15 ###
-- Removed option show pic with triangle button.<br>
-- Added Batch Installation Option by pressing triangle button for non installed content.<br>
-- Now you can uninstall non linked bubbles per batch.<br>
-
-### Changelog 5.14 ###
-- Use Default Title option added to Submenu (START) enable it to skip the renaming process.<br>
-- Now when creating 2 or more bubbles you'll have to rename all the bubbles before the creating process begins.<br>
-
-### Changelog 5.13 ###
-- Now you can select the SetPack for each bubble. Press R on the selected game.<br>
-- Fixed error with the STITLE when creating bubbles (max length 52).<br>
-
-### Changelog 5.12 ###
-- Added PSP/PSX image set for bubble creation.<br>
-- Added option description at submenu.<br>
-- Added Adrenaline customized option enable/disable to ABM submenu.<br>
-- Added a new bubble color similar to original PSP/PSX bubbles.<br>
-- Added chinese support (download font from github repo and place at ux0:data/ABM/font)<br>
 
 ### Controls ###
 
@@ -156,14 +75,14 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 *Editing Bubbles*
 
 **Triangle:** Allows to edit the configuration file boot.inf<br>
-	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
-	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
-	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
-	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
-	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
-	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
-	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
-	"English or Custom:"Allows to load selected language at start: English or Custom", loads chosen language if set as default (ABM only not bubbles).<br>
+-	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
+-	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
+-	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
+-	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
+-	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
+-	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
+-	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
+-	"English or Custom:"Allows to load selected language at start: English or Custom", loads chosen language if set as default (ABM only not bubbles).<br>
 
 ![header](BubbleEdit.png)
 
@@ -182,8 +101,10 @@ To use this feature you have to follow the instructions below:<br>
 - pic0.png			960x544<br>   
 - bg0.png			840x500<br>
 - boot.png			480x272<br>
+- template.xml		<Optional><br>
+- Manual			images inside (001.png, 002.png 960x544) <Optional><br>
 2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
-3. Now is possible ti inject the Manual folder with your manual's images inside (001.png, 002.png 960x544). The folder of the Manual must be place in the following path ux0:ABM/(Gameid)/<br>
+3. Now is possible inject the Manual folder with your manual's images inside (001.png, 002.png 960x544). The folder of the Manual must be place in the following path ux0:ABM/(Gameid)/<br>
 4. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
 
 ![header](PreviewsImgs.png)
