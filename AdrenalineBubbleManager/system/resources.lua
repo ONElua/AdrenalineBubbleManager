@@ -22,49 +22,53 @@ pic_alpha,sorting = 0,0
 
 function bubbles.online(obj, simg)
 
-	local listbubbles,authors = {},{}
-
-	local list,maxim,xscr1,xscr2,xscr3 = {},10,25,720,30
-
 	local mge = BUBBLES_NOTRESOURCES
 
 	local path_json = "https://raw.githubusercontent.com/%s/%s/master/NEWdatabase.json"
 	local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
-	local raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
-	--local raw = files.read("ux0:NEWdatabase.json")
-	local url = "https://raw.githubusercontent.com/ONElua/VitaBubbles/master/"
 
-	if raw then
-		local not_err,supertb = true,{}
-		not_err, supertb = pcall(json.decode, raw)
-		if not_err then
-			if supertb then
-				local list = supertb["content"]
-				authors = supertb["authors"]
-				if #list > 1 then table.sort(list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end) end
+	local raw = nil
+	if not listbubbles then
 
-				for i=1,#authors do
-					listbubbles[i] = {}
-				end
+		listbubbles = {}
+		authors = {}
 
-				for i=1,#list do
-					for j=1,#authors do
-						if (string.lower(list[i].author) == string.lower(authors[j])) then
-							table.insert(listbubbles[j],list[i])
-							listbubbles.total = #list
+		raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
+		--raw = files.read("NEWdatabase.json")
+
+		if raw then
+			local not_err,supertb = true,{}
+			not_err, supertb = pcall(json.decode, raw)
+			if not_err then
+				if supertb then
+					local list = supertb["content"]
+					authors = supertb["authors"]
+					if #list > 1 then table.sort(list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end) end
+
+					for i=1,#authors do
+						listbubbles[i] = {}
+					end
+
+					for i=1,#list do
+						for j=1,#authors do
+							if (string.lower(list[i].author) == string.lower(authors[j])) then
+								table.insert(listbubbles[j],list[i])
+								listbubbles.total = #list
+							end
 						end
 					end
-				end
 
+				end
+			else
+				mge = STRINGS_RESOURCES_ERROR_DECODE
 			end
 		else
-			mge = STRINGS_RESOURCES_ERROR_DECODE
+			mge = STRINGS_RESOURCES_ERROR_BASE
 		end
-	else
-		mge = STRINGS_RESOURCES_ERROR_BASE
-	end
-	onNetGetFile = onNetGetFileOld
-	os.delay(25)
+
+	end--not listbubbles
+
+	local maxim,xscr1,xscr2,xscr3 = 10,25,720,30
 
 	if #authors > 0 then
 		for i=1,#authors do
@@ -79,6 +83,10 @@ function bubbles.online(obj, simg)
 		listbubbles[1] = {}
 		listbubbles[1].scroll = newScroll(listbubbles[1],maxim)
 	end
+
+	local url = "https://raw.githubusercontent.com/ONElua/VitaBubbles/master/"
+	onNetGetFile = onNetGetFileOld
+	os.delay(25)
 
 	local preview,sel = nil,1
 	buttons.interval(12,5)
@@ -252,7 +260,8 @@ function bubbles.online(obj, simg)
 						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].id..".jpg")
 						if iconpreview then iconpreview:resize(200,128) end
 
-						if http.download(url_bubbles, path).success then
+						--if http.download(url_bubbles, path).success then
+						if http.getfile(url_bubbles, path) then
 							if files.extract(path, __PATH_RESOURCES) == 1 then
 								mge = listbubbles[sel][i].id..'\n\n'..STRINGS_RESOURCES_INSTALLED
 							else

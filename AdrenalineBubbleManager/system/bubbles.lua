@@ -882,7 +882,8 @@ function bubbles.settings()
 					end
 				end
 				if (buttons.down or buttons.held.r or buttons.analogly > 60) then
-					if scrids:down() then preview = nil
+					if scrids:down() then
+						preview = nil
 						restart_cronopic()
 					end
 				end
@@ -1046,7 +1047,7 @@ function bubbles.settings()
 				if optsel > #options_edit + 1 then optsel = 1 end
 				if optsel < 1 then optsel = #options_edit + 1 end
 
-				if (buttons.left or buttons.right) then
+				if (buttons.left or buttons.right) and optsel != #options_edit + 1 then
 
 					if buttons.left then bubbles.list[scrids.sel].lines[optsel]-=1 end
 					if buttons.right then bubbles.list[scrids.sel].lines[optsel]+=1 end
