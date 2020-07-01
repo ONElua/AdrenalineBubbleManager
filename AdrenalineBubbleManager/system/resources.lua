@@ -74,7 +74,7 @@ function bubbles.online(obj, simg)
 		for i=1,#authors do
 			listbubbles[i].scroll = newScroll(listbubbles[i],maxim)
 			for j=1,#listbubbles[i] do
-				if not files.exists(__PATH_TMP..listbubbles[i][j].id..".jpg") then
+				if not files.exists(__PATH_TMP..listbubbles[i][j].id..".jpg") and not files.exists(__PATH_TMP..listbubbles[i][j].id..".png") then
 					BUBBLES_PORT_O:push({ id = listbubbles[i][j].id })
 				end
 			end
@@ -101,11 +101,12 @@ function bubbles.online(obj, simg)
 		if listbubbles[sel].scroll.maxim > 0 then
 
 			screen.print(950,5,listbubbles[sel].scroll.maxim.."/"..listbubbles.total, 1, color.red, color.shine, __ARIGHT)
+			screen.print(10,5, sel.."/"..#authors, 1, color.yellow:a(200),color.gray, __ALEFT)
 
 			if screen.textwidth(STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author) > 715 then
-				xscr1 = screen.print(xscr1, 35, STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author,1,color.yellow:a(200),color.gray,__SLEFT,700)
+				xscr1 = screen.print(xscr1, 35,STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author,1,color.yellow:a(200),color.gray,__SLEFT,700)
 			else
-				screen.print(25, 35, STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author,1,color.yellow:a(200),color.gray,__ALEFT)
+				screen.print(25, 35,STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author,1,color.yellow:a(200),color.gray,__ALEFT)
 			end
 
 			local y = 76
@@ -148,7 +149,7 @@ function bubbles.online(obj, simg)
 					pic_alpha = 0
 				end
 
-				preview = image.load(__PATH_TMP..listbubbles[sel][listbubbles[sel].scroll.sel].id..".jpg")
+				preview = image.load(__PATH_TMP..listbubbles[sel][listbubbles[sel].scroll.sel].id..".jpg") or image.load(__PATH_TMP..listbubbles[sel][listbubbles[sel].scroll.sel].id..".png")
 				if preview then preview:resize(200,128)	preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR) end
 			end
 
@@ -197,6 +198,7 @@ function bubbles.online(obj, simg)
 
 		screen.flip()
 
+		if buttons.select then error("FTP") end
 		--Ctrls
 		if listbubbles[sel].scroll.maxim > 0 then
 
@@ -257,7 +259,7 @@ function bubbles.online(obj, simg)
 
 						bubble_id = listbubbles[sel][i].id
 						NResources += 1
-						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].id..".jpg")
+						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].id..".jpg") or image.load(__PATH_TMP..listbubbles[sel][i].id..".png")
 						if iconpreview then iconpreview:resize(200,128) end
 
 						--if http.download(url_bubbles, path).success then
