@@ -17,15 +17,14 @@ while true do
 	if BUBBLES_PORT_I:available() > 0 then
 		local entry = BUBBLES_PORT_I:pop()
 		while true do
-			if (not files.exists(PATH_PREVIEWS..entry.id..".jpg") and http.getfile(urlb..entry.id..".jpg", PATH_PREVIEWS.."tmpcover.jpg"))--http.download(urlb..entry.id..".jpg", PATH_PREVIEWS.."tmpcover.jpg").success)--
+			if (not files.exists(PATH_PREVIEWS..entry.id..".jpg") and http.download(urlb..entry.id..".jpg", PATH_PREVIEWS.."tmpcover.jpg").success)--http.getfile(urlb..entry.id..".jpg", PATH_PREVIEWS.."tmpcover.jpg"))
 					or (files.exists(PATH_PREVIEWS..entry.id..".jpg")) then
 					files.rename(PATH_PREVIEWS.."tmpcover.jpg", entry.id..".jpg")
 					break
 			end
-			os.delay(15)
-			--os.delay(20)
+			--os.delay(5)
+			os.delay(20)
 		end
 	end
 	os.delay(25)
 end
-
