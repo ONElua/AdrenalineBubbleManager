@@ -198,7 +198,8 @@ function bubbles.online(obj, simg)
 
 		screen.flip()
 
-		if buttons.select then error("FTP") end
+		--if buttons.select then error("FTP") end
+
 		--Ctrls
 		if listbubbles[sel].scroll.maxim > 0 then
 
