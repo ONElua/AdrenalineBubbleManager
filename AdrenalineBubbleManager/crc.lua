@@ -1,8 +1,8 @@
 --CRC for prks
--- default values modules AdrenalineBooter v1.0 for adrenaline v6.9
+-- default values modules AdrenalineBooter v1.2 for adrenaline v6.9
 __CRCADRBOOTER  = 0x2AF30FDB
 __CRCKERNEL     = 0xC9F84053
-__CRCUSER       = 0xFB0E52E8
+__CRCUSER       = 0x053BD034
 __CRCVSH        = 0x485293A1
 __CRCBOOTCONV   = 0xD072FE17
 

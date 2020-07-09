@@ -83,10 +83,10 @@ function bubbles.scan()
 
 				--loadstate 0x10
 
-				--PSbutton
+				--PSbutton 00 Menu 01 LiveArea 02 Standar
 				fp:seek("set",0x14)
 				local psbutton = str2int(fp:read(4))
-				if psbutton < 0 or psbutton > 1 then psbutton = 0 end
+				if psbutton < 0 or psbutton > 2 then psbutton = 0 end
 				table.insert(bubbles.list[i].lines, psbutton)
 
 				--Path
@@ -502,7 +502,7 @@ function bubbles.settings()
 	local enables   	= { "DEFAULT", "ENABLE", "DISABLE" }
 	local noyes   		= { "NO", "YES" }
 	local yesno   		= { "YES", "NO" }
-	local psb   		= { "MENU", "LIVEAREA" }
+	local psb   		= { "MENU", "LIVEAREA", "STANDARD" }
 	local cpu   		= { "DEFAULT", "20/10", "50/25", "75/37", "100/50", "111/55", "122/61", "133/66", "166/83", "200/100",
 							"222/111", "266/133", "288/144", "300/150", "333/166" }
 
@@ -1052,10 +1052,10 @@ function bubbles.settings()
 					if buttons.left then bubbles.list[scrids.sel].lines[optsel]-=1 end
 					if buttons.right then bubbles.list[scrids.sel].lines[optsel]+=1 end
 
-					if optsel == 1 or optsel == 2 or optsel == 6 or optsel == 7 or optsel == 8 then		--Driver&Execute&Plugins
+					if optsel == 1 or optsel == 2 or optsel == 4 or optsel == 6 or optsel == 7 or optsel == 8 then		--Driver&Execute&psbutton&Plugins
 						if bubbles.list[scrids.sel].lines[optsel] > 2 then bubbles.list[scrids.sel].lines[optsel] = 0 end
 						if bubbles.list[scrids.sel].lines[optsel] < 0 then bubbles.list[scrids.sel].lines[optsel] = 2 end
-					elseif optsel == 3 or optsel == 4 or optsel == 5 then								--Customized&psbutton&suspend
+					elseif optsel == 3 or optsel == 5 then								--Customized&suspend
 						if bubbles.list[scrids.sel].lines[optsel] > 1 then bubbles.list[scrids.sel].lines[optsel] = 0 end
 						if bubbles.list[scrids.sel].lines[optsel] < 0 then bubbles.list[scrids.sel].lines[optsel] = 1 end
 					elseif optsel == 9 then																--CPU speed
