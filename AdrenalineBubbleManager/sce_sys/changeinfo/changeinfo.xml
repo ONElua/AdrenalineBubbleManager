@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.13">
+    <![CDATA[
+- Adrenaline Bubble Booter v1.3 Compatibility By LMAN 'leecherman'<br>
+- Adrenaline v7.0 Compatibility By LMAN 'leecherman'<br>
+    ]]>
+<changes app_ver="06.12">
+    <![CDATA[
+- Adrenaline Bubble Booter v1.2 Compatibility By LMAN 'leecherman'<br>
+    ]]>
 <changes app_ver="06.11">
     <![CDATA[
 - Fixed bug when changing psp content path (bubble edit).<br>
