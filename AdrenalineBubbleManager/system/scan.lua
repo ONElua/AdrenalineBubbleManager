@@ -215,7 +215,7 @@ function scan.show(objedit)
 				end
 
 				if scan.list[i].width > (960-144-30) then
-					xscrtitle = screen.print(xscrtitle, 523, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-30)
+					xscrtitle = screen.print(xscrtitle, y, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-30)
 				else
 					screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
 				end
