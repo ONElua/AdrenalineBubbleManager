@@ -158,7 +158,7 @@ function load_pic1(obj)
 
 end
 
-local maximg = 14
+local maximg = 16
 function scan.show(objedit)
 
 	local scr = newScroll(scan.list,maximg)
@@ -187,7 +187,7 @@ function scan.show(objedit)
 
 				if scan.list[i].state then ccolor = color.green:a(200) else ccolor = color.white end
 
-				if i==scr.sel then
+				if i == scr.sel then
 					draw.fillrect(3,y-3,960-144-28,25,color.blue:a(160))
 					if not icon0 then
 						if scan.list[scr.sel].icon then
@@ -212,13 +212,20 @@ function scan.show(objedit)
 							end
 						end
 					end
+
 				end
 
-				if scan.list[i].width > (960-144-30) then
-					xscrtitle = screen.print(xscrtitle, y, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-30)
-				else
-					screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
-				end
+				screen.clip(0,25,785,555)
+					if i == scr.sel then
+						if scan.list[i].width > (960-144-55) then
+							xscrtitle = screen.print(xscrtitle, y, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-55)
+						else
+							screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
+						end
+					else
+						screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
+					end
+				screen.clip()
 
 				if scan.list[i].inst then
 					screen.print(8,y,"»",1,color.white,color.green)
@@ -313,16 +320,22 @@ function scan.show(objedit)
 
 			if (buttons.up or buttons.analogly<-60) and not buttons.held.square then
 				if scr:up() then
+					xscrtitle = 20
 					icon0=nil
 					load_pic1(scan.list[scr.sel])
 				end
 			end
 
-			if (buttons.down or buttons.analogly>60) and not buttons.held.square then 
+			if (buttons.down or buttons.analogly>60) and not buttons.held.square then
 				if scr:down() then
+					xscrtitle = 20
 					icon0=nil
 					load_pic1(scan.list[scr.sel])
 				end
+			end
+
+			if (buttons.analoglx > 60 or buttons.analoglx < -60) and not buttons.held.square then
+				xscrtitle = 20
 			end
 
 			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) then
@@ -384,6 +397,7 @@ function scan.show(objedit)
 					end
 					os.delay(25)
 				end
+				xscrtitle = 20
 			end
 
 			--Install all (only games not installed)
@@ -430,6 +444,7 @@ function scan.show(objedit)
 						os.delay(25)
 					end
 				end
+				xscrtitle = 20
 			end
 
 			--Mark/Unmark
@@ -440,6 +455,7 @@ function scan.show(objedit)
 
 			--Sort
 			if buttons.select then
+				xscrtitle = 20
 				icon0=nil
 				__SORT += 1
 
