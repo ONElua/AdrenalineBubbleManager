@@ -25,6 +25,8 @@ if os.access() == 0 then
 	os.exit()
 end
 
+__ITLS = os.lmodule("itlsKernel")
+
 dofile("git/shared.lua")
 if __UPDATE == 1 then
 	dofile("git/updater.lua")
@@ -49,9 +51,9 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 		oncopy = false
 	end
 
-if not files.exists(ADRENALINE.."/menucolor.bin") then
-files.copy("bubbles/menucolor.bin", ADRENALINE)
-end
+	if not files.exists(ADRENALINE.."/menucolor.bin") then
+		files.copy("bubbles/menucolor.bin", ADRENALINE)
+	end
 
 	if __CHECKADR == 1 then
 		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then

@@ -1470,6 +1470,12 @@ function bubbles.edit(obj, simg)
 					screen.flip()
 					files.move(obj.path.."/sce_sys/Manual/", path_tmp.."sce_sys/")
 					files.copy(newpath.."/Manual/", obj.path.."/sce_sys/")
+				else
+					if back2 then back2:blit(0,0) end
+					draw.fillrect(0,0,960,30, color.shine)
+					if os.dialog(STRINGS_MANUAL_KEEP, STRINGS_INSTALL_MANUAL, __DIALOG_MODE_OK_CANCEL) == false then
+						files.move(obj.path.."/sce_sys/Manual/", path_tmp.."sce_sys/")
+					end
 				end
 
 				--Install Bubble

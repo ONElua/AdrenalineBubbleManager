@@ -16,11 +16,17 @@ PROJECT_BUBBLES = "VitaBubbles"
 
 BUBBLES_PORT_I = channel.new("BUBBLES_PORT_I")
 BUBBLES_PORT_O = channel.new("BUBBLES_PORT_O")
-THID_THEME = thread.new("system/thread_bubbles.lua")
+if __ITLS then
+	THID_THEME = thread.new("system/thread_bubbles.lua")
+else
+	THID_THEME = thread.new("system/thread_bubbles_down.lua")
+end
 
 pic_alpha,sorting = 0,0
 
 function bubbles.online(obj, simg)
+
+	files.delete("ux0:data/ABM/NEWdatabase.json")
 
 	local mge = BUBBLES_NOTRESOURCES
 
@@ -33,8 +39,12 @@ function bubbles.online(obj, simg)
 		listbubbles = {}
 		authors = {}
 
-		raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
-		--raw = files.read("NEWdatabase.json")
+		if __ITLS then
+			raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
+		else
+			http.download(string.format(path_json, APP_REPO, PROJECT_BUBBLES), "ux0:data/ABM/NEWdatabase.json")
+			if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
+		end
 
 		if raw then
 			local not_err,supertb = true,{}
@@ -263,8 +273,8 @@ function bubbles.online(obj, simg)
 						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].id..".jpg") or image.load(__PATH_TMP..listbubbles[sel][i].id..".png")
 						if iconpreview then iconpreview:resize(200,128) end
 
-						--if http.download(url_bubbles, path).success then
-						if http.getfile(url_bubbles, path) then
+						if __ITLS then http.getfile(url_bubbles, path) else http.download(url_bubbles, path) end
+						if files.exists(path) then
 							if files.extract(path, __PATH_RESOURCES) == 1 then
 								mge = listbubbles[sel][i].id..'\n\n'..STRINGS_RESOURCES_INSTALLED
 							else
