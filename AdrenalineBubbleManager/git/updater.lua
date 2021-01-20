@@ -20,8 +20,8 @@ function screen.flip()
 		if update then update:blit(0,0)
 		elseif back2 then back2:blit(0,0) end
 		screen.flip()
-    
-    if os.dialog(info[2].."\nDo you want to update the application?", string.format("New Update %s %s available.", APP_PROJECT, string.format("%X.%02X",major, minor)), __DIALOG_MODE_OK_CANCEL) == true then
+
+		if os.dialog(info[2].."\nDo you want to update the application?", string.format("New Update %s %s available.", APP_PROJECT, string.format("%X.%02X",major, minor)), __DIALOG_MODE_OK_CANCEL) == true then
 			buttons.homepopup(0)
 			
 			if update then update:blit(0,0)
@@ -53,16 +53,19 @@ function screen.flip()
 				--if buttons.cancel then return 0 end --Cancel or Abort
 				return 1;
 			end
-			local res = http.getfile(url, path)
-			if res then -- Success!
-				files.mkdir("ux0:/data/1luapkg")
-				files.copy("eboot.bin","ux0:/data/1luapkg")
-				files.copy("git/updater/script.lua","ux0:/data/1luapkg/")
-				files.copy("git/updater/update.png","ux0:/data/1luapkg/")
-				files.copy("git/updater/param.sfo","ux0:/data/1luapkg/sce_sys/")
-				game.installdir("ux0:/data/1luapkg")
-				files.delete("ux0:/data/1luapkg")
-				game.launch(string.format("ONEUPDATE&%s&%s",os.titleid(),path)) -- Goto installer extern!
+
+			if http.download(url, path2vpk).success then
+				os.delay(500)
+				if files.exists(path2vpk) then
+					files.mkdir("ux0:/data/1luapkg")
+					files.copy("eboot.bin","ux0:/data/1luapkg")
+					files.copy("git/updater/script.lua","ux0:/data/1luapkg/")
+					files.copy("git/updater/update.png","ux0:/data/1luapkg/")
+					files.copy("git/updater/param.sfo","ux0:/data/1luapkg/sce_sys/")
+					game.installdir("ux0:/data/1luapkg")
+					files.delete("ux0:/data/1luapkg")
+					game.launch(string.format("ONEUPDATE&%s&%s",os.titleid(),path)) -- Goto installer extern!
+				end
 			end
 			onAppInstall = onAppInstallOld
 			onNetGetFile = onNetGetFileOld
