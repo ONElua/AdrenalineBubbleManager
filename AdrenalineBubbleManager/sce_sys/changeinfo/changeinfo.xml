@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.14">
+    <![CDATA[
+- Fix http.download for Online Resources<br>
+    ]]>
+  </changes>
 <changes app_ver="06.13">
     <![CDATA[
 - Adrenaline Bubble Booter v1.3 Compatibility By LMAN 'leecherman'<br>
 - Adrenaline v7.0 Compatibility By LMAN 'leecherman'<br>
     ]]>
+  </changes>
 <changes app_ver="06.12">
     <![CDATA[
 - Adrenaline Bubble Booter v1.2 Compatibility By LMAN 'leecherman'<br>
     ]]>
+  </changes>
 <changes app_ver="06.11">
     <![CDATA[
 - Fixed bug when changing psp content path (bubble edit).<br>
 - Fixed callback getfile.<br>
     ]]>
+  </changes>
 <changes app_ver="06.10">
     <![CDATA[
 - In the option Online Resources, you can see the list of the Resources availables separated by Authors or Creators.<br>
 - Added the option to take the titleID of the PSP/PSX game to create the Shortcut.<br>
     ]]>
+  </changes>
 <changes app_ver="06.00">
     <![CDATA[
 - Added option to inject only the game's Manual.<br>
     ]]>
+  </changes>
 <changes app_ver="05.30">
     <![CDATA[
 - Fixed error when creating multi-bubbles, now each bubble gets its own name.<br>
     ]]>
+  </changes>
 <changes app_ver="05.27">
     <![CDATA[
 - Added an option to use the filename ("example".iso) to rename bubbles made with ABM.<br>
 - Added compatibility with Adrenaline Bubble Booter v1.1.<br>
     ]]>
+  </changes>
 <changes app_ver="05.16">
     <![CDATA[
 - Re-add edit bubble path. Only when the path to the game does not exist<br>
     ]]>
+  </changes>
 <changes app_ver="05.15">
     <![CDATA[
 - Removed option show pic with triangle button.<br>
 - Added Batch Installation Option by pressing triangle button for non installed content.<br>
 - Now you can uninstall non linked bubbles per batch.<br>
     ]]>
+  </changes>
 <changes app_ver="05.14">
     <![CDATA[
 - Use Default Title option added to Submenu (START) enable it to skip the renaming process.<br>
 - Now when creating 2 or more bubbles you'll have to rename all the bubbles before the creating process begins.<br>
     ]]>
+  </changes>
 <changes app_ver="05.13">
     <![CDATA[
 - Now you can select the SetPack for each bubble. Press R on the selected game.<br>
 - Fixed error with the STITLE when creating bubbles (max length 52).<br>
     ]]>
+  </changes>
   <changes app_ver="05.12">
     <![CDATA[
 - Added PSP/PSX image set for bubble creation.<br>
@@ -60,19 +76,23 @@
 - Added a new bubble color similar to original PSP/PSX bubbles.<br>
 - Added chinese support (download font from github repo and place at ux0:data/ABM/font)<br>
     ]]>
+  </changes>
   <changes app_ver="05.11">
     <![CDATA[
 - Compatible with Adrenaline v6.7 and Adrenaline Bubble Booter v.08<br>
     ]]>
+  </changes>
   <changes app_ver="05.10">
     <![CDATA[
 - Fixed reboot error (reboot loop). :( <br>
     ]]>
+  </changes>
   <changes app_ver="05.09">
     <![CDATA[
 - Fix support for iso/cso/pbp in xmc0.<br>
 - Sort by Device (ux0,ur0,uma0, imc0, xmc0).<br>
     ]]>
+  </changes>
   <changes app_ver="05.08">
     <![CDATA[
 - Compatible with Adrenaline v6.6 and Adrenaline Bubble Booter v.07<br>
@@ -82,16 +102,19 @@
 - Sort by ID.<br>
 - Light aesthetic changes and clean up code.<br>
     ]]>
+  </changes>
   <changes app_ver="05.07">
     <![CDATA[
 - Fix error C2-12828-1 on ABM bubbles.<br>
 - Added Auto Repair boot.bin option on the START button submenu (changes the customized option to YES on the old Bubbles from ABM 5.04).<br>
 - Now the bg0.png is shown at Bubbles Edit screen.<br>
     ]]>
+  </changes>
   <changes app_ver="05.06">
     <![CDATA[
 - Fixed reboot error (reboot loop). :( <br>
     ]]>
+  </changes>
   <changes app_ver="05.05">
     <![CDATA[
 	- Compatible with Adrenaline v6.4 and Adrenaline Bubble Booter v.06<br>
@@ -103,29 +126,34 @@
 	- Now when showing the bubble's linked game path will be highlighted green if the content is found, if not found will be highlighted orange.<br>
 	- *NOTE: If the game linked to your bubble is not there anymore the bubble will open Adrenaline or throw an error.<br>
     ]]>
+  </changes>
   <changes app_ver="05.04">
     <![CDATA[
 - Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
 - *NOTE: You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Enter the submenu to change this settings with start.<br>
 - Some changes in the list of Inject Imgs.<br>
     ]]>
+  </changes>
   <changes app_ver="05.03">
     <![CDATA[
 - New option to set default pic0 and bg0 images and your own xml file for your bubbles (up to 5 sets provided by you: ux0:ABM/Set1 to ux0:ABM/Set5).<br>
 - New option to sort: Category.<br>
     ]]>
+  </changes>
   <changes app_ver="05.02">
     <![CDATA[
 - Fixed data.inf error.<br>
 - Added config.bin on each bubble (adrenaline boot screen disabled).<br>
 - New graphics by Wz-Jk.<br>
     ]]>
+  </changes>
   <changes app_ver="05.01">
     <![CDATA[
 - Compatible with Adrenaline v6.3 thanks to Lman.<br>
 - Added ux0:data/ABM/crc.ini to detect the CRC32 of the skprx modules.<br>
 - Added npdrmfree enable/disable option to ABM bubble edit screen.<br>
     ]]>
+  </changes>
   <changes app_ver="05.00">
     <![CDATA[
 - Added submenu for Extra Setting.<br>
