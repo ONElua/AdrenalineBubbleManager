@@ -64,7 +64,7 @@ function screen.flip()
 					files.copy("git/updater/param.sfo","ux0:/data/1luapkg/sce_sys/")
 					game.installdir("ux0:/data/1luapkg")
 					files.delete("ux0:/data/1luapkg")
-					game.launch(string.format("ONEUPDATE&%s&%s",os.titleid(),path)) -- Goto installer extern!
+					game.launch(string.format("ONEUPDATE&%s&%s",os.titleid(),path2vpk)) -- Goto installer extern!
 				end
 			end
 			onAppInstall = onAppInstallOld
