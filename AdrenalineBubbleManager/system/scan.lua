@@ -520,7 +520,7 @@ function scan.show(objedit)
 end
 
 --------------------------SubMenuContextual
-local yf, _save = 380,false--370
+local yf, _save = 420,false--370
 submenu_abm = { 			-- Creamos un objeto menu contextual
     h = yf,					-- Height of menu
     w = 960,				-- Width of menu
@@ -546,6 +546,7 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--9
 		{ text = STRINGS_DEFAULT_BNAME,		desc = STRINGS_DESC_TITLES },				--10
 		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--11
+		{ text = STRINGS_RESTORE_ADR,		desc = STRINGS_DESC_RESTORE_ADR },			--12
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -596,6 +597,19 @@ function submenu_abm.run(obj)
 
 	submenu_abm.draw(obj)
 
+end
+
+function restore_adr()
+if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
+	files.copy("bubbles/adrenaline/sce_module/", ADRENALINE)
+	if back2 then back2:blit(0,0) end
+		screen.flip()
+		os.dialog(STRINGS_RESTART_ADR)
+	os.delay(500)
+	power.restart()
+else
+	--Print no hay adrenaline
+end
 end
 
 local x_scroll_submenu = 5
@@ -706,11 +720,10 @@ function submenu_abm.draw(obj)
 			end
 			_save = true
 		end
-		--[[
-		if buttons.accept and submenu_abm.scroll.sel == 10 then
-			AutoFixBubbles()
+
+		if buttons.accept and submenu_abm.scroll.sel == 12 then
+			restore_adr()
 		end
-		]]
 
 		screen.print(480, 5, STRINGS_EXTRA_SETTINGS, 1, color.white, color.blue, __ACENTER)
 		screen.print(480, 32, STRINGS_WARNING, 1, color.white, color.red, __ACENTER)
@@ -749,6 +762,9 @@ function submenu_abm.draw(obj)
 			elseif i==11 then
 				--screen.print(690, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
 				screen.print(690, h, _lang, 1, sel_color, color.blue, __ARIGHT)
+			elseif i==12 then
+				screen.print(690, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
+				--screen.print(690, h, _lang, 1, sel_color, color.blue, __ARIGHT)
 			end
 
 			h += 26

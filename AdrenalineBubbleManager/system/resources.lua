@@ -39,6 +39,12 @@ function bubbles.online(obj, simg)
 		listbubbles = {}
 		authors = {}
 
+		--Test new bin
+		--[[
+		raw = http.down(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
+		if raw then os.message("done") end
+		]]
+
 		if __ITLS then
 			raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
 		else

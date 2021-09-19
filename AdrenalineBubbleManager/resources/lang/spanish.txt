@@ -119,6 +119,7 @@ STRINGS_DEFAULT_GAMEID =		"TitleID"
 STRINGS_LANG_CUSTOM =			"Personalizado"
 STRINGS_LANG_DEFAULT =			"Inglés"
 STRINGS_LANG_OPTION =			"Cargar Lenguaje"
+STRINGS_RESTORE_ADR =			"Restore Adrenaline v7"
 STRINGS_AUTOFIX_BOOTBIN =		"AutoConversión boot.bin"
 STRINGS_AUTOFIX_BUBBLES =		"Auto Bubble fixer"
 STRINGS_BB_FIX_COUNT =			"Total Fix Bubbles:"
@@ -145,6 +146,8 @@ STRINGS_DESC_CHECK_ADRENALINE =	"Al salir nuevas versiones de adrenaline, puedes
 STRINGS_DESC_TITLES =			"Selecciona la opción que requieras para colocar el nombre a tus Burbujas: Por Título, Por Nombre del archivo o colocar el nombre que desees"
 STRINGS_DESC_AUTOFIX =			"To fix booting bug on Bubbles created with version 5.20"
 STRINGS_DESC_LANG_OPTION =		"Permite cargar el idioma en AMB al iniciar: Inglés o Personalizado"
+STRINGS_DESC_RESTORE_ADR =		"Reinstall Official Adrenaline v7"
+STRINGS_RESTART_ADR =			"Adrenaline v7 has been restored, a reboot is needed"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"Burbujas"

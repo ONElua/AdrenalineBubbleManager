@@ -1098,6 +1098,16 @@ function bubbles.settings()
 	end
 end
 
+--[[
+8bits 03, 24bits 02, 32bits 06
+													local fp = io.open("ux0:/ABM/CRIMSONGEMSAGACS8/boot.png","r")
+								if fp then
+									fp:seek("set",0x19)
+									local b = string.format("%x",string.byte(fp:read(1)))
+									os.message(b)
+									fp:close()
+								end
+								]]
 function bubbles.edit(obj, simg)
 
 	local tmp = files.listdirs("ux0:ABM/")
@@ -1403,6 +1413,7 @@ function bubbles.edit(obj, simg)
 										image.save(image.startup(img), obj.path..resources[i].dest, 1)
 									else
 										if __8PNG == 1 then
+
 											if tmp[j].name:upper() == "ICON0.PNG" then
 												if tmp.nostretched then
 													if img:getrealw() != resources[i].w or img:getrealh() != resources[i].h then
@@ -1414,11 +1425,20 @@ function bubbles.edit(obj, simg)
 													image.save(image.nostretched(img, colors[bubble_color]), obj.path..resources[i].dest, 1)
 												end
 											else
-												image.save(img, obj.path..resources[i].dest, 1)
+												if tmp[j].name:upper() == "BOOT.PNG" then
+													image.save(img, obj.path..resources[i].dest)
+												else
+													image.save(img, obj.path..resources[i].dest, 1)
+												end
 											end
 										else
+
 											if scale then
-												image.save(img, obj.path..resources[i].dest, 1)
+												if tmp[j].name:upper() == "BOOT.PNG" then
+													image.save(img, obj.path..resources[i].dest)
+												else
+													image.save(img, obj.path..resources[i].dest, 1)
+												end
 											else
 												if tmp[j].name:upper() == "ICON0.PNG" then
 													if tmp.nostretched then
@@ -1432,6 +1452,7 @@ function bubbles.edit(obj, simg)
 													end
 												end
 											end
+
 										end
 									end
 								end--if img

@@ -119,6 +119,7 @@ STRINGS_DEFAULT_GAMEID =		"TitleID"
 STRINGS_LANG_CUSTOM =			"Custom Lang"
 STRINGS_LANG_DEFAULT =			"English Lang"
 STRINGS_LANG_OPTION =			"Setear Idioma"
+STRINGS_RESTORE_ADR =			"Restore Adrenaline v7"
 STRINGS_AUTOFIX_BOOTBIN =		"自动修复 boot.bin"
 STRINGS_AUTOFIX_BUBBLES =		"自动气泡修复"
 STRINGS_BB_FIX_COUNT =			"总计修复气泡:"
@@ -145,6 +146,8 @@ STRINGS_DESC_CHECK_ADRENALINE =	"检查 Adrenaline 更新, 如果你想留在当
 STRINGS_DESC_TITLES =			"Select the desired option to name/rename your Bubbles: By Title, By File Name or Input the desired Name"
 STRINGS_DESC_AUTOFIX =			"修复 5.20 版本所创建气泡的启动问题"
 STRINGS_DESC_LANG_OPTION =		"Permite Usar por Defecto el Idioma al iniciar: Inglés o Personalizado"
+STRINGS_DESC_RESTORE_ADR =		"Reinstall Official Adrenaline v7"
+STRINGS_RESTART_ADR =			"Adrenaline v7 has been restored, a reboot is needed"
 
 --bar progress
 STRINGS_BUBBLES_BAR =			"气泡"
