@@ -105,10 +105,9 @@ __UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
-__CUSTOM = tonumber(ini.read(__PATHINI,"custom","customized","1"))
 __TITLE = tonumber(ini.read(__PATHINI,"title","title","0"))
-__PSBUTTON = tonumber(ini.read(__PATHINI,"psbutton","menu","0"))
 __TITLEID = tonumber(ini.read(__PATHINI,"gameid","titleid","0"))
+__TEMPLATE = tonumber(ini.read(__PATHINI,"template","style","0"))
 
 __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
@@ -116,14 +115,13 @@ _color = __COLOR
 _lang = __LANG_CUSTOM
 if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
-if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO elseif __SET == 6 then setpack = STRINGS_PSP_PSX_BUBBLES else setpack = SCAN_SETPACK..__SET end
+if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = STRINGS_PSP_PSX_BUBBLES end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
-if __CUSTOM == 1 then _custom = STRINGS_OPTION_MSG_YES else _custom = STRINGS_OPTION_MSG_NO end
 if __TITLE == 1 then _title = STRINGS_DEFAULT_TITLE elseif __TITLE == 2 then _title = STRINGS_DEFAULT_NAME else _title = STRINGS_DEFAULT_OSK end
-if __PSBUTTON == 1 then _psbutton = STRINGS_PSBUTTON_LIVEAREA else _psbutton = STRINGS_PSBUTTON_MENU end
 if __TITLEID == 1 then _gameid = STRINGS_DEFAULT_GAMEID else _gameid = STRINGS_DEFAULT_PSPEMUXXX end
 if __LANG_CUSTOM == 1 then _lang = STRINGS_LANG_CUSTOM else _lang = STRINGS_LANG_DEFAULT end
-TOTAL_SET = 6
+if __TEMPLATE == 1 then _template = STRINGS_TEMPLATE_PSPEMU elseif __TEMPLATE == 2 then _template = STRINGS_TEMPLATE_PS1EMU
+elseif __TEMPLATE == 3 then _template = STRINGS_TEMPLATE_PSMOBILE else _template = STRINGS_TEMPLATE_A5 end
 
 --[[
 	## Library Scroll ##
