@@ -13,6 +13,7 @@ PSX_IMG = image.load("bubbles/sce_sys_lman/ps1/bg0.png")
 
 --tmp0.CATEGORY: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
 scan = {}
+scan.list = {}
 toinstall = 0
 local pic1,icon0 = nil,nil
 --local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions.
@@ -121,7 +122,6 @@ function scan.pbps(path, device, level)
 end
 
 function scan.games()
-	scan.list = {}
 	for i=1,#partitions do
 		if files.exists(partitions[i]) then
 			local _info_device = os.devinfo(partitions[i])
@@ -138,11 +138,10 @@ function scan.games()
 end
 
 function load_pic1(obj)
-	pic1 = nil
+	pic1,style = nil,nil
 	if obj.setpack == STRINGS_PSP_PSX_BUBBLES then
 		if obj.type == "ME" then pic1 = PSX_IMG else pic1 = PSP_IMG end
 	end
-
 	if pic1 then
 		pic1:resize(960,488)
 		pic1:center()
@@ -150,38 +149,72 @@ function load_pic1(obj)
 
 end
 
-local maximg = 16
+function load_style(obj)
+	--os.message(obj.template)
+	if obj.template == "A5" then
+		style = a5
+	elseif obj.template == "PSMOBILE" then
+		style = psmobile
+	elseif obj.template == "PS1EMU" then
+		style = ps1emu
+	elseif obj.template == "PSPEMU" then
+		style = pspemu
+	end
+end
+
+local maximg = 15
 function scan.show(objedit)
 
 	local scr = newScroll(scan.list,maximg)
 
 	buttons.interval(12,5)
-	local xscr,xscrtitle = 15,20
+	local xscr,xscrtitle = 15,25
+
+	--load 1st
+	load_pic1(scan.list[1])
 
 	local xb,yb = 820,60
 	while true do
 		power.tick(0)
 		buttons.read()
 			touch.read()
-		
-		if pic1 then pic1:blit(960/2, 544/2, 175)
+
+		if pic1 then pic1:blit(0,30,175)
 		elseif back1 then back1:blit(0,0) end
 		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
-		screen.print(480,5,SCAN_TITLE, 1, color.white, color.blue, __ACENTER)
+		
+		if buttons.analogry<-60 and scr.maxim > 0 then
+			if scan.list[scr.sel].width > (960-144-55) then
+				xscrtitle = screen.print(xscrtitle, 5, scan.list[scr.sel].title,1,color.white, color.blue,__SLEFT,960-144-55)
+			else
+				screen.print(25,5,scan.list[scr.sel].title, 1, color.white, color.blue)
+			end
+		else
+			screen.print(480,5,SCAN_TITLE, 1, color.white, color.blue, __ACENTER)
+		end
 		screen.print(950,5,BUBBLES_COUNT.." "..scr.maxim, 1, color.red, color.shine, __ARIGHT)
 
 		if scr.maxim > 0 then
 
+			if buttons.analogry<-60 then
+				load_style(scan.list[scr.sel])
+				if style then style:blit(0,30,125) end
+			end
 			--Blit List
-			local y = 35
+			local y = 33
 			for i=scr.ini,scr.lim do
 
 				if scan.list[i].state then ccolor = color.green:a(200) else ccolor = color.white end
 
 				if i == scr.sel then
-					draw.fillrect(3,y-3,960-144-28,25,color.blue:a(160))
+
+					if buttons.analogry<-60 then
+					else
+						draw.fillrect(1,y-5,960-144-24,26,color.blue:a(160))
+					end
+
 					if not icon0 then
 						if scan.list[scr.sel].icon then
 							icon0 = game.geticon0(scan.list[scr.sel].path)
@@ -208,32 +241,38 @@ function scan.show(objedit)
 
 				end
 
-				screen.clip(0,25,785,555)
+				screen.clip(0,25,788,555)
 					if i == scr.sel then
-						if scan.list[i].width > (960-144-55) then
-							xscrtitle = screen.print(xscrtitle, y, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-55)
+						if buttons.analogry<-60 then
 						else
-							screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
+							if scan.list[i].width > (960-144-55) then
+								xscrtitle = screen.print(xscrtitle, y, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-55)
+							else
+								screen.print(25,y,scan.list[i].title, 1, ccolor, color.shine)
+							end
 						end
 					else
-						screen.print(20,y,scan.list[i].title, 1, ccolor, color.shine)
+						if buttons.analogry<-60 then
+						else
+							screen.print(25,y,scan.list[i].title, 1, ccolor, color.shine)
+						end
 					end
 				screen.clip()
 
 				if scan.list[i].inst then
-					screen.print(8,y,"»",1,color.white,color.green)
+					screen.print(7,y,"»",1,color.white,color.green)
 				end
 
-				y += 25
+				y += 26.2
 			end
 
 			--Bar Scroll
-			local ybar,h=30, (maximg*26)-3
-			draw.fillrect(795, ybar-2, 8, h, color.shine)
-			--if scr.maxim >= maximg then -- Draw Scroll Bar
+			local ybar,h = 34,(maximg*26)-2
+			draw.fillrect(797, ybar-5, 8, h, color.shine)
+			if scr.maxim >= maximg then -- Draw Scroll Bar
 				local pos_height = math.max(h/scr.maxim, maximg)
-				draw.fillrect(795, ybar-2 + ((h-pos_height)/(scr.maxim-1))*(scr.sel-1), 8, pos_height, color.new(0,255,0))
-			--end
+				draw.fillrect(797, ybar-5 + ((h-pos_height)/(scr.maxim-1))*(scr.sel-1), 8, pos_height, color.new(0,255,0))
+			end
 
 			--Blit icon0
 			if icon0 then
@@ -250,48 +289,45 @@ function scan.show(objedit)
 			screen.print(960-75,40,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ACENTER)
 
 			--Print Streched
-			screen.print(955,yb+64+60,"< L >",0.9,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+65,"< L >",1,color.white,color.blue,__ARIGHT)
 			if scan.list[scr.sel].nostretched then
-				screen.print(955,yb+64+80,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,yb+64+85,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
 			else
-				screen.print(955,yb+64+80,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
+				screen.print(955,yb+64+85,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
 			end
 
 			--Print SetPack
-			screen.print(955,yb+64+110,"< R >",0.9,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+130,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
-
-			--Print Sort
-			screen.print(955,yb+64+160,"< SELECT >",0.9,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+180,SCAN_SORT_BY,1,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+200,sort_games[__SORT], 1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+120,"< R >",1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+140,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
 
 			--Print Colors
-			screen.print(955,yb+64+230,"< Left/Right >",0.9,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+252,SCAN_TEXT_COLOR.." ("..scan.list[scr.sel].selcc..")", 1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+175," ←/→ ",1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+200,SCAN_TEXT_COLOR.." ("..scan.list[scr.sel].selcc..")", 1,color.white,color.blue,__ARIGHT)
 
 			--Print Style (template)
-			screen.print(955,yb+64+288,"< AnalogR + Up >",0.9,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+310,scan.list[scr.sel].template, 1,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+242,"< AnalogR + Up >",0.9,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+270,scan.list[scr.sel].template, 1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
+			if buttonskey then buttonskey2:blitsprite(10,425,0) end                   		--Select
+			screen.print(45,427,SCAN_SORT_BY.." : "..sort_games[__SORT],1,color.white,color.blue,__ALEFT)
 
-			if buttonskey then buttonskey:blitsprite(15,463,1) end                     		--Triangle
-			screen.print(45,465,SCAN_ALL_BUBBLES,1,color.white,color.blue)
+			if buttonskey then buttonskey:blitsprite(15,455,1) end                     		--Triangle
+			screen.print(45,457,SCAN_ALL_BUBBLES,1,color.white,color.blue)
 
-			if buttonskey then buttonskey:blitsprite(15,487,2) end                     		--[]
-			screen.print(45,490,SCAN_MARK_GAME,1,color.white,color.blue)
+			if buttonskey then buttonskey:blitsprite(15,485,2) end                     		--[]
+			screen.print(45,487,SCAN_MARK_GAME,1,color.white,color.blue)
 
 			--Right Options
-			if buttonskey then buttonskey2:blitsprite(925,463,1) end                   		--Start
-			screen.print(920,465,STRINGS_EXTRA_SETTINGS,1,color.white,color.blue,__ARIGHT)
+			if buttonskey then buttonskey2:blitsprite(925,425,1) end                   		--Start
+			screen.print(920,427,STRINGS_EXTRA_SETTINGS,1,color.white,color.blue,__ARIGHT)
 
 			if accept_x == 1 then
-				if buttonskey then buttonskey:blitsprite(935,487,3) end						--O
+				if buttonskey then buttonskey:blitsprite(930,455,3) end						--O
 			else
-				if buttonskey then buttonskey:blitsprite(935,487,0) end						--X
+				if buttonskey then buttonskey:blitsprite(930,455,0) end						--X
 			end
-			screen.print(920,490,SCAN_BUBBLES_SETTINGS,1,color.white,color.blue,__ARIGHT)
+			screen.print(920,457,SCAN_BUBBLES_SETTINGS,1,color.white,color.blue,__ARIGHT)
 
 			if scan.list[scr.sel].width > 940 then
 				xscr = screen.print(xscr, 523, scan.list[scr.sel].path or scan.list[scr.sel].name,1,color.white,color.blue,__SLEFT,940)
@@ -315,7 +351,7 @@ function scan.show(objedit)
 
 			if (buttons.up or buttons.analogly<-60) and not buttons.held.square and not (buttons.analogry<-60) then
 				if scr:up() then
-					xscrtitle = 20
+					xscrtitle = 25
 					icon0=nil
 					load_pic1(scan.list[scr.sel])
 				end
@@ -323,18 +359,14 @@ function scan.show(objedit)
 
 			if (buttons.down or buttons.analogly>60) and not buttons.held.square and not (buttons.analogry<-60) then
 				if scr:down() then
-					xscrtitle = 20
+					xscrtitle = 25
 					icon0=nil
 					load_pic1(scan.list[scr.sel])
 				end
 			end
 
 			if (buttons.analoglx > 60 or buttons.analoglx < -60) and not buttons.held.square and not (buttons.analogry<-60) then
-				xscrtitle = 20
-			end
-
-			if (buttons.released.l or buttons.released.r) or (buttons.analogly < -60 or buttons.analogly > 60) and not buttons.held.l then
-				load_pic1(scan.list[scr.sel])
+				xscrtitle = 25
 			end
 
 			--Install
@@ -393,7 +425,19 @@ function scan.show(objedit)
 					os.delay(25)
 				end
 				load_pic1(scan.list[scr.sel])
-				xscrtitle = 20
+				xscrtitle = 25
+			end
+
+			--Sort
+			if buttons.select then
+				xscrtitle = 25
+				icon0=nil
+				__SORT += 1
+
+				if __SORT > #sort_games then __SORT = 1 end
+				if __SORT < 1 then __SORT = #sort_games end
+				table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
+				scr:set(scan.list,maximg)
 			end
 
 			--Install all (only games not installed)
@@ -441,7 +485,7 @@ function scan.show(objedit)
 						os.delay(25)
 					end
 				end
-				xscrtitle = 20
+				xscrtitle = 25
 			end
 
 			--Mark/Unmark
@@ -450,35 +494,7 @@ function scan.show(objedit)
 				if scan.list[scr.sel].inst then toinstall+=1 else toinstall-=1 end
 			end
 
-			--Sort
-			if buttons.select then
-				xscrtitle = 20
-				icon0=nil
-				__SORT += 1
-
-				if __SORT > #sort_games then __SORT = 1 end
-				if __SORT < 1 then __SORT = #sort_games end
-				table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
-				scr:set(scan.list,maximg)
-			end
-
-			if buttons.analogry<-60 and buttons.released.up then
-				if scan.list[scr.sel].template == STRINGS_TEMPLATE_PSPEMU then scan.list[scr.sel].template = STRINGS_TEMPLATE_PS1EMU
-				elseif scan.list[scr.sel].template == STRINGS_TEMPLATE_PS1EMU then scan.list[scr.sel].template = STRINGS_TEMPLATE_PSMOBILE
-				elseif scan.list[scr.sel].template == STRINGS_TEMPLATE_PSMOBILE then scan.list[scr.sel].template = STRINGS_TEMPLATE_A5
-				else scan.list[scr.sel].template = STRINGS_TEMPLATE_PSPEMU
-				end
-			end
-
-			if buttons.released.r then
-				if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO then
-					scan.list[scr.sel].setpack = STRINGS_PSP_PSX_BUBBLES
-				elseif scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
-					scan.list[scr.sel].setpack = STRINGS_OPTION_MSG_NO
-				end
-				--Update PIC
-				load_pic1(scan.list[scr.sel])
-			end
+			if buttons.select and buttons.held.square then error("USB") end--Debug USB
 
 			--Full/Stretched
 			if buttons.released.l then
@@ -495,10 +511,18 @@ function scan.show(objedit)
 				end
 			end
 
-
+			if buttons.released.r then
+				if scan.list[scr.sel].setpack == STRINGS_OPTION_MSG_NO then
+					scan.list[scr.sel].setpack = STRINGS_PSP_PSX_BUBBLES
+				elseif scan.list[scr.sel].setpack == STRINGS_PSP_PSX_BUBBLES then
+					scan.list[scr.sel].setpack = STRINGS_OPTION_MSG_NO
+				end
+				--Update PIC
+				load_pic1(scan.list[scr.sel])
+			end
 
 			--Bubbles Color
-			if buttons.right or buttons.left then
+			if (buttons.right or buttons.left) and not buttons.held.square then
 
 				if buttons.right then scan.list[scr.sel].selcc += 1 end
 				if buttons.left then scan.list[scr.sel].selcc -= 1 end
@@ -506,6 +530,15 @@ function scan.show(objedit)
 				if scan.list[scr.sel].selcc > #colors then scan.list[scr.sel].selcc = 1 end
 				if scan.list[scr.sel].selcc < 1 then scan.list[scr.sel].selcc = #colors end
 
+			end
+
+			if buttons.analogry<-60 and buttons.released.up then
+				if scan.list[scr.sel].template == "PSPEMU" then scan.list[scr.sel].template = "PS1EMU"
+				elseif scan.list[scr.sel].template == "PS1EMU" then scan.list[scr.sel].template = "PSMOBILE"
+				elseif scan.list[scr.sel].template == "PSMOBILE" then scan.list[scr.sel].template = "A5"
+				else scan.list[scr.sel].template = "PSPEMU"
+				end
+				load_style(scan.list[scr.sel])
 			end
 
 		end
@@ -675,10 +708,10 @@ function submenu_abm.draw(obj)
 				else __TITLE,_title = 1,STRINGS_DEFAULT_TITLE end
 
 			elseif submenu_abm.scroll.sel == 7 then--Style
-				if __TEMPLATE == 1 then __TEMPLATE,_template = 2,STRINGS_TEMPLATE_PS1EMU
-				elseif __TEMPLATE == 2 then __TEMPLATE,_template = 3,STRINGS_TEMPLATE_PSMOBILE
-				elseif __TEMPLATE == 3 then __TEMPLATE,_template = 4,STRINGS_TEMPLATE_A5
-				else __TEMPLATE,_template = 1,STRINGS_TEMPLATE_PSPEMU end
+				if __TEMPLATE == 1 then __TEMPLATE,_template = 2,"PS1EMU"
+				elseif __TEMPLATE == 2 then __TEMPLATE,_template = 3,"PSMOBILE"
+				elseif __TEMPLATE == 3 then __TEMPLATE,_template = 4,"A5"
+				else __TEMPLATE,_template = 1,"PSPEMU" end
 
 			elseif submenu_abm.scroll.sel == 8 then--Update
 				if __UPDATE == 1 then __UPDATE,_update = 0,STRINGS_OPTION_MSG_NO

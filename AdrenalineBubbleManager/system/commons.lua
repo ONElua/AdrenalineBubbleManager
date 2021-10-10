@@ -53,6 +53,12 @@ back2 = image.load(pathABM.."resources/back2.png") or image.load(pathABM.."resou
 -- Popup message background (must be 706x274 png image)
 box = image.load(pathABM.."resources/box.png") or image.load("resources/box.png")
 
+-- Load Styles (Template)
+a5 = image.load("resources/style/a5.png")
+pspemu = image.load("resources/style/pspemu.png")
+ps1emu = image.load("resources/style/ps1emu.png")
+psmobile = image.load("resources/style/psmobile.png")
+
 -- Loading default GFX from app folder
 buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
@@ -120,8 +126,8 @@ if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG
 if __TITLE == 1 then _title = STRINGS_DEFAULT_TITLE elseif __TITLE == 2 then _title = STRINGS_DEFAULT_NAME else _title = STRINGS_DEFAULT_OSK end
 if __TITLEID == 1 then _gameid = STRINGS_DEFAULT_GAMEID else _gameid = STRINGS_DEFAULT_PSPEMUXXX end
 if __LANG_CUSTOM == 1 then _lang = STRINGS_LANG_CUSTOM else _lang = STRINGS_LANG_DEFAULT end
-if __TEMPLATE == 1 then _template = STRINGS_TEMPLATE_PSPEMU elseif __TEMPLATE == 2 then _template = STRINGS_TEMPLATE_PS1EMU
-elseif __TEMPLATE == 3 then _template = STRINGS_TEMPLATE_PSMOBILE else _template = STRINGS_TEMPLATE_A5 end
+if __TEMPLATE == 1 then _template = "PSPEMU" elseif __TEMPLATE == 2 then _template = "PS1EMU"
+elseif __TEMPLATE == 3 then _template = "PSMOBILE" else _template = "A5" end
 
 --[[
 	## Library Scroll ##

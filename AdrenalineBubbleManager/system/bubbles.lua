@@ -231,9 +231,9 @@ function bubbles.install(src,buff)
 	end
 
 	--Style
-	if src.template == 1 then files.copy("bubbles/template/pspemu/template.xml",work_dir.."sce_sys/livearea/contents/")
-	elseif src.template == 2 then files.copy("bubbles/template/ps1emu/template.xml",work_dir.."sce_sys/livearea/contents/")
-	elseif src.template == 3 then files.copy("bubbles/template/psmobile/template.xml",work_dir.."sce_sys/livearea/contents/")
+	if src.template == "PSPEMU" then files.copy("bubbles/template/pspemu/template.xml",work_dir.."sce_sys/livearea/contents/")
+	elseif src.template == "PS1EMU" then files.copy("bubbles/template/ps1emu/template.xml",work_dir.."sce_sys/livearea/contents/")
+	elseif src.template == "PSMOBILE" then files.copy("bubbles/template/psmobile/template.xml",work_dir.."sce_sys/livearea/contents/")
 	else files.copy("bubbles/template/a5/template.xml",work_dir.."sce_sys/livearea/contents/") end
 
 	-- Set SFO & TITLE
