@@ -55,7 +55,9 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 
 - **Triangle:** Batch Installation for non installed content.<br>
 - **L:** To switch the way the bubble will look like in Livearea (original icon look/stretched icon look)<br>
-- **R:** Select the SetPack for each bubble.<br>
+- **R:** Select one of the available SetPacks: PSP/PSX or Default:<br>
+- 	Select PSP or PSX to create the bubble using official PSP or PSX BG0 used for Ps Vita.<br>
+- 	Select Default to create the bubble using the iso/cso/eboot resources.<br>
 - **SELECT:** Sort List: Device, Install, GameId, Category.<br>
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
@@ -66,17 +68,18 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 *Extra Settings*
 
 This option allows you to set some preferences as default for ABM such as:
-- Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
-	You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Enter the submenu to change this settings with start.
-- Set Imgs: Set1 to Set5, or Set PSP/PSX.<br>	
-- Set sort list of your iso/cso/pbp.<br>
-- Select the default color for your bubbles.<br>
-- Customized: To let each bubble have its own settings keep it in YES.<br>
 - BubbleID: PSPEMUXXX or GAMEID.<br>
-- Enable/Disable ABM updates.<br>
-- Adrenaline version check.<br>
-	This option disables/enables ABM to check the Adrenaline version you have installed in your ps vita.
-- Default BubbleName: By Title, By File Name or Input the desired Name.<br>	
+- Convert 8bits: Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
+	You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Default is YES.<br>
+
+- Default Sort: Installed, Title, Date of modification, Category, GameID or Device.<br>
+- Default Color: Select the default color for your bubbles (19 colores disponibles).<br>
+- Default BubbleName: By Title, By File Name or Input the desired Name.<br>
+- Set Template: Select the template style: PSPEMU, PS1EMU, PSMOBILE, A5.<br>
+- ABM Update: Checks for ABM Updates at start, default is YES.<br>
+- Check Adrenaline: Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version.<br>
+- Set Language: Allows to load selected language at start in ABM: English or Custom.<br>
+- Restore Adrenaline v7: Reinstall Official Adrenaline v7.<br>
 
 ![header](ExtraSettings.png)
 
@@ -91,12 +94,16 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 **Triangle:** Allows to edit the configuration file boot.inf<br>
 -	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
 -	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
+-	"Customized": To let each bubble have its own settings keep it in YES
+-	PS button Mode: Menu, Livearea, Standard
 -	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
 -	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
 -	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
 -	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
 -	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
--	"English or Custom:"Allows to load selected language at start: English or Custom", loads chosen language if set as default (ABM only not bubbles).<br>
+
+In case you move your games to a diferent partition from where the bubble was created, the game path can be edited (will be highlighted in yellow). 
+The bubble's title can be edited too.<br>
 
 ![header](BubbleEdit.png)
 
@@ -109,15 +116,16 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 This option allows you to Insert your desired images to the selected bubble, this will improve the looks of your bubbles in Livearea.
 
 To use this feature you have to follow the instructions below:<br>
-1. Download or create the images to insert, those images to use have to be renamed and resized to:<br>
-- icon0.png			128x128<br>
-- startup.png		280x158 (max)<br>   
-- pic0.png			960x544<br>   
-- bg0.png			840x500<br>
-- boot.png			480x272<br>
-- template.xml		<Optional><br>
-- Manual			images inside (001.png, 002.png 960x544) <Optional><br>
-2. Create a new folder, rename to anything you want, recommended to use your game name, inside this folder place the images created in step 1.<br>
+1. Create a folder with the same name of your game (highly recommended but not a must), once you have created/downloaded the images and/or game manual to inject, place them into that folder, then, copy/paste said folder to ux0:ABM. 
+
+2. Download or create the images to insert, those images to use have to be renamed and resized to:<br>
+- icon0.png			 128x128<br>
+- startup.png		 280x158 (max)<br>   
+- pic0.png			 960x544<br>   
+- bg0.png			   840x500<br>
+- boot.png			 480x272 (32bits or 24 bits) <Optional><br>
+- template.xml	 <Optional><br>
+- Manual			   images inside (001.png, 002.png 960x544) <Optional><br>
 3. Now is possible inject the Manual folder with your manual's images inside (001.png, 002.png 960x544). The folder of the Manual must be place in the following path ux0:ABM/(Gameid)/<br>
 4. Copy/paste your newly created folder with the images inside to the path ux0:ABM/<br>
 
