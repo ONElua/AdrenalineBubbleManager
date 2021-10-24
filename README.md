@@ -56,8 +56,8 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 - **Triangle:** Batch Installation for non installed content.<br>
 - **L:** To switch the way the bubble will look like in Livearea (original icon look/stretched icon look)<br>
 - **R:** Select one of the available SetPacks: PSP/PSX or Default:<br>
-- 	Select PSP or PSX to create the bubble using official PSP or PSX BG0 used for Ps Vita.<br>
-- 	Select Default to create the bubble using the iso/cso/eboot resources.<br>
+		Select PSP or PSX to create the bubble using official PSP or PSX BG0 used for Ps Vita.<br>
+		Select Default to create the bubble using the iso/cso/eboot resources.<br>
 - **SELECT:** Sort List: Device, Install, GameId, Category.<br>
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
@@ -68,18 +68,18 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 *Extra Settings*
 
 This option allows you to set some preferences as default for ABM such as:
-- BubbleID: PSPEMUXXX or GAMEID.<br>
-- Convert 8bits: Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
+- **BubbleID:** PSPEMUXXX or GAMEID.<br>
+- **Convert 8bits:** Now you can disable the 8bit image conversion when creating or editing ABM bubbles.<br>
 	You must be sure the images you are using are in compatible format, otherwise the bubble will fail. Default is YES.<br>
 
-- Default Sort: Installed, Title, Date of modification, Category, GameID or Device.<br>
-- Default Color: Select the default color for your bubbles (19 colores disponibles).<br>
-- Default BubbleName: By Title, By File Name or Input the desired Name.<br>
-- Set Template: Select the template style: PSPEMU, PS1EMU, PSMOBILE, A5.<br>
-- ABM Update: Checks for ABM Updates at start, default is YES.<br>
-- Check Adrenaline: Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version.<br>
-- Set Language: Allows to load selected language at start in ABM: English or Custom.<br>
-- Restore Adrenaline v7: Reinstall Official Adrenaline v7.<br>
+- **Default Sort:** Installed, Title, Date of modification, Category, GameID or Device.<br>
+- **Default Color:** Select the default color for your bubbles (19 colores disponibles).<br>
+- **Default BubbleName:** By Title, By File Name or Input the desired Name.<br>
+- **Set Template:** Select the template style: PSPEMU, PS1EMU, PSMOBILE, A5.<br>
+- **ABM Update:** Checks for ABM Updates at start, default is YES.<br>
+- **Check Adrenaline:** Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version.<br>
+- **Set Language:** Allows to load selected language at start in ABM: English or Custom.<br>
+- **Restore Adrenaline v7**: Reinstall Official Adrenaline v7.<br>
 
 ![header](ExtraSettings.png)
 
@@ -94,13 +94,13 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 **Triangle:** Allows to edit the configuration file boot.inf<br>
 -	Change driver: "INFERNO", "MARCH33", "NP9660"<br>
 -	Changes the .bin booting mode: "EBOOT.BIN", "BOOT.BIN", "EBOOT.OLD"<br>
--	"Customized": To let each bubble have its own settings keep it in YES
+-	Customized: To let each bubble have its own settings keep it in YES
 -	PS button Mode: Menu, Livearea, Standard
--	"Suspend game" Stop the game running on the psp when PS button is pressed.<br>
+-	Suspend game: Stop the game running on the psp when PS button is pressed.<br>
 -	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
--	"NonpDRM Engine" Load content using Quickrazor's plugin.<br>
--	"High Memory" Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
--	"Change game cpu clock speed" Improves loading speed and game response depending of chosen speed.<br>
+-	NonpDRM Engine: Load content using Quickrazor's plugin.<br>
+-	:High Memory: Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
+-	Change game cpu clock speed: Improves loading speed and game response depending of chosen speed.<br>
 
 In case you move your games to a diferent partition from where the bubble was created, the game path can be edited (will be highlighted in yellow). 
 The bubble's title can be edited too.<br>
@@ -143,7 +143,7 @@ In images folder list:
 - **O:** To go back.<br>
 
 After choosing a folder, when you can see the images previews:<br>
--- **O:** To go back.<br>
+- **O:** To go back.<br>
 - **START:** Insert the previewed images to chosen bubble.<br>
 
 ## Resources Online ##
