@@ -62,8 +62,11 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
 - **Start:** Open Extra Settings menu (set default bubble color, sort list, Adrenaline version check, Adrenaline Bubbles Manager version check).<br>
+
 - **X:** Create Bubbles.<br>
 - **O:** Configurate/Edit Bubbles.<br>
+
+![header](Style.png)
 
 *Extra Settings*
 
@@ -99,8 +102,10 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 -	Suspend game: Stop the game running on the psp when PS button is pressed.<br>
 -	Disable/Enable plugins: "ENABLE", "DISABLE"<br>
 -	NonpDRM Engine: Load content using Quickrazor's plugin.<br>
--	:High Memory: Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
+-	High Memory: Force high memory layout. (Disabled for GTA Native Resolution Patch)<br>
 -	Change game cpu clock speed: Improves loading speed and game response depending of chosen speed.<br>
+
+![header](BubbleEdit1.png)
 
 In case you move your games to a diferent partition from where the bubble was created, the game path can be edited (will be highlighted in yellow). 
 The bubble's title can be edited too.<br>
