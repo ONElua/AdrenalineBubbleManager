@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.15">
+    <![CDATA[
+- Fixed glitch on boot.png images<br>
+- When creating new bubbles the template style can be changed: PSPEMU, PS1EMU, PSMOBILE, A5<br>
+- Option Restore Adrenaline v7 added to Extra settings<br>
+- Added the ability to change the bubble's title for ABM previously created bubbles<br>
+    ]]>
+  </changes>
 <changes app_ver="06.14">
     <![CDATA[
 - Fix http.download for Online Resources<br>
