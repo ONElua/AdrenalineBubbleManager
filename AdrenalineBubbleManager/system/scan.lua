@@ -494,7 +494,7 @@ function scan.show(objedit)
 				if scan.list[scr.sel].inst then toinstall+=1 else toinstall-=1 end
 			end
 
-			if buttons.select and buttons.held.square then error("USB") end--Debug USB
+			--if buttons.select and buttons.held.square then error("USB") end--Debug USB
 
 			--Full/Stretched
 			if buttons.released.l then
