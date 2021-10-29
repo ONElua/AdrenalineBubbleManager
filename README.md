@@ -13,7 +13,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ### Adrenaline Version v7.0 ###
 ### Adrenaline Bubble Booter Version v1.3 ###
-### Adrenaline Bubbles Manager Current Version: 6.14 ###
+### Adrenaline Bubbles Manager Current Version: 6.15 ###
 
 
 ### Instructions ###
