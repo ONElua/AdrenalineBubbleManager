@@ -24,23 +24,11 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
-### Changelog 6.14 ###
-- Fix http.download for Online Resources<br>
-
-### Changelog 6.13 ###
-- Adrenaline Bubble Booter v1.3 Compatibility By LMAN 'leecherman'<br>
-- Adrenaline v7.0 Compatibility By LMAN 'leecherman'<br>
-
-### Changelog 6.12 ###
-- Adrenaline Bubble Booter v1.2 Compatibility By LMAN 'leecherman'<br>
-
-### Changelog 6.11 ###
-- Fixed bug when changing psp content path (bubble edit).<br>
-- Fixed callback getfile.<br>
-
-### Changelog 6.10 ###
-- In the option Online Resources, you can see the list of the Resources availables separated by Authors or Creators. (You can move around the authors with the left/right key).<br>
-- Added the option to take the titleID of the PSP/PSX game to create the Shortcut. To apply this change, go to Extra Settings menu (press START in the iso/cso/pbp list), put the option BubbleID in TitleID.<br>
+### Changelog 6.15 ###
+- Fixed glitch on boot.png images<br>
+- When creating new bubbles the template style can be changed: PSPEMU, PS1EMU, PSMOBILE, A5<br>
+- Option Restore Adrenaline v7 added to Extra settings<br>
+- Added the ability to change the bubble's title for ABM previously created bubbles<br>
 
 ### NOTE: ###
 Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew will be created like PSPEMUXXX.<br>
@@ -62,7 +50,7 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
 - **Start:** Open Extra Settings menu (set default bubble color, sort list, Adrenaline version check, Adrenaline Bubbles Manager version check).<br>
-
+- **HOLD Analog Right UP + Up:** Press and hold Right Analog 'up' and press button 'up' to switch between template styles for selected bubble: PSPEMU, PS1EMU, PSMOBILE, A5<br>
 - **X:** Create Bubbles.<br>
 - **O:** Configurate/Edit Bubbles.<br>
 
@@ -107,7 +95,7 @@ to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime
 
 ![header](BubbleEdit1.png)
 
-In case you move your games to a diferent partition from where the bubble was created, the game path can be edited (will be highlighted in yellow). 
+In case you move your games to a diferent partition from where the bubble was created, the game path can be edited (will be highlighted in yellow).<br>
 The bubble's title can be edited too.<br>
 
 ![header](BubbleEdit.png)
