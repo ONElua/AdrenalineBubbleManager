@@ -171,7 +171,9 @@ function scan.show(objedit)
 	local xscr,xscrtitle = 15,25
 
 	--load 1st
-	load_pic1(scan.list[1])
+	if scr.maxim > 0 then
+		load_pic1(scan.list[1])
+	end
 
 	local xb,yb = 820,60
 	while true do
