@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.16">
+    <![CDATA[
+- HotFix No Games found<br>
+    ]]>
+  </changes>
 <changes app_ver="06.15">
     <![CDATA[
 - Fixed glitch on boot.png images<br>
