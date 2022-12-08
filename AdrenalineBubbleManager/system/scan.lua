@@ -33,7 +33,8 @@ function insert(tmp_sfo,obj,device,official)
 	if official then orig = official end
 	--if game.exists(obj.name) then orig = true end
 
-	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n"," ") end
+	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n","") end
+	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\r","") end
 
 	table.insert( scan.list,
 		{
@@ -90,18 +91,19 @@ function scan.insertPBP(hand,device)
 		local tmp0 = game.info(hand.path)
 		if tmp0 and tmp0.CATEGORY == "PG" then return end
 		if tmp0 and tmp0.DISC_ID == "MSTKUPDATE" then return end
-
+--[[
 		local _insert = true
 		if tmp0.CATEGORY == "EG" then
 			local sceid = game.sceid(string.format("%s__sce_ebootpbp",files.nofile(hand.path)))
-			if sceid and sceid != "---" and sceid != hand.name then
+			if sceid and sceid != "---" then--and sceid != hand.name then
 				_insert=false--nothing
 			end
 		end
-		if _insert then
+]]
+		--if _insert then
 			init_msg(string.format(DEBUG_LOAD_PBP.." %s\n",hand.path))
 			insert(tmp0,hand,device,orig)
-		end
+		--end
 		tmp0 = nil
 	end
 end
@@ -183,7 +185,7 @@ function scan.show(objedit)
 
 		if pic1 then pic1:blit(0,30,175)
 		elseif back1 then back1:blit(0,0) end
-		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
+		if snow then stars.render() end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		
