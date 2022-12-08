@@ -34,7 +34,7 @@ function insert(tmp_sfo,obj,device,official)
 	--if game.exists(obj.name) then orig = true end
 
 	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n","") end
-	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\r","") end
+	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\r","") end 
 
 	table.insert( scan.list,
 		{
