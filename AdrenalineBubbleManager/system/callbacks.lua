@@ -11,8 +11,7 @@ bubble_id, reinstall = "",false
 
 function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 
-	if vbuff then vbuff:blit(0,0) elseif back2 then back2:blit(0,0) end
-
+	if back2 then back2:blit(0,0) end
 	if step == 2 then											-- Warning Vpk confirmation!
 		os.delay(100)
 		return 10 -- Ok
@@ -31,7 +30,7 @@ end
 function onCopyFiles(size,written,file)
 
 	if oncopy then
-		if vbuff then vbuff:blit(0,0) elseif back2 then back2:blit(0,0) end
+		if back2 then back2:blit(0,0) end
 		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 
 		screen.print(925,10,math.floor((written*100)/size).." %",1.0,color.white, color.black, __ARIGHT)
@@ -45,10 +44,10 @@ NResources, TResources = 0,0
 iconpreview = nil
 function onNetGetFile(size,written,speed)
 
-	if vbuff then vbuff:blit(0,0) elseif back2 then back2:blit(0,0) end
+	if back2 then back2:blit(0,0) end
 	draw.fillrect(0,0,__DISPLAYW,30, color.shine)
 
-	screen.print(10,10,"Download Resources: "..NResources.."/"..TResources)
+	screen.print(10,10,STRINGS_RESOURCES_DOWNLOAD..": "..NResources.."/"..TResources)
 	screen.print(10,35,"File: "..tostring(bubble_id))
 
 	if iconpreview then

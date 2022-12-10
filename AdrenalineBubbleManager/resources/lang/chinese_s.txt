@@ -34,6 +34,8 @@ BUBBLES_INJECT =				"注入图片"
 BUBBLES_PATH2GAME =				"完整路径"
 BUBBLES_EDITPATH =				"编辑路径"
 BUBBLES_EDIT_TITLE =			"Edit Title"
+BUBBLES_DONT_INSTALL_GAMEID =   "Can not create this bubble using original GAMEID"
+BUBBLES_INSTALL_GAMEID =        "If you want a bubble of this game you must use the PSPEMUXXX option in extra settings"
 
 --bubles.redit
 BUBBLES_RE_EDIT =				"气泡资源读取器"
@@ -170,6 +172,7 @@ STRINGS_RESOURCES_ERROR_BASE =		"获取资源数据库出错!"
 STRINGS_RESOURCES_INSTALLED =		"资源已安装!"
 STRINGS_RESOURCES_ERROR_UNPACK =	"资源解包出错!"
 STRINGS_RESOURCES_ERROR_DOWNLOAD =	"资源下载出错!"
+STRINGS_RESOURCES_DOWNLOAD =        "Download Resources"
 
 ------------	Updater	-------------------------------------------------------------------------
 STRINGS_UPDATER_QUESTION = 		"当前可用.\n\n您是否想要更新本程序?"

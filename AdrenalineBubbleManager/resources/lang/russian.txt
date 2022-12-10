@@ -34,6 +34,8 @@ BUBBLES_INJECT =				"Вставить imgs"
 BUBBLES_PATH2GAME =				"Whole Path"
 BUBBLES_EDITPATH =				"Edit Path"
 BUBBLES_EDIT_TITLE =			"Edit Title"
+BUBBLES_DONT_INSTALL_GAMEID =   "Can not create this bubble using original GAMEID"
+BUBBLES_INSTALL_GAMEID =        "If you want a bubble of this game you must use the PSPEMUXXX option in extra settings"
 
 --bubles.redit
 BUBBLES_RE_EDIT =				"Загрузчик ресурсов пузыря"
@@ -170,6 +172,7 @@ STRINGS_RESOURCES_ERROR_BASE =		"Error Get Database of Resources!"
 STRINGS_RESOURCES_INSTALLED =		"Resources Installed!"
 STRINGS_RESOURCES_ERROR_UNPACK =	"Error Unpack Resources!"
 STRINGS_RESOURCES_ERROR_DOWNLOAD =	"Error Downloading Resources!"
+STRINGS_RESOURCES_DOWNLOAD =        "Download Resources"
 
 ------------	Updater	-------------------------------------------------------------------------
 STRINGS_UPDATER_QUESTION = 		"is now available.\n\nDo you want to update the application?"

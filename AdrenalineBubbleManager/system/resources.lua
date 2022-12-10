@@ -110,7 +110,7 @@ function bubbles.online(obj, simg)
 		buttons.read()
 
 		if back2 then back2:blit(0,0) end
-		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
+		if snow then stars.render() end
 
 		screen.print(480,5,STRINGS_RESOURCES_ONLINE,1,color.red, color.shine,__ACENTER)
 
@@ -295,7 +295,7 @@ function bubbles.online(obj, simg)
 						listbubbles[sel][i].update = nil
 
 						if back2 then back2:blit(0,0) end
-						message_wait(mge)
+							message_wait(mge)
 						os.delay(500)
 						
 					end

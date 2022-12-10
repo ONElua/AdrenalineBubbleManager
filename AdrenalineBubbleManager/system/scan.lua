@@ -34,7 +34,7 @@ function insert(tmp_sfo,obj,device,official)
 	--if game.exists(obj.name) then orig = true end
 
 	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n","") end
-	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\r","") end 
+	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\r","") end
 
 	table.insert( scan.list,
 		{
@@ -421,8 +421,7 @@ function scan.show(objedit)
 							draw.circle(948,524,8,color.new(0,255,0),30)
 							screen.flip()
 
-							local vbuff = screen.buffertoimage()
-							bubbles.install(scan.list[i],vbuff)
+							bubbles.install(scan.list[i])
 							c+=1
 						end
 					end
@@ -481,8 +480,7 @@ function scan.show(objedit)
 								draw.circle(948,524,8,color.new(0,255,0),30)
 								screen.flip()
 
-								local vbuff = screen.buffertoimage()
-								bubbles.install(scan.list[i],vbuff)
+								bubbles.install(scan.list[i])
 								c+=1
 							end
 						end

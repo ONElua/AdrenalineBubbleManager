@@ -9,6 +9,11 @@
 	- DevDavisNunez (https://twitter.com/DevDavisNunez).
 ]]
 
+day = tonumber(os.date("%d"))
+month = tonumber(os.date("%m"))
+snow = false
+if (month == 12 and (day >= 20 and day <= 25)) then snow = true end
+
 --Show splash ...
 local splash = image.load("resources/splash.png")
 if splash then splash:blit(0,0) end

@@ -113,15 +113,21 @@ function bubbles.scan()
 end
 
 -- src = objet game to launch
-function bubbles.install(src,buff)
+function bubbles.install(src)
 
 	files.delete("ux0:data/ABMVPK/")
-	local lastid
+	local lastid = nil
 
 	--src.type: ISO/CSO UG, PSN EG, HBs MG, PS1 ME, PBOOT.PBP PG 
-	if __TITLEID == 1 and src.gameid:len() == 9 and not game.exists(src.gameid) and (src.type != "MG" and src.type != "PG") then
-		lastid = src.gameid
-	else
+	if __TITLEID == 1 and src.gameid:len() == 9 and (src.type != "MG" and src.type != "PG") then
+		if game.exists(src.gameid) then
+			os.dialog(BUBBLES_DONT_INSTALL_GAMEID.."\n\n"..BUBBLES_INSTALL_GAMEID,src.title_bubble or STRINGS_UNK)
+			return
+		else
+			lastid = src.gameid
+		end
+	end
+	if not lastid then
 		local i=0
 		while game.exists(string.format("%s%03d",string.sub("PSPEMU00",1,-3),i)) do
 			i+=1
@@ -144,7 +150,8 @@ function bubbles.install(src,buff)
 	local timg = nil
 	timg = game.geticon0(src.path)
 
-	if buff then buff:blit(0,0) elseif back2 then back2:blit(0,0) end
+	if back2 then back2:blit(0,0) end
+	
 	draw.fillrect(0,0,960,30, color.shine)
 	screen.print(10,10,STRINGS_CONVERTING)
 	screen.print(950,10,"ICON0.PNG",1, color.white, color.blue, __ARIGHT)
@@ -174,7 +181,7 @@ function bubbles.install(src,buff)
 
 	------------------------------pic0 (boot) & bg0
 	if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then
-		if src.type == "ME" then timg = PSX_IMG	else timg = PSP_IMG	end
+		if src.type == "ME" then timg = PSX_IMG	 else timg = PSP_IMG	 end
 	else
 		timg = game.getpic1(src.path)
 	end
@@ -189,7 +196,8 @@ function bubbles.install(src,buff)
 		timg:reset()
 	end
 
-	if buff then buff:blit(0,0) elseif back2 then back2:blit(0,0) end
+	if back2 then back2:blit(0,0) end
+	
 	draw.fillrect(0,0,960,30, color.shine)
 	screen.print(10,10,STRINGS_CONVERTING)
 	screen.print(950,10,"PIC0.PNG",1, color.white, color.gray, __ARIGHT)
@@ -383,16 +391,16 @@ function bubbles.settings()
 			touch.read()
 
 		if back2 then back2:blit(0,0) end
-		if math.minmax(tonumber(os.date("%d%m")),2512,2512) == tonumber(os.date("%d%m")) then stars.render() end
+		if snow then stars.render() end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5, BUBBLES_TITLE, 1, color.white, color.blue, __ACENTER)
 		screen.print(950,5,BUBBLES_COUNT.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
 
-		draw.fillrect(70,45,820,454,color.new(105,105,105,230))
-			draw.gradline(70,295,890,295,color.blue,color.green)
-			draw.gradline(70,296,890,296,color.green,color.blue)
-		draw.rect(70,45,820,454,color.blue)
+		draw.fillrect(70,45,820,455,color.new(105,105,105,230))
+			draw.gradline(70,280,890,280,color.blue,color.green)
+			draw.gradline(70,281,890,281,color.green,color.blue)
+		draw.rect(70,45,820,455,color.blue)
 
 		if show_pic then
 			if bg0img then
@@ -453,15 +461,15 @@ function bubbles.settings()
 			--screen.print(480, 305, bubbles.list[scrids.sel].title or STRINGS_UNK,1,color.white,color.gray, __ACENTER)
 
 			--Options txts
-			if change then y1 = 60 else y1 = 365 end--356
+			if change then y1 = 60 else y1 = 350 end
 
 			for i=1,#options_edit + 2 do
 				if change then
 					if i == optsel then
 						if i==#options_edit + 1 then
-							draw.fillrect(73,302,813,24,color.green:a(100))--329
+							draw.fillrect(73,290,813,24,color.green:a(100))--title
 						elseif i==#options_edit + 2 then
-							draw.fillrect(73,332,813,24,color.green:a(100))--329
+							draw.fillrect(73,320,813,24,color.green:a(100))--path2iso
 						else
 							draw.fillrect(235,y1-2,490,22,color.green:a(100))
 						end
@@ -480,7 +488,7 @@ function bubbles.settings()
 
 			end
 
-			screen.print(480, 305, bubbles.list[scrids.sel].title or STRINGS_UNK,1,color.white,color.gray, __ACENTER)
+			screen.print(480, 292, bubbles.list[scrids.sel].title or STRINGS_UNK,1,color.white,color.gray, __ACENTER)
 
 			if not change then
 				if bubbles.list[scrids.sel].exist then ccolor = color.green else ccolor = color.orange end
@@ -492,9 +500,9 @@ function bubbles.settings()
 
 			--Path2Game
 			if screen.textwidth(bubbles.list[scrids.sel].iso or STRINGS_UNK) > 765 then
-				xscr1 = screen.print(xscr1, 335, bubbles.list[scrids.sel].iso or STRINGS_UNK,1,ccolor,color.gray,__SLEFT,765)
+				xscr1 = screen.print(xscr1, 322, bubbles.list[scrids.sel].iso or STRINGS_UNK,1,ccolor,color.gray,__SLEFT,765)
 			else
-				screen.print(480, 335, bubbles.list[scrids.sel].iso or STRINGS_UNK,1,ccolor,color.gray, __ACENTER)
+				screen.print(480, 322, bubbles.list[scrids.sel].iso or STRINGS_UNK,1,ccolor,color.gray, __ACENTER)
 			end
 
 			--Driver&Execute&Customized
@@ -520,19 +528,19 @@ function bubbles.settings()
 				end
 
 			else
-				screen.print(680, 365, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
-				screen.print(680, 388, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
-				screen.print(680, 411, noyes[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
-				screen.print(680, 434, psb[ bubbles.list[scrids.sel].lines[4] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 350, drivers[ bubbles.list[scrids.sel].lines[1] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 373, bins[ bubbles.list[scrids.sel].lines[2] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 396, noyes[ bubbles.list[scrids.sel].lines[3] + 1 ],1,color.white,color.gray, __ARIGHT)
+				screen.print(680, 419, psb[ bubbles.list[scrids.sel].lines[4] + 1 ],1,color.white,color.gray, __ARIGHT)
 			end
 
 			if not change then
 
 				if total_empty > 0 and dels <= 0 then
-					screen.print(480,448, "SELECT: "..BUBBLES_EMPTY, 1, color.white, color.blue, __ACENTER)
+					screen.print(480,450, "SELECT: "..BUBBLES_EMPTY, 1, color.white, color.blue, __ACENTER)
 				elseif dels > 0 then
-					screen.print(80,448, "SELECT: "..BUBBLES_SELSMARKS, 1, color.white, color.blue, __ALEFT)
-					screen.print(880,448, BUBBLES_STARTMARKS, 1, color.white, color.blue, __ARIGHT)
+					screen.print(80,450, "SELECT: "..BUBBLES_SELSMARKS, 1, color.white, color.blue, __ALEFT)
+					screen.print(880,450, BUBBLES_STARTMARKS, 1, color.white, color.blue, __ARIGHT)
 				end
 
 				screen.print(80,475, SYMBOL_SQUARE..": "..BUBBLES_UNINSTALL.." ("..dels..")", 1, color.white, color.blue, __ALEFT)
@@ -1037,7 +1045,7 @@ function bubbles.edit(obj, simg)
 		buttons.read()
 
 		if back2 then back2:blit(0,0) end
-		if math.minmax(tonumber(os.date("%d%m")),2512,2512)== tonumber(os.date("%d%m")) then stars.render() end
+		if snow then stars.render() end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		screen.print(480,5, BUBBLES_RE_EDIT, 1, color.white, color.blue, __ACENTER)
@@ -1148,9 +1156,8 @@ function bubbles.edit(obj, simg)
 		--online
 		if buttons.select and not inside then
 
-			local vbuff = screen.toimage()
-			if vbuff then vbuff:blit(0,0) elseif back then back:blit(0,0) end
-			message_wait(STRINGS_RESOURCES_SEARCH)
+			if back2 then back2:blit(0,0) end
+				message_wait(STRINGS_RESOURCES_SEARCH)
 			os.delay(500)
 
 			bubbles.online(obj, simg, tmp)
@@ -1259,6 +1266,7 @@ function bubbles.edit(obj, simg)
 				files.mkdir(path_tmp)
 
 				if back2 then back2:blit(0,0) end
+				if snow then stars.render() end
 				draw.fillrect(0,0,960,30, color.shine)
 				screen.print(10,10,STRINGS_BACKUP)
 				os.delay(250)
@@ -1279,6 +1287,7 @@ function bubbles.edit(obj, simg)
 
 							--Resources to 8bits
 							if back2 then back2:blit(0,0) end
+							if snow then stars.render() end
 
 							if i < 7 then--no mayor a xml y frames
 
@@ -1384,6 +1393,7 @@ function bubbles.edit(obj, simg)
 				--MANUAL folder
 				if files.exists(newpath.."/Manual/") then
 					if back2 then back2:blit(0,0) end
+					if snow then stars.render() end
 					draw.fillrect(0,0,960,30, color.shine)
 						screen.print(10,10,STRINGS_INSTALL_MANUAL)
 					screen.flip()
@@ -1393,6 +1403,7 @@ function bubbles.edit(obj, simg)
 					--check Manual Bubble ?
 					if files.exists(obj.path.."/sce_sys/Manual/001.png") then
 						if back2 then back2:blit(0,0) end
+						if snow then stars.render() end
 						draw.fillrect(0,0,960,30, color.shine)
 						if os.dialog(STRINGS_MANUAL_KEEP, STRINGS_INSTALL_MANUAL, __DIALOG_MODE_OK_CANCEL) == false then
 							files.move(obj.path.."/sce_sys/Manual/", path_tmp.."sce_sys/")
