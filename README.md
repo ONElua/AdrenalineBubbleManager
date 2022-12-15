@@ -24,6 +24,10 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
+### Changelog 6.17 ###
+- Fixed bug that prevented the OSK from opening caused by CR (carriage return) on name input<br>
+- Option to create bubbles using gameid of installed legit content has been disabled<br>
+
 ### Changelog 6.16 ###
 - HotFix No games found<br>
 
