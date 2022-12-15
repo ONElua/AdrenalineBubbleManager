@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.17">
+    <![CDATA[
+- Fixed bug that prevented the OSK from opening caused by CR (carriage return) on name input<br>
+- Option to create bubbles using gameid of installed legit content has been disabled<br>
+    ]]>
+  </changes>
 <changes app_ver="06.16">
     <![CDATA[
 - HotFix No Games found<br>
