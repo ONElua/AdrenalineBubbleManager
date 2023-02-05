@@ -22,7 +22,7 @@ THID_THEME = thread.new("system/thread_bubbles.lua")
 pic_alpha,sorting = 0,0
 function bubbles.online(obj, simg)
 
-	--files.delete("ux0:data/ABM/NEWdatabase.json")
+	files.delete("ux0:data/ABM/NEWdatabase.json")
 
 	local mge = BUBBLES_NOTRESOURCES
 
@@ -34,15 +34,13 @@ function bubbles.online(obj, simg)
 
 		listbubbles = {}
 		authors = {}
---[[
 		if __ITLS then
 			raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
 		else
 			http.download(string.format(path_json, APP_REPO, PROJECT_BUBBLES), "ux0:data/ABM/NEWdatabase.json")
 			if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
 		end
-		]]
-		if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
+
 		if raw then
 			local not_err,supertb = true,{}
 			not_err, supertb = pcall(json.decode, raw)
