@@ -8,6 +8,7 @@
    
 ]]
 
+local urlb = 'https://raw.githubusercontent.com/ONElua/VitaBubbles/master/'
 __PATH_TMP = "ux0:data/ABM/tmp/"
 __PATH_RESOURCES = "ux0:ABM/"
 files.mkdir(__PATH_TMP)
@@ -16,17 +17,12 @@ PROJECT_BUBBLES = "VitaBubbles"
 
 BUBBLES_PORT_I = channel.new("BUBBLES_PORT_I")
 BUBBLES_PORT_O = channel.new("BUBBLES_PORT_O")
-if __ITLS then
-	THID_THEME = thread.new("system/thread_bubbles.lua")
-else
-	THID_THEME = thread.new("system/thread_bubbles_down.lua")
-end
+THID_THEME = thread.new("system/thread_bubbles.lua")
 
 pic_alpha,sorting = 0,0
-
 function bubbles.online(obj, simg)
 
-	files.delete("ux0:data/ABM/NEWdatabase.json")
+	--files.delete("ux0:data/ABM/NEWdatabase.json")
 
 	local mge = BUBBLES_NOTRESOURCES
 
@@ -38,20 +34,15 @@ function bubbles.online(obj, simg)
 
 		listbubbles = {}
 		authors = {}
-
-		--Test new bin
-		--[[
-		raw = http.down(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
-		if raw then os.message("done") end
-		]]
-
+--[[
 		if __ITLS then
 			raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
 		else
 			http.download(string.format(path_json, APP_REPO, PROJECT_BUBBLES), "ux0:data/ABM/NEWdatabase.json")
 			if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
 		end
-
+		]]
+		if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
 		if raw then
 			local not_err,supertb = true,{}
 			not_err, supertb = pcall(json.decode, raw)
@@ -60,6 +51,7 @@ function bubbles.online(obj, simg)
 					local list = supertb["content"]
 					authors = supertb["authors"]
 					if #list > 1 then table.sort(list ,function (a,b) return string.lower(a.title)<string.lower(b.title) end) end
+					if #authors > 1 then table.sort(authors, function (a,b) return string.lower(a)<string.lower(b) end) end
 
 					for i=1,#authors do
 						listbubbles[i] = {}
@@ -83,28 +75,45 @@ function bubbles.online(obj, simg)
 		end
 
 	end--not listbubbles
+	onNetGetFile = onNetGetFileOld
 
 	local maxim,xscr1,xscr2,xscr3 = 10,25,720,30
 
 	if #authors > 0 then
 		for i=1,#authors do
 			listbubbles[i].scroll = newScroll(listbubbles[i],maxim)
-			for j=1,#listbubbles[i] do
-				if not files.exists(__PATH_TMP..listbubbles[i][j].id..".jpg") and not files.exists(__PATH_TMP..listbubbles[i][j].id..".png") then
-					BUBBLES_PORT_O:push({ id = listbubbles[i][j].id })
-				end
-			end
 		end
 	else
 		listbubbles[1] = {}
 		listbubbles[1].scroll = newScroll(listbubbles[1],maxim)
 	end
 
-	local url = "https://raw.githubusercontent.com/ONElua/VitaBubbles/master/"
+	local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
+	if #listbubbles[1] > 0 then
+		for i=1,#listbubbles[1] do
+			power.tick(__POWER_TICK_ALL)
+
+			if back2 then back2:blit(0,0) end
+			message_wait(STRINGS_RESOURCES_ONLINE.."\n\n         "..i.."/"..#listbubbles[1])
+
+			if listbubbles[1][i].icon0 then
+				if not files.exists(__PATH_TMP..listbubbles[1][i].icon0) then
+					http.download(urlb..listbubbles[1][i].icon0, __PATH_TMP..listbubbles[1][i].icon0)
+				--	BUBBLES_PORT_O:push({ icon0 = listbubbles[1][i].icon0, itls = tostring(__ITLS) })
+				end
+				listbubbles[1][i].preview = image.load(__PATH_TMP..listbubbles[1][i].icon0)
+				if listbubbles[1][i].preview then
+					--listbubbles[1][i].preview:resize(200,128)
+					listbubbles[1][i].preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+				end
+			end
+
+		end
+	end
 	onNetGetFile = onNetGetFileOld
 	os.delay(25)
 
-	local preview,sel = nil,1
+	local sel = 1
 	buttons.interval(12,5)
 	while true do
 		buttons.read()
@@ -151,26 +160,23 @@ function bubbles.online(obj, simg)
 
 			end--for
 
-			--Blit Preview
-			if not preview then
-
+			draw.fillrect(720,70, 138,138, color.shine)--210,138, color.shine)
+			if listbubbles[sel][listbubbles[sel].scroll.sel].preview then
+				listbubbles[sel][listbubbles[sel].scroll.sel].preview:blit(700+25,75)
+			else
 				if pic_alpha < 255 then
 					pic_alpha += 02
 					if not angle then angle = 0 end
 					angle += 20
 					if angle > 360 then angle = 0 end
-					draw.framearc(825, 145, 20, color.shine:a(125), 0, 360, 20, 30)
-					draw.framearc(825, 145, 20, color.gray:a(200), angle, 90, 20, 30)--gira
+					draw.framearc(790, 140, 20, color.shine:a(125), 0, 360, 20, 30)
+					draw.framearc(790, 140, 20, color.gray:a(200), angle, 90, 20, 30)--gira
 				else
 					pic_alpha = 0
 				end
-
-				preview = image.load(__PATH_TMP..listbubbles[sel][listbubbles[sel].scroll.sel].id..".jpg") or image.load(__PATH_TMP..listbubbles[sel][listbubbles[sel].scroll.sel].id..".png")
-				if preview then preview:resize(200,128)	preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR) end
 			end
 
-			draw.fillrect(720,70, 210,138, color.shine)
-			if preview then	preview:blit(700+25,75) end
+			screen.print(915, 125, listbubbles[sel].scroll.sel.."/"..listbubbles[sel].scroll.maxim,1,color.white,color.gray,__ACENTER)
 
 			--Blit Info
 			screen.print(700+128, 220, "' "..STRINGS_RESOURCES_ID.." '",1,color.green:a(200),color.gray,__ACENTER)
@@ -219,31 +225,60 @@ function bubbles.online(obj, simg)
 		--Ctrls
 		if listbubbles[sel].scroll.maxim > 0 then
 
-			if buttons.left then
-				sel -=1
+			if buttons.released.left or buttons.released.right then
+
+				local vbuff = screen.buffertoimage()
+				for i=1,#listbubbles[sel] do
+					listbubbles[sel][i].preview = nil
+				end
+				collectgarbage("collect")
+				os.delay(500)
+
+				if buttons.released.left then sel -=1 else sel +=1 end
+				if sel > #authors then sel = 1 end
 				if sel < 1 then sel = #authors end
 
-				pic_alpha,xscr1 = 0,25
-				if preview then preview = nil end
+				if vbuff then vbuff:blit(0,0) elseif back2 then back2:blit(0,0) end
+				message_wait()
+				os.delay(50)
 
-			end
-			if buttons.right then
-				sel +=1
-				if sel > #authors then sel = 1 end
 				pic_alpha,xscr1 = 0,25
-				if preview then preview = nil end
+				local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
+				if #listbubbles[sel] > 0 then
+					for i=1,#listbubbles[sel] do
+						power.tick(__POWER_TICK_ALL)
+
+						if vbuff then vbuff:blit(0,0) elseif back2 then back2:blit(0,0) end
+						message_wait(STRINGS_RESOURCES_ONLINE.."\n\n         "..i.."/"..#listbubbles[sel])
+
+						if listbubbles[sel][i].icon0 then
+							if not files.exists(__PATH_TMP..listbubbles[sel][i].icon0) then
+								http.download(urlb..listbubbles[sel][i].icon0, __PATH_TMP..listbubbles[sel][i].icon0)
+								--BUBBLES_PORT_O:push({ icon0 = listbubbles[sel][i].icon0, itls = tostring(__ITLS) })
+							end
+							listbubbles[sel][i].preview = image.load(__PATH_TMP..listbubbles[sel][i].icon0)
+							if listbubbles[sel][i].preview then
+								--listbubbles[sel][i].preview:resize(200,128)
+								listbubbles[sel][i].preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+							end
+						end
+
+					end
+				end
+				onNetGetFile = onNetGetFileOld
 			end
+
 
 			if buttons.up or buttons.analogly < -60 then
 				if listbubbles[sel].scroll:up() then xscr2,xscr3 = 720,30
 					pic_alpha = 0
-					if preview then preview = nil end
+					
 				end
 			end
 			if buttons.down or buttons.analogly > 60 then
 				if listbubbles[sel].scroll:down() then xscr2,xscr3 = 720,30
 					pic_alpha = 0
-					if preview then preview = nil end
+					
 				end
 			end
 
@@ -276,8 +311,8 @@ function bubbles.online(obj, simg)
 
 						bubble_id = listbubbles[sel][i].id
 						NResources += 1
-						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].id..".jpg") or image.load(__PATH_TMP..listbubbles[sel][i].id..".png")
-						if iconpreview then iconpreview:resize(200,128) end
+						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].icon0)
+						--if iconpreview then iconpreview:resize(200,128) end
 
 						if __ITLS then http.getfile(url_bubbles, path) else http.download(url_bubbles, path) end
 						if files.exists(path) then

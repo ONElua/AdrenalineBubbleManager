@@ -46,12 +46,12 @@ function insert(tmp_sfo,obj,device,official)
 end
 
 function scan.insertCISO(hand,device)
+	init_msg(string.format(DEBUG_LOAD_CISO.." %s\n",hand.path))
 	local _type = files.type(hand.path)
 	if _type == 2 or _type == 3 then
 		local tmp0 = game.info(hand.path)
 		if tmp0 then
 			if tmp0.CATEGORY == "UG" or tmp0.CATEGORY == "PG" then
-				init_msg(string.format(DEBUG_LOAD_CISO.." %s\n",hand.path))
 				insert(tmp0,hand,device)
 			end
 		end
@@ -82,7 +82,7 @@ function scan.isos(path,device)
 end
 
 function scan.insertPBP(hand,device)
-
+	init_msg(string.format(DEBUG_LOAD_PBP.." %s\n",hand.path))
 	local orig = false
 	if game.exists(hand.name) then orig = true end                  -- Is oficial PSP game (Bubble), not read :P
 	--if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
@@ -101,7 +101,6 @@ function scan.insertPBP(hand,device)
 		end
 ]]
 		--if _insert then
-			init_msg(string.format(DEBUG_LOAD_PBP.." %s\n",hand.path))
 			insert(tmp0,hand,device,orig)
 		--end
 		tmp0 = nil
@@ -179,7 +178,7 @@ function scan.show(objedit)
 
 	local xb,yb = 820,60
 	while true do
-		power.tick(0)
+		power.tick(__POWER_TICK_ALL)
 		buttons.read()
 			touch.read()
 
