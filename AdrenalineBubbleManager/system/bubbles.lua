@@ -1074,6 +1074,7 @@ function bubbles.edit(obj, simg)
 				draw.fillrect(3, ybar-2 + ((h-pos_height)/(scrids.maxim-1))*(scrids.sel-1), 8, pos_height, color.new(0,255,0))
 			--end
 
+			--Blits previews
 			if tmp[scrids.sel].img then
 				tmp[scrids.sel].img:blit(700,84)
 			end

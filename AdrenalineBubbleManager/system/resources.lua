@@ -8,21 +8,19 @@
    
 ]]
 
-local urlb = 'https://raw.githubusercontent.com/ONElua/VitaBubbles/master/'
 __PATH_TMP = "ux0:data/ABM/tmp/"
 __PATH_RESOURCES = "ux0:ABM/"
 files.mkdir(__PATH_TMP)
 APP_REPO = "ONElua"
 PROJECT_BUBBLES = "VitaBubbles"
 
-BUBBLES_PORT_I = channel.new("BUBBLES_PORT_I")
-BUBBLES_PORT_O = channel.new("BUBBLES_PORT_O")
-THID_THEME = thread.new("system/thread_bubbles.lua")
+--BUBBLES_PORT_I = channel.new("BUBBLES_PORT_I")
+--BUBBLES_PORT_O = channel.new("BUBBLES_PORT_O")
+--THID_THEME = thread.new("system/thread_bubbles.lua")
+local urlb = 'https://raw.githubusercontent.com/ONElua/VitaBubbles/master/'
 
 pic_alpha,sorting = 0,0
 function bubbles.online(obj, simg)
-
-	files.delete("ux0:data/ABM/NEWdatabase.json")
 
 	local mge = BUBBLES_NOTRESOURCES
 
@@ -37,10 +35,12 @@ function bubbles.online(obj, simg)
 		if __ITLS then
 			raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
 		else
+			files.delete("ux0:data/ABM/NEWdatabase.json")
 			http.download(string.format(path_json, APP_REPO, PROJECT_BUBBLES), "ux0:data/ABM/NEWdatabase.json")
 			if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
 		end
 
+		--Parsing JSON
 		if raw then
 			local not_err,supertb = true,{}
 			not_err, supertb = pcall(json.decode, raw)
@@ -75,34 +75,35 @@ function bubbles.online(obj, simg)
 	end--not listbubbles
 	onNetGetFile = onNetGetFileOld
 
-	local maxim,xscr1,xscr2,xscr3 = 10,25,720,30
-
+	local maxim,xscr1,xscr2,xscr3,sel = 10,25,720,30,1
+	--Scrolls
 	if #authors > 0 then
 		for i=1,#authors do
 			listbubbles[i].scroll = newScroll(listbubbles[i],maxim)
 		end
 	else
-		listbubbles[1] = {}
-		listbubbles[1].scroll = newScroll(listbubbles[1],maxim)
+		listbubbles[sel] = {}
+		listbubbles[sel].scroll = newScroll(listbubbles[sel],maxim)
 	end
 
 	local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
-	if #listbubbles[1] > 0 then
-		for i=1,#listbubbles[1] do
+	--Get previews
+	if #listbubbles[sel] > 0 then
+		for i=1,#listbubbles[sel] do
 			power.tick(__POWER_TICK_ALL)
 
 			if back2 then back2:blit(0,0) end
-			message_wait(STRINGS_RESOURCES_ONLINE.."\n\n         "..i.."/"..#listbubbles[1])
+			message_wait(STRINGS_RESOURCES_ONLINE.."\n\n         "..i.."/"..#listbubbles[sel])
 
-			if listbubbles[1][i].icon0 then
-				if not files.exists(__PATH_TMP..listbubbles[1][i].icon0) then
-					http.download(urlb..listbubbles[1][i].icon0, __PATH_TMP..listbubbles[1][i].icon0)
-				--	BUBBLES_PORT_O:push({ icon0 = listbubbles[1][i].icon0, itls = tostring(__ITLS) })
+			if listbubbles[sel][i].icon0 then
+				if not files.exists(__PATH_TMP..listbubbles[sel][i].icon0) then
+					http.download(urlb..listbubbles[sel][i].icon0, __PATH_TMP..listbubbles[sel][i].icon0)
+				--	BUBBLES_PORT_O:push({ icon0 = listbubbles[sel][i].icon0, itls = tostring(__ITLS) })
 				end
-				listbubbles[1][i].preview = image.load(__PATH_TMP..listbubbles[1][i].icon0)
-				if listbubbles[1][i].preview then
-					--listbubbles[1][i].preview:resize(200,128)
-					listbubbles[1][i].preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
+				listbubbles[sel][i].preview = image.load(__PATH_TMP..listbubbles[sel][i].icon0)
+				if listbubbles[sel][i].preview then
+					--listbubbles[sel][i].preview:resize(200,128)
+					listbubbles[sel][i].preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 				end
 			end
 
@@ -111,7 +112,6 @@ function bubbles.online(obj, simg)
 	onNetGetFile = onNetGetFileOld
 	os.delay(25)
 
-	local sel = 1
 	buttons.interval(12,5)
 	while true do
 		buttons.read()
@@ -225,7 +225,7 @@ function bubbles.online(obj, simg)
 
 			if buttons.released.left or buttons.released.right then
 
-				local vbuff = screen.buffertoimage()
+				--local vbuff = screen.buffertoimage()
 				for i=1,#listbubbles[sel] do
 					listbubbles[sel][i].preview = nil
 				end
@@ -265,7 +265,6 @@ function bubbles.online(obj, simg)
 				end
 				onNetGetFile = onNetGetFileOld
 			end
-
 
 			if buttons.up or buttons.analogly < -60 then
 				if listbubbles[sel].scroll:up() then xscr2,xscr3 = 720,30
@@ -348,4 +347,3 @@ function bubbles.online(obj, simg)
 	
 	end--while
 end
-
