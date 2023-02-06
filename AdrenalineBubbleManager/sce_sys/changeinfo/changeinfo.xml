@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.18">
+    <![CDATA[
+- Added support for the new json format for downloading custom bubbles (preview.png)<br>
+- Now the previews are downloaded one by one. (The first time will be a bit slow)<br>
+    ]]>
+  </changes>
 <changes app_ver="06.17">
     <![CDATA[
 - Fixed bug that prevented the OSK from opening caused by CR (carriage return) on name input<br>

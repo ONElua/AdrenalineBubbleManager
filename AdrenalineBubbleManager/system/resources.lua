@@ -256,6 +256,9 @@ function bubbles.online(obj, simg)
 							end
 							listbubbles[sel][i].preview = image.load(__PATH_TMP..listbubbles[sel][i].icon0)
 							if listbubbles[sel][i].preview then
+								--if listbubbles[sel][i].preview:getrealw() != 128 and listbubbles[sel][i].preview:getrealw() != 128 then
+								--	os.dialog(listbubbles[sel][i].icon0)idolmaster
+								--end
 								--listbubbles[sel][i].preview:resize(200,128)
 								listbubbles[sel][i].preview:setfilter(__IMG_FILTER_LINEAR, __IMG_FILTER_LINEAR)
 							end
