@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.19">
+    <![CDATA[
+- Added option to download availabe languages.<br>
+- Lastest ABM version is needed to be able to download newset resources for the repo Vita bubbles<br>
+    ]]>
+  </changes>
 <changes app_ver="06.18">
     <![CDATA[
 - Added support for the new json format for downloading custom bubbles (preview.png)<br>

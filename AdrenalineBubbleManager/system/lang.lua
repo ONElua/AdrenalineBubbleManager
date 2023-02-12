@@ -39,7 +39,7 @@ function download_langs()
 	for i=1,#langs do
 		bubble_id,NResources,TResources = langs[i].file..".txt",i,#langs
 		local res = http.download(string.format("https://raw.githubusercontent.com/%s/%s/master/%s/resources/lang/%s.txt", APP_REPO,APP_PROJECT,APP_PROJECT,
-				string.lower(langs[i].file)), "ux0:data/abm/lang/"..string.lower(langs[i].file..".txt"))
+			string.lower(langs[i].file)), "ux0:data/abm/lang/"..string.lower(langs[i].file..".txt"))
 		if res.headers and res.headers.status_code == 200 and files.exists(__PATH_LANG..langs[i].file..".txt") then
 			files.move(__PATH_LANG..langs[i].file..".txt","resources/lang/")
 		else
