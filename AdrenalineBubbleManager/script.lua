@@ -21,6 +21,8 @@ screen.flip()
 splash=nil
 
 dofile("crc.lua")
+dofile("system/scroll.lua")
+dofile("system/lang.lua")
 dofile("system/commons.lua")
 dofile("system/callbacks.lua")
 if os.access() == 0 then

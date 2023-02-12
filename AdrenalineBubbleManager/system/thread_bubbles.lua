@@ -23,14 +23,6 @@ while true do
 					files.rename(PATH_PREVIEWS.."tmpcover", entry.icon0)
 					break
 				end
---[[
-				if (not files.exists(PATH_PREVIEWS..entry.id..".jpg") and http.getfile(urlb..entry.id..".jpg", PATH_PREVIEWS.."tmpcover.jpg"))
-						or (files.exists(PATH_PREVIEWS..entry.id..".jpg")) then
-					files.rename(PATH_PREVIEWS.."tmpcover.jpg", entry.id..".jpg")
-					break
-				end
-]]
-				--os.delay(5)
 				os.delay(20)
 			end
 
@@ -41,14 +33,6 @@ while true do
 					files.rename(PATH_PREVIEWS.."tmpcover", entry.icon0)
 					break
 				end
---[[
-				if (not files.exists(PATH_PREVIEWS..entry.id..".jpg") and http.download(urlb..entry.id..".jpg", PATH_PREVIEWS.."tmpcover.jpg").success)
-						or (files.exists(PATH_PREVIEWS..entry.id..".jpg")) then
-					files.rename(PATH_PREVIEWS.."tmpcover.jpg", entry.id..".jpg")
-					break
-				end
-]]
-				--os.delay(5)
 				os.delay(20)
 			end
 		end

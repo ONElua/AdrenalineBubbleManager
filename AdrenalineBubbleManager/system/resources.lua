@@ -23,7 +23,7 @@ pic_alpha,sorting = 0,0
 function bubbles.online(obj, simg)
 
 	local mge = BUBBLES_NOTRESOURCES
-
+			files.delete("ux0:data/ABM/NEWdatabase.json")
 	local path_json = "https://raw.githubusercontent.com/%s/%s/master/NEWdatabase.json"
 	local onNetGetFileOld = onNetGetFile; onNetGetFile = nil
 

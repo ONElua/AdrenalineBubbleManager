@@ -577,8 +577,9 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--8
 		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--9
 		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--10
+		{ text = STRINGS_LANG_DOWNLOAD,		desc = STRINGS_DESC_LANG_DOWNLOAD },		--11
 
-		{ text = STRINGS_RESTORE_ADR,		desc = STRINGS_DESC_RESTORE_ADR },			--11
+		{ text = STRINGS_RESTORE_ADR,		desc = STRINGS_DESC_RESTORE_ADR },			--12
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -725,6 +726,7 @@ function submenu_abm.draw(obj)
 			elseif submenu_abm.scroll.sel == 10 then--Load Language
 				if __LANG_CUSTOM == 1 then __LANG_CUSTOM,_lang = 0,STRINGS_LANG_DEFAULT
 				else __LANG_CUSTOM,_lang = 1,STRINGS_LANG_CUSTOM end
+
 			end
 
 			_save = true
@@ -732,6 +734,9 @@ function submenu_abm.draw(obj)
 		end
 
 		if buttons.accept and submenu_abm.scroll.sel == 11 then
+			download_langs()
+		end
+		if buttons.accept and submenu_abm.scroll.sel == 12 then
 			restore_adr()
 		end
 
@@ -772,6 +777,8 @@ function submenu_abm.draw(obj)
 			elseif i==10 then
 				screen.print(780, h, _lang, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==11 then
+				screen.print(780, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
+			elseif i==12 then
 				screen.print(780, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
 			end
 
