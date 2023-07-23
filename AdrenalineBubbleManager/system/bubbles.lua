@@ -20,7 +20,7 @@ function bubbles.scan()
 
 	bubbles.list = {}
 	for i=1, #list do
-		if files.exists(list[i].path.."/data/boot.inf") or files.exists(list[i].path.."/data/boot.bin") then
+		if (files.exists(list[i].path.."/data/boot.inf") or files.exists(list[i].path.."/data/boot.bin")) and list[i].id != "RETROLNCR" then
 
 			local entry = {
 				id = list[i].id,                           							-- GAMEID of the game.
@@ -36,9 +36,13 @@ function bubbles.scan()
 				--checking magic
 				local fp = io.open(list[i].path.."/data/boot.bin","r")
 				if fp then
-					local magic = str2int(fp:read(4))
+					local _read = fp:read(4)
+					if _read then
+						fp:seek("set",0x00)
+						local magic = str2int(fp:read(4))
+						if magic == 0x00424241 then	table.insert(bubbles.list, entry) end
+					end
 					fp:close()
-					if magic == 0x00424241 then	table.insert(bubbles.list, entry) end
 				end
 
 			else

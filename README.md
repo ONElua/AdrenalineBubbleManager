@@ -24,6 +24,14 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 2. After taking care of step 1, then you can start using Adrenaline Bubbles Manager to create bubbles for your PSP/PSX content.
 
+### NOTE (NoPspEmudrm) ###
+For support with downloaded games (NoPspEmudrm) you must have installed the following plugins in adrenaline:
+- *([Npdrm free mod](https://github.com/lusid1/npdrm_free_mod)).*<br>
+- *([Np Loader mod](https://github.com/lusid1/nploader_mod)).*<br>
+
+### Changelog 6.20 ###
+- Correct support for adrenaline bubbles with boot.bin
+
 ### Changelog 6.19 ###
 - Added option to download availabe languages.<br>
 - Lastest ABM version is needed to be able to download newset resources for the repo Vita bubbles<br>
