@@ -30,7 +30,7 @@ For support with downloaded games (NoPspEmudrm) you must have installed the foll
 - *([Np Loader mod](https://github.com/lusid1/nploader_mod)).*<br>
 
 ### Changelog 6.20 ###
-- Correct support for adrenaline bubbles with boot.bin
+- Correct support for adrenaline bubbles with boot.bin.
 
 ### Changelog 6.19 ###
 - Added option to download availabe languages.<br>
