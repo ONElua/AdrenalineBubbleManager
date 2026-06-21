@@ -1,6 +1,9 @@
 # Adrenaline Bubbles Manager
 **Create and organize your direct adrenaline bubbles.**
 
+## INFERNO Fixed Version
+This fork is the INFERNO fixed version of Adrenaline Bubble Manager. It fixes ABM-created bubbles that were labeled as INFERNO but actually booted through NP9660, and patches existing ABM bubbles in place when the bubble list is scanned.
+
 ![header](ContentSelection.png)
 
 ### Description ###

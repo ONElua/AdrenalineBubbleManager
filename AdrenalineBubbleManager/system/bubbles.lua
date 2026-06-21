@@ -19,6 +19,7 @@ function bubbles.scan()
 	table.sort(list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 
 	bubbles.list = {}
+	bubbles.fixed_driver = 0
 	for i=1, #list do
 		if (files.exists(list[i].path.."/data/boot.inf") or files.exists(list[i].path.."/data/boot.bin")) and list[i].id != "RETROLNCR" then
 
@@ -65,12 +66,12 @@ function bubbles.scan()
 			local size = files.size(bubbles.list[i].boot)
 			if size > 288 then bubbles.list[i].adrnew = true else bubbles.list[i].adrnew = false end
 			
-			local fp = io.open(bubbles.list[i].boot,"r")
+			local fp = io.open(bubbles.list[i].boot,"r+")
 			if fp then
 				--Driver
-				fp:seek("set",0x04)
-				local driver = str2int(fp:read(4))
-				if driver < 0 or driver > 2 then driver = 0 end
+				local driver, adrnew, fixed = normalizeBootDriver(fp, bubbles.list[i].adrnew)
+				bubbles.list[i].adrnew = adrnew
+				if fixed then bubbles.fixed_driver += 1 end
 				table.insert(bubbles.list[i].lines, driver)
 
 				--Execute
@@ -111,6 +112,10 @@ function bubbles.scan()
 				fp:close()
 
 			end--fp
+		end
+
+		if bubbles.fixed_driver > 0 then
+			os.dialog("Patched boot driver mapping for "..bubbles.fixed_driver.." existing bubble(s).")
 		end
 	end
 
@@ -291,6 +296,9 @@ function bubbles.install(src)
 	local fp = io.open(work_dir.."data/boot.bin", "r+")
 	if fp then
 
+		--Driver
+		writeBootDriver(fp, 0)
+
 		--Customized
 		fp:seek("set",0x0C)
 		fp:write(int2str(1))
@@ -330,7 +338,7 @@ function bubbles.install(src)
 			local entry = {
 				id = lastid,
 				path = "ux0:app/"..lastid,
-				boot = "ux0:app/"..lastid.."/boot.bin",
+				boot = "ux0:app/"..lastid.."/data/boot.bin",
 				imgp = "ur0:appmeta/"..lastid.."/icon0.png",
 				bg0  = "ur0:appmeta/"..lastid.."/livearea/contents/bg0.png",
 				title = src.title_bubble,
@@ -665,8 +673,13 @@ function bubbles.settings()
 
 							--i=1 for drivers, i=2 for Execute, i=3 for Customized
 							for i=1,3 do
-								fp:seek("set", offset * i)
-								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
+								local value = bubbles.list[scrids.sel].lines[i]
+								if i == 1 then
+									writeBootDriver(fp, value, bubbles.list[scrids.sel].adrnew)
+								else
+									fp:seek("set", offset * i)
+									fp:write(int2str(value))
+								end
 							end
 
 							--PSButton

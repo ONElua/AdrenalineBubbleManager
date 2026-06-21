@@ -260,11 +260,98 @@ function int2str(data)
 	return string.char((data)&0xff)..string.char(((data)>>8)&0xff)..string.char(((data)>>16)&0xff)..string.char(((data)>>24)&0xff)
 end
 
+-- ABM's UI stores drivers as 0..2: INFERNO, MARCH33, NP9660.
+-- The PSP-side booter.prx expects a different on-disk order for ISO/CSO:
+-- 1 = INFERNO, 2 = MARCH33, 0 = NP9660. Mark fixed files so old ABM
+-- bubbles that stored raw UI values can still be read correctly.
+__BOOT_DRIVER_MARKER = 0x31444242 -- "BBD1"
+
+function bootDriverToUi(driver, marker)
+	if marker == __BOOT_DRIVER_MARKER then
+		if driver == 1 then return 0 end
+		if driver == 2 then return 1 end
+		if driver == 0 or driver == 3 then return 2 end
+		return 0
+	end
+	if driver < 0 or driver > 2 then driver = 0 end
+	return driver
+end
+
+function bootDriverToFile(driver)
+	if driver < 0 or driver > 2 then driver = 0 end
+	if driver == 0 then return 1 end
+	if driver == 1 then return 2 end
+	return 0
+end
+
+function bootDriverNameToUi(driver)
+	if not driver then return 0 end
+	driver = tostring(driver):upper()
+	if driver == "MARCH" or driver == "MARCH33" then return 1 end
+	if driver == "NP9660" then return 2 end
+	return 0
+end
+
+function writeBootDriverMarker(fp)
+	fp:seek("set",0x2C)
+	fp:write(int2str(__BOOT_DRIVER_MARKER))
+end
+
+function writeBootDriver(fp, driver, marker)
+	fp:seek("set",0x04)
+	fp:write(int2str(bootDriverToFile(driver)))
+	if marker != false then writeBootDriverMarker(fp) end
+end
+
+function fillBytes(size)
+	local data = ""
+	for i=1,size do
+		data = data..string.char(00)
+	end
+	return data
+end
+
+function normalizeBootDriver(fp, adrnew)
+	fp:seek("set",0x04)
+	local raw_driver = str2int(fp:read(4))
+	local driver_marker = 0
+
+	if adrnew then
+		fp:seek("set",0x2C)
+		driver_marker = str2int(fp:read(4))
+	end
+
+	local driver = bootDriverToUi(raw_driver, driver_marker)
+	local fixed = false
+
+	if adrnew then
+		if driver_marker != __BOOT_DRIVER_MARKER or raw_driver != bootDriverToFile(driver) then
+			writeBootDriver(fp, driver)
+			fixed = true
+		end
+	else
+		fp:seek("set",0x20)
+		local path2game = fp:read(256) or ""
+		if #path2game < 256 then path2game = path2game..fillBytes(256 - #path2game) end
+		path2game = string.sub(path2game,1,256)
+
+		fp:seek("set",0x20)
+		fp:write(fillBytes(0x20))
+		fp:seek("set",0x40)
+		fp:write(path2game)
+		writeBootDriver(fp, driver)
+
+		adrnew = true
+		fixed = true
+	end
+
+	return driver, adrnew, fixed
+end
+
 partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:" }
 function AutoMakeBootBin(obj)
 
 	local path2game, _find = "", false
-	local drivers = { "ENABLE", "INFERN0", "MARCH", "NP9660" }		--0,0, 1,2
 	local bins = { "ENABLE", "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN" }	--0,0 1,2
 
 	---Searching game in partitions
@@ -291,14 +378,8 @@ function AutoMakeBootBin(obj)
 		local number = 0
 							
 		--Driver
-		fp:seek("set",0x04)
-		for j=1,#drivers do
-			if driver:upper() == drivers[j] then
-				if j == 1 then number = 0 else number = j - 2 end
-				break
-			end
-		end
-		fp:write(int2str(number))
+		number = bootDriverNameToUi(driver)
+		writeBootDriver(fp, number)
 
 		number = 0
 
