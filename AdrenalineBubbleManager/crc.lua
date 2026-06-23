@@ -2,7 +2,7 @@
 -- default values modules AdrenalineBooter v1.3 for adrenaline v7.0
 __CRCADRBOOTER  = 0x039095FD
 __CRCKERNEL     = 0xC9F84053
-__CRCUSER       = 0xF5116106
+__CRCUSER       = 0x9E1B321A
 __CRCVSH        = 0x485293A1
 __CRCBOOTCONV   = 0xD072FE17
 
