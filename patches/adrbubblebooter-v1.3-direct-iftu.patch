@@ -1,0 +1,231 @@
+--- a/kernel/CMakeLists.txt
++++ b/kernel/CMakeLists.txt
+@@ -11,7 +11,7 @@
+ project(adrenaline_kernel)
+ include("${VITASDK}/share/vita.cmake" REQUIRED)
+ 
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-q -Wall -O3 -nostdlib")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-builtin-strcmp -fno-builtin-strncmp -Wl,-q -Wall -O3 -nostdlib")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions")
+ 
+ add_executable(adrenaline_kernel
+@@ -30,6 +30,7 @@
+   SceSysclibForDriver_stub
+   SceSysmemForDriver_stub
+   SceSysrootForKernel_stub
++  SceSysrootForDriver_stub
+   SceThreadmgrForDriver_stub
+ )
+ 
+@@ -42,7 +43,7 @@
+   FILES_MATCHING PATTERN "*.a"
+ )
+ 
+-add_custom_target(all
++add_custom_target(all_modules
+   COMMAND cp adrenaline_kernel.skprx ../../____/adrenaline_kernel.skprx
+   DEPENDS adrenaline_kernel.skprx
+ )
+--- a/kernel/exports.yml
++++ b/kernel/exports.yml
+@@ -10,4 +10,5 @@
+     AdrenalineKubridge:
+       syscall: true
+       functions:
+-        - kuCtrlPeekBufferPositive
++        - kuCtrlPeekBufferPositive
++        - kuSetPspemuDirectSharpScale
+--- a/kernel/main.c
++++ b/kernel/main.c
+@@ -22,6 +22,7 @@
+ #include <psp2kern/kernel/threadmgr.h>
+ #include <psp2kern/kernel/sysmem.h>
+ #include <psp2kern/kernel/cpu.h>
++#include <psp2kern/lowio/iftu.h>
+ 
+ #include <stdio.h>
+ #include <string.h>
+@@ -42,6 +43,10 @@
+ static tai_hook_ref_t sceCompatSecSetSSRAMAclRef;
+ static tai_hook_ref_t ksceSblAimgrIsDEXRef;
+ static tai_hook_ref_t ksceKernelStartPreloadedModulesRef;
++static tai_hook_ref_t ksceIftuSetInputFrameBufferRef;
++
++static SceUID ksceIftuSetInputFrameBufferHook = -1;
++static volatile int pspemu_direct_sharp_scale = 0;
+ 
+ static int hooks[8];
+ static int n_hooks = 0;
+@@ -49,6 +54,32 @@
+ static SceUID extra_1_blockid = -1, extra_2_blockid = -1;
+ static uint32_t module_nid;
+ 
++static int ksceIftuSetInputFrameBufferPatched(int plane, SceIftuPlaneState *state, int bilinear, int sync_mode) {
++  /*
++   * At the default 960x544 output, IFTU point sampling produces the same
++   * exact 2x pixel replication as Sharp Bilinear Simple.  Keeping the PSP
++   * framebuffer in this direct path avoids the user-mode GXM display queue.
++   */
++  if (pspemu_direct_sharp_scale && bilinear == 1 && state &&
++      state->fb.width == 480 && state->fb.height == 272) {
++    bilinear = 0;
++  }
++
++  return TAI_CONTINUE(int, ksceIftuSetInputFrameBufferRef,
++                      plane, state, bilinear, sync_mode);
++}
++
++int kuSetPspemuDirectSharpScale(int enabled) {
++  if (ksceIftuSetInputFrameBufferHook < 0) {
++    pspemu_direct_sharp_scale = 0;
++    return ksceIftuSetInputFrameBufferHook;
++  }
++
++  pspemu_direct_sharp_scale = enabled != 0;
++  __sync_synchronize();
++  return 0;
++}
++
+ static SceUID ksceKernelAllocMemBlockPatched(const char *name, SceKernelMemBlockType type, int size, SceKernelAllocMemBlockKernelOpt *optp) {
+   SceUID blockid = TAI_CONTINUE(SceUID, ksceKernelAllocMemBlockRef, name, type, size, optp);
+ 
+@@ -170,6 +201,11 @@
+ int module_start(SceSize args, void *argp) {
+   int res;
+ 
++  /* SceDisplay feeds compatibility framebuffers to IFTU. */
++  ksceIftuSetInputFrameBufferHook = taiHookFunctionImportForKernel(
++    KERNEL_PID, &ksceIftuSetInputFrameBufferRef, "SceDisplay",
++    0xCAFCFE50, 0x7CE0C4DA, ksceIftuSetInputFrameBufferPatched);
++
+   // Tai module info
+   tai_module_info_t info;
+   info.size = sizeof(tai_module_info_t);
+@@ -218,6 +254,13 @@
+ }
+ 
+ int module_stop(SceSize args, void *argp) {
++  pspemu_direct_sharp_scale = 0;
++  if (ksceIftuSetInputFrameBufferHook >= 0) {
++    taiHookReleaseForKernel(ksceIftuSetInputFrameBufferHook,
++                           ksceIftuSetInputFrameBufferRef);
++    ksceIftuSetInputFrameBufferHook = -1;
++  }
++
+   taiHookReleaseForKernel(hooks[--n_hooks], ksceKernelStartPreloadedModulesRef);
+   taiHookReleaseForKernel(hooks[--n_hooks], ksceSblAimgrIsDEXRef);
+   taiHookReleaseForKernel(hooks[--n_hooks], SceGrabForDriver_E9C25A28_ref);
+--- a/user/CMakeLists.txt
++++ b/user/CMakeLists.txt
+@@ -11,7 +11,7 @@
+ project(adrenaline_user)
+ include("${VITASDK}/share/vita.cmake" REQUIRED)
+ 
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-q -Wall -O3 -nostartfiles")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon -Wl,-q -Wall -O3 -nostartfiles")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions")
+ 
+ # Builds
+@@ -95,7 +95,7 @@
+ 
+ vita_create_stubs(stubs adrenaline_user ${CMAKE_SOURCE_DIR}/exports.yml)
+ 
+-add_custom_target(all
++add_custom_target(all_modules
+   COMMAND cp adrenaline_user.suprx ../../____/adrenaline_user.suprx
+   COMMAND cp adrenaline_user.suprx ../bubble/pkg/sce_module/adrenaline_user.suprx
+   COMMAND bin2c adrenaline_user.suprx ../cef/updater/adrenaline_user.h adrenaline_user
+--- a/user/main.h
++++ b/user/main.h
+@@ -128,6 +128,7 @@
+ 
+ int sceKernelIsPSVitaTV();
+ int kuCtrlPeekBufferPositive(int port, SceCtrlData *pad_data, int count);
++int kuSetPspemuDirectSharpScale(int enabled);
+ 
+ void lockPower();
+ void unlockPower();
+--- a/user/menu.c
++++ b/user/menu.c
+@@ -94,7 +94,7 @@
+ static char *yes_no_options[] = { "Yes", "No" };
+ static char *ms_location_options[] = { "ux0:pspemu", "ur0:pspemu", "imc0:pspemu", "xmc0:pspemu", "uma0:pspemu" };
+ static char *usbdevice_options[] = { "Memory Card", "Internal Storage", "SD2Vita", "PSVSD" };
+-static char *drivers_options[] = { "INFERNO", "MARCH33", "NP9660" };
++static char *drivers_options[] = { "NP9660", "INFERNO", "MARCH33" };
+ static char *execute_options[] = { "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN" };
+ static char *cpuspeed_options[] = { "Default", "20/10", "50/25", "75/37", "100/50", "111/55", "122/61", "133/66", "166/83", "200/100", "222/111", "266/133", "288/144", "300/150", "333/166" };
+ static char *settings_options[] = { "General", "Individual" };
+@@ -106,6 +106,8 @@
+ 										 "State 16", "State 17", "State 18", "State 19", "State 20", "State 21", "State 22", "State 23",
+ 										 "State 24", "State 25", "State 26", "State 27", "State 28", "State 29", "State 30", "State 31"};
+ 
++#define GRAPHICS_FILTER_SHARP_BILINEAR_SIMPLE 5
++
+ /*static MenuEntry main_entries[] = {
+   { "Enter Standby Mode",        MENU_ENTRY_TYPE_CALLBACK, 0, EnterStandbyMode, NULL, NULL, 0, 0, 0 },
+   { "Open Official Settings",    MENU_ENTRY_TYPE_CALLBACK, 0, OpenOfficialSettings, NULL, NULL, 0, 0, 0 },
+@@ -764,10 +766,28 @@
+ 
+   setBooterTabEntries();
+ 
++  /* Cache the kernel scaler state so a syscall is only made on a change. */
++  int direct_sharp_scale_requested = -1;
++  int direct_sharp_scale_active = 0;
++  int is_vita_tv = sceKernelIsPSVitaTV();
++
+   while (1) {
+ 	int draw_native = *(uint32_t *)CONVERT_ADDRESS(DRAW_NATIVE);
+     SceAdrenaline *adrenaline = (SceAdrenaline *)CONVERT_ADDRESS(ADRENALINE_ADDRESS);
+ 
++    int request_direct_sharp_scale =
++      !is_vita_tv && !adrenaline->pops_mode && !draw_native &&
++      config.graphics_filtering == GRAPHICS_FILTER_SHARP_BILINEAR_SIMPLE &&
++      config.no_smooth_graphics != 0 && config.flux_mode == 0 &&
++      config.psp_screen_scale_x == 2.0f &&
++      config.psp_screen_scale_y == 2.0f;
++
++    if (request_direct_sharp_scale != direct_sharp_scale_requested) {
++      int res = kuSetPspemuDirectSharpScale(request_direct_sharp_scale);
++      direct_sharp_scale_requested = request_direct_sharp_scale;
++      direct_sharp_scale_active = request_direct_sharp_scale && res >= 0;
++    }
++
+     // pause/unpause pops once after switching from psp to pops mode
+     // this pause/unpause fixes slowdown in PS1 games that used to require manually entering/exiting menu
+     if (!adrenaline->pops_mode)
+@@ -857,9 +877,11 @@
+     }
+ 
+     // Do not draw if dialog is running
+-    if (sceCommonDialogIsRunning() || (config.graphics_filtering == 0 && menu_open == 0 && draw_native == 0)) {
++    if (sceCommonDialogIsRunning() ||
++        ((config.graphics_filtering == 0 || direct_sharp_scale_active) &&
++         menu_open == 0 && draw_native == 0)) {
+ 	  // Improve frame pacing when using Original graphics mode. 
+-      if (config.graphics_filtering == 0) {
++      if (config.graphics_filtering == 0 || direct_sharp_scale_active) {
+         sceKernelDelayThread(4 * 1000);
+         sceCompatLCDCSync();
+       } else
+@@ -867,6 +889,11 @@
+       continue;
+     }
+ 
++    /* Keep the shader fallback to one queued frame if the IFTU hook failed. */
++    if (request_direct_sharp_scale && !direct_sharp_scale_active) {
++      sceGxmDisplayQueueFinish();
++    }
++
+     // Draw display
+     vita2d_start_drawing();
+     vita2d_clear_screen();
+@@ -880,7 +907,7 @@
+       shader = advanced_aa_shader;
+     else if (config.graphics_filtering == 4)
+       shader = lcd3x_shader;
+-    else if (config.graphics_filtering == 5)
++    else if (config.graphics_filtering == GRAPHICS_FILTER_SHARP_BILINEAR_SIMPLE)
+       shader = (menu_open == 1 && tab_sel == 1) ? opaque_shader : sharp_simple_shader;
+     else
+       shader = opaque_shader;
