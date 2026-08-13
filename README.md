@@ -4,6 +4,17 @@
 ## INFERNO Fixed Version
 This fork is the INFERNO fixed version of Adrenaline Bubble Manager. It fixes ABM-created bubbles that were labeled as INFERNO but actually booted through NP9660, and patches existing ABM bubbles in place when the bubble list is scanned.
 
+## PSP INPUT LAG AND SCALING FIXED!
+You can now get PSP-exact image quality and PSP-exact input latency using the following settings
+In Adrenaline menu:
+- Graphics Filtering: Sharp Bilinear Simple ( No Scanlines )
+- Smooth Graphics: No
+- F.Lux Filer Color: None
+In official Sony PSP compat settings:
+Bilinear filtering: OFF
+
+We've forked Adrenaline here to bypass Vita2D entirely and instead uses Sony's direct IFTU display path and changes its sampling from bilinear to point/nearest-neighbour. The Vita resolution is exactly 2x PSP, so it becomes a perfect 2x integer scale.
+This version of ABM automatically installs this updated version of Adrenaline v7. This version assumes you are using TheFloW's Adrenaline, compatibility with isage's fork is not asserted.
 ![header](ContentSelection.png)
 
 ### Description ###
