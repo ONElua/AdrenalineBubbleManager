@@ -256,26 +256,12 @@ function bubbles.install(src)
 	-- Set SFO & TITLE
 	local fp_sfo = io.open(work_dir.."sce_sys/PARAM.SFO", "r+")
 	if fp_sfo then
-	
-		--STITLE offset
-		fp_sfo:seek("set",0x2C8)
 
-		local stitle = src.title_bubble
-		local fill = 51 - #stitle
-		for j=1,fill do
-			stitle = stitle..string.char(00)
-		end
-		fp_sfo:write(string.sub(stitle,1,51))
-
-		--TITLE offset
-		fp_sfo:seek("set",0x2FC)
-
-		local title = src.title_bubble
-		local fill = 127 - #title
-		for j=1,fill do
-			title = title..string.char(00)
-		end
-		fp_sfo:write(string.sub(title,1,127))
+		-- Sony specifies STITLE as 52 bytes and TITLE as 128 bytes, including
+		-- the terminating NUL. Keep the full title where possible and only
+		-- shorten at a complete UTF-8 sequence.
+		writeSfoStringField(fp_sfo, 0x108, 0x2C8, 52, src.title_bubble)
+		writeSfoStringField(fp_sfo, 0x118, 0x2FC, 128, src.title_bubble)
 
 		--TITLE_ID offset
 		fp_sfo:seek("set",0x37C)
@@ -990,15 +976,7 @@ function bubbles.settings()
 						local fp_sfo = io.open(bubbles.list[scrids.sel].path.."/sce_sys/PARAM.SFO", "r+")
 						if fp_sfo then
 	
-							--STITLE offset
-							fp_sfo:seek("set",0x2C8)
-
-							local stitle = title
-							local fill = 51 - #stitle
-							for j=1,fill do
-								stitle = stitle..string.char(00)
-							end
-							fp_sfo:write(string.sub(stitle,1,51))
+							writeSfoStringField(fp_sfo, 0x108, 0x2C8, 52, title)
 
 							--Close
 							fp_sfo:close()

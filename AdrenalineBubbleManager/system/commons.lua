@@ -105,7 +105,6 @@ sort_mode = { "title", "mtime", "install", "type", "gameid", "device" }
 
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
-__UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
@@ -117,7 +116,6 @@ __SORT = math.minmax(__SORT, 1, #sort_mode)
 _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
 _lang = __LANG_CUSTOM
-if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
 if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = STRINGS_PSP_PSX_BUBBLES end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
@@ -258,6 +256,56 @@ end
 -- Convert Number (32bit) to a string 4 bytes...
 function int2str(data)
 	return string.char((data)&0xff)..string.char(((data)>>8)&0xff)..string.char(((data)>>16)&0xff)..string.char(((data)>>24)&0xff)
+end
+
+-- Return the longest prefix that fits in max_bytes without splitting a UTF-8
+-- sequence. Vita TITLE/STITLE sizes are byte limits, not character limits.
+function utf8prefix(value, max_bytes)
+	value = tostring(value or "")
+	if #value <= max_bytes then return value end
+
+	local pos, last = 1, 0
+	while pos <= #value and pos <= max_bytes do
+		local lead = string.byte(value, pos)
+		local sequence = 0
+
+		if lead < 0x80 then sequence = 1
+		elseif lead >= 0xC2 and lead <= 0xDF then sequence = 2
+		elseif lead >= 0xE0 and lead <= 0xEF then sequence = 3
+		elseif lead >= 0xF0 and lead <= 0xF4 then sequence = 4
+		else break end
+
+		if pos + sequence - 1 > max_bytes then break end
+
+		local valid = true
+		for i=1,sequence-1 do
+			local continuation = string.byte(value, pos+i)
+			if not continuation or continuation < 0x80 or continuation > 0xBF then
+				valid = false
+				break
+			end
+		end
+		if not valid then break end
+
+		last = pos + sequence - 1
+		pos = pos + sequence
+	end
+
+	return string.sub(value, 1, last)
+end
+
+-- Write one fixed-layout string in the bundled bubble PARAM.SFO. The SFO
+-- string length includes its terminating NUL, as in Sony-generated SFOs.
+function writeSfoStringField(fp, length_offset, value_offset, field_size, value)
+	local text = utf8prefix(value, field_size-1)
+
+	fp:seek("set", length_offset)
+	fp:write(int2str(#text+1))
+
+	fp:seek("set", value_offset)
+	fp:write(text..string.rep(string.char(0), field_size-#text))
+
+	return text
 end
 
 -- ABM's UI stores drivers as 0..2: INFERNO, MARCH33, NP9660.

@@ -35,9 +35,6 @@ end
 __ITLS = os.lmodule("itlsKernel")
 
 dofile("git/shared.lua")
-if __UPDATE == 1 then
-	dofile("git/updater.lua")
-end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
 MODULES = {

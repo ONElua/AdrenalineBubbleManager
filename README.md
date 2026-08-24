@@ -9,8 +9,9 @@ You can now get PSP-exact image quality and PSP-exact input latency using the fo
 In Adrenaline menu:
 - Graphics Filtering: Sharp Bilinear Simple ( No Scanlines )
 - Smooth Graphics: No
-- F.Lux Filer Color: None
-In official Sony PSP compat settings:
+- F.Lux Filer Color: None  
+
+In official Sony PSP compat settings:  
 Bilinear filtering: OFF
 
 We've forked Adrenaline here to bypass Vita2D entirely and instead uses Sony's direct IFTU display path and changes its sampling from bilinear to point/nearest-neighbour. The Vita resolution is exactly 2x PSP, so it becomes a perfect 2x integer scale.
@@ -42,6 +43,10 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 For support with downloaded games (NoPspEmudrm) you must have installed the following plugins in adrenaline:
 - *([Npdrm free mod](https://github.com/lusid1/npdrm_free_mod)).*<br>
 - *([Np Loader mod](https://github.com/lusid1/nploader_mod)).*<br>
+
+### Unreleased ###
+- Removed the automatic ABM update check at startup and its Extra Settings option.<br>
+- Fixed blank LiveArea labels caused by long UTF-8 titles. Bubble short titles are now truncated only at a complete UTF-8 character, while the full title is preserved separately.<br>
 
 ### Changelog 6.20 ###
 - Correct support for adrenaline bubbles with boot.bin.
@@ -86,7 +91,7 @@ Because a lot of PSP Homebrews have the same TitleID, the shotcuts of homebrew w
 - **SELECT:** Sort List: Device, Install, GameId, Category.<br>
 - **Left/Right:** To change the bubble background color for the selected content (when using original size not stretched icons, 17 available colors ).<br>
 - **Square:** Multiple Selection.<br>
-- **Start:** Open Extra Settings menu (set default bubble color, sort list, Adrenaline version check, Adrenaline Bubbles Manager version check).<br>
+- **Start:** Open Extra Settings menu (set default bubble color, sort list, and Adrenaline version check).<br>
 - **HOLD Analog Right UP + Up:** Press and hold Right Analog 'up' and press button 'up' to switch between template styles for selected bubble: PSPEMU, PS1EMU, PSMOBILE, A5<br>
 - **X:** Create Bubbles.<br>
 - **O:** Configurate/Edit Bubbles.<br>
@@ -104,7 +109,6 @@ This option allows you to set some preferences as default for ABM such as:
 - **Default Color:** Select the default color for your bubbles (19 colores disponibles).<br>
 - **Default BubbleName:** By Title, By File Name or Input the desired Name.<br>
 - **Set Template:** Select the template style: PSPEMU, PS1EMU, PSMOBILE, A5.<br>
-- **ABM Update:** Checks for ABM Updates at start, default is YES.<br>
 - **Check Adrenaline:** Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version.<br>
 - **Set Language:** Allows to load selected language at start in ABM: English or Custom.<br>
 - **Restore Adrenaline v7**: Reinstall Official Adrenaline v7.<br>
