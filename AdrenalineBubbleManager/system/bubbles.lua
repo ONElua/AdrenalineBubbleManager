@@ -147,13 +147,19 @@ function bubbles.install(src)
 	local work_dir = "ux0:data/ABMVPK/"
 	files.mkdir(work_dir)
 
-	files.delete(work_dir+lastid)
 	files.copy("bubbles/pspemuxxx",work_dir)
 
 	files.rename(work_dir.."pspemuxxx", lastid)
 	work_dir += lastid.."/"
 
 	buttons.homepopup(0)
+
+	-- Keep the image pipeline unchanged, but run its existing work at the
+	-- highest clocks exposed by this ONElua build. Restore both clocks before
+	-- handing the completed directory to Sony's promoter.
+	local original_cpu_clock, original_bus_clock = os.cpu(), os.busclock()
+	os.cpu(444)
+	os.busclock(222)
 
 	------------------------------icon0 & startup
 	local timg = nil
@@ -218,7 +224,6 @@ function bubbles.install(src)
 		timg:blit(480,272)
 	end
 	screen.flip()
-	os.delay(250)
 
 	if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then
 		if src.type == "ME" then--PS1 Game
@@ -306,6 +311,11 @@ function bubbles.install(src)
 		fp:close()
 
 	end--fp
+
+	-- Sony promotion remains completely unchanged and runs at the clocks that
+	-- were active before bubble creation started.
+	os.busclock(original_bus_clock)
+	os.cpu(original_cpu_clock)
 
 	--Install Bubble
 	bubble_id = lastid

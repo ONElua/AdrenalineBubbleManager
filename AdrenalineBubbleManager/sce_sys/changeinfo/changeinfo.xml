@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.21">
+    <![CDATA[
+- Removed the automatic update check.<br>
+- Fixed blank LiveArea labels caused by long UTF-8 titles.<br>
+- Improved bubble creation speed while preserving generated output and Sony promotion behavior.<br>
+    ]]>
+  </changes>
 <changes app_ver="06.19">
     <![CDATA[
 - Added option to download availabe languages.<br>

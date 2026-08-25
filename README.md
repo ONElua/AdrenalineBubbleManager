@@ -28,7 +28,7 @@ This useful application allows you to make personalized bubbles with 'icon' and 
 
 ### Adrenaline Version v7.0 ###
 ### Adrenaline Bubble Booter Version v1.3 ###
-### Adrenaline Bubbles Manager Current Version: 6.19 ###
+### Adrenaline Bubbles Manager Current Version: 6.21 ###
 
 
 ### Instructions ###
@@ -44,9 +44,10 @@ For support with downloaded games (NoPspEmudrm) you must have installed the foll
 - *([Npdrm free mod](https://github.com/lusid1/npdrm_free_mod)).*<br>
 - *([Np Loader mod](https://github.com/lusid1/nploader_mod)).*<br>
 
-### Unreleased ###
+### Changelog 6.21 ###
 - Removed the automatic ABM update check at startup and its Extra Settings option.<br>
 - Fixed blank LiveArea labels caused by long UTF-8 titles. Bubble short titles are now truncated only at a complete UTF-8 character, while the full title is preserved separately.<br>
+- Improved bubble creation speed by removing unnecessary waits and redundant cleanup, and by using 444 MHz CPU/222 MHz bus clocks during preprocessing. The original clocks are restored before Sony promotion.<br>
 
 ### Changelog 6.20 ###
 - Correct support for adrenaline bubbles with boot.bin.
