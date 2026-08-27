@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
+<changes app_ver="06.22">
+    <![CDATA[
+- Added support for isage/Adrenaline 8.0.2.<br>
+- Added exact detection and family-specific installation/restoration for supported Adrenaline and AdrBubbleBooter module sets.<br>
+- Unknown or mixed module sets are left untouched.<br>
+    ]]>
+  </changes>
 <changes app_ver="06.21">
     <![CDATA[
 - Removed the automatic update check.<br>

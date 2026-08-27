@@ -1,38 +1,37 @@
 # Adrenaline Bubbles Manager
 **Create and organize your direct adrenaline bubbles.**
 
-## INFERNO Fixed Version
-This fork is the INFERNO fixed version of Adrenaline Bubble Manager. It fixes ABM-created bubbles that were labeled as INFERNO but actually booted through NP9660, and patches existing ABM bubbles in place when the bubble list is scanned.
+Compatible with both TheOfficialFloW/Adrenaline v7 and isage/Adrenaline 8.0.2<br>
+Automatically replaces AdrBubbleBooter and relevant Adrenaline modules with ones found in:
+* My open-source version of AdrBubbleBooter: https://github.com/shoui520/AdrBubbleBooter-oss/releases/tag/v1.3-MENU-LABEL-FIX
+* My TheOfficialFloW/Adrenaline fork, with low-latency 2× PSP upscaling: https://github.com/shoui520/Adrenaline
+* If you use isage/Adrenaline, my adrbubble-v8.0.2 version, which also includes the same changes: https://github.com/shoui520/Adrenaline-isage/releases/tag/adrbubble-v8.0.2 - comes with the ISAGECOMPAT version of AdrBubbleBooter
 
-## PSP INPUT LAG AND SCALING FIXED!
-You can now get PSP-exact image quality and PSP-exact input latency using the following settings
-In Adrenaline menu:
-- Graphics Filtering: Sharp Bilinear Simple ( No Scanlines )
-- Smooth Graphics: No
-- F.Lux Filer Color: None  
+Upstream ONELua/AdrenalineBubbleManager and LMAN's AdrBubbleBooter v1.3 mislabel the UMD drivers. So all your bubbles that apparently use "INFERNO" are actually using NP9660. This version fixes that and also automatically in-place patches all your existing bubbles to correctly use INFERNO.<br>
 
-In official Sony PSP compat settings:  
-Bilinear filtering: OFF
+Updating is simple:
+* Install the latest .vpk with VitaShell.
+* Launch Adrenaline Bubbles Manager, it will automatically replace your Adrenaline modules with the updated versions. This will require a Vita reboot.
+* Once rebooted, launch Adrenaline, then exit PspEmu application.
+* Launch AdrenalineBubbleManager and continue to use it as usual.
 
-We've forked Adrenaline here to bypass Vita2D entirely and instead uses Sony's direct IFTU display path and changes its sampling from bilinear to point/nearest-neighbour. The Vita resolution is exactly 2x PSP, so it becomes a perfect 2x integer scale.
-This version of ABM automatically installs this updated version of Adrenaline v7. This version assumes you are using TheFloW's Adrenaline, compatibility with isage's fork is not asserted.
 ![header](ContentSelection.png)
 
 ### Description ###
 This useful application allows you to make personalized bubbles with 'icon' and 'title' of your PSP content (HBS/PSX/ISO/CSO) quick and easy, using the 'LMAN' plugin, forgetting completely of the tedious and long manual method.
 
 ## IMPORTANT ##
-**Adrenaline Bubbles Manager (ABM) purpose is to create the bubbles and necesary links to boot chosen psp iso/cso/pbp files with adrenaline v6.x through Lman's plugin adrbblbooter, all done within the ps vita, but, ABM does not change cpu speed, any issue related with that should be mentioned to Lman or the_flow**
+**Adrenaline Bubbles Manager (ABM) creates bubbles and the necessary links to boot selected PSP ISO/CSO/PBP files through AdrBubbleBooter. ABM does not change PSP CPU speed.**
 
 ![header](Bubbles.png)
 
-### Adrenaline Version v7.0 ###
-### Adrenaline Bubble Booter Version v1.3 ###
-### Adrenaline Bubbles Manager Current Version: 6.21 ###
+### Supported Adrenaline Versions: TheOfficialFloW v7.0 / isage v8.0.2 ###
+### Included Adrenaline Bubble Booter Versions: v1.3-MENU-LABEL-FIX / v1.3-ISAGECOMPAT ###
+### Adrenaline Bubbles Manager Current Version: 6.22 ###
 
 
 ### Instructions ###
-1. **Install Adrenaline v7.0**
+1. **Install TheOfficialFloW Adrenaline v7.0 or Isage Adrenaline 8.0.2**
 Make sure Adrenaline works correctly, to be able to boot Adrenaline opening it just once, it is highly recommended to add the following line below the kernel line in ur0:tai/config.txt.<br>
 *KERNEL<br>
 ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
@@ -44,12 +43,28 @@ For support with downloaded games (NoPspEmudrm) you must have installed the foll
 - *([Npdrm free mod](https://github.com/lusid1/npdrm_free_mod)).*<br>
 - *([Np Loader mod](https://github.com/lusid1/nploader_mod)).*<br>
 
+### Changelog 6.22 ###
+- Added support for isage/Adrenaline 8.0.2 and the ISAGECOMPAT AdrBubbleBooter stack.<br>
+- Added exact module detection for TheOfficialFloW/Adrenaline v7, isage/Adrenaline 8.0.2, original LMAN AdrBubbleBooter, MENU-LABEL-FIX AdrBubbleBooter, and ISAGECOMPAT AdrBubbleBooter.<br>
+- Added family-specific installation and restoration. Known partial updates can be completed safely; unknown, mixed, or cross-family core module sets are left untouched instead of receiving incompatible files.<br>
+- Existing bubbles continue to be repaired in place to use the real INFERNO driver.<br>
+
 ### Changelog 6.21 ###
 - Removed the automatic ABM update check at startup and its Extra Settings option.<br>
 - Fixed blank LiveArea labels caused by long UTF-8 titles. Bubble short titles are now truncated only at a complete UTF-8 character, while the full title is preserved separately.<br>
 - Improved bubble creation speed by removing unnecessary waits and redundant cleanup, and by using 444 MHz CPU/222 MHz bus clocks during preprocessing. The original clocks are restored before Sony promotion.<br>
 
-### Changelog 6.20 ###
+### Included Adrenaline Modules 6.20.2 (no ABM version bump) ###
+- Replaced the included Adrenaline modules with builds that render Sharp Bilinear Simple (No Scanlines) through Sony's direct IFTU point-sampled 2× path, preserving integer-scaled PSP pixels without the Vita2D graphics-filtering delay.<br>
+
+### Included AdrBubbleBooter Modules 6.20.1 (no ABM version bump) ###
+- Corrected the INFERNO, MARCH33, and NP9660 menu labels in the included AdrBubbleBooter modules through binary editing.<br>
+
+### Fork INFERNO Fix (upstream 6.20 base; no ABM version bump) ###
+- Corrected ABM's serialized UMD-driver mapping so INFERNO, MARCH33, and NP9660 select the driver shown in the interface.<br>
+- Added in-place repair of existing ABM bubbles, including conversion of the legacy boot.bin layout while preserving its settings and content path.<br>
+
+### Upstream Changelog 6.20 ###
 - Correct support for adrenaline bubbles with boot.bin.
 
 ### Changelog 6.19 ###
@@ -110,15 +125,13 @@ This option allows you to set some preferences as default for ABM such as:
 - **Default Color:** Select the default color for your bubbles (19 colores disponibles).<br>
 - **Default BubbleName:** By Title, By File Name or Input the desired Name.<br>
 - **Set Template:** Select the template style: PSPEMU, PS1EMU, PSMOBILE, A5.<br>
-- **Check Adrenaline:** Checks for Adrenaline Updates, set to NO if you want to stay in Adrenaline's installed version.<br>
 - **Set Language:** Allows to load selected language at start in ABM: English or Custom.<br>
-- **Restore Adrenaline v7**: Reinstall Official Adrenaline v7.<br>
+- **Restore Adrenaline**: Reinstall the original module set for the detected TheOfficialFloW v7 or isage 8.0.2 installation.<br>
 
 ![header](ExtraSettings.png)
 
 ### NOTE: ###
-**If your Adrenaline.vpk gets updated online to a higher version used by ABM, then you'll have to disable this option
-to avoid reinstalling the adrbblbooter plugins to the PSPEMUCFW folder everytime you open ABM.**
+**ABM only replaces modules when exact fingerprints identify a supported Adrenaline family. Unknown or mixed core module sets are not modified.**
 
 ## Bubble edit screen ##
 
