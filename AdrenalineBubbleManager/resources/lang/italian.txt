@@ -4,8 +4,9 @@
 UNSAFE_MODE =					"La modalità NON SICURA è necessaria per utilizzare questo Homebrew !!!"
 ADRBBOTER_INSTALLED =			"È stato installato il plugin AdrBubbleBooter... \nHai bisogno di riavviare la tua PSVita... :)"
 ADRENALINE_LAUNCH_FIRST =		"After the Reboot, you must open Adrenaline again\n\nto make sure it works okotherwise bubbles\n\nmade with abm could error out"
-ADRENALINE_NOT_INSTALLED =		"Adrenaline v7 non installato..."
-MESSAGE_WAIT =					"Please wait..."
+ADRENALINE_NOT_INSTALLED =		"Adrenaline non installato..."
+ADRENALINE_UNSUPPORTED =		"Questo set di moduli Adrenaline non è supportato.\nNessun modulo Adrenaline è stato modificato."
+MESSAGE_WAIT =					"Attendere prego..."
 UPDATE_BUBBLES =				"Updating Bubble: "
 
 STRINGS_OS_DIALOG =				"System Message"

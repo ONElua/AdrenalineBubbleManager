@@ -41,7 +41,8 @@ function insert(tmp_sfo,obj,device,official)
 		  title = tmp_sfo.TITLE or obj.name, title_bubble = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
 		  install = install, state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, setpack = setpack,
 		  nostretched=false, mtime = obj.mtime, type = tmp_sfo.CATEGORY or STRINGS_UNK, gameid = tmp_sfo.DISC_ID or STRINGS_UNK,
-		  orig = orig, device = device, template = _template
+		  orig = orig, device = device, template = _template,
+		  format = (obj.ext and obj.ext:upper() or "ISO")
 		} )
 end
 
@@ -68,12 +69,13 @@ function scan.isos(path,device)
 				if ls and #ls > 0 then
 					for j=1, #ls do
 						local ext = ls[j].ext:upper()
-						if ext == "ISO" or ext == "CSO" then scan.insertCISO(ls[j],device) end
+						if ext == "ISO" or ext == "CSO" or ext == "ZSO" or ext == "JSO" or ext == "DAX" then scan.insertCISO(ls[j],device) end
 					end
 				end
 			else
-				if tmp[i].ext and (tmp[i].ext:upper() == "ISO" or tmp[i].ext:upper() == "CSO" ) then
-					scan.insertCISO(tmp[i],device)                     -- Recursive only 2 levels
+				if tmp[i].ext and (tmp[i].ext:upper() == "ISO" or tmp[i].ext:upper() == "CSO"
+					or tmp[i].ext:upper() == "ZSO" or tmp[i].ext:upper() == "JSO" or tmp[i].ext:upper() == "DAX") then
+					scan.insertCISO(tmp[i],device)
 				end
 			end
 
@@ -289,27 +291,24 @@ function scan.show(objedit)
 			end
 
 			--Print Gameid
-			screen.print(960-75,40,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ACENTER)
+			local xc = xb + 64
+			screen.print(xc,40,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ACENTER)
 
-			--Print Streched
-			screen.print(955,yb+64+65,"< L >",1,color.white,color.blue,__ARIGHT)
+			screen.print(xc,yb+64+65,"< L >",1,color.white,color.blue,__ACENTER)
 			if scan.list[scr.sel].nostretched then
-				screen.print(955,yb+64+85,SCAN_FULLBUBBLE,1,color.white,color.blue,__ARIGHT)
+				screen.print(xc,yb+64+85,SCAN_FULLBUBBLE,1,color.white,color.blue,__ACENTER)
 			else
-				screen.print(955,yb+64+85,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ARIGHT)
+				screen.print(xc,yb+64+85,SCAN_BB_NOTSTRETCHED,1,color.white,color.blue,__ACENTER)
 			end
 
-			--Print SetPack
-			screen.print(955,yb+64+120,"< R >",1,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+140,scan.list[scr.sel].setpack,1,color.white,color.blue,__ARIGHT)
+			screen.print(xc,yb+64+120,"< R >",1,color.white,color.blue,__ACENTER)
+			screen.print(xc,yb+64+140,scan.list[scr.sel].setpack,1,color.white,color.blue,__ACENTER)
 
-			--Print Colors
-			screen.print(955,yb+64+175," ←/→ ",1,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+200,SCAN_TEXT_COLOR.." ("..scan.list[scr.sel].selcc..")", 1,color.white,color.blue,__ARIGHT)
+			screen.print(xc,yb+64+175," ←/→ ",1,color.white,color.blue,__ACENTER)
+			screen.print(xc,yb+64+200,SCAN_TEXT_COLOR.." ("..scan.list[scr.sel].selcc..")", 1,color.white,color.blue,__ACENTER)
 
-			--Print Style (template)
-			screen.print(955,yb+64+242,"< AnalogR + Up >",0.9,color.white,color.blue,__ARIGHT)
-			screen.print(955,yb+64+270,scan.list[scr.sel].template, 1,color.white,color.blue,__ARIGHT)
+			screen.print(xc,yb+64+242,"< AnalogR + Up >",0.9,color.white,color.blue,__ACENTER)
+			screen.print(xc,yb+64+270,scan.list[scr.sel].template, 1,color.white,color.blue,__ACENTER)
 
 			--Left Options
 			if buttonskey then buttonskey2:blitsprite(10,425,0) end                   		--Select
@@ -635,7 +634,10 @@ end
 
 function restore_adr()
 	if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
-		files.copy("bubbles/adrenaline/sce_module/", ADRENALINE)
+		if not restoreAdrenalineModules() then
+			os.dialog(ADRENALINE_UNSUPPORTED)
+			return
+		end
 		if back2 then back2:blit(0,0) end
 			screen.flip()
 			os.dialog(STRINGS_RESTART_ADR)
