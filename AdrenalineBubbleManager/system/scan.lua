@@ -188,18 +188,31 @@ function scan.show(objedit)
 		elseif back1 then back1:blit(0,0) end
 		if snow then stars.render() end
 
-		draw.fillrect(0,0,960,30, 0x64545353) --UP
-		
+		draw.fillrect(0,0,960,30, 0x64545353)
+
+		local dev_ux0 = os.devinfo("ux0:")
+		if dev_ux0 and dev_ux0.free then
+			local free_str = (files.sizeformat and files.sizeformat(dev_ux0.free) or string.format("%.1f GB", dev_ux0.free / 1073741824))
+			screen.print(15,5,"ux0: "..free_str, 1, color.white, color.blue, __ALEFT)
+		end
+
 		if buttons.analogry<-60 and scr.maxim > 0 then
 			if scan.list[scr.sel].width > (960-144-55) then
 				xscrtitle = screen.print(xscrtitle, 5, scan.list[scr.sel].title,1,color.white, color.blue,__SLEFT,960-144-55)
 			else
-				screen.print(25,5,scan.list[scr.sel].title, 1, color.white, color.blue)
+				screen.print(200,5,scan.list[scr.sel].title, 1, color.white, color.blue)
 			end
 		else
 			screen.print(480,5,SCAN_TITLE, 1, color.white, color.blue, __ACENTER)
 		end
-		screen.print(950,5,BUBBLES_COUNT.." "..scr.maxim, 1, color.red, color.shine, __ARIGHT)
+
+		local b_str = (batt.life and tostring(batt.life()).."%" or "")
+		if batt.charging and batt.charging() then b_str = b_str.." ⚡" end
+		local time_str = os.date("%H:%M")
+		local info_r = BUBBLES_COUNT.." "..scr.maxim
+		if b_str != "" then info_r = info_r.." | "..b_str end
+		info_r = info_r.." ("..time_str..")"
+		screen.print(950,5,info_r, 1, color.red, color.shine, __ARIGHT)
 
 		if scr.maxim > 0 then
 

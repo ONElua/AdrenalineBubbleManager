@@ -364,7 +364,7 @@ function normalizeBootDriver(fp, adrnew)
 	return driver, adrnew, fixed
 end
 
-partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:" }
+partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:", "gro0:" }
 function AutoMakeBootBin(obj)
 
 	local path2game, _find = "", false

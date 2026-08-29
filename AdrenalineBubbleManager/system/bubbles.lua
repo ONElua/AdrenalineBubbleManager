@@ -401,9 +401,23 @@ function bubbles.settings()
 		if back2 then back2:blit(0,0) end
 		if snow then stars.render() end
 
-		draw.fillrect(0,0,960,30, 0x64545353) --UP
+		draw.fillrect(0,0,960,30, 0x64545353)
+
+		local dev_ux0 = os.devinfo("ux0:")
+		if dev_ux0 and dev_ux0.free then
+			local free_str = (files.sizeformat and files.sizeformat(dev_ux0.free) or string.format("%.1f GB", dev_ux0.free / 1073741824))
+			screen.print(15,5,"ux0: "..free_str, 1, color.white, color.blue, __ALEFT)
+		end
+
 		screen.print(480,5, BUBBLES_TITLE, 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,BUBBLES_COUNT.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
+
+		local b_str = (batt.life and tostring(batt.life()).."%" or "")
+		if batt.charging and batt.charging() then b_str = b_str.." ⚡" end
+		local time_str = os.date("%H:%M")
+		local info_r = BUBBLES_COUNT.." "..bubbles.len
+		if b_str != "" then info_r = info_r.." | "..b_str end
+		info_r = info_r.." ("..time_str..")"
+		screen.print(950,5,info_r, 1, color.red, color.gray, __ARIGHT)
 
 		draw.fillrect(70,45,820,455,color.new(105,105,105,230))
 			draw.gradline(70,280,890,280,color.blue,color.green)
