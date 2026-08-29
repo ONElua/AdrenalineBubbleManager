@@ -1,17 +1,6 @@
---[[
-
-    Licensed by Creative Commons Attribution-ShareAlike 4.0
-   http://creativecommons.org/licenses/by-sa/4.0/
-   
-   Designed By Gdljjrod & DevDavisNunez.
-   Collaborators: BaltaR4 & Wzjk.
-   
-]]
-
 game.close()
 color.loadpalette()
 
--- Set ux0 folder path
 local pathABM 	= "ux0:data/ABM/"
 __PATHINI		= "ux0:data/ABM/config.ini"
 
@@ -23,7 +12,6 @@ files.mkdir(pathABM.."lang/")
 files.mkdir(pathABM.."font/")
 files.mkdir(pathABM.."resources/")
 
--- Loading language file
 __LANG = os.language()
 __LANG_CUSTOM = tonumber(ini.read(__PATHINI,"lang","lang","1"))
 
@@ -35,29 +23,20 @@ if __LANG_CUSTOM == 1 then
 	if files.exists("resources/lang/"..__LANG..".txt") then dofile("resources/lang/"..__LANG..".txt") end
 end
 
--- Loading custom font
 fnt = font.load(pathABM.."font/font.ttf") or font.load(pathABM.."font/font.pgf") or font.load(pathABM.."font/font.pvf")
 if fnt then	font.setdefault(fnt) end
 
--- Background image must be (960x554 png or jpg image. Priority to back.png)
 back = image.load(pathABM.."resources/back.png") or image.load(pathABM.."resources/back.jpg") or image.load("resources/back.png")
-
--- Background1 image must be (960x554 png or jpg image. Priority to back1.png)
 back1 = image.load(pathABM.."resources/back1.png") or image.load(pathABM.."resources/back1.jpg") or image.load("resources/back1.png")
-
--- Background2 image must be (960x554 png or jpg image. Priority to back2.png)
 back2 = image.load(pathABM.."resources/back2.png") or image.load(pathABM.."resources/back2.jpg") or image.load("resources/back2.png")
 
--- Popup message background (must be 706x274 png image)
 box = image.load(pathABM.."resources/box.png") or image.load("resources/box.png")
 
--- Load Styles (Template)
 a5 = image.load("resources/style/a5.png")
 pspemu = image.load("resources/style/pspemu.png")
 ps1emu = image.load("resources/style/ps1emu.png")
 psmobile = image.load("resources/style/psmobile.png")
 
--- Loading default GFX from app folder
 buttonskey = image.load("resources/buttons.png",20,20)
 buttonskey2 = image.load("resources/buttons2.png",30,20)
 
@@ -78,14 +57,12 @@ if buttons.assign()==0 then
 end
 
 colors = { 	
-			color.new(224,224,224), -- new default color, closely resembles official bubbles, dont modify this color (defect color)...
+			color.new(224,224,224),
 			color.black, color.red, color.green, color.blue, color.cyan, color.gray, color.magenta,
 			color.yellow, color.maroon, color.grass, color.navy, color.turquoise, color.violet, color.olive,
 			color.white, color.orange, color.chocolate
-			--you can add more colors :D
 		}
 
--- Debug utilities :D
 debug_print={}
 function init_msg(msg)
 	table.insert(debug_print,msg)
@@ -100,8 +77,8 @@ function init_msg(msg)
 	os.delay(5)
 end
 
-sort_games = { SCAN_SORT_TITLE, SCAN_SORT_MTIME, SCAN_SORT_INSTALLED, SCAN_SORT_CATEGORY, SCAN_SORT_GAMEID, SCAN_SORT_DEVICE }
-sort_mode = { "title", "mtime", "install", "type", "gameid", "device" }
+sort_games = { SCAN_SORT_TITLE, SCAN_SORT_MTIME, SCAN_SORT_INSTALLED, SCAN_SORT_CATEGORY, SCAN_SORT_GAMEID, SCAN_SORT_DEVICE, SCAN_SORT_FORMAT }
+sort_mode = { "title", "mtime", "install", "type", "gameid", "device", "format" }
 
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
@@ -135,7 +112,7 @@ function image.startup(img)
 		img = img:copyscale(w,h)
 	end
 
-	local px,py = 0, 192-h --34
+	local px,py = 0, 192-h
 	local sheet = image.new(280, 192, 0x0)
 	for y=0,h-1 do
 		for x=0,w-1 do
@@ -161,7 +138,6 @@ function image.nostretched(img,cc)
 		for x=0,w-1 do
 			local c = img:pixel(x,y)
 			if c:a() == 0 then c = cc end 
-			--sheet:pixel(px+x, py+y, c)
 			if h % 2 == 0 then sheet:pixel(px+x, py+y, c) else sheet:pixel(px+x, py+y+1, c) end
 		end
 	end
@@ -206,12 +182,12 @@ function custom_msg(printtext,mode)
 
 		screen.flip()
 
-		if buttons.accept and mode != 2 then-- Accept
+		if buttons.accept and mode != 2 then
 			result = true
 			break
 		end
 
-		if buttons.cancel and mode != 0 then-- Cancel
+		if buttons.cancel and mode != 0 then
 			result = false
 			break
 		end
@@ -249,25 +225,151 @@ function isTouched(x,y,sx,sy)
 	return false
 end
 
--- Convert 4 bytes (32 bit) string to number int...
 function str2int(str)
 	local b1, b2, b3, b4 = string.byte(str, 1, 4)
 	return (b4 << 24) + (b3 << 16) + (b2 << 8) + b1
 end
 
--- Convert Number (32bit) to a string 4 bytes...
 function int2str(data)
 	return string.char((data)&0xff)..string.char(((data)>>8)&0xff)..string.char(((data)>>16)&0xff)..string.char(((data)>>24)&0xff)
+end
+
+function utf8prefix(value, max_bytes)
+	value = tostring(value or "")
+	if #value <= max_bytes then return value end
+
+	local pos, last = 1, 0
+	while pos <= #value and pos <= max_bytes do
+		local lead = string.byte(value, pos)
+		local sequence = 0
+
+		if lead < 0x80 then sequence = 1
+		elseif lead >= 0xC2 and lead <= 0xDF then sequence = 2
+		elseif lead >= 0xE0 and lead <= 0xEF then sequence = 3
+		elseif lead >= 0xF0 and lead <= 0xF4 then sequence = 4
+		else break end
+
+		if pos + sequence - 1 > max_bytes then break end
+
+		local valid = true
+		for i=1,sequence-1 do
+			local continuation = string.byte(value, pos+i)
+			if not continuation or continuation < 0x80 or continuation > 0xBF then
+				valid = false
+				break
+			end
+		end
+		if not valid then break end
+
+		last = pos + sequence - 1
+		pos = pos + sequence
+	end
+
+	return string.sub(value, 1, last)
+end
+
+function writeSfoStringField(fp, length_offset, value_offset, field_size, value)
+	local text = utf8prefix(value, field_size-1)
+
+	fp:seek("set", length_offset)
+	fp:write(int2str(#text+1))
+
+	fp:seek("set", value_offset)
+	fp:write(text..string.rep(string.char(0), field_size-#text))
+
+	return text
+end
+
+__BOOT_DRIVER_MARKER = 0x31444242
+
+function bootDriverToUi(driver, marker)
+	if marker == __BOOT_DRIVER_MARKER then
+		if driver == 1 then return 0 end
+		if driver == 2 then return 1 end
+		if driver == 0 or driver == 3 then return 2 end
+		return 0
+	end
+	if driver < 0 or driver > 2 then driver = 0 end
+	return driver
+end
+
+function bootDriverToFile(driver)
+	if driver < 0 or driver > 2 then driver = 0 end
+	if driver == 0 then return 1 end
+	if driver == 1 then return 2 end
+	return 0
+end
+
+function bootDriverNameToUi(driver)
+	if not driver then return 0 end
+	driver = tostring(driver):upper()
+	if driver == "MARCH" or driver == "MARCH33" then return 1 end
+	if driver == "NP9660" then return 2 end
+	return 0
+end
+
+function writeBootDriverMarker(fp)
+	fp:seek("set",0x2C)
+	fp:write(int2str(__BOOT_DRIVER_MARKER))
+end
+
+function writeBootDriver(fp, driver, marker)
+	fp:seek("set",0x04)
+	fp:write(int2str(bootDriverToFile(driver)))
+	if marker != false then writeBootDriverMarker(fp) end
+end
+
+function fillBytes(size)
+	local data = ""
+	for i=1,size do
+		data = data..string.char(00)
+	end
+	return data
+end
+
+function normalizeBootDriver(fp, adrnew)
+	fp:seek("set",0x04)
+	local raw_driver = str2int(fp:read(4))
+	local driver_marker = 0
+
+	if adrnew then
+		fp:seek("set",0x2C)
+		driver_marker = str2int(fp:read(4))
+	end
+
+	local driver = bootDriverToUi(raw_driver, driver_marker)
+	local fixed = false
+
+	if adrnew then
+		if driver_marker != __BOOT_DRIVER_MARKER or raw_driver != bootDriverToFile(driver) then
+			writeBootDriver(fp, driver)
+			fixed = true
+		end
+	else
+		fp:seek("set",0x20)
+		local path2game = fp:read(256) or ""
+		if #path2game < 256 then path2game = path2game..fillBytes(256 - #path2game) end
+		path2game = string.sub(path2game,1,256)
+
+		fp:seek("set",0x20)
+		fp:write(fillBytes(0x20))
+		fp:seek("set",0x40)
+		fp:write(path2game)
+		writeBootDriver(fp, driver)
+
+		adrnew = true
+		fixed = true
+	end
+
+	return driver, adrnew, fixed
 end
 
 partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:" }
 function AutoMakeBootBin(obj)
 
 	local path2game, _find = "", false
-	local drivers = { "ENABLE", "INFERN0", "MARCH", "NP9660" }		--0,0, 1,2
-	local bins = { "ENABLE", "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN" }	--0,0 1,2
+	local bins = { "ENABLE", "EBOOT.BIN", "EBOOT.OLD", "BOOT.BIN" }
 
-	---Searching game in partitions
 	local path_game = ini.read(obj.path.."/data/boot.inf", "PATH", "ENABLE")
 
 	if path_game == "ENABLE" then path_game = "ms0:/nogame"
@@ -283,26 +385,17 @@ function AutoMakeBootBin(obj)
 	local driver = ini.read(obj.path.."/data/boot.inf", "DRIVER", "ENABLE")
 	local bin = ini.read(obj.path.."/data/boot.inf", "EXECUTE", "ENABLE")
 
-	--Fill boot.bin
 	files.copy("bubbles/pspemuxxx/data/boot.bin", obj.path.."/data/")
 
 	local fp = io.open(obj.path.."/data/boot.bin", "r+")
 	if fp then
 		local number = 0
 							
-		--Driver
-		fp:seek("set",0x04)
-		for j=1,#drivers do
-			if driver:upper() == drivers[j] then
-				if j == 1 then number = 0 else number = j - 2 end
-				break
-			end
-		end
-		fp:write(int2str(number))
+		number = bootDriverNameToUi(driver)
+		writeBootDriver(fp, number)
 
 		number = 0
 
-		--Execute
 		fp:seek("set",0x08)
 		for j=1,#bins do
 			if bin:upper() == bins[j] then
@@ -312,11 +405,6 @@ function AutoMakeBootBin(obj)
 		end
 		fp:write(int2str(number))
 
-		--Customized is ready in boot.bin (default)
-		--fp:seek("set",0x0C)
-		--fp:write(int2str(1))
-
-		--Path2game
 		fp:seek("set",0x40)
 		local fill = 256 - #path2game
 		for j=1,fill do
@@ -324,10 +412,9 @@ function AutoMakeBootBin(obj)
 		end
 		fp:write(path2game)
 
-		--Close
 		fp:close()
 
-	end--fp
+	end
 
 end
 
