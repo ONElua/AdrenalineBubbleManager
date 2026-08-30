@@ -40,13 +40,105 @@ if __UPDATE == 1 then
 end
 
 ADRENALINE = "ux0:app/PSPEMUCFW"
-MODULES = {
-  { fullpath = ADRENALINE.."/sce_module/adrbubblebooter.suprx",   path = "sce_module/adrbubblebooter.suprx",   crc = __CRCADRBOOTER },
-  { fullpath = ADRENALINE.."/sce_module/adrenaline_kernel.skprx", path = "sce_module/adrenaline_kernel.skprx", crc = __CRCKERNEL  },
-  { fullpath = ADRENALINE.."/sce_module/adrenaline_user.suprx",   path = "sce_module/adrenaline_user.suprx",   crc = __CRCUSER  },
-  { fullpath = ADRENALINE.."/sce_module/adrenaline_vsh.suprx",    path = "sce_module/adrenaline_vsh.suprx",    crc = __CRCVSH  },
-  { fullpath = ADRENALINE.."/sce_module/bootconv.suprx",          path = "sce_module/bootconv.suprx",          crc = __CRCBOOTCONV }
-}
+
+local function readAdrenalineModuleCrcs()
+	local installed = {}
+	for i=1,#__ADR_MODULE_NAMES do
+		local name = __ADR_MODULE_NAMES[i]
+		local path = ADRENALINE.."/sce_module/"..name
+		if files.exists(path) then
+			local data = files.read(path)
+			if data then installed[name] = os.crc32(data) end
+		end
+	end
+	return installed
+end
+
+local function matchesSignature(installed, signature)
+	for name, crc in pairs(signature) do
+		if installed[name] != crc then return false end
+	end
+	return true
+end
+
+local function containsCrc(values, crc)
+	for i=1,#values do
+		if values[i] == crc then return true end
+	end
+	return false
+end
+
+local function matchesKnownCore(installed, known)
+	for name, values in pairs(known) do
+		if not containsCrc(values, installed[name]) then return false end
+	end
+	return true
+end
+
+local function detectAdrenaline(installed)
+	if matchesSignature(installed, __ADR_SIGNATURE_THEFLOW_MENU_FIX) then
+		return "theflow", "theflow-menu-label-fix"
+	elseif matchesSignature(installed, __ADR_SIGNATURE_THEFLOW_LMAN) then
+		return "theflow", "theflow-lman"
+	elseif matchesSignature(installed, __ADR_SIGNATURE_THEFLOW_MENU_FIX_LEGACY) then
+		return "theflow", "theflow-menu-label-fix-legacy"
+	elseif matchesSignature(installed, __ADR_SIGNATURE_ISAGECOMPAT) then
+		return "isage", "isage-isagecompat"
+	elseif matchesSignature(installed, __ADR_SIGNATURE_THEFLOW_V7) then
+		return "theflow", "theflow-v7"
+	elseif matchesSignature(installed, __ADR_SIGNATURE_ISAGE_802) then
+		return "isage", "isage-v8.0.2"
+	elseif matchesKnownCore(installed, __ADR_KNOWN_THEFLOW_CORE) then
+		return "theflow", "theflow-incomplete"
+	elseif matchesKnownCore(installed, __ADR_KNOWN_ISAGE_CORE) then
+		return "isage", "isage-incomplete"
+	end
+	return nil, "unsupported"
+end
+
+local installed_modules = readAdrenalineModuleCrcs()
+ADRENALINE_FAMILY, ADRENALINE_STATE = detectAdrenaline(installed_modules)
+
+if ADRENALINE_FAMILY == "isage" then
+	STRINGS_RESTORE_ADR = "Restore Adrenaline 8.0.2"
+	STRINGS_DESC_RESTORE_ADR = "Reinstall the original Isage Adrenaline 8.0.2 modules"
+	STRINGS_RESTART_ADR = "Adrenaline 8.0.2 has been restored, a reboot is needed"
+end
+
+local target_source = nil
+local target_signature = nil
+ADRENALINE_RESTORE_SOURCE = nil
+
+if ADRENALINE_FAMILY == "theflow" then
+	target_source = "sce_module/"
+	target_signature = __ADR_SIGNATURE_THEFLOW_MENU_FIX
+	ADRENALINE_RESTORE_SOURCE = "bubbles/adrenaline/sce_module/"
+elseif ADRENALINE_FAMILY == "isage" then
+	target_source = "isage/sce_module/"
+	target_signature = __ADR_SIGNATURE_ISAGECOMPAT
+	ADRENALINE_RESTORE_SOURCE = "bubbles/adrenaline_isage/sce_module/"
+end
+
+MODULES = nil
+if target_source then
+	MODULES = {}
+	for i=1,#__ADR_MODULE_NAMES do
+		local name = __ADR_MODULE_NAMES[i]
+		table.insert(MODULES, {
+			name = name,
+			fullpath = ADRENALINE.."/sce_module/"..name,
+			path = target_source..name,
+			crc = target_signature[name],
+		})
+	end
+end
+
+function restoreAdrenalineModules()
+	if not ADRENALINE_RESTORE_SOURCE then return false end
+	files.copy(ADRENALINE_RESTORE_SOURCE, ADRENALINE)
+	return true
+end
+
 oncopy = false
 
 if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
@@ -63,20 +155,17 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	end
 
 	if __CHECKADR == 1 then
-		if not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
+		if not MODULES then
+			os.dialog(ADRENALINE_UNSUPPORTED)
+		elseif not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
 			oncopy = true
-			files.copy("sce_module/", ADRENALINE)
+			files.copy(target_source, ADRENALINE)
 		else
 
 			for i=1,#MODULES do
-				if not files.exists(MODULES[i].fullpath) then
+				if installed_modules[MODULES[i].name] != MODULES[i].crc then
 					oncopy = true
 					files.copy(MODULES[i].path, ADRENALINE.."/sce_module/")
-				else
-					if os.crc32(files.read(MODULES[i].fullpath) ) != MODULES[i].crc then
-						oncopy = true
-						files.copy(MODULES[i].path, ADRENALINE.."/sce_module/")
-					end
 				end
 			end
 		end

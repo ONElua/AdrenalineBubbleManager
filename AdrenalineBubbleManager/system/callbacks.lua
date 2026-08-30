@@ -13,7 +13,6 @@ function onAppInstall(step, size_argv, written, file, totalsize, totalwritten)
 
 	if back2 then back2:blit(0,0) end
 	if step == 2 then											-- Warning Vpk confirmation!
-		os.delay(100)
 		return 10 -- Ok
 	elseif step == 4 then										-- Promote or install
 		draw.fillrect(0,0,__DISPLAYW,30, color.shine)
