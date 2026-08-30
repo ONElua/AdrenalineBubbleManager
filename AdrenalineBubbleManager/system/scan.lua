@@ -574,12 +574,11 @@ function submenu_abm.wakefunct()
 		{ text = STRINGS_DEFAULT_BNAME,		desc = STRINGS_DESC_TITLES },				--6
 		{ text = STRINGS_TEMPLATE,			desc = STRINGS_DESC_TEMPLATE_OPTION },		--7
 
-		{ text = STRINGS_ABM_UPDATE,		desc = STRINGS_DESC_ABM_UPDATE },			--8
-		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--9
-		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--10
-		{ text = STRINGS_LANG_DOWNLOAD,		desc = STRINGS_DESC_LANG_DOWNLOAD },		--11
+		{ text = STRINGS_CHECK_ADRENALINE, 	desc = STRINGS_DESC_CHECK_ADRENALINE },		--8
+		{ text = STRINGS_LANG_OPTION,		desc = STRINGS_DESC_LANG_OPTION },			--9
+		{ text = STRINGS_LANG_DOWNLOAD,		desc = STRINGS_DESC_LANG_DOWNLOAD },		--10
 
-		{ text = STRINGS_RESTORE_ADR,		desc = STRINGS_DESC_RESTORE_ADR },			--12
+		{ text = STRINGS_RESTORE_ADR,		desc = STRINGS_DESC_RESTORE_ADR },			--11
     }
 	submenu_abm.scroll = newScroll(submenu_abm.options, #submenu_abm.options)
 end
@@ -613,7 +612,6 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"title","title",__TITLE)				--Save __TITLE
 			ini.write(__PATHINI,"template","style",__TEMPLATE)			--Save __TEMPLATE
 
-			ini.write(__PATHINI,"update","update",__UPDATE)				--Save __UPDATE
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)		--Save __CHECKADR
 			ini.write(__PATHINI,"lang","lang",__LANG_CUSTOM)			--Save __LANG_CUSTOM
 
@@ -635,7 +633,10 @@ end
 
 function restore_adr()
 	if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
-		files.copy("bubbles/adrenaline/sce_module/", ADRENALINE)
+		if not restoreAdrenalineModules() then
+			os.dialog(ADRENALINE_UNSUPPORTED)
+			return
+		end
 		if back2 then back2:blit(0,0) end
 			screen.flip()
 			os.dialog(STRINGS_RESTART_ADR)
@@ -715,15 +716,11 @@ function submenu_abm.draw(obj)
 				elseif __TEMPLATE == 3 then __TEMPLATE,_template = 4,"A5"
 				else __TEMPLATE,_template = 1,"PSPEMU" end
 
-			elseif submenu_abm.scroll.sel == 8 then--Update
-				if __UPDATE == 1 then __UPDATE,_update = 0,STRINGS_OPTION_MSG_NO
-				else __UPDATE,_update = 1,STRINGS_OPTION_MSG_YES end
-
-			elseif submenu_abm.scroll.sel == 9 then--CheckAdrenaline
+			elseif submenu_abm.scroll.sel == 8 then--CheckAdrenaline
 				if __CHECKADR == 1 then __CHECKADR,_adr = 0,STRINGS_OPTION_MSG_NO
 				else __CHECKADR,_adr = 1,STRINGS_OPTION_MSG_YES end
 
-			elseif submenu_abm.scroll.sel == 10 then--Load Language
+			elseif submenu_abm.scroll.sel == 9 then--Load Language
 				if __LANG_CUSTOM == 1 then __LANG_CUSTOM,_lang = 0,STRINGS_LANG_DEFAULT
 				else __LANG_CUSTOM,_lang = 1,STRINGS_LANG_CUSTOM end
 
@@ -733,10 +730,10 @@ function submenu_abm.draw(obj)
 
 		end
 
-		if buttons.accept and submenu_abm.scroll.sel == 11 then
+		if buttons.accept and submenu_abm.scroll.sel == 10 then
 			download_langs()
 		end
-		if buttons.accept and submenu_abm.scroll.sel == 12 then
+		if buttons.accept and submenu_abm.scroll.sel == 11 then
 			restore_adr()
 		end
 
@@ -771,14 +768,12 @@ function submenu_abm.draw(obj)
 			elseif i==7 then
 				screen.print(780, h, _template, 1, sel_color, color.blue, __ARIGHT)
 			elseif i==8 then
-				screen.print(780, h, _update, 1, sel_color, color.blue, __ARIGHT)
-			elseif i==9 then
 				screen.print(780, h, _adr, 1, sel_color, color.blue, __ARIGHT)
-			elseif i==10 then
+			elseif i==9 then
 				screen.print(780, h, _lang, 1, sel_color, color.blue, __ARIGHT)
-			elseif i==11 then
+			elseif i==10 then
 				screen.print(780, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
-			elseif i==12 then
+			elseif i==11 then
 				screen.print(780, h, string.format(SCAN_PRESS_CONFIRM, SYMBOL_BACK2), 1, sel_color, color.blue, __ARIGHT)
 			end
 
