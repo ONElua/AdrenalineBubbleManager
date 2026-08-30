@@ -635,10 +635,7 @@ end
 
 function restore_adr()
 	if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and files.exists(ADRENALINE.."/eboot.bin") and files.exists(ADRENALINE.."/eboot.pbp") then
-		if not restoreAdrenalineModules() then
-			os.dialog(ADRENALINE_UNSUPPORTED)
-			return
-		end
+		files.copy("bubbles/adrenaline/sce_module/", ADRENALINE)
 		if back2 then back2:blit(0,0) end
 			screen.flip()
 			os.dialog(STRINGS_RESTART_ADR)

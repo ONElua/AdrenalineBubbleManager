@@ -19,7 +19,6 @@ function bubbles.scan()
 	table.sort(list ,function (a,b) return string.lower(a.id)<string.lower(b.id) end)
 
 	bubbles.list = {}
-	bubbles.fixed_driver = 0
 	for i=1, #list do
 		if (files.exists(list[i].path.."/data/boot.inf") or files.exists(list[i].path.."/data/boot.bin")) and list[i].id != "RETROLNCR" then
 
@@ -66,12 +65,12 @@ function bubbles.scan()
 			local size = files.size(bubbles.list[i].boot)
 			if size > 288 then bubbles.list[i].adrnew = true else bubbles.list[i].adrnew = false end
 			
-			local fp = io.open(bubbles.list[i].boot,"r+")
+			local fp = io.open(bubbles.list[i].boot,"r")
 			if fp then
 				--Driver
-				local driver, adrnew, fixed = normalizeBootDriver(fp, bubbles.list[i].adrnew)
-				bubbles.list[i].adrnew = adrnew
-				if fixed then bubbles.fixed_driver += 1 end
+				fp:seek("set",0x04)
+				local driver = str2int(fp:read(4))
+				if driver < 0 or driver > 2 then driver = 0 end
 				table.insert(bubbles.list[i].lines, driver)
 
 				--Execute
@@ -113,10 +112,6 @@ function bubbles.scan()
 
 			end--fp
 		end
-
-		if bubbles.fixed_driver > 0 then
-			os.dialog("Patched boot driver mapping for "..bubbles.fixed_driver.." existing bubble(s).")
-		end
 	end
 
 end
@@ -147,19 +142,13 @@ function bubbles.install(src)
 	local work_dir = "ux0:data/ABMVPK/"
 	files.mkdir(work_dir)
 
+	files.delete(work_dir+lastid)
 	files.copy("bubbles/pspemuxxx",work_dir)
 
 	files.rename(work_dir.."pspemuxxx", lastid)
 	work_dir += lastid.."/"
 
 	buttons.homepopup(0)
-
-	-- Keep the image pipeline unchanged, but run its existing work at the
-	-- highest clocks exposed by this ONElua build. Restore both clocks before
-	-- handing the completed directory to Sony's promoter.
-	local original_cpu_clock, original_bus_clock = os.cpu(), os.busclock()
-	os.cpu(444)
-	os.busclock(222)
 
 	------------------------------icon0 & startup
 	local timg = nil
@@ -224,6 +213,7 @@ function bubbles.install(src)
 		timg:blit(480,272)
 	end
 	screen.flip()
+	os.delay(250)
 
 	if src.setpack == STRINGS_PSP_PSX_BUBBLES or src.orig then
 		if src.type == "ME" then--PS1 Game
@@ -261,12 +251,26 @@ function bubbles.install(src)
 	-- Set SFO & TITLE
 	local fp_sfo = io.open(work_dir.."sce_sys/PARAM.SFO", "r+")
 	if fp_sfo then
+	
+		--STITLE offset
+		fp_sfo:seek("set",0x2C8)
 
-		-- Sony specifies STITLE as 52 bytes and TITLE as 128 bytes, including
-		-- the terminating NUL. Keep the full title where possible and only
-		-- shorten at a complete UTF-8 sequence.
-		writeSfoStringField(fp_sfo, 0x108, 0x2C8, 52, src.title_bubble)
-		writeSfoStringField(fp_sfo, 0x118, 0x2FC, 128, src.title_bubble)
+		local stitle = src.title_bubble
+		local fill = 51 - #stitle
+		for j=1,fill do
+			stitle = stitle..string.char(00)
+		end
+		fp_sfo:write(string.sub(stitle,1,51))
+
+		--TITLE offset
+		fp_sfo:seek("set",0x2FC)
+
+		local title = src.title_bubble
+		local fill = 127 - #title
+		for j=1,fill do
+			title = title..string.char(00)
+		end
+		fp_sfo:write(string.sub(title,1,127))
 
 		--TITLE_ID offset
 		fp_sfo:seek("set",0x37C)
@@ -286,9 +290,6 @@ function bubbles.install(src)
 	-- Path ISO/CSO/PBP to BOOT.BIN
 	local fp = io.open(work_dir.."data/boot.bin", "r+")
 	if fp then
-
-		--Driver
-		writeBootDriver(fp, 0)
 
 		--Customized
 		fp:seek("set",0x0C)
@@ -312,11 +313,6 @@ function bubbles.install(src)
 
 	end--fp
 
-	-- Sony promotion remains completely unchanged and runs at the clocks that
-	-- were active before bubble creation started.
-	os.busclock(original_bus_clock)
-	os.cpu(original_cpu_clock)
-
 	--Install Bubble
 	bubble_id = lastid
 	local result = game.installdir(work_dir)
@@ -334,7 +330,7 @@ function bubbles.install(src)
 			local entry = {
 				id = lastid,
 				path = "ux0:app/"..lastid,
-				boot = "ux0:app/"..lastid.."/data/boot.bin",
+				boot = "ux0:app/"..lastid.."/boot.bin",
 				imgp = "ur0:appmeta/"..lastid.."/icon0.png",
 				bg0  = "ur0:appmeta/"..lastid.."/livearea/contents/bg0.png",
 				title = src.title_bubble,
@@ -669,13 +665,8 @@ function bubbles.settings()
 
 							--i=1 for drivers, i=2 for Execute, i=3 for Customized
 							for i=1,3 do
-								local value = bubbles.list[scrids.sel].lines[i]
-								if i == 1 then
-									writeBootDriver(fp, value, bubbles.list[scrids.sel].adrnew)
-								else
-									fp:seek("set", offset * i)
-									fp:write(int2str(value))
-								end
+								fp:seek("set", offset * i)
+								fp:write(int2str(bubbles.list[scrids.sel].lines[i]))
 							end
 
 							--PSButton
@@ -986,7 +977,15 @@ function bubbles.settings()
 						local fp_sfo = io.open(bubbles.list[scrids.sel].path.."/sce_sys/PARAM.SFO", "r+")
 						if fp_sfo then
 	
-							writeSfoStringField(fp_sfo, 0x108, 0x2C8, 52, title)
+							--STITLE offset
+							fp_sfo:seek("set",0x2C8)
+
+							local stitle = title
+							local fill = 51 - #stitle
+							for j=1,fill do
+								stitle = stitle..string.char(00)
+							end
+							fp_sfo:write(string.sub(stitle,1,51))
 
 							--Close
 							fp_sfo:close()
