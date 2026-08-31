@@ -101,9 +101,13 @@ end
 local installed_modules = readAdrenalineModuleCrcs()
 ADRENALINE_FAMILY, ADRENALINE_STATE = detectAdrenaline(installed_modules)
 
-if ADRENALINE_FAMILY == "isage" then
+if ADRENALINE_FAMILY == "theflow" then
+	STRINGS_RESTORE_ADR = "Restore Adrenaline v7"
+	STRINGS_DESC_RESTORE_ADR = "Reinstall the original TheOfficialFloW Adrenaline v7 modules"
+	STRINGS_RESTART_ADR = "Adrenaline v7 has been restored, a reboot is needed"
+elseif ADRENALINE_FAMILY == "isage" then
 	STRINGS_RESTORE_ADR = "Restore Adrenaline 8.0.2"
-	STRINGS_DESC_RESTORE_ADR = "Reinstall the original Isage Adrenaline 8.0.2 modules"
+	STRINGS_DESC_RESTORE_ADR = "Reinstall the original isage Adrenaline 8.0.2 modules"
 	STRINGS_RESTART_ADR = "Adrenaline 8.0.2 has been restored, a reboot is needed"
 end
 
