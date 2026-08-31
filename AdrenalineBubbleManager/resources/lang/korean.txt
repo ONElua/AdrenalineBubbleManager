@@ -5,6 +5,7 @@ UNSAFE_MODE =					"이 홈브류에는 안전하지 않은 모드가 필요합�
 ADRBBOTER_INSTALLED = 			"아드레날린버블부스터 플러그인이 설치되었습니다... \nPS 비타를 다시 시작해야 합니다... :)"
 ADRENALINE_LAUNCH_FIRST =		"재부팅 후 아드레날린을 다시 열어\n\n제대로 작동하는지 확인해야 합니다. 그렇지 않으면\n\nabm으로 만든 버블에 오류가 발생할 수 있음"
 ADRENALINE_NOT_INSTALLED =		"아드레날린이 설치되지 않았습니다..."
+ADRENALINE_UNSUPPORTED =		"이 Adrenaline 모듈 세트는 지원되지 않습니다.\n모듈이 변경되지 않았습니다."
 MESSAGE_WAIT =					"잠시만 기다려주세요..."
 UPDATE_BUBBLES =				"버블 업데이트 중: "
 
