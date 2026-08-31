@@ -36,6 +36,11 @@ __ITLS = os.lmodule("itlsKernel")
 
 dofile("git/shared.lua")
 
+-- ABM Update (requires __UPDATE from commons.lua)
+if __UPDATE == 1 then
+	dofile("git/updater.lua")
+end
+
 ADRENALINE = "ux0:app/PSPEMUCFW"
 
 local function readAdrenalineModuleCrcs()
@@ -107,13 +112,13 @@ local target_signature = nil
 ADRENALINE_RESTORE_SOURCE = nil
 
 if ADRENALINE_FAMILY == "theflow" then
-	target_source = "sce_module/"
+	target_source = "modules/sce_module_abm_v7/"
 	target_signature = __ADR_SIGNATURE_THEFLOW_MENU_FIX
-	ADRENALINE_RESTORE_SOURCE = "bubbles/adrenaline/sce_module/"
+	ADRENALINE_RESTORE_SOURCE = "bubbles/restore_adrenaline_v7/sce_module/"
 elseif ADRENALINE_FAMILY == "isage" then
-	target_source = "isage/sce_module/"
+	target_source = "modules/sce_module_abm_8.0.2/"
 	target_signature = __ADR_SIGNATURE_ISAGECOMPAT
-	ADRENALINE_RESTORE_SOURCE = "bubbles/adrenaline_isage/sce_module/"
+	ADRENALINE_RESTORE_SOURCE = "bubbles/restore_adrenaline_8.0.2/sce_module/"
 end
 
 MODULES = nil
@@ -156,7 +161,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 			os.dialog(ADRENALINE_UNSUPPORTED)
 		elseif not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
 			oncopy = true
-			files.copy(target_source, ADRENALINE)
+			files.copy(target_source, ADRENALINE.."/sce_module/")
 		else
 
 			for i=1,#MODULES do

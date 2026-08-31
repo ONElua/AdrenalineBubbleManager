@@ -106,6 +106,7 @@ sort_mode = { "title", "mtime", "install", "type", "gameid", "device" }
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
 __CHECKADR = tonumber(ini.read(__PATHINI,"check_adr","check_adr","1"))
+__UPDATE = tonumber(ini.read(__PATHINI,"update","update","1"))
 __SET = tonumber(ini.read(__PATHINI,"resources","set","0"))
 __8PNG = tonumber(ini.read(__PATHINI,"convert","8bits","1"))
 __TITLE = tonumber(ini.read(__PATHINI,"title","title","0"))
@@ -117,6 +118,7 @@ _sort,sort_type = __SORT, sort_games[__SORT]
 _color = __COLOR
 _lang = __LANG_CUSTOM
 if __CHECKADR == 1 then _adr = STRINGS_OPTION_MSG_YES else _adr = STRINGS_OPTION_MSG_NO end
+if __UPDATE == 1 then _update = STRINGS_OPTION_MSG_YES else _update = STRINGS_OPTION_MSG_NO end
 if __SET == 0 then setpack = STRINGS_OPTION_MSG_NO else setpack = STRINGS_PSP_PSX_BUBBLES end
 if __8PNG == 1 then _png = STRINGS_OPTION_MSG_YES else _png = STRINGS_OPTION_MSG_NO end
 if __TITLE == 1 then _title = STRINGS_DEFAULT_TITLE elseif __TITLE == 2 then _title = STRINGS_DEFAULT_NAME else _title = STRINGS_DEFAULT_OSK end

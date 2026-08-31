@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
-<changes app_ver="06.22">
+<changes app_ver="06.20">
     <![CDATA[
-- Added support for isage/Adrenaline 8.0.2.<br>
-- Added exact detection and family-specific installation/restoration for supported Adrenaline and AdrBubbleBooter module sets.<br>
-- Unknown or mixed module sets are left untouched.<br>
-    ]]>
-  </changes>
-<changes app_ver="06.21">
-    <![CDATA[
-- Removed the automatic update check.<br>
-- Fixed blank LiveArea labels caused by long UTF-8 titles.<br>
-- Improved bubble creation speed while preserving generated output and Sony promotion behavior.<br>
+- Correct support for adrenaline bubbles with `boot.bin`
     ]]>
   </changes>
 <changes app_ver="06.19">
