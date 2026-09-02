@@ -242,6 +242,15 @@ function files.read(path,mode)
 	return data
 end
 
+-- Write a file.
+function files.write(path, data, mode)
+	local fp = io.open(path, mode or "w+")
+	if fp == nil then return end
+	fp:write(data)
+	fp:flush()
+	fp:close()
+end
+
 function isTouched(x,y,sx,sy)
 	if math.minmax(touch.front[1].x,x,x+sx)==touch.front[1].x and math.minmax(touch.front[1].y,y,y+sy)==touch.front[1].y then
 		return true

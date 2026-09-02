@@ -139,10 +139,170 @@ if target_source then
 	end
 end
 
+local function crc_hex(v)
+	if v == nil then return "MISSING" end
+	return string.format("0x%08X", v)
+end
+
+local function read_module_crc(fullpath)
+	if not files.exists(fullpath) then return nil end
+	local data = files.read(fullpath)
+	if not data then return nil end
+	return os.crc32(data)
+end
+
+-- Log CRC of Adrenaline modules before/after install
+local __ABM_MOD_LOG = "ux0:data/ABM/module_install_log.txt"
+local function append_mod_log(lines)
+	files.mkdir("ux0:data/ABM/")
+	local prev = ""
+	if files.exists(__ABM_MOD_LOG) then
+		prev = files.read(__ABM_MOD_LOG) or ""
+	end
+	local chunk = table.concat(lines, "\n") .. "\n"
+	files.write(__ABM_MOD_LOG, prev .. chunk)
+end
+
+-- Copy each ABM module into Adrenaline/sce_module and verify CRC when known.
+local function installAbmModules(force_all)
+	if not MODULES then return false, false end
+	files.mkdir(ADRENALINE.."/sce_module")
+
+	local lines = {}
+	table.insert(lines, "===== ABM module install " .. os.date("%Y-%m-%d %H:%M:%S") .. " =====")
+	table.insert(lines, "family=" .. tostring(ADRENALINE_FAMILY) .. " state=" .. tostring(ADRENALINE_STATE))
+	table.insert(lines, "target_source=" .. tostring(target_source))
+	table.insert(lines, "force_all=" .. tostring(force_all))
+	table.insert(lines, "")
+	table.insert(lines, "--- BEFORE copy (installed on device) ---")
+
+	for i=1,#MODULES do
+		local m = MODULES[i]
+		local before = installed_modules[m.name]
+		if before == nil then
+			before = read_module_crc(m.fullpath)
+		end
+		table.insert(lines, string.format(
+			"  %s  before=%s  expected=%s  src=%s",
+			m.name, crc_hex(before), crc_hex(m.crc), tostring(m.path)
+		))
+	end
+
+	local copied, verified = false, true
+	for i=1,#MODULES do
+		local m = MODULES[i]
+		local need = force_all or (installed_modules[m.name] != m.crc)
+		if need then
+			if not files.exists(m.path) then
+				verified = false
+				table.insert(lines, "  COPY FAIL missing source: " .. tostring(m.path))
+			else
+				files.copy(m.path, ADRENALINE.."/sce_module/")
+				copied = true
+			end
+		end
+	end
+
+	table.insert(lines, "")
+	table.insert(lines, "--- AFTER copy (re-read from device) ---")
+	for i=1,#MODULES do
+		local m = MODULES[i]
+		local after = read_module_crc(m.fullpath)
+		local ok = (after != nil and m.crc != nil and after == m.crc)
+		if m.crc and after != m.crc then
+			verified = false
+		end
+		if after == nil then
+			verified = false
+		end
+		if after then
+			installed_modules[m.name] = after
+		end
+		table.insert(lines, string.format(
+			"  %s  after=%s  expected=%s  %s",
+			m.name, crc_hex(after), crc_hex(m.crc), ok and "OK" or "MISMATCH"
+		))
+	end
+	table.insert(lines, "")
+	table.insert(lines, "result: copied=" .. tostring(copied) .. " verified=" .. tostring(verified))
+	table.insert(lines, "")
+	append_mod_log(lines)
+
+	return copied, verified
+end
+
 function restoreAdrenalineModules()
 	if not ADRENALINE_RESTORE_SOURCE then return false end
-	files.copy(ADRENALINE_RESTORE_SOURCE, ADRENALINE)
-	return true
+	files.mkdir(ADRENALINE.."/sce_module")
+
+	-- Stock Adrenaline modules only (not adrbubblebooter/bootconv)
+	local names = {
+		"adrenaline_kernel.skprx",
+		"adrenaline_user.suprx",
+		"adrenaline_vsh.suprx",
+		"usbdevice.skprx",
+	}
+
+	local lines = {}
+	table.insert(lines, "===== ABM restore " .. os.date("%Y-%m-%d %H:%M:%S") .. " =====")
+	table.insert(lines, "family=" .. tostring(ADRENALINE_FAMILY))
+	table.insert(lines, "restore_source=" .. tostring(ADRENALINE_RESTORE_SOURCE))
+	table.insert(lines, "")
+	table.insert(lines, "--- BEFORE restore ---")
+
+	local any_src = false
+	for i=1,#names do
+		local name = names[i]
+		local full = ADRENALINE.."/sce_module/"..name
+		local src = ADRENALINE_RESTORE_SOURCE..name
+		local before = read_module_crc(full)
+		table.insert(lines, string.format(
+			"  %s  before=%s  src_exists=%s",
+			name, crc_hex(before), tostring(files.exists(src))
+		))
+		if files.exists(src) then any_src = true end
+	end
+
+	if not any_src then
+		table.insert(lines, "result: FAIL no restore source files")
+		table.insert(lines, "")
+		append_mod_log(lines)
+		return false
+	end
+
+	-- File-by-file into sce_module/ (never copy the folder — avoids nesting)
+	for i=1,#names do
+		local name = names[i]
+		local src = ADRENALINE_RESTORE_SOURCE..name
+		if files.exists(src) then
+			files.copy(src, ADRENALINE.."/sce_module/")
+		end
+	end
+
+	table.insert(lines, "")
+	table.insert(lines, "--- AFTER restore ---")
+	local ok = true
+	for i=1,#names do
+		local name = names[i]
+		local full = ADRENALINE.."/sce_module/"..name
+		local src = ADRENALINE_RESTORE_SOURCE..name
+		local after = read_module_crc(full)
+		local src_crc = nil
+		if files.exists(src) then
+			local data = files.read(src)
+			if data then src_crc = os.crc32(data) end
+		end
+		local match = (after != nil and src_crc != nil and after == src_crc)
+		if files.exists(src) and not match then ok = false end
+		table.insert(lines, string.format(
+			"  %s  after=%s  pack=%s  %s",
+			name, crc_hex(after), crc_hex(src_crc), match and "OK" or "MISMATCH"
+		))
+	end
+	table.insert(lines, "result: " .. (ok and "OK" or "FAIL"))
+	table.insert(lines, "")
+	append_mod_log(lines)
+	return ok
 end
 
 oncopy = false
@@ -163,24 +323,21 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	if __CHECKADR == 1 then
 		if not MODULES then
 			os.dialog(ADRENALINE_UNSUPPORTED)
-		elseif not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx") then
-			oncopy = true
-			files.copy(target_source, ADRENALINE.."/sce_module/")
 		else
-
-			for i=1,#MODULES do
-				if installed_modules[MODULES[i].name] != MODULES[i].crc then
-					oncopy = true
-					files.copy(MODULES[i].path, ADRENALINE.."/sce_module/")
+			local force_all = not files.exists(ADRENALINE.."/sce_module/adrbubblebooter.suprx")
+			local copied, verified = installAbmModules(force_all)
+			if copied then
+				oncopy = true
+				if back2 then back2:blit(0,0) end
+				screen.flip()
+				if verified then
+					os.dialog(ADRBBOTER_INSTALLED)
+				else
+					os.dialog(ADRENALINE_UNSUPPORTED)
+					oncopy = false
 				end
+				os.delay(500)
 			end
-		end
-
-		if oncopy then
-			if back2 then back2:blit(0,0) end
-			screen.flip()
-			os.dialog(ADRBBOTER_INSTALLED)
-			os.delay(500)
 		end
 
 	end--__CHECKADR
