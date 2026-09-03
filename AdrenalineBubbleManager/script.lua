@@ -226,7 +226,10 @@ local function installAbmModules(force_all)
 	table.insert(lines, "")
 	table.insert(lines, "result: copied=" .. tostring(copied) .. " verified=" .. tostring(verified))
 	table.insert(lines, "")
-	append_mod_log(lines)
+	-- Only log when modules were copied or CRC verification failed
+	if copied or not verified then
+		append_mod_log(lines)
+	end
 
 	return copied, verified
 end
