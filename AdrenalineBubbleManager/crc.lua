@@ -1,4 +1,4 @@
--- Exact module fingerprints for the Adrenaline versions supported by ABM.
+ -- Exact module fingerprints for the Adrenaline versions supported by ABM.
 -- Keep these tied to released binaries: mixing TheFloW and Isage modules makes
 -- Adrenaline exit before the PSP environment can start.
 
@@ -59,7 +59,7 @@ __ADR_SIGNATURE_ISAGE_802 = {
 __ADR_SIGNATURE_ISAGECOMPAT = {
 	["adrbubblebooter.suprx"]   = 0x02C3104E,
 	["adrenaline_kernel.skprx"] = 0x373BD9D6,
-	["adrenaline_user.suprx"]   = 0xCB75A035,
+	["adrenaline_user.suprx"]   = 0x6C4B9257,
 	["adrenaline_vsh.suprx"]    = 0x2A23114D,
 	["bootconv.suprx"]          = 0x84BF1418,
 }
@@ -74,6 +74,6 @@ __ADR_KNOWN_THEFLOW_CORE = {
 
 __ADR_KNOWN_ISAGE_CORE = {
 	["adrenaline_kernel.skprx"] = { 0x3B998F83, 0x373BD9D6 },
-	["adrenaline_user.suprx"]   = { 0xEDDF100E, 0xCB75A035 },
+	["adrenaline_user.suprx"]   = { 0xEDDF100E, 0xCB75A035, 0x6C4B9257 },
 	["adrenaline_vsh.suprx"]    = { 0xCAE14C01, 0x2A23114D },
 }
