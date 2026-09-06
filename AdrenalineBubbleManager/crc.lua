@@ -1,4 +1,4 @@
- -- Exact module fingerprints for the Adrenaline versions supported by ABM.
+-- Exact module fingerprints for the Adrenaline versions supported by ABM.
 -- Keep these tied to released binaries: mixing TheFloW and Isage modules makes
 -- Adrenaline exit before the PSP environment can start.
 
