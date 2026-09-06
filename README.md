@@ -2,7 +2,7 @@
 
 **Create and organize direct Adrenaline bubbles for PSP/PSX content on PS Vita.**
 
-**Current version: 6.21**
+**Current version: 6.22**
 
 Compatible with:
 
