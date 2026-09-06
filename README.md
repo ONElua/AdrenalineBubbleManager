@@ -82,6 +82,11 @@ ABM only replaces files under `ux0:app/PSPEMUCFW/sce_module/` when fingerprints 
 
 ## Changelog
 
+### 6.22
+
+- Fix module install: file-by-file copy into sce_module and conditional CRC log
+- Update isage ABM adrenaline_user.suprx to fix PSP EBOOT.PBP bubble launch for Adrenaline v8.0.2
+
 ### 6.21
 
 - Merged shoui520 Adrenaline 8.0.2 / isage support, CRC detection, and family-safe install/restore
