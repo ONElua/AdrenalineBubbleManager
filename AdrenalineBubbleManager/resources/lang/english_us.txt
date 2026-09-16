@@ -96,6 +96,7 @@ SCAN_SORT_INSTALLED =			"Installed"
 SCAN_SORT_CATEGORY =			"Category"
 SCAN_SORT_GAMEID =				"GameID"
 SCAN_SORT_DEVICE =				"Device"
+SCAN_SORT_FORMAT =              "Format"
 SCAN_SETPACK =					"Set"
 SCAN_SHOW_PIC =					"PIC"
 

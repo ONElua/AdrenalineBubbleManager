@@ -402,8 +402,12 @@ function bubbles.settings()
 		if snow then stars.render() end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
+	
 		screen.print(480,5, BUBBLES_TITLE, 1, color.white, color.blue, __ACENTER)
-		screen.print(950,5,BUBBLES_COUNT.." "..bubbles.len, 1, color.red, color.gray, __ARIGHT)
+
+		local b_str = (tostring(batt.lifepercent()).."%" or "")
+		if batt.charging() then b_str = b_str.." ⚡" end
+		screen.print(950,5, BUBBLES_COUNT.." "..bubbles.len.." "..b_str.." ("..os.date("%H:%M")..")", 1, color.yellow, color.gray, __ARIGHT)
 
 		draw.fillrect(70,45,820,455,color.new(105,105,105,230))
 			draw.gradline(70,280,890,280,color.blue,color.green)

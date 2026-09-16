@@ -12,7 +12,14 @@
 day = tonumber(os.date("%d"))
 month = tonumber(os.date("%m"))
 snow = false
-if (month == 12 and (day >= 20 and day <= 25)) then snow = true end
+snow_mode = "snow"
+if (month == 12 and (day >= 20 and day <= 25)) then
+	snow = true
+	snow_mode = "snow"
+elseif (month == 9 and (day == 15 or day == 16)) then
+	snow = true
+	snow_mode = "mx"
+end
 
 --Show splash ...
 local splash = image.load("resources/splash.png")
@@ -373,6 +380,7 @@ if game.exists("PSPEMUCFW") and files.exists(ADRENALINE) and
 	end
 
 	dofile("system/stars.lua")
+	if snow then stars.init(snow_mode) end
 	dofile("system/scan.lua")
 	dofile("system/bubbles.lua")
 	dofile("system/resources.lua")

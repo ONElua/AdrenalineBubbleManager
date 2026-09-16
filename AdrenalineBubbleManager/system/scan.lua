@@ -19,7 +19,181 @@ local pic1,icon0 = nil,nil
 --local crono, clicked = timer.new(), false -- Timer and Oldstate to click actions.
 local tmp_sort = __SORT
 
-function insert(tmp_sfo,obj,device,official)
+
+-- format label from files.type only (not filename extension)
+local function scan_format_label(v)
+	local n = tonumber(v)
+	if n == 1 then return "pbp"
+	elseif n == 2 then return "iso"
+	elseif n == 3 then return "cso"
+	elseif n == 4 then return "dax"
+	elseif n == 9 then return "zso"
+	end
+	local s = string.lower(tostring(v != nil and v or ""))
+	if s == "pbp" or s == "iso" or s == "cso" or s == "dax" or s == "zso" then
+		return s
+	end
+	return ""
+end
+
+-- fixed group order for Format sort
+local function scan_platform_label(cat)
+	local c = string.upper(tostring(cat or ""))
+	if c == "ME" then return "PSX"
+	elseif c == "MG" then return "HB"
+	elseif c == "UG" or c == "EG" or c == "PG" then return "PSP"
+	end
+	return "--"
+end
+
+local FORMAT_ORDER = {
+	["iso"] = 1,
+	["cso"] = 2,
+	["pbp"] = 3,
+	["dax"] = 4,
+	["zso"] = 5,
+}
+
+-- mtime may be unix number OR "DD/MM/YYYY HH:MM:SS" string from files.list
+local function scan_mtime_value(v)
+	if v == nil then return 0 end
+	local n = tonumber(v)
+	if n then return n end
+	local s = tostring(v)
+	local d, m, y, h, mi, sec = s:match("^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)")
+	if not y then
+		d, m, y = s:match("^(%d+)/(%d+)/(%d+)")
+		h, mi, sec = 0, 0, 0
+	end
+	if y and m and d then
+		return tonumber(string.format("%04d%02d%02d%02d%02d%02d",
+			tonumber(y), tonumber(m), tonumber(d),
+			tonumber(h) or 0, tonumber(mi) or 0, tonumber(sec) or 0)) or 0
+	end
+	-- ISO-like YYYY-MM-DD
+	y, m, d, h, mi, sec = s:match("^(%d+)%-(%d+)%-(%d+)[%sT]+(%d+):(%d+):(%d+)")
+	if not y then
+		y, m, d = s:match("^(%d+)%-(%d+)%-(%d+)")
+		h, mi, sec = 0, 0, 0
+	end
+	if y and m and d then
+		return tonumber(string.format("%04d%02d%02d%02d%02d%02d",
+			tonumber(y), tonumber(m), tonumber(d),
+			tonumber(h) or 0, tonumber(mi) or 0, tonumber(sec) or 0)) or 0
+	end
+	return 0
+end
+
+-- Sort rules:
+-- title / gameid : single key A-Z
+-- mtime          : newest first (numeric desc)
+-- device / install : group key, then title A-Z
+-- type (category) / format : group key, then title A-Z
+local function scan_sort_cmp(a, b)
+	local key = sort_mode[__SORT]
+
+	local function title_lt()
+		local ta = string.lower(tostring(a.title or a.name or ""))
+		local tb = string.lower(tostring(b.title or b.name or ""))
+		if ta != tb then return ta < tb end
+		return string.lower(tostring(a.path or "")) < string.lower(tostring(b.path or ""))
+	end
+
+	if key == "mtime" then
+		local na = scan_mtime_value(a.mtime)
+		local nb = scan_mtime_value(b.mtime)
+		if na != nb then return na > nb end  -- newest first
+		return title_lt()
+	end
+
+	if key == "title" then
+		return title_lt()
+	end
+
+	if key == "gameid" then
+		local sa = string.lower(tostring(a.gameid or ""))
+		local sb = string.lower(tostring(b.gameid or ""))
+		if sa != sb then return sa < sb end
+		return title_lt()
+	end
+
+	if key == "format" then
+		local fa = scan_format_label(a.format)
+		local fb = scan_format_label(b.format)
+		local oa = FORMAT_ORDER[fa] or 99
+		local ob = FORMAT_ORDER[fb] or 99
+		if oa != ob then return oa < ob end
+		return title_lt()
+	end
+
+	local va = a[key]
+	local vb = b[key]
+	if key == "device" then
+		local na = tonumber(va) or 0
+		local nb = tonumber(vb) or 0
+		if na != nb then return na < nb end
+		return title_lt()
+	end
+
+	local sa = string.lower(tostring(va != nil and va or ""))
+	local sb = string.lower(tostring(vb != nil and vb or ""))
+	if sa != sb then return sa < sb end
+	return title_lt()
+end
+
+
+-- Visible list line: Title [PSP/PSX/HB] + extra field
+local function scan_device_name(dev)
+	local n = tonumber(dev)
+	if n and partitions and partitions[n] then
+		return tostring(partitions[n]):gsub(":$", "")
+	end
+	return tostring(dev != nil and dev or "?")
+end
+
+local function scan_row_text(obj)
+	if not obj then return "" end
+	local title = obj.title or obj.name or ""
+	local plat = scan_platform_label(obj.type)
+	local text = string.format("%s  [%s]", title, plat)
+
+	local key = sort_mode and sort_mode[__SORT] or "title"
+	if key == "type" then
+		text = text .. "  [" .. tostring(obj.type or "") .. "]"
+	elseif key == "device" then
+		text = text .. "  [" .. scan_device_name(obj.device) .. "]"
+	elseif key == "format" then
+		text = text .. "  [" .. tostring(obj.format or "") .. "]"
+--	elseif key == "mtime" then
+--		text = text .. "  [" .. tostring(obj.mtime != nil and obj.mtime or "") .. "]"
+--	elseif key == "gameid" then
+--		text = text .. "  [" .. tostring(obj.gameid or "") .. "]"
+	end
+	return text
+end
+
+local function scan_refresh_labels()
+	if not scan.list then return end
+	for i = 1, #scan.list do
+		local t = scan_row_text(scan.list[i])
+		scan.list[i].label = t
+		scan.list[i].width = screen.textwidth(t)
+	end
+end
+
+-- One line per game → ux0:data/ABM/debug_log.txt (truncated each scan)
+-- Log PATH first so a crash still leaves the last game attempted
+local function scan_debug_log(line)
+	files.mkdir("ux0:data/ABM/")
+	local f = io.open("ux0:data/ABM/debug_log.txt", "a")
+	if f then
+		f:write(line)
+		if line:sub(-1) != "\n" then f:write("\n") end
+		f:close()
+	end
+end
+
+function insert(tmp_sfo,obj,device,official,ext)
 
 	local install,state,orig = "a",false,false
 
@@ -31,32 +205,74 @@ function insert(tmp_sfo,obj,device,official)
 	end
 
 	if official then orig = official end
-	--if game.exists(obj.name) then orig = true end
 
 	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\n","") end
 	if tmp_sfo.TITLE then tmp_sfo.TITLE = tmp_sfo.TITLE:gsub("\r","") end
 
-	table.insert( scan.list,
-		{
-		  title = tmp_sfo.TITLE or obj.name, title_bubble = tmp_sfo.TITLE or obj.name, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
-		  install = install, state = state, width = screen.textwidth(tmp_sfo.TITLE or obj.name), selcc = __COLOR, setpack = setpack,
-		  nostretched=false, mtime = obj.mtime, type = tmp_sfo.CATEGORY or STRINGS_UNK, gameid = tmp_sfo.DISC_ID or STRINGS_UNK,
-		  orig = orig, device = device, template = _template
-		} )
+	local title = tmp_sfo.TITLE or obj.name or ""
+	local cat = tmp_sfo.CATEGORY or STRINGS_UNK
+
+	-- Build entry first, then label from current sort mode
+	local entry = {
+		  title = title, title_bubble = title, path = obj.path:lower(), name = obj.name, inst = false, icon = true,
+		  install = install, state = state, selcc = __COLOR, setpack = setpack,
+		  nostretched=false, mtime = obj.mtime, type = cat, gameid = tmp_sfo.DISC_ID or STRINGS_UNK,
+		  orig = orig, device = device, template = _template, format = scan_format_label(ext), raw_type = ext
+		}
+	entry.label = scan_row_text(entry)
+	entry.width = screen.textwidth(entry.label)
+	table.insert(scan.list, entry)
 end
 
-function scan.insertCISO(hand,device)
-	init_msg(string.format(DEBUG_LOAD_CISO.." %s\n",hand.path))
+-- isage 8.0.2 + ABM (firma ISAGECOMPAT)
+local allow_zso_dax = (ADRENALINE_FAMILY == "isage" and ADRENALINE_STATE == "isage-isagecompat")
+function scan.insertCISO(hand, device)
+	init_msg(string.format(DEBUG_LOAD_CISO.." %s\n", hand.path))
+
+	-- Path first (if later step fails, last log line is this game)
+	scan_debug_log(string.format("SCAN | kind=CISO | path=%s", tostring(hand.path)))
+
 	local _type = files.type(hand.path)
-	if _type == 2 or _type == 3 then
-		local tmp0 = game.info(hand.path)
-		if tmp0 then
-			if tmp0.CATEGORY == "UG" or tmp0.CATEGORY == "PG" then
-				insert(tmp0,hand,device)
-			end
-		end
-		tmp0 = nil
+	-- 2=ISO 3=CSO ; 4=DAX 9=ZSO solo con isage+ABM
+	if not (_type == 2 or _type == 3 or (allow_zso_dax and (_type == 4 or _type == 9))) then
+		scan_debug_log(string.format(
+			"SKIP | kind=CISO | files.type=%s | path=%s",
+			tostring(_type), tostring(hand.path)))
+		return
 	end
+
+	local tmp0 = game.info(hand.path)
+	if not tmp0 then
+		scan_debug_log(string.format(
+			"FAIL | kind=CISO | files.type=%s | reason=info_nil | path=%s",
+			tostring(_type), tostring(hand.path)))
+		return
+	end
+
+	local cat = tmp0.CATEGORY
+	if (cat == nil or cat == "") then
+		cat = "UG"
+		tmp0.CATEGORY = "UG"
+	end
+
+	if cat == "UG" or cat == "PG" then
+		insert(tmp0, hand, device, false, _type)
+		local item = scan.list[#scan.list]
+		scan_debug_log(string.format(
+			"OK | kind=CISO | files.type=%s | label=%s | CAT=%s | TITLE=%s | DISC_ID=%s | path=%s",
+			tostring(_type),
+			tostring(item and item.format),
+			tostring(cat),
+			tostring(item and item.title),
+			tostring(item and item.gameid),
+			tostring(hand.path)))
+	else
+		scan_debug_log(string.format(
+			"SKIP | kind=CISO | files.type=%s | CAT=%s | TITLE=%s | path=%s",
+			tostring(_type), tostring(cat), tostring(tmp0.TITLE), tostring(hand.path)))
+	end
+
+	tmp0 = nil
 end
 
 function scan.isos(path,device)
@@ -67,13 +283,18 @@ function scan.isos(path,device)
 				local ls=files.listfiles(tmp[i].path)
 				if ls and #ls > 0 then
 					for j=1, #ls do
-						local ext = ls[j].ext:upper()
-						if ext == "ISO" or ext == "CSO" then scan.insertCISO(ls[j],device) end
+						local ext = ls[j].ext and ls[j].ext:upper() or ""
+						if ext == "ISO" or ext == "CSO"
+							or (allow_zso_dax and (ext == "ZSO" or ext == "DAX")) then
+							scan.insertCISO(ls[j], device)
+						end
 					end
 				end
 			else
-				if tmp[i].ext and (tmp[i].ext:upper() == "ISO" or tmp[i].ext:upper() == "CSO" ) then
-					scan.insertCISO(tmp[i],device)                     -- Recursive only 2 levels
+				local ext = tmp[i].ext:upper()
+				if ext == "ISO" or ext == "CSO"
+					or (allow_zso_dax and (ext == "ZSO" or ext == "DAX")) then
+					scan.insertCISO(tmp[i], device)-- Recursive only 2 levels
 				end
 			end
 
@@ -84,27 +305,40 @@ end
 function scan.insertPBP(hand,device)
 	init_msg(string.format(DEBUG_LOAD_PBP.." %s\n",hand.path))
 	local orig = false
-	if game.exists(hand.name) then orig = true end                  -- Is oficial PSP game (Bubble), not read :P
-	--if files.exists(string.format("%s__sce_ebootpbp",files.nofile(hand.path))) then return end
+	if game.exists(hand.name) then orig = true end
 
-	if files.type(hand.path) == 1 then
-		local tmp0 = game.info(hand.path)
-		if tmp0 and tmp0.CATEGORY == "PG" then return end
-		if tmp0 and tmp0.DISC_ID == "MSTKUPDATE" then return end
---[[
-		local _insert = true
-		if tmp0.CATEGORY == "EG" then
-			local sceid = game.sceid(string.format("%s__sce_ebootpbp",files.nofile(hand.path)))
-			if sceid and sceid != "---" then--and sceid != hand.name then
-				_insert=false--nothing
-			end
-		end
-]]
-		--if _insert then
-			insert(tmp0,hand,device,orig)
-		--end
-		tmp0 = nil
+	scan_debug_log(string.format("SCAN | kind=PBP | path=%s", tostring(hand.path)))
+
+	local _type = files.type(hand.path)
+	if _type != 1 then
+		scan_debug_log(string.format("SKIP | kind=PBP | files.type=%s | path=%s", tostring(_type), tostring(hand.path)))
+		return
 	end
+
+	local tmp0 = game.info(hand.path)
+	if not tmp0 then
+		scan_debug_log(string.format("FAIL | kind=PBP | files.type=%s | reason=info_nil | path=%s", tostring(_type), tostring(hand.path)))
+		return
+	end
+	if tmp0.CATEGORY == "PG" then
+		scan_debug_log(string.format("SKIP | kind=PBP | files.type=%s | CAT=PG | path=%s", tostring(_type), tostring(hand.path)))
+		return
+	end
+	if tmp0.DISC_ID == "MSTKUPDATE" then
+		scan_debug_log(string.format("SKIP | kind=PBP | files.type=%s | DISC_ID=MSTKUPDATE | path=%s", tostring(_type), tostring(hand.path)))
+		return
+	end
+
+	insert(tmp0, hand, device, orig, _type)
+	local item = scan.list[#scan.list]
+	scan_debug_log(string.format("OK | kind=PBP | files.type=%s | label=%s | CAT=%s | TITLE=%s | DISC_ID=%s | path=%s",
+		tostring(_type),
+		tostring(item and item.format),
+		tostring(item and item.type),
+		tostring(item and item.title),
+		tostring(item and item.gameid),
+		tostring(hand.path)))
+	tmp0 = nil
 end
 
 function scan.pbps(path, device, level)
@@ -123,6 +357,10 @@ function scan.pbps(path, device, level)
 end
 
 function scan.games()
+	files.mkdir("ux0:data/ABM/")
+	files.write("ux0:data/ABM/debug_log.txt",
+		"===== ABM debug_log " .. os.date("%Y-%m-%d %H:%M:%S") .. " =====\n" ..
+		"# SCAN=path first; then OK/FAIL/SKIP\n")
 	for i=1,#partitions do
 		if files.exists(partitions[i]) then
 			local _info_device = os.devinfo(partitions[i])
@@ -134,20 +372,22 @@ function scan.games()
 	end
 	scan.len = #scan.list
 	if scan.len > 0 then
-		table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
+		table.sort(scan.list, scan_sort_cmp)
+		scan_refresh_labels()
 	end
 end
 
 function load_pic1(obj)
-	pic1,style = nil,nil
-	if obj.setpack == STRINGS_PSP_PSX_BUBBLES then
-		if obj.type == "ME" then pic1 = PSX_IMG else pic1 = PSP_IMG end
-	end
-	if pic1 then
-		pic1:resize(960,488)
-		pic1:center()
-	end
+	pic1, style = nil, nil
+	if obj.setpack != STRINGS_PSP_PSX_BUBBLES then return end
 
+	local src = (obj.type == "ME") and PSX_IMG or PSP_IMG
+	if not src then return end
+
+	pic1 = src:copy()
+	if pic1 then
+		pic1:resize(805,390)
+	end
 end
 
 function load_style(obj)
@@ -163,7 +403,7 @@ function load_style(obj)
 	end
 end
 
-local maximg = 15
+local maximg = 14
 function scan.show(objedit)
 
 	local scr = newScroll(scan.list,maximg)
@@ -182,22 +422,25 @@ function scan.show(objedit)
 		buttons.read()
 			touch.read()
 
-		if pic1 then pic1:blit(0,30,175)
-		elseif back1 then back1:blit(0,0) end
+		if back1 then back1:blit(0,0) end
+		if pic1 then pic1:blit(0,30,155) end
 		if snow then stars.render() end
 
 		draw.fillrect(0,0,960,30, 0x64545353) --UP
 		
 		if buttons.analogry<-60 and scr.maxim > 0 then
-			if scan.list[scr.sel].width > (960-144-55) then
-				xscrtitle = screen.print(xscrtitle, 5, scan.list[scr.sel].title,1,color.white, color.blue,__SLEFT,960-144-55)
+			if scan.list[scr.sel].width > (960-130-40) then
+				xscrtitle = screen.print(xscrtitle, 5, scan.list[scr.sel].label or scan.list[scr.sel].title,1,color.white, color.blue,__SLEFT,960-130-40)
 			else
-				screen.print(25,5,scan.list[scr.sel].title, 1, color.white, color.blue)
+				screen.print(25,5,scan.list[scr.sel].label or scan.list[scr.sel].title, 1, color.white, color.blue)
 			end
 		else
 			screen.print(480,5,SCAN_TITLE, 1, color.white, color.blue, __ACENTER)
 		end
-		screen.print(950,5,BUBBLES_COUNT.." "..scr.maxim, 1, color.red, color.shine, __ARIGHT)
+
+		local b_str = (tostring(batt.lifepercent()).."%" or "")
+		if batt.charging() then b_str = b_str.." ⚡" end
+		screen.print(950,5, BUBBLES_COUNT.." "..scr.maxim.." "..b_str.." ("..os.date("%H:%M")..")", 1, color.yellow, color.gray, __ARIGHT)
 
 		if scr.maxim > 0 then
 
@@ -206,7 +449,7 @@ function scan.show(objedit)
 				if style then style:blit(0,30,125) end
 			end
 			--Blit List
-			local y = 33
+			local y = 40
 			for i=scr.ini,scr.lim do
 
 				if scan.list[i].state then ccolor = color.green:a(200) else ccolor = color.white end
@@ -215,7 +458,7 @@ function scan.show(objedit)
 
 					if buttons.analogry<-60 then
 					else
-						draw.fillrect(1,y-5,960-144-24,26,color.blue:a(160))
+						draw.fillrect(1,y-5,960-130-27,26,color.blue:a(160))
 					end
 
 					if not icon0 then
@@ -244,20 +487,20 @@ function scan.show(objedit)
 
 				end
 
-				screen.clip(0,25,788,555)
+				screen.clip(0,25,800,555)
 					if i == scr.sel then
 						if buttons.analogry<-60 then
 						else
-							if scan.list[i].width > (960-144-55) then
-								xscrtitle = screen.print(xscrtitle, y, scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-144-55)
+							if scan.list[i].width > (960-130-60) then
+								xscrtitle = screen.print(xscrtitle, y, scan.list[i].label or scan.list[i].title,1,ccolor,color.shine,__SLEFT,960-130-60)
 							else
-								screen.print(25,y,scan.list[i].title, 1, ccolor, color.shine)
+								screen.print(25,y,scan.list[i].label or scan.list[i].title, 1, ccolor, color.shine)
 							end
 						end
 					else
 						if buttons.analogry<-60 then
 						else
-							screen.print(25,y,scan.list[i].title, 1, ccolor, color.shine)
+							screen.print(25,y,scan.list[i].label or scan.list[i].title, 1, ccolor, color.shine)
 						end
 					end
 				screen.clip()
@@ -266,15 +509,15 @@ function scan.show(objedit)
 					screen.print(7,y,"»",1,color.white,color.green)
 				end
 
-				y += 26.2
+				y += 27
 			end
 
 			--Bar Scroll
-			local ybar,h = 34,(maximg*26)-2
-			draw.fillrect(797, ybar-5, 8, h, color.shine)
+			local ybar,h = 34,(maximg*27.9)-2
+			draw.fillrect(805, ybar-5, 8, h + 3, color.shine)
 			if scr.maxim >= maximg then -- Draw Scroll Bar
 				local pos_height = math.max(h/scr.maxim, maximg)
-				draw.fillrect(797, ybar-5 + ((h-pos_height)/(scr.maxim-1))*(scr.sel-1), 8, pos_height, color.new(0,255,0))
+				draw.fillrect(805, ybar-5 + ((h-pos_height)/(scr.maxim-1))*(scr.sel-1), 8, pos_height + 2, color.new(0,255,0))
 			end
 
 			--Blit icon0
@@ -288,8 +531,9 @@ function scan.show(objedit)
 				draw.rect(xb,yb, 128, 128, color.white)
 			end
 
-			--Print Gameid
+			-- Print Gameid
 			screen.print(960-75,40,scan.list[scr.sel].gameid or STRINGS_UNK,1,color.white,color.blue,__ACENTER)
+
 
 			--Print Streched
 			screen.print(955,yb+64+65,"< L >",1,color.white,color.blue,__ARIGHT)
@@ -308,7 +552,7 @@ function scan.show(objedit)
 			screen.print(955,yb+64+200,SCAN_TEXT_COLOR.." ("..scan.list[scr.sel].selcc..")", 1,color.white,color.blue,__ARIGHT)
 
 			--Print Style (template)
-			screen.print(955,yb+64+242,"< AnalogR + Up >",0.9,color.white,color.blue,__ARIGHT)
+			screen.print(955,yb+64+242,"RS↑ + Pad↑",1,color.white,color.blue,__ARIGHT)
 			screen.print(955,yb+64+270,scan.list[scr.sel].template, 1,color.white,color.blue,__ARIGHT)
 
 			--Left Options
@@ -438,7 +682,8 @@ function scan.show(objedit)
 
 				if __SORT > #sort_games then __SORT = 1 end
 				if __SORT < 1 then __SORT = #sort_games end
-				table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
+				table.sort(scan.list, scan_sort_cmp)
+				scan_refresh_labels()
 				scr:set(scan.list,maximg)
 			end
 
@@ -495,7 +740,7 @@ function scan.show(objedit)
 				if scan.list[scr.sel].inst then toinstall+=1 else toinstall-=1 end
 			end
 
-			--if buttons.select and buttons.held.square then error("USB") end--Debug USB
+			if buttons.select and buttons.held.square then error("USB") end--Debug USB
 
 			--Full/Stretched
 			if buttons.released.l then
@@ -595,7 +840,8 @@ function submenu_abm.run(obj)
 
 			if tmp_sort != _sort then
 				icon0=nil
-				table.sort(scan.list ,function (a,b) return string.lower(a[sort_mode[__SORT]])<string.lower(b[sort_mode[__SORT]]) end)
+				table.sort(scan.list, scan_sort_cmp)
+				scan_refresh_labels()
 				obj:set(scan.list,maximg)
 			end
 			ini.write(__PATHINI,"sort","sort",_sort)--Save __SORT
@@ -614,7 +860,7 @@ function submenu_abm.run(obj)
 			ini.write(__PATHINI,"template","style",__TEMPLATE)			--Save __TEMPLATE
 
 			ini.write(__PATHINI,"check_adr","check_adr",__CHECKADR)
-			ini.write(__PATHINI,"update","update",__UPDATE)		--Save __CHECKADR
+			ini.write(__PATHINI,"update","update",__UPDATE)		        --Save __CHECKADR
 			ini.write(__PATHINI,"lang","lang",__LANG_CUSTOM)			--Save __LANG_CUSTOM
 
 			if __LANG_CUSTOM == 1 then

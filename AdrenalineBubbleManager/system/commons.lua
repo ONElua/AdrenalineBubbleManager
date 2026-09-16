@@ -100,8 +100,9 @@ function init_msg(msg)
 	os.delay(5)
 end
 
-sort_games = { SCAN_SORT_TITLE, SCAN_SORT_MTIME, SCAN_SORT_INSTALLED, SCAN_SORT_CATEGORY, SCAN_SORT_GAMEID, SCAN_SORT_DEVICE }
-sort_mode = { "title", "mtime", "install", "type", "gameid", "device" }
+-- Format always available (from files.type: iso/cso/pbp/zso/dax), independent of ZSO/DAX scan
+sort_games = { SCAN_SORT_TITLE, SCAN_SORT_MTIME, SCAN_SORT_INSTALLED, SCAN_SORT_CATEGORY, SCAN_SORT_GAMEID, SCAN_SORT_DEVICE, SCAN_SORT_FORMAT }
+sort_mode = { "title", "mtime", "install", "type", "gameid", "device", "format" }
 
 __SORT = tonumber(ini.read(__PATHINI,"sort","sort","3"))
 __COLOR = tonumber(ini.read(__PATHINI,"color","color","1"))
@@ -407,7 +408,7 @@ function normalizeBootDriver(fp, adrnew)
 	return driver, adrnew, fixed
 end
 
-partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:" }
+partitions = { "ux0:", "uma0:", "ur0:", "imc0:", "xmc0:", "gro0:" }
 function AutoMakeBootBin(obj)
 
 	local path2game, _find = "", false
