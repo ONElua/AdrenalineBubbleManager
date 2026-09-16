@@ -2,7 +2,7 @@
 
 **Create and organize direct Adrenaline bubbles for PSP/PSX content on PS Vita.**
 
-**Current version: 6.22**
+**Current version: 6.23**
 
 Compatible with:
 
@@ -35,13 +35,52 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 
 For downloaded PSP content you typically need the usual Adrenaline-side plugins (e.g. npdrm_free mod / np loader mod) installed inside Adrenaline.
 
+## First launch after update
+
+1. Install the latest ABM `.vpk` with VitaShell.
+2. Open ABM once — if Check Adrenaline is enabled, it may update modules (reboot may be required).
+3. After reboot, open Adrenaline once, exit, then use ABM as usual.
+
 ---
 
-## What’s new in 6.21 (official)
+## Changelog
 
-This release merges the community work from **shoui520** and restores official ABM features:
+### 6.23
 
-### From shoui520 (integrated)
+#### DAX / ZSO (isage 8.0.2)
+- Scan and list support for **DAX** and **ZSO** when using **Adrenaline isage 8.0.2** with ABM modules
+- Format detection via `files.type` (ISO / CSO / PBP / DAX / ZSO)
+
+#### Sort modes
+- New and improved sort options: **Title**, **MTime**, **Installed**, **Category**, **GameID**, **Device**, **Format**
+- Fixed sort behaviour (including **MTime** newest → oldest with proper date parsing)
+- **Format** group order: iso → cso → pbp → dax → zso, then title A–Z within each group
+- **Category** / **Device** / **Format** / **Installed**: group first, then title A–Z
+
+#### List display
+- Each game shows platform tag: **[PSP]**, **[PSX]**, or **[HB]** (from SFO category)
+- When sorting by **Category**, **Device**, or **Format**, the matching value is shown in brackets after the platform tag (e.g. `[UG]`, `[ux0]`, `[iso]`)
+
+#### Debug log
+- Optional scan log at `ux0:data/ABM/debug_log.txt`
+- One entry flow per game: **SCAN** (path first), then **OK** / **FAIL** / **SKIP**
+- Overwritten on each full scan (does not accumulate across launches)
+
+#### Seasonal particles
+- **December 20–25:** white snow particles
+- **September 15–16:** green / white / red particles
+
+#### Notes
+- Full DAX/ZSO support needs a ONELua build that reports types **4 (DAX)** and **9 (ZSO)** and can read those images
+
+### 6.22
+
+- Fix module install: file-by-file copy into `sce_module` and conditional CRC log
+- Update isage ABM `adrenaline_user.suprx` to fix PSP **EBOOT.PBP** bubble launch for Adrenaline v8.0.2
+
+### 6.21
+
+Merged community work from **shoui520** and restored official ABM features:
 
 - Support for **isage Adrenaline 8.0.2** and the ISAGECOMPAT AdrBubbleBooter stack
 - Exact **CRC module detection** for TheOfficialFloW v7, isage 8.0.2, and known AdrBubbleBooter builds
@@ -51,11 +90,19 @@ This release merges the community work from **shoui520** and restores official A
 - **UTF-8** LiveArea title handling (no blank labels from multi-byte truncation)
 - Faster bubble image preprocessing (temporary higher clocks during convert, then restored)
 - Updated AdrBubbleBooter (menu-label fix) and optional direct-IFTU 2× scaling module builds
-
-### Official ABM
-
 - **ABM Update** re-enabled (startup check + Extra Settings toggle)
 - Clearer **module layout** in the package (install vs restore, v7 vs 8.0.2)
+
+### 6.20
+
+- Correct support for adrenaline bubbles with `boot.bin`
+
+### 6.19 – 6.15
+
+- Language download option; online resources / JSON previews
+- OSK CR fix; bubble template styles (PSPEMU, PS1EMU, PSMOBILE, A5)
+- Restore Adrenaline option; editable bubble titles
+- Various scan and image fixes
 
 ---
 
@@ -69,42 +116,6 @@ This release merges the community work from **shoui520** and restores official A
 | `bubbles/restore_adrenaline_8.0.2/sce_module/` | Original modules to **restore** 8.0.2 |
 
 ABM only replaces files under `ux0:app/PSPEMUCFW/sce_module/` when fingerprints match a supported family.
-
----
-
-## First launch after update
-
-1. Install the latest ABM `.vpk` with VitaShell.
-2. Open ABM once — if Check Adrenaline is enabled, it may update modules (reboot may be required).
-3. After reboot, open Adrenaline once, exit, then use ABM as usual.
-
----
-
-## Changelog
-
-### 6.22
-
-- Fix module install: file-by-file copy into sce_module and conditional CRC log
-- Update isage ABM adrenaline_user.suprx to fix PSP EBOOT.PBP bubble launch for Adrenaline v8.0.2
-
-### 6.21
-
-- Merged shoui520 Adrenaline 8.0.2 / isage support, CRC detection, and family-safe install/restore
-- Merged INFERNO driver mapping fix and in-place bubble repair
-- Merged UTF-8 title handling and bubble creation performance improvements
-- Restored **ABM Update** (startup + Extra Settings)
-- Reorganized install/restore module folders for clarity
-
-### 6.20 (upstream)
-
-- Correct support for adrenaline bubbles with `boot.bin`
-
-### 6.19 – 6.15 (upstream)
-
-- Language download option; online resources / JSON previews
-- OSK CR fix; bubble template styles (PSPEMU, PS1EMU, PSMOBILE, A5)
-- Restore Adrenaline option; editable bubble titles
-- Various scan and image fixes
 
 ---
 
