@@ -19,6 +19,17 @@ PROJECT_BUBBLES = "VitaBubbles"
 --THID_THEME = thread.new("system/thread_bubbles.lua")
 local urlb = 'https://raw.githubusercontent.com/ONElua/VitaBubbles/master/'
 
+-- Download log for online resources (JSON / ZIP)
+local function res_dl_log(line)
+	files.mkdir("ux0:data/ABM/")
+	local f = io.open("ux0:data/ABM/resources_dl_log.txt", "a")
+	if f then
+		f:write(os.date("%H:%M:%S") .. " | " .. tostring(line) .. "\n")
+		f:close()
+	end
+end
+
+
 pic_alpha,sorting = 0,0
 function bubbles.online(obj, simg)
 
@@ -32,12 +43,28 @@ function bubbles.online(obj, simg)
 		listbubbles = {}
 		authors = {}
 
-		if __ITLS then
-			raw = http.get(string.format(path_json, APP_REPO, PROJECT_BUBBLES))
+		local url = string.format(path_json, APP_REPO, PROJECT_BUBBLES)
+		local local_json = "ux0:data/ABM/NEWdatabase.json"
+
+--		files.delete("ux0:data/ABM/resources_dl_log.txt")
+--		res_dl_log("=== resources online ===")
+
+		-- http.down = RAM only; disk only on fallback
+		local data, size = http.down(url)
+		if data and size and size > 0 then
+--			res_dl_log("JSON http.down OK size=" .. tostring(size) .. " (RAM, no write)")
+			raw = data
 		else
-			files.delete("ux0:data/ABM/NEWdatabase.json")
-			http.download(string.format(path_json, APP_REPO, PROJECT_BUBBLES), "ux0:data/ABM/NEWdatabase.json")
-			if files.exists("ux0:data/ABM/NEWdatabase.json") then raw = files.read("ux0:data/ABM/NEWdatabase.json") end
+--			res_dl_log("JSON http.down FAIL -> http.download (disk)")
+			files.delete(local_json)
+			http.download(url, local_json)
+			if files.exists(local_json) then
+				raw = files.read(local_json)
+				--res_dl_log("JSON http.download OK size=" .. tostring(files.size(local_json) or 0))
+				--res_dl_log("JSON Write/Read disk OK")
+			else
+				--res_dl_log("JSON FAIL")
+			end
 		end
 
 		--Debug
@@ -129,10 +156,10 @@ function bubbles.online(obj, simg)
 			screen.print(950,5,listbubbles[sel].scroll.maxim.."/"..listbubbles.total, 1, color.red, color.shine, __ARIGHT)
 			screen.print(10,5, sel.."/"..#authors, 1, color.yellow:a(200),color.gray, __ALEFT)
 
-			if screen.textwidth(STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author) > 715 then
+			if screen.textwidth("<- "..STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author.." ->") > 715 then
 				xscr1 = screen.print(xscr1, 35,STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author,1,color.yellow:a(200),color.gray,__SLEFT,700)
 			else
-				screen.print(25, 35,STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author,1,color.yellow:a(200),color.gray,__ALEFT)
+				screen.print(25, 35,"<- "..STRINGS_RESOURCES_AUTHOR.." : "..listbubbles[sel][listbubbles[sel].scroll.sel].author.." ->",1,color.yellow:a(200),color.gray,__ALEFT)
 			end
 
 			local y = 76
@@ -317,12 +344,28 @@ function bubbles.online(obj, simg)
 						iconpreview = image.load(__PATH_TMP..listbubbles[sel][i].icon0)
 						--if iconpreview then iconpreview:resize(200,128) end
 
-						if __ITLS then http.getfile(url_bubbles, path) else http.download(url_bubbles, path) end
+						--res_dl_log("ZIP id=" .. tostring(listbubbles[sel][i].id))
+						--res_dl_log("ZIP url=" .. url_bubbles)
+						--res_dl_log("ZIP dest=" .. path)
+
+						-- Large packs: always http.download to disk (not RAM)
+						local ok_zip = false
+						files.delete(path)
+						http.download(url_bubbles, path)
 						if files.exists(path) then
+							ok_zip = true
+							--res_dl_log("ZIP http.download OK size=" .. tostring(files.size(path) or 0))
+						else
+							--res_dl_log("ZIP FAIL (file missing)")
+						end
+
+						if ok_zip then
 							if files.extract(path, __PATH_RESOURCES) == 1 then
 								mge = listbubbles[sel][i].id..'\n\n'..STRINGS_RESOURCES_INSTALLED
+								--res_dl_log("EXTRACT OK")
 							else
 								mge = listbubbles[sel][i].id..'\n\n'..STRINGS_RESOURCES_ERROR_UNPACK
+								--res_dl_log("EXTRACT FAIL")
 							end
 						else
 							mge = listbubbles[sel][i].id..'\n\n'..STRINGS_RESOURCES_ERROR_DOWNLOAD

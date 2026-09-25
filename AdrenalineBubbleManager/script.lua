@@ -39,8 +39,6 @@ if os.access() == 0 then
 	os.exit()
 end
 
-__ITLS = os.lmodule("itlsKernel")
-
 dofile("git/shared.lua")
 
 -- ABM Update (requires __UPDATE from commons.lua)
