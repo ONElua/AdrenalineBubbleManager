@@ -2,7 +2,7 @@
 
 **Create and organize direct Adrenaline bubbles for PSP/PSX content on PS Vita.**
 
-**Current version: 6.23**
+**Current version: 6.24**
 
 Compatible with:
 
@@ -44,6 +44,12 @@ For downloaded PSP content you typically need the usual Adrenaline-side plugins 
 ---
 
 ## Changelog
+
+### 6.24
+
+### Online resources
+- Fixed download of the VitaBubbles catalog and resource packs (No longer uses http.get / http.getfile for these requests).
+- JSON uses http.down (RAM); large ZIP packs use http.download to disk.
 
 ### 6.23
 
